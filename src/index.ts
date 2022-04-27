@@ -10,3 +10,4 @@ export const APIConnector = {
 module.exports = {
   APIConnector: APIConnector
 }
+export default APIConnector;
