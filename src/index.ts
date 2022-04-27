@@ -7,3 +7,6 @@ export const APIConnector = {
   },
   setConfiguration: (identification) => api.setApiIdentification(identification),
 }
+module.exports = {
+  APIConnector: APIConnector
+}
