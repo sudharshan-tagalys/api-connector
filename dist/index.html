@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script src="./bundle.js"></script>
+  <script>
+    Tagalys.APIConnector.setConfiguration({
+      credentials: {
+        client_code: "14FC8D7C18496383",
+        api_key: "d546be85ff7c071f39da00009190b20c"
+      },
+      store_id: "vjvbs7z5js",
+      currency: "AUD"
+    });
+
+    Tagalys.APIConnector.SimilarProducts.call({
+      params: {
+        request: ["results", "details"],
+        max_products: 2,
+        product: 3063
+      },
+      track: false,
+      onSuccess: function(response, analyticsData = {}){
+        console.log(response["sku"])
+        console.log(analyticsData)
+        var div = document.createElement("div");
+        div.innerHTML = JSON.stringify(response);
+        document.body.appendChild(div);
+      },
+    })
+
+  </script>
+</body>
+</html>
