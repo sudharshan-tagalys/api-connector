@@ -4,10 +4,13 @@
     "module": "commonjs",
     "jsx": "react",
     "jsxFactory": "h",
-    "target": "es5"
+    "declaration": true,
+    "target": "es5",
+    "outDir": "./dist"
   },
   "include": [
     "src/*.ts",
     "src/*.tsx"
-  ]
+  ],
+  "exclude": ["node_modules"]
 }
