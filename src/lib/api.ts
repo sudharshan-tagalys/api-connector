@@ -16,7 +16,6 @@ class API{
         requestOptions.onFailure(xhr);
       }
     }
- 
     xhr.send(objectToFormData({
       ...requestOptions.params,
       identification: this.identification
