@@ -1,14 +1,12 @@
-import { objectToFormData } from "../utils/api"
 class API{
   private identification: any;
-  call(method, url, requestOptions, analyticsDataFormatter){
+  call(method, path, requestOptions){
     var xhr = new XMLHttpRequest();
-    xhr.open(method, url);
+    xhr.open(method, this.url(path));
     xhr.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
     xhr.onload = function() {
       if (xhr.status === 200) {
-        const response = JSON.parse(xhr.responseText);
-        requestOptions.onSuccess(response, analyticsDataFormatter(response))
+        requestOptions.onSuccess(JSON.parse(xhr.responseText))
       }
     };
     xhr.onerror = function() {
@@ -16,12 +14,16 @@ class API{
         requestOptions.onFailure(xhr);
       }
     }
-    xhr.send(objectToFormData({
-      ...requestOptions.params,
-      identification: this.identification
-    }));
+    xhr.send(requestOptions.params);
   }
 
+  url(path) {
+    return `http://172.17.0.1:3003/v1/${path}`;
+  }
+
+  getCredentials() {
+    return this.identification;
+  }
   // TODO: Perform validation of identification
   isInValidIdentification(identification) {
     return false;
