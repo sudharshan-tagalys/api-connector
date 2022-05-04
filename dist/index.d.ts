@@ -3,4 +3,5 @@ export declare const APIConnector: {
         call: (requestOptions: any) => void;
     };
     setConfiguration: (configuration: any) => void;
+    getCurrency: () => Object;
 };

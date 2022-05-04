@@ -8,5 +8,6 @@ exports.APIConnector = {
         call: function (requestOptions) { return similarProductsWidget_1.default.call(requestOptions); },
     },
     setConfiguration: function (configuration) { return api_1.default.setConfiguration(configuration); },
+    getCurrency: function () { return api_1.default.getCurrency(); },
 };
 //# sourceMappingURL=index.js.map
