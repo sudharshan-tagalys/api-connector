@@ -16,7 +16,13 @@
       },
       storeId: "28025094237",
       currency: "AUD",
-      apiServer: "https://stage2-api.tagalys.com"
+      apiServer: "https://stage2-api.tagalys.com",
+      currency: {
+        label: 'Rs. ',
+        fractional_digits: 2,
+        exchange_rate: 1,
+        locale: 'en-US'
+      }
     });
 
     Tagalys.APIConnector.SimilarProducts.call({

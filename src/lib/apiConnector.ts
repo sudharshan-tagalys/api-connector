@@ -17,7 +17,6 @@ class APIConnector{
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
     };
-
     api.call(method, path, {
       params: objectToFormData({
         ...params,

@@ -1,7 +1,6 @@
-import { APIIdentification } from "../types"
+import { APIConfiguration, APIIdentification } from "../types"
 class API{
-  private identification: APIIdentification;
-  private apiServer: string;
+  private configuration: APIConfiguration
   call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
     var xhr = new XMLHttpRequest();
     xhr.open(method, this.url(path));
@@ -20,27 +19,34 @@ class API{
   }
 
   url(path): string{
-    return `${this.apiServer}/v1/${path}`
+    return `${this.configuration.apiServer}/v1/${path}`
   }
 
   getIdentification() {
-    return this.identification;
+    return this.configuration.identification;
+  }
+
+  getCurrency() {
+    return this.configuration.currency;
   }
 
   setConfiguration(configuration) {
-    this.identification = {
-      client_code: configuration.credentials.clientCode,
-      api_key: configuration.credentials.apiKey,
-      store_id: configuration.storeId,
-      // TODO: Confirm whether the API client should be dynamic
-      api_client: {
-        vendor: "tagalys",
-        language: "js",
-        version: "3",
-        release: "1",
-      }
+    this.configuration = {
+      identification: {
+        client_code: configuration.credentials.clientCode,
+        api_key: configuration.credentials.apiKey,
+        store_id: configuration.storeId,
+        // TODO: Confirm whether the API client should be dynamic
+        api_client: {
+          vendor: "tagalys",
+          language: "js",
+          version: "3",
+          release: "1",
+        },
+      },
+      apiServer: configuration.apiServer,
+      currency: configuration.currency
     }
-    this.apiServer = configuration.apiServer
   }
 
 }
