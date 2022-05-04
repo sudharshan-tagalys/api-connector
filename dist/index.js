@@ -7,10 +7,6 @@ exports.APIConnector = {
     SimilarProducts: {
         call: function (requestOptions) { return similarProductsWidget_1.default.call(requestOptions); },
     },
-    setConfiguration: function (identification) { return api_1.default.setApiIdentification(identification); },
+    setConfiguration: function (configuration) { return api_1.default.setConfiguration(configuration); },
 };
-module.exports = {
-    APIConnector: exports.APIConnector
-};
-exports.default = exports.APIConnector;
 //# sourceMappingURL=index.js.map

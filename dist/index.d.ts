@@ -2,6 +2,5 @@ export declare const APIConnector: {
     SimilarProducts: {
         call: (requestOptions: any) => void;
     };
-    setConfiguration: (identification: any) => void;
+    setConfiguration: (configuration: any) => void;
 };
-export default APIConnector;

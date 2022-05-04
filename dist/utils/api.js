@@ -23,11 +23,12 @@ var flattenObject = function (ob) {
 var objectToFormData = function (ob) {
     var flattenedObject = flattenObject(ob);
     var formData = Object.keys(flattenedObject).map(function (k) {
+        var formatted = "";
         if (k.indexOf('.') == -1) {
-            var formatted = k;
+            formatted = k;
         }
         else {
-            var formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
+            formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
         }
         return encodeURIComponent(formatted) + '=' + encodeURIComponent(flattenedObject[k]);
     }).join('&');

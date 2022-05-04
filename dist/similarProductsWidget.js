@@ -15,19 +15,42 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var connector_1 = require("./lib/connector");
+var apiConnector_1 = require("./lib/apiConnector");
 var SimilarProductsWidget = /** @class */ (function (_super) {
     __extends(SimilarProductsWidget, _super);
     function SimilarProductsWidget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SimilarProductsWidget.prototype.path = function () {
-        return "/products/".concat(this.requestOptions.params.product, "/similar");
+    SimilarProductsWidget.prototype.getRequestOptions = function () {
+        return {
+            path: "products/".concat(this.requestOptions.params.product, "/similar"),
+            method: "post",
+            headers: {
+                contentType: "application/x-www-form-urlencoded"
+            },
+            params: {
+                request: this.requestOptions.params.request,
+                max_products: this.requestOptions.params.max_products,
+            },
+        };
     };
-    SimilarProductsWidget.prototype.extractAnalyticsData = function (data) {
-        return data["results"];
+    SimilarProductsWidget.prototype.extractAnalyticsData = function (response) {
+        var plDetails = {};
+        if (response.hasOwnProperty("sku")) {
+            plDetails["sku"] = response.sku;
+        }
+        var productSkus = response["details"].map(function (product) { return product.sku; });
+        return {
+            event_type: "product_list",
+            event_details: {
+                pl_type: "widget-similar_products",
+                pl_details: plDetails,
+                pl_products: productSkus,
+                pl_total: productSkus.length
+            }
+        };
     };
     return SimilarProductsWidget;
-}(connector_1.default));
+}(apiConnector_1.default));
 exports.default = new SimilarProductsWidget();
 //# sourceMappingURL=similarProductsWidget.js.map

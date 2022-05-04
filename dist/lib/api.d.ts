@@ -1,8 +1,13 @@
+import { APIIdentification } from "../types";
 declare class API {
     private identification;
-    call(method: any, url: any, requestOptions: any, analyticsDataFormatter: any): void;
-    isInValidIdentification(identification: any): boolean;
-    setApiIdentification(identification: any): void;
+    private dataCenter;
+    call(method: string, path: string, requestOptions: any, headers?: {
+        contentType: string;
+    }): void;
+    url(path: any): string;
+    getIdentification(): APIIdentification;
+    setConfiguration(configuration: any): void;
 }
 declare const _default: API;
 export default _default;
