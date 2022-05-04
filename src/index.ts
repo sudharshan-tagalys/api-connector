@@ -6,4 +6,5 @@ export const APIConnector = {
     call: (requestOptions) => similarProductsWidget.call(requestOptions),
   },
   setConfiguration: (configuration) => api.setConfiguration(configuration),
+  getCurrency: () => api.getCurrency(),
 }
