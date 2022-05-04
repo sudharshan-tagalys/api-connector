@@ -31,7 +31,6 @@ var AnalyticsTracker = /** @class */ (function () {
         if (cookie_1.default.isEnabled()) {
             this.bowser = Bowser.getParser(window.navigator.userAgent);
             this.bowser = this.bowser.parsedResult;
-            console.log(this.bowser);
             cookie_1.default.batchUpdate([{
                     name: "__ta_device",
                     expiryTime: 63072000000

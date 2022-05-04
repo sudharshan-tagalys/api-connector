@@ -21,17 +21,16 @@ var API = /** @class */ (function () {
         xhr.send(requestOptions.params);
     };
     API.prototype.url = function (path) {
-        return "https://stage2-api.tagalys.com/v1/".concat(path);
-        // return `https://api-${this.dataCenter}.tagalys.com/v1/${path}`;
+        return "".concat(this.apiServer, "/v1/").concat(path);
     };
     API.prototype.getIdentification = function () {
         return this.identification;
     };
     API.prototype.setConfiguration = function (configuration) {
         this.identification = {
-            client_code: configuration.credentials.client_code,
-            api_key: configuration.credentials.api_key,
-            store_id: configuration.store_id,
+            client_code: configuration.credentials.clientCode,
+            api_key: configuration.credentials.apiKey,
+            store_id: configuration.storeId,
             // TODO: Confirm whether the API client should be dynamic
             api_client: {
                 vendor: "tagalys",
@@ -40,7 +39,7 @@ var API = /** @class */ (function () {
                 release: "1",
             }
         };
-        this.dataCenter = configuration.dataCenter;
+        this.apiServer = configuration.apiServer;
     };
     return API;
 }());

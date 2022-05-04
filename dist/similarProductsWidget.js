@@ -23,14 +23,14 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
     }
     SimilarProductsWidget.prototype.getRequestOptions = function () {
         return {
-            path: "products/".concat(this.requestOptions.params.product, "/similar"),
+            path: "products/".concat(this.requestOptions.params.productId, "/similar"),
             method: "post",
             headers: {
                 contentType: "application/x-www-form-urlencoded"
             },
             params: {
-                request: this.requestOptions.params.request,
-                max_products: this.requestOptions.params.max_products,
+                request: ["result", "details"],
+                max_products: this.requestOptions.params.limit,
             },
         };
     };

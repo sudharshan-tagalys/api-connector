@@ -1,7 +1,7 @@
 import { APIIdentification } from "../types";
 declare class API {
     private identification;
-    private dataCenter;
+    private apiServer;
     call(method: string, path: string, requestOptions: any, headers?: {
         contentType: string;
     }): void;

@@ -31,7 +31,7 @@ var APIConnector = /** @class */ (function () {
             onSuccess: function (response) {
                 var analyticsData = _this.extractAnalyticsData(response);
                 requestOptions.onSuccess(response, analyticsData);
-                if (requestOptions.track) {
+                if (_this.canTrackAnalytics()) {
                     // Track analytics data if track is enabled
                     analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
                 }
@@ -40,6 +40,19 @@ var APIConnector = /** @class */ (function () {
                 requestOptions.onFailure(response);
             }
         });
+    };
+    APIConnector.prototype.canTrackAnalytics = function () {
+        var analytics = this.requestOptions.analytics;
+        if (analytics.track === false) {
+            return false;
+        }
+        if (analytics.hasConsentManager === false) {
+            return true;
+        }
+        if (typeof analytics.hasConsentToTrack === "function") {
+            return analytics.hasConsentToTrack();
+        }
+        return true;
     };
     APIConnector.prototype.extractAnalyticsData = function (data) {
         return data;
