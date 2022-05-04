@@ -1,10 +1,10 @@
 const flattenObject = function(ob) {
-  var toReturn = {};
-  for (var i in ob) {
+  let toReturn = {};
+  for (let i in ob) {
     if (!ob.hasOwnProperty(i)) continue;
     if ((typeof ob[i]) == 'object' && ob[i] !== null) {
-      var flatObject = flattenObject(ob[i]);
-      for (var x in flatObject) {
+      let flatObject = flattenObject(ob[i]);
+      for (let x in flatObject) {
         if (!flatObject.hasOwnProperty(x)) continue;
 
         toReturn[i + '.' + x] = flatObject[x];
@@ -16,12 +16,13 @@ const flattenObject = function(ob) {
   return toReturn;
 }
 export const objectToFormData = function (ob) {
-  var flattenedObject = flattenObject(ob);
-  var formData = Object.keys(flattenedObject).map(function(k) {
+  let flattenedObject = flattenObject(ob);
+  let formData = Object.keys(flattenedObject).map(function (k) {
+    let formatted = ""
     if(k.indexOf('.') == -1) {
-      var formatted = k;
+      formatted = k;
     } else {
-      var formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
+      formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
     }
     return encodeURIComponent(formatted) + '=' + encodeURIComponent(flattenedObject[k])
   }).join('&');

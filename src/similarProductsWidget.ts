@@ -1,11 +1,22 @@
-import Connector from "./lib/connector"
-
-class SimilarProductsWidget extends Connector {
-  path() {
-    return `products/${this.requestOptions.params.product}/similar`;
+import APIConnector from "./lib/apiConnector"
+import { SimilarProductsWidgetRequestOptions, AnalyticsData } from "./types"
+class SimilarProductsWidget extends APIConnector {
+  getRequestOptions() : SimilarProductsWidgetRequestOptions{
+    return {
+      path: `products/${this.requestOptions.params.product}/similar`,
+      method: "post",
+      headers: {
+        contentType: "application/x-www-form-urlencoded"
+      },
+      params: {
+        request: this.requestOptions.params.request,
+        max_products: this.requestOptions.params.max_products,
+      },
+    }
   }
-  extractAnalyticsData(response) {
-    let plDetails = {}
+
+  extractAnalyticsData(response) : AnalyticsData {
+    let plDetails: any = {}
     if (response.hasOwnProperty("sku")) {
       plDetails["sku"] = response.sku
     }

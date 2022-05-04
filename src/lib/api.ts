@@ -1,9 +1,11 @@
+import { APIIdentification } from "../types"
 class API{
-  private identification: any;
-  call(method, path, requestOptions){
+  private identification: APIIdentification;
+  private dataCenter: string;
+  call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
     var xhr = new XMLHttpRequest();
     xhr.open(method, this.url(path));
-    xhr.setRequestHeader('Content-Type', "application/x-www-form-urlencoded");
+    xhr.setRequestHeader('Content-Type', headers.contentType);
     xhr.onload = function() {
       if (xhr.status === 200) {
         requestOptions.onSuccess(JSON.parse(xhr.responseText))
@@ -17,23 +19,20 @@ class API{
     xhr.send(requestOptions.params);
   }
 
-  url(path) {
-    return `http://172.17.0.1:3003/v1/${path}`;
+  url(path) : string{
+    return `https://stage2-api.tagalys.com/v1/${path}`
+    // return `https://api-${this.dataCenter}.tagalys.com/v1/${path}`;
   }
 
-  getCredentials() {
+  getIdentification() {
     return this.identification;
   }
-  // TODO: Perform validation of identification
-  isInValidIdentification(identification) {
-    return false;
-  }
 
-  setApiIdentification(identification) {
+  setConfiguration(configuration) {
     this.identification = {
-      client_code: identification.credentials.client_code,
-      api_key: identification.credentials.api_key,
-      store_id: identification.store_id,
+      client_code: configuration.credentials.client_code,
+      api_key: configuration.credentials.api_key,
+      store_id: configuration.store_id,
       // TODO: Confirm whether the API client should be dynamic
       api_client: {
         vendor: "tagalys",
@@ -41,7 +40,9 @@ class API{
         version: "3",
         release: "1",
       }
-    };
+    }
+    this.dataCenter = configuration.dataCenter
   }
+
 }
 export default new API();

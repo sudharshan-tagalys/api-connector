@@ -1,21 +1,33 @@
 import { objectToFormData } from "../utils/api";
-import AnalyticsTracker from "./analytics_tracker";
+import AnalyticsTracker from "./analyticsTracker";
 import api from "./api"
 
-class Connector{
+const DEFAULT_REQUEST_OPTIONS = {
+  method: "POST",
+  path: "",
+  params: {}
+}
+
+class APIConnector{
   public requestOptions: any;
 
   call(requestOptions) {
     this.requestOptions = requestOptions;
-    api.call(this.method(), this.path(), {
+    const { method, path, params } = {
+      ...DEFAULT_REQUEST_OPTIONS,
+      ...this.getRequestOptions()
+    };
+
+    api.call(method, path, {
       params: objectToFormData({
-        ...requestOptions.params,
-        identification: api.getCredentials()
+        ...params,
+        identification: api.getIdentification()
       }),
       onSuccess: (response) => {
         const analyticsData = this.extractAnalyticsData(response);
         requestOptions.onSuccess(response, analyticsData);
         if (requestOptions.track) {
+          // Track analytics data if track is enabled
           AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
         }
       },
@@ -29,13 +41,9 @@ class Connector{
     return data
   }
 
-  method() {
-    return "post";
-  }
-
-  path() {
-    return "";
+  getRequestOptions() {
+    return DEFAULT_REQUEST_OPTIONS
   }
 }
 
-export default Connector;
+export default APIConnector;

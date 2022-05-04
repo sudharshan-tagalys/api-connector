@@ -5,5 +5,5 @@ export const APIConnector = {
   SimilarProducts: {
     call: (requestOptions) => similarProductsWidget.call(requestOptions),
   },
-  setConfiguration: (identification) => api.setApiIdentification(identification),
+  setConfiguration: (configuration) => api.setConfiguration(configuration),
 }
