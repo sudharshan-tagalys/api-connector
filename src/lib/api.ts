@@ -1,7 +1,7 @@
 import { APIIdentification } from "../types"
 class API{
   private identification: APIIdentification;
-  private dataCenter: string;
+  private apiServer: string;
   call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
     var xhr = new XMLHttpRequest();
     xhr.open(method, this.url(path));
@@ -19,9 +19,8 @@ class API{
     xhr.send(requestOptions.params);
   }
 
-  url(path) : string{
-    return `https://stage2-api.tagalys.com/v1/${path}`
-    // return `https://api-${this.dataCenter}.tagalys.com/v1/${path}`;
+  url(path): string{
+    return `${this.apiServer}/v1/${path}`
   }
 
   getIdentification() {
@@ -30,9 +29,9 @@ class API{
 
   setConfiguration(configuration) {
     this.identification = {
-      client_code: configuration.credentials.client_code,
-      api_key: configuration.credentials.api_key,
-      store_id: configuration.store_id,
+      client_code: configuration.credentials.clientCode,
+      api_key: configuration.credentials.apiKey,
+      store_id: configuration.storeId,
       // TODO: Confirm whether the API client should be dynamic
       api_client: {
         vendor: "tagalys",
@@ -41,7 +40,7 @@ class API{
         release: "1",
       }
     }
-    this.dataCenter = configuration.dataCenter
+    this.apiServer = configuration.apiServer
   }
 
 }

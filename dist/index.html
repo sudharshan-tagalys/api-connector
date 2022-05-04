@@ -11,23 +11,28 @@
   <script>
     Tagalys.APIConnector.setConfiguration({
       credentials: {
-        client_code: "14FC8D7C18496383",
-        api_key: "d546be85ff7c071f39da00009190b20c"
+        clientCode: "A6C97421537BD69E",
+        apiKey: "be7120dc204428415496130146fe586e",
       },
-      store_id: "vjvbs7z5js",
-      currency: "AUD"
+      storeId: "28025094237",
+      currency: "AUD",
+      apiServer: "https://stage2-api.tagalys.com"
     });
 
     Tagalys.APIConnector.SimilarProducts.call({
       params: {
-        request: ["results", "details"],
-        max_products: 2,
-        product: 3063
+        limit: 2,
+        productId: 6571593924701
+      },
+      analytics: {
+        track: false,
+        hasConsentManager: true,
+        hasConsentToTrack: function(){
+          return false
+        }
       },
       track: false,
       onSuccess: function(response, analyticsData = {}){
-        console.log(response["sku"])
-        console.log(analyticsData)
         var div = document.createElement("div");
         div.innerHTML = JSON.stringify(response);
         document.body.appendChild(div);

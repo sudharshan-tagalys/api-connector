@@ -3,14 +3,14 @@ import { SimilarProductsWidgetRequestOptions, AnalyticsData } from "./types"
 class SimilarProductsWidget extends APIConnector {
   getRequestOptions() : SimilarProductsWidgetRequestOptions{
     return {
-      path: `products/${this.requestOptions.params.product}/similar`,
+      path: `products/${this.requestOptions.params.productId}/similar`,
       method: "post",
       headers: {
         contentType: "application/x-www-form-urlencoded"
       },
       params: {
-        request: this.requestOptions.params.request,
-        max_products: this.requestOptions.params.max_products,
+        request: ["result", "details"],
+        max_products: this.requestOptions.params.limit,
       },
     }
   }

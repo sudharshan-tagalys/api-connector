@@ -19,7 +19,6 @@ class AnalyticsTracker{
       this.bowser = Bowser.getParser(window.navigator.userAgent)
       this.bowser = this.bowser.parsedResult
 
-      console.log(this.bowser)
       cookie.batchUpdate([{
         name: "__ta_device",
         expiryTime: 63072000000

@@ -26,7 +26,7 @@ class APIConnector{
       onSuccess: (response) => {
         const analyticsData = this.extractAnalyticsData(response);
         requestOptions.onSuccess(response, analyticsData);
-        if (requestOptions.track) {
+        if (this.canTrackAnalytics()) {
           // Track analytics data if track is enabled
           AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
         }
@@ -35,6 +35,20 @@ class APIConnector{
         requestOptions.onFailure(response)
       }
     });
+  }
+
+  canTrackAnalytics(): boolean {
+    const { analytics } = this.requestOptions;
+    if (analytics.track === false) {
+      return false
+    }
+    if (analytics.hasConsentManager === false) {
+      return true
+    }
+    if (typeof analytics.hasConsentToTrack === "function") {
+      return analytics.hasConsentToTrack()
+    }
+    return true
   }
 
   extractAnalyticsData(data) {
