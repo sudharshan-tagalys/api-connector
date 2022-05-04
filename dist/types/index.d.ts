@@ -26,4 +26,9 @@ interface APIIdentification {
         release: string;
     };
 }
-export { SimilarProductsWidgetRequestOptions, AnalyticsData, APIIdentification };
+interface APIConfiguration {
+    identification: APIIdentification;
+    apiServer: string;
+    currency: Object;
+}
+export { SimilarProductsWidgetRequestOptions, AnalyticsData, APIIdentification, APIConfiguration };

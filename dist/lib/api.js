@@ -21,25 +21,31 @@ var API = /** @class */ (function () {
         xhr.send(requestOptions.params);
     };
     API.prototype.url = function (path) {
-        return "".concat(this.apiServer, "/v1/").concat(path);
+        return "".concat(this.configuration.apiServer, "/v1/").concat(path);
     };
     API.prototype.getIdentification = function () {
-        return this.identification;
+        return this.configuration.identification;
+    };
+    API.prototype.getCurrency = function () {
+        return this.configuration.currency;
     };
     API.prototype.setConfiguration = function (configuration) {
-        this.identification = {
-            client_code: configuration.credentials.clientCode,
-            api_key: configuration.credentials.apiKey,
-            store_id: configuration.storeId,
-            // TODO: Confirm whether the API client should be dynamic
-            api_client: {
-                vendor: "tagalys",
-                language: "js",
-                version: "3",
-                release: "1",
-            }
+        this.configuration = {
+            identification: {
+                client_code: configuration.credentials.clientCode,
+                api_key: configuration.credentials.apiKey,
+                store_id: configuration.storeId,
+                // TODO: Confirm whether the API client should be dynamic
+                api_client: {
+                    vendor: "tagalys",
+                    language: "js",
+                    version: "3",
+                    release: "1",
+                },
+            },
+            apiServer: configuration.apiServer,
+            currency: configuration.currency
         };
-        this.apiServer = configuration.apiServer;
     };
     return API;
 }());
