@@ -1,3 +1,6 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.objectToFormData = void 0;
 var flattenObject = function (ob) {
     var toReturn = {};
     for (var i in ob) {
@@ -31,4 +34,5 @@ var objectToFormData = function (ob) {
     }).join('&');
     return formData;
 };
-export { objectToFormData };
+exports.objectToFormData = objectToFormData;
+//# sourceMappingURL=api.js.map

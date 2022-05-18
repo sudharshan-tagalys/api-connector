@@ -1,7 +1,10 @@
-import api from "./api";
-import configuration from "./configuration";
-import cookie from "./cookie";
-export var COOKIES = {
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.COOKIES = void 0;
+var api_1 = require("./api");
+var configuration_1 = require("./configuration");
+var cookie_1 = require("./cookie");
+exports.COOKIES = {
     TA_DEVICE: "__ta_device",
     TA_VISIT: "__ta_visit",
     TA_LAST_PA_TIME: "__ta_last_pa_time"
@@ -21,17 +24,17 @@ var AnalyticsTracker = /** @class */ (function () {
     AnalyticsTracker.prototype.track = function (endpoint, _a, trackerVersion) {
         var eventType = _a.eventType, details = _a.details;
         if (trackerVersion === void 0) { trackerVersion = TRACKER_VERSION; }
-        if (cookie.isEnabled()) {
-            cookie.batchUpdate([{
-                    name: COOKIES.TA_DEVICE,
+        if (cookie_1.default.isEnabled()) {
+            cookie_1.default.batchUpdate([{
+                    name: exports.COOKIES.TA_DEVICE,
                     expiryTime: 63072000000
                 }, {
-                    name: COOKIES.TA_VISIT,
+                    name: exports.COOKIES.TA_VISIT,
                     expiryTime: 1800000
                 }]);
             var user = {
-                device_id: cookie.get(COOKIES.TA_DEVICE),
-                visit_id: cookie.get(COOKIES.TA_VISIT)
+                device_id: cookie_1.default.get(exports.COOKIES.TA_DEVICE),
+                visit_id: cookie_1.default.get(exports.COOKIES.TA_VISIT)
             };
             this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence();
             this.lastEventTimestamp = Date.now();
@@ -42,14 +45,14 @@ var AnalyticsTracker = /** @class */ (function () {
                 tracker_version: trackerVersion,
                 device_info: {},
                 user: user,
-                identification: configuration.getApiIdentification()
+                identification: configuration_1.default.getApiIdentification()
             };
-            api.call('POST', endpoint, {
+            api_1.default.call('POST', endpoint, {
                 params: JSON.stringify(params),
                 onSuccess: function (response) {
                     if (eventType && eventType == 'product_action' && response.hasOwnProperty('timestamp')) {
                         var lastProductActionTime = response.timestamp.split('T')[1].substring(0, 6);
-                        cookie.set(COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
+                        cookie_1.default.set(exports.COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
                     }
                 }
             });
@@ -71,4 +74,5 @@ var AnalyticsTracker = /** @class */ (function () {
     };
     return AnalyticsTracker;
 }());
-export default new AnalyticsTracker();
+exports.default = new AnalyticsTracker();
+//# sourceMappingURL=analyticsTracker.js.map

@@ -31,8 +31,8 @@ class APIConnector{
         identification: configuration.getApiIdentification()
       }),
       onSuccess: (response) => {
-        response = this.formatResponse(response)
         const analyticsData = this.extractAnalyticsData(response);
+        response = this.formatResponse(response)
         requestOptions.onSuccess(response, analyticsData);
         if (configuration.canTrackAnalytics()) {
           if (response.status === "OK") {

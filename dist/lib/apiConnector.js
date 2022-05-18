@@ -1,3 +1,4 @@
+"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -9,11 +10,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-import { objectToFormData } from "../shared/helpers/api";
-import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
-import api from "./api";
-import configuration from "./configuration";
-import cookie from "./cookie";
+Object.defineProperty(exports, "__esModule", { value: true });
+var api_1 = require("../shared/helpers/api");
+var analyticsTracker_1 = require("./analyticsTracker");
+var api_2 = require("./api");
+var configuration_1 = require("./configuration");
+var cookie_1 = require("./cookie");
+var shopifyResponseFormatter_1 = require("../shared/helpers/formatters/shopifyResponseFormatter");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
@@ -22,6 +25,7 @@ var DEFAULT_REQUEST_OPTIONS = {
     },
     params: {}
 };
+var SHOPIFY_PLATFORM = 'Shopify';
 var APIConnector = /** @class */ (function () {
     function APIConnector() {
     }
@@ -29,19 +33,20 @@ var APIConnector = /** @class */ (function () {
         var _this = this;
         this.requestOptions = requestOptions;
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params;
-        api.call(method, path, {
-            params: objectToFormData(__assign(__assign({}, params), { identification: configuration.getApiIdentification() })),
+        api_2.default.call(method, path, {
+            params: (0, api_1.objectToFormData)(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() })),
             onSuccess: function (response) {
                 var analyticsData = _this.extractAnalyticsData(response);
+                response = _this.formatResponse(response);
                 requestOptions.onSuccess(response, analyticsData);
-                if (configuration.canTrackAnalytics()) {
+                if (configuration_1.default.canTrackAnalytics()) {
                     if (response.status === "OK") {
                         // Track analytics data if track is enabled
-                        AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
+                        analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
                     }
                 }
                 else {
-                    cookie.batchDelete(Object.values(COOKIES));
+                    cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
                 }
             },
             onFailure: function (response) {
@@ -52,9 +57,18 @@ var APIConnector = /** @class */ (function () {
     APIConnector.prototype.extractAnalyticsData = function (response) {
         return response;
     };
+    APIConnector.prototype.formatResponse = function (response) {
+        //TODO:// BRING PlATFORM CONTEXT HERE
+        var platform = SHOPIFY_PLATFORM;
+        if (platform === SHOPIFY_PLATFORM) {
+            return shopifyResponseFormatter_1.default.getFormattedResponse(response);
+        }
+        return response;
+    };
     APIConnector.prototype.getRequestOptions = function () {
         return DEFAULT_REQUEST_OPTIONS;
     };
     return APIConnector;
 }());
-export default APIConnector;
+exports.default = APIConnector;
+//# sourceMappingURL=apiConnector.js.map

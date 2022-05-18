@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=development webpack-dev-server",
-    "build": "tsc",
-    "build:js": "babel src --out-dir dist --extensions \".ts,.tsx\" --source-maps inline"
+    "build:export": "tsc",
+    "build:client_js": "npx webpack",
+    "build": "tsc && npx webpack"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",

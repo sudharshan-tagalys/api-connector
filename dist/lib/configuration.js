@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var Configuration = /** @class */ (function () {
     function Configuration() {
     }
@@ -36,4 +38,5 @@ var Configuration = /** @class */ (function () {
     };
     return Configuration;
 }());
-export default new Configuration();
+exports.default = new Configuration();
+//# sourceMappingURL=configuration.js.map

@@ -1,4 +1,6 @@
-import configuration from "./configuration";
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var configuration_1 = require("./configuration");
 var API = /** @class */ (function () {
     function API() {
     }
@@ -26,8 +28,9 @@ var API = /** @class */ (function () {
         xhr.send(requestOptions.params);
     };
     API.prototype.url = function (path) {
-        return "".concat(configuration.getApiServer(), "/v1/").concat(path);
+        return "".concat(configuration_1.default.getApiServer(), "/v1/").concat(path);
     };
     return API;
 }());
-export default new API();
+exports.default = new API();
+//# sourceMappingURL=api.js.map

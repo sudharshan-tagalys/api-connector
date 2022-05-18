@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,7 +14,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-import APIConnector from "../lib/apiConnector";
+Object.defineProperty(exports, "__esModule", { value: true });
+var apiConnector_1 = require("../lib/apiConnector");
 var SmartWidget = /** @class */ (function (_super) {
     __extends(SmartWidget, _super);
     function SmartWidget() {
@@ -49,5 +51,6 @@ var SmartWidget = /** @class */ (function (_super) {
         };
     };
     return SmartWidget;
-}(APIConnector));
-export default new SmartWidget();
+}(apiConnector_1.default));
+exports.default = new SmartWidget();
+//# sourceMappingURL=index.js.map

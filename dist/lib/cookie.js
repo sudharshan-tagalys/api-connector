@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 var randomId = function (length) {
     var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var result = '';
@@ -64,4 +66,5 @@ var Cookie = /** @class */ (function () {
     };
     return Cookie;
 }());
-export default new Cookie();
+exports.default = new Cookie();
+//# sourceMappingURL=cookie.js.map
