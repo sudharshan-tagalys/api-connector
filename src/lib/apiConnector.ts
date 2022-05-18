@@ -52,6 +52,7 @@ class APIConnector{
   }
 
   formatResponse(response){
+    //TODO:// BRING PlATFORM CONTEXT HERE
     const platform = 'Shopify'
     if(platform === 'Shopify'){
       return shopifyResponseFormatter.getFormattedResponse(response)
