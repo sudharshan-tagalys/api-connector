@@ -14,6 +14,8 @@ const DEFAULT_REQUEST_OPTIONS = {
   params: {}
 }
 
+const SHOPIFY_PLATFORM = 'Shopify'
+
 class APIConnector{
   public requestOptions: any;
 
@@ -53,8 +55,8 @@ class APIConnector{
 
   formatResponse(response){
     //TODO:// BRING PlATFORM CONTEXT HERE
-    const platform = 'Shopify'
-    if(platform === 'Shopify'){
+    const platform = SHOPIFY_PLATFORM
+    if(platform === SHOPIFY_PLATFORM){
       return shopifyResponseFormatter.getFormattedResponse(response)
     }
     return response
