@@ -3,6 +3,7 @@ import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
+import shopifyResponseFormatter from '../shared/helpers/formatters/shopifyResponseFormatter';
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -28,6 +29,7 @@ class APIConnector{
         identification: configuration.getApiIdentification()
       }),
       onSuccess: (response) => {
+        response = this.formatResponse(response)
         const analyticsData = this.extractAnalyticsData(response);
         requestOptions.onSuccess(response, analyticsData);
         if (configuration.canTrackAnalytics()) {
@@ -46,6 +48,14 @@ class APIConnector{
   }
 
   extractAnalyticsData(response) {
+    return response
+  }
+
+  formatResponse(response){
+    const platform = 'Shopify'
+    if(platform === 'Shopify'){
+      return shopifyResponseFormatter.getFormattedResponse(response)
+    }
     return response
   }
 
