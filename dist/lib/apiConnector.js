@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -10,13 +9,17 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-var api_1 = require("../utils/api");
-var analyticsTracker_1 = require("./analyticsTracker");
-var api_2 = require("./api");
+import { objectToFormData } from "../shared/helpers/api";
+import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
+import api from "./api";
+import configuration from "./configuration";
+import cookie from "./cookie";
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
+    headers: {
+        contentType: "application/x-www-form-urlencoded"
+    },
     params: {}
 };
 var APIConnector = /** @class */ (function () {
@@ -26,14 +29,19 @@ var APIConnector = /** @class */ (function () {
         var _this = this;
         this.requestOptions = requestOptions;
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params;
-        api_2.default.call(method, path, {
-            params: (0, api_1.objectToFormData)(__assign(__assign({}, params), { identification: api_2.default.getIdentification() })),
+        api.call(method, path, {
+            params: objectToFormData(__assign(__assign({}, params), { identification: configuration.getApiIdentification() })),
             onSuccess: function (response) {
                 var analyticsData = _this.extractAnalyticsData(response);
                 requestOptions.onSuccess(response, analyticsData);
-                if (_this.canTrackAnalytics()) {
-                    // Track analytics data if track is enabled
-                    analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
+                if (configuration.canTrackAnalytics()) {
+                    if (response.status === "OK") {
+                        // Track analytics data if track is enabled
+                        AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
+                    }
+                }
+                else {
+                    cookie.batchDelete(Object.values(COOKIES));
                 }
             },
             onFailure: function (response) {
@@ -41,26 +49,12 @@ var APIConnector = /** @class */ (function () {
             }
         });
     };
-    APIConnector.prototype.canTrackAnalytics = function () {
-        var analytics = this.requestOptions.analytics;
-        if (analytics.track === false) {
-            return false;
-        }
-        if (analytics.hasConsentManager === false) {
-            return true;
-        }
-        if (typeof analytics.hasConsentToTrack === "function") {
-            return analytics.hasConsentToTrack();
-        }
-        return true;
-    };
-    APIConnector.prototype.extractAnalyticsData = function (data) {
-        return data;
+    APIConnector.prototype.extractAnalyticsData = function (response) {
+        return response;
     };
     APIConnector.prototype.getRequestOptions = function () {
         return DEFAULT_REQUEST_OPTIONS;
     };
     return APIConnector;
 }());
-exports.default = APIConnector;
-//# sourceMappingURL=apiConnector.js.map
+export default APIConnector;

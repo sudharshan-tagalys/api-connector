@@ -7,10 +7,8 @@
   <title>Document</title>
 </head>
 <body>
-  <script src="./client/bundle.js"></script>
+  <script src="./dist/client/bundle.js"></script>
   <script>
-    window.track = false
-    window.trackingConsentProvided = false
     Tagalys.APIConnector.setConfiguration({
       apiServer: "https://stage2-api.tagalys.com",
       credentials: {
@@ -19,21 +17,24 @@
       },
       storeId: "4391370842",
       currencyCode: "USD",
-      track: window.track,
+      track: true,
       trackingConsentProvided: function(){
         // should return true/false based on user's consent settings
-        return window.trackingConsentProvided
+        return false
       },
     });
 
-    Tagalys.APIConnector.SimilarProducts.call({
-      params: {
-        limit: 2,
-        productId: 4331926487130
-      },
-      onSuccess: function(response, analyticsData = {}){
-      },
-    })
+    // Tagalys.APIConnector.SimilarProducts.call({
+    //   params: {
+    //     limit: 2,
+    //     productId: 4331926487130
+    //   },
+    //   onSuccess: function(response, analyticsData = {}){
+    //     var div = document.createElement("div");
+    //     div.innerHTML = JSON.stringify(response);
+    //     document.body.appendChild(div);
+    //   },
+    // })
 
     Tagalys.APIConnector.SmartWidget.call({
       params: {

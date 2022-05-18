@@ -5,13 +5,6 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: "./src/index.ts",
   plugins: [new CompressionPlugin()],
-  devServer: {
-    static: {
-      directory: path.join(__dirname, "public"),
-    },
-    compress: true,
-    port: 9000,
-  },
   module: {
     rules: [
       {
@@ -24,10 +17,10 @@ module.exports = {
   output: {
     filename: "bundle.js",
     library: "Tagalys",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "dist/client"),
   },
   resolve: {
-    extensions: [".tsx", ".ts", ".js"],
+    extensions: [".ts", ".js"],
   },
   devServer: {
     static: {

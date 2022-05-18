@@ -1,11 +1,13 @@
 declare class APIConnector {
     requestOptions: any;
     call(requestOptions: any): void;
-    canTrackAnalytics(): boolean;
-    extractAnalyticsData(data: any): any;
+    extractAnalyticsData(response: any): any;
     getRequestOptions(): {
         method: string;
         path: string;
+        headers: {
+            contentType: string;
+        };
         params: {};
     };
 }

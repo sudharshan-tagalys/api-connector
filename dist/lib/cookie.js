@@ -1,6 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = require("../utils/common");
+var randomId = function (length) {
+    var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var result = '';
+    for (var i = length; i > 0; --i)
+        result += chars[Math.round(Math.random() * (chars.length - 1))];
+    return result;
+};
 var Cookie = /** @class */ (function () {
     function Cookie() {
     }
@@ -20,7 +24,7 @@ var Cookie = /** @class */ (function () {
         var name = _a.name, _b = _a.value, value = _b === void 0 ? "" : _b, expiryTime = _a.expiryTime;
         var cookieValue = this.get(value);
         if (cookieValue === "") {
-            cookieValue = (0, common_1.randomId)(32);
+            cookieValue = randomId(32);
         }
         this.set(name, cookieValue, expiryTime);
     };
@@ -54,7 +58,10 @@ var Cookie = /** @class */ (function () {
     Cookie.prototype.delete = function (name) {
         this.set(name, "", -1);
     };
+    Cookie.prototype.batchDelete = function (cookies) {
+        var _this = this;
+        cookies.forEach(function (cookie) { return _this.delete(cookie); });
+    };
     return Cookie;
 }());
-exports.default = new Cookie();
-//# sourceMappingURL=cookie.js.map
+export default new Cookie();

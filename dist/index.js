@@ -1,13 +1,12 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.APIConnector = void 0;
-var api_1 = require("./lib/api");
-var similarProductsWidget_1 = require("./similarProductsWidget");
-exports.APIConnector = {
+import configuration from "./lib/configuration";
+import similarProductsWidget from "./similarProductsWidget";
+import smartWidget from "./smartWidget";
+export var APIConnector = {
     SimilarProducts: {
-        call: function (requestOptions) { return similarProductsWidget_1.default.call(requestOptions); },
+        call: function (requestOptions) { return similarProductsWidget.call(requestOptions); },
     },
-    setConfiguration: function (configuration) { return api_1.default.setConfiguration(configuration); },
-    getCurrency: function () { return api_1.default.getCurrency(); },
+    SmartWidget: {
+        call: function (requestOptions) { return smartWidget.call(requestOptions); },
+    },
+    setConfiguration: function (config) { return configuration.setConfiguration(config); },
 };
-//# sourceMappingURL=index.js.map

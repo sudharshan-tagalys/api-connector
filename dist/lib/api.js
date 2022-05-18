@@ -1,5 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+import configuration from "./configuration";
 var API = /** @class */ (function () {
     function API() {
     }
@@ -12,42 +11,23 @@ var API = /** @class */ (function () {
             if (xhr.status === 200) {
                 requestOptions.onSuccess(JSON.parse(xhr.responseText));
             }
+            else {
+                // Handling API failure callback
+                if (typeof (requestOptions.onFailure) != 'undefined') {
+                    requestOptions.onFailure(JSON.parse(xhr.response));
+                }
+            }
         };
         xhr.onerror = function () {
-            if (typeof (requestOptions.failure) != 'undefined') {
-                requestOptions.onFailure(xhr);
+            if (typeof (requestOptions.onFailure) != 'undefined') {
+                requestOptions.onFailure(JSON.parse(xhr.response));
             }
         };
         xhr.send(requestOptions.params);
     };
     API.prototype.url = function (path) {
-        return "".concat(this.configuration.apiServer, "/v1/").concat(path);
-    };
-    API.prototype.getIdentification = function () {
-        return this.configuration.identification;
-    };
-    API.prototype.getCurrency = function () {
-        return this.configuration.currency;
-    };
-    API.prototype.setConfiguration = function (configuration) {
-        this.configuration = {
-            identification: {
-                client_code: configuration.credentials.clientCode,
-                api_key: configuration.credentials.apiKey,
-                store_id: configuration.storeId,
-                // TODO: Confirm whether the API client should be dynamic
-                api_client: {
-                    vendor: "tagalys",
-                    language: "js",
-                    version: "3",
-                    release: "1",
-                },
-            },
-            apiServer: configuration.apiServer,
-            currency: configuration.currency
-        };
+        return "".concat(configuration.getApiServer(), "/v1/").concat(path);
     };
     return API;
 }());
-exports.default = new API();
-//# sourceMappingURL=api.js.map
+export default new API();

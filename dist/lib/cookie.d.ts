@@ -9,6 +9,7 @@ declare class Cookie {
     get(cname: any): string;
     set(cname: any, cvalue: any, expiryTime: any): void;
     delete(name: any): void;
+    batchDelete(cookies: any): void;
 }
 declare const _default: Cookie;
 export default _default;
