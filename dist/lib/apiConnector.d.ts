@@ -11,5 +11,6 @@ declare class APIConnector {
         };
         params: {};
     };
+    isFailureResponse(response: any): boolean;
 }
 export default APIConnector;

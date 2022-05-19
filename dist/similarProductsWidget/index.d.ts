@@ -4,6 +4,7 @@ import { SimilarProductsWidgetRequestOptions } from "./types";
 declare class SimilarProductsWidget extends APIConnector {
     getRequestOptions(): SimilarProductsWidgetRequestOptions;
     formatResponse(response: any): any;
+    isFailureResponse(response: any): boolean;
     extractAnalyticsData(response: any): AnalyticsData;
 }
 declare const _default: SimilarProductsWidget;

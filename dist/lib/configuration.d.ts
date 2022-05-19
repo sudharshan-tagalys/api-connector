@@ -2,11 +2,13 @@ import { APIConfiguration } from "../shared/types";
 declare class Configuration {
     private configuration;
     setConfiguration(configuration: any): void;
+    validateConfiguration(configuration: any): void;
+    getConstructedErrorLabel(missingConfiguration: any): string;
     getConfiguration(): APIConfiguration;
     getApiServer(): string;
     getApiIdentification(): import("../shared/types").APIIdentification;
     getPlatform(): string;
-    analyticsStorageConsentProvided(): any;
+    analyticsStorageConsentProvided(): boolean;
     canTrackAnalytics(): boolean;
 }
 declare const _default: Configuration;
