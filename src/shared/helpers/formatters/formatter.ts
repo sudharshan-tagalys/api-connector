@@ -1,10 +1,13 @@
 class Formatter {
-  getFormattedResponse(response) {
-    response.formatted_details = response.details.map(this.formatDetail);
-    return response
+  formatDetails(details) {
+    return details.map(this.formatDetail);
   }
 
   platformFieldTranslations(){
+    return {}
+  }
+
+  additionalPlatformFields(detail){
     return {}
   }
 
@@ -22,9 +25,16 @@ class Formatter {
     return fieldsToIgnore.includes(fieldName)
   }
 
-  translatedPlatformFieldName(fieldName){
+  translatePlatformField(fieldName, detail){
     const platformFieldTranslations = this.platformFieldTranslations()
-    return platformFieldTranslations[fieldName]
+    if(typeof platformFieldTranslations[fieldName] === 'function'){
+      const formatter = platformFieldTranslations[fieldName]
+      return formatter(detail)
+    }
+    return {
+      key: platformFieldTranslations[fieldName],
+      value: detail[fieldName]
+    }
   }
 
   formatDetail = (detail) => {
@@ -34,7 +44,8 @@ class Formatter {
     for (const [fieldName, fieldValue] of Object.entries(detail)) {
       if(!this.ignoredField(fieldName)){
         if(this.isPlatformField(fieldName)){
-          platform_fields[this.translatedPlatformFieldName(fieldName)] = fieldValue
+          const { key, value } = this.translatePlatformField(fieldName, detail)
+          platform_fields[key] = value
         }else{
           __tagalys_fields[fieldName] = fieldValue
         }
@@ -43,6 +54,7 @@ class Formatter {
 
     return {
       ...platform_fields,
+      ...this.additionalPlatformFields(detail),
       __tagalys_fields
     }
   }

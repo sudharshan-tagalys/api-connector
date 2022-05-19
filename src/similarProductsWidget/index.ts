@@ -1,19 +1,10 @@
 import APIConnector from "../lib/apiConnector"
-import configuration from "../lib/configuration"
-import { SHOPIFY_PLATFORM } from "../shared/constants"
-import { similarProductsResponseFormatter } from "../shared/helpers/formatters/shopifyResponseFormatter"
-
 import { AnalyticsData } from "../shared/types"
 import { SimilarProductsWidgetRequestOptions } from "./types"
-
 class SimilarProductsWidget extends APIConnector {
   getRequestOptions() : SimilarProductsWidgetRequestOptions{
     return {
       path: `products/${this.requestOptions.params.productId}/similar`,
-      method: "post",
-      headers: {
-        contentType: "application/x-www-form-urlencoded"
-      },
       params: {
         request: ["result", "details"],
         max_products: this.requestOptions.params.limit,
@@ -22,10 +13,7 @@ class SimilarProductsWidget extends APIConnector {
   }
 
   formatResponse(response){
-    if(configuration.getPlatform() === SHOPIFY_PLATFORM){
-      return similarProductsResponseFormatter.getFormattedResponse(response)
-    }
-    return response
+    return this.responseFormatter.similarProducts(response)
   }
 
   extractAnalyticsData(response) : AnalyticsData {

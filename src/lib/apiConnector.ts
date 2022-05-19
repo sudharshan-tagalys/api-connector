@@ -1,4 +1,5 @@
 import { objectToFormData } from "../shared/helpers/api";
+import formatFactory from "../shared/helpers/formatters/formatFactory";
 import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
 import api from "./api"
 import configuration from "./configuration";
@@ -16,9 +17,17 @@ const DEFAULT_REQUEST_OPTIONS = {
 
 class APIConnector{
   public requestOptions: any;
+  public responseFormatter: any;
+
+  setResponseFormatter(){
+    if(!this.responseFormatter){
+      this.responseFormatter = formatFactory.responseFormatter()
+    }
+  }
 
   call(requestOptions) {
     this.requestOptions = requestOptions;
+    this.setResponseFormatter()
     const { method, path, params } = {
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
@@ -57,7 +66,7 @@ class APIConnector{
   }
 
   getRequestOptions() {
-    return DEFAULT_REQUEST_OPTIONS
+    return {}
   }
 }
 

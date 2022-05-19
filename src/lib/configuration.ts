@@ -41,7 +41,7 @@ class Configuration{
   }
 
   analyticsStorageConsentProvided() {
-    return this.analyticsStorageConsentProvided()
+    return this.configuration.analyticsStorageConsentProvided()
   }
 
   canTrackAnalytics() {

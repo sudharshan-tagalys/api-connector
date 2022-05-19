@@ -1,21 +1,19 @@
 import APIConnector from "../lib/apiConnector"
-
 import { AnalyticsData } from "../shared/types"
 import { SmartWidgetRequestOptions } from "./types"
-
 class SmartWidget extends APIConnector {
   getRequestOptions() : SmartWidgetRequestOptions{
     return {
       path: `custom_widgets/${this.requestOptions.params.widgetId}`,
-      method: "post",
-      headers: {
-        contentType: "application/x-www-form-urlencoded"
-      },
       params: {
         request: ["result", "details"],
         max_products: this.requestOptions.params.limit,
       },
     }
+  }
+
+  formatResponse(response){
+    return this.responseFormatter.smartWidgets(response)
   }
 
   extractAnalyticsData(response) : AnalyticsData {
