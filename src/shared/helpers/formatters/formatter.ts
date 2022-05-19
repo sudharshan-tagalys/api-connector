@@ -37,6 +37,18 @@ class Formatter {
     }
   }
 
+  similarProducts(response){
+    return response
+  }
+
+  smartWidgets(response){
+    return response
+  }
+
+  searchSuggestions(response){
+    return response
+  }
+
   formatDetail = (detail) => {
     let __tagalys_fields = {}
     let platform_fields = {}
