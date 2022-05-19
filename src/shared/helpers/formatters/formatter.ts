@@ -1,5 +1,5 @@
 class Formatter {
-  getFormattedResponse(response){
+  getFormattedResponse(response) {
     response.formatted_details = response.details.map(this.formatDetail);
     return response
   }

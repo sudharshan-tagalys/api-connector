@@ -3,7 +3,6 @@ import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
-import shopifyResponseFormatter from '../shared/helpers/formatters/shopifyResponseFormatter';
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -14,7 +13,6 @@ const DEFAULT_REQUEST_OPTIONS = {
   params: {}
 }
 
-const SHOPIFY_PLATFORM = 'Shopify'
 
 class APIConnector{
   public requestOptions: any;
@@ -39,7 +37,8 @@ class APIConnector{
             // Track analytics data if track is enabled
             AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
           }
-        } else {
+        }
+      if(!configuration.analyticsStorageConsentProvided()){
           cookie.batchDelete(Object.values(COOKIES))
         }
       },
@@ -54,11 +53,6 @@ class APIConnector{
   }
 
   formatResponse(response){
-    //TODO:// BRING PlATFORM CONTEXT HERE
-    const platform = SHOPIFY_PLATFORM
-    if(platform === SHOPIFY_PLATFORM){
-      return shopifyResponseFormatter.getFormattedResponse(response)
-    }
     return response
   }
 

@@ -16,6 +16,9 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
+var configuration_1 = require("../lib/configuration");
+var constants_1 = require("../shared/constants");
+var shopifyResponseFormatter_1 = require("../shared/helpers/formatters/shopifyResponseFormatter");
 var SimilarProductsWidget = /** @class */ (function (_super) {
     __extends(SimilarProductsWidget, _super);
     function SimilarProductsWidget() {
@@ -33,6 +36,12 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
                 max_products: this.requestOptions.params.limit,
             },
         };
+    };
+    SimilarProductsWidget.prototype.formatResponse = function (response) {
+        if (configuration_1.default.getPlatform() === constants_1.SHOPIFY_PLATFORM) {
+            return shopifyResponseFormatter_1.similarProductsResponseFormatter.getFormattedResponse(response);
+        }
+        return response;
     };
     SimilarProductsWidget.prototype.extractAnalyticsData = function (response) {
         var plDetails = {};

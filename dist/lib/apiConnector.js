@@ -16,7 +16,6 @@ var analyticsTracker_1 = require("./analyticsTracker");
 var api_2 = require("./api");
 var configuration_1 = require("./configuration");
 var cookie_1 = require("./cookie");
-var shopifyResponseFormatter_1 = require("../shared/helpers/formatters/shopifyResponseFormatter");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
@@ -25,7 +24,6 @@ var DEFAULT_REQUEST_OPTIONS = {
     },
     params: {}
 };
-var SHOPIFY_PLATFORM = 'Shopify';
 var APIConnector = /** @class */ (function () {
     function APIConnector() {
     }
@@ -45,7 +43,7 @@ var APIConnector = /** @class */ (function () {
                         analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
                     }
                 }
-                else {
+                if (!configuration_1.default.analyticsStorageConsentProvided()) {
                     cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
                 }
             },
@@ -58,11 +56,6 @@ var APIConnector = /** @class */ (function () {
         return response;
     };
     APIConnector.prototype.formatResponse = function (response) {
-        //TODO:// BRING PlATFORM CONTEXT HERE
-        var platform = SHOPIFY_PLATFORM;
-        if (platform === SHOPIFY_PLATFORM) {
-            return shopifyResponseFormatter_1.default.getFormattedResponse(response);
-        }
         return response;
     };
     APIConnector.prototype.getRequestOptions = function () {

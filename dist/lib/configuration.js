@@ -18,9 +18,10 @@ var Configuration = /** @class */ (function () {
                     release: "1",
                 },
             },
+            platform: configuration.platform,
             apiServer: configuration.apiServer,
             track: configuration.track,
-            trackingConsentProvided: configuration.trackingConsentProvided,
+            analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided,
         };
     };
     Configuration.prototype.getConfiguration = function () {
@@ -30,11 +31,16 @@ var Configuration = /** @class */ (function () {
         return this.configuration.apiServer;
     };
     Configuration.prototype.getApiIdentification = function () {
-        console.log(this.configuration);
         return this.configuration.identification;
     };
+    Configuration.prototype.getPlatform = function () {
+        return this.configuration.platform.toLowerCase();
+    };
+    Configuration.prototype.analyticsStorageConsentProvided = function () {
+        return this.analyticsStorageConsentProvided();
+    };
     Configuration.prototype.canTrackAnalytics = function () {
-        return (this.configuration.track && this.configuration.trackingConsentProvided());
+        return (this.configuration.track && this.configuration.analyticsStorageConsentProvided());
     };
     return Configuration;
 }());

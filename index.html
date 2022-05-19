@@ -24,17 +24,17 @@
       },
     });
 
-    // Tagalys.APIConnector.SimilarProducts.call({
-    //   params: {
-    //     limit: 2,
-    //     productId: 4331926487130
-    //   },
-    //   onSuccess: function(response, analyticsData = {}){
-    //     var div = document.createElement("div");
-    //     div.innerHTML = JSON.stringify(response);
-    //     document.body.appendChild(div);
-    //   },
-    // })
+    Tagalys.APIConnector.SimilarProducts.call({
+      params: {
+        limit: 2,
+        productId: 4331926487130
+      },
+      onSuccess: function(response, analyticsData = {}){
+        var div = document.createElement("div");
+        div.innerHTML = JSON.stringify(response);
+        document.body.appendChild(div);
+      },
+    })
 
     Tagalys.APIConnector.SmartWidget.call({
       params: {

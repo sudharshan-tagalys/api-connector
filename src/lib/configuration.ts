@@ -17,9 +17,10 @@ class Configuration{
           release: "1",
         },
       },
+      platform: configuration.platform,
       apiServer: configuration.apiServer,
       track: configuration.track,
-      trackingConsentProvided: configuration.trackingConsentProvided,
+      analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided,
     }
   }
 
@@ -32,12 +33,19 @@ class Configuration{
   }
 
   getApiIdentification() {
-    console.log(this.configuration)
     return this.configuration.identification;
   }
 
+  getPlatform() {
+    return this.configuration.platform.toLowerCase();
+  }
+
+  analyticsStorageConsentProvided() {
+    return this.analyticsStorageConsentProvided()
+  }
+
   canTrackAnalytics() {
-    return (this.configuration.track && this.configuration.trackingConsentProvided())
+    return (this.configuration.track && this.configuration.analyticsStorageConsentProvided())
   }
 
 }

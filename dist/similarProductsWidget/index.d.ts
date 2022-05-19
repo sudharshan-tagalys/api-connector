@@ -3,6 +3,7 @@ import { AnalyticsData } from "../shared/types";
 import { SimilarProductsWidgetRequestOptions } from "./types";
 declare class SimilarProductsWidget extends APIConnector {
     getRequestOptions(): SimilarProductsWidgetRequestOptions;
+    formatResponse(response: any): any;
     extractAnalyticsData(response: any): AnalyticsData;
 }
 declare const _default: SimilarProductsWidget;

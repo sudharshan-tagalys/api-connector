@@ -27,9 +27,10 @@ interface APIIdentification {
 
 interface APIConfiguration {
   identification: APIIdentification,
+  platform: string,
   apiServer: string,
   track: boolean,
-  trackingConsentProvided: () => boolean
+  analyticsStorageConsentProvided: () => boolean
 }
 
 export { RequestOptions, AnalyticsData, APIIdentification, APIConfiguration }

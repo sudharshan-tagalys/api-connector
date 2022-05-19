@@ -12,26 +12,28 @@
     window.track = false
     window.trackingConsentProvided = false
     Tagalys.APIConnector.setConfiguration({
-      apiServer: "https://stage2-api.tagalys.com",
+      apiServer: "https://api-r1.tagalys.com",
+      platform: "shopify",
       credentials: {
-        clientCode: "8108AAB5B8359FBF",
-        apiKey: "f5fb4859d06b0766e351ef8f5b41fa8b",
+        clientCode: "4F6C17914C39D1E8",
+        apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
       },
-      storeId: "4391370842",
       currencyCode: "USD",
-      track: window.track,
+      storeId: "2611380259",
+      track: true,
       trackingConsentProvided: function(){
         // should return true/false based on user's consent settings
-        return window.trackingConsentProvided
+        return true
       },
     });
 
     Tagalys.APIConnector.SimilarProducts.call({
       params: {
         limit: 2,
-        productId: 4331926487130
+        productId: 1669078908963
       },
       onSuccess: function(response, analyticsData = {}){
+        console.log(response);
       },
     })
 

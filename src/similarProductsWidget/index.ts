@@ -1,4 +1,7 @@
 import APIConnector from "../lib/apiConnector"
+import configuration from "../lib/configuration"
+import { SHOPIFY_PLATFORM } from "../shared/constants"
+import { similarProductsResponseFormatter } from "../shared/helpers/formatters/shopifyResponseFormatter"
 
 import { AnalyticsData } from "../shared/types"
 import { SimilarProductsWidgetRequestOptions } from "./types"
@@ -16,6 +19,13 @@ class SimilarProductsWidget extends APIConnector {
         max_products: this.requestOptions.params.limit,
       },
     }
+  }
+
+  formatResponse(response){
+    if(configuration.getPlatform() === SHOPIFY_PLATFORM){
+      return similarProductsResponseFormatter.getFormattedResponse(response)
+    }
+    return response
   }
 
   extractAnalyticsData(response) : AnalyticsData {
