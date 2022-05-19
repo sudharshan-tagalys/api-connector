@@ -5,45 +5,46 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="./bundle.js" async></script>
 </head>
 <body>
-  <script src="./bundle.js"></script>
   <script>
-    Tagalys.APIConnector.setConfiguration({
-      apiServer: "https://api-r1.tagalys.com",
-      // platform: "shopify",
-      credentials: {
-        clientCode: "4F6C17914C39D1E8",
-        apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
-      },
-      currencyCode: "USD",
-      storeId: "2611380259",
-      track: true,
-      analyticsStorageConsentProvided: function(){
-        // should return true/false based on user's consent settings
-        return true
-      },
+    document.addEventListener("tagalys:ready", function () {
+      Tagalys.APIConnector.setConfiguration({
+        apiServer: "https://api-r1.tagalys.com",
+        // platform: "shopify",
+        credentials: {
+          clientCode: "4F6C17914C39D1E8",
+          apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
+        },
+        currencyCode: "USD",
+        storeId: "2611380259",
+        track: true,
+        analyticsStorageConsentProvided: function () {
+          // should return true/false based on user's consent settings
+          return true;
+        },
+      });
+
+      Tagalys.APIConnector.SimilarProducts.call({
+        params: {
+          limit: 2,
+          productId: 1669078908963,
+        },
+        onSuccess: function (response, analyticsData = {}) {
+          console.log("SimilarProducts", response);
+        },
+      });
+
+      Tagalys.APIConnector.SmartWidget.call({
+        params: {
+          widgetId: "a7d4fb11dd14d3a4a6c0",
+        },
+        onSuccess: function (response, analyticsData = {}) {
+          console.log("Smart widget", response);
+        },
+      });
     });
-
-    Tagalys.APIConnector.SimilarProducts.call({
-      params: {
-        limit: 2,
-        productId: 1669078908963
-      },
-      onSuccess: function(response, analyticsData = {}){
-        console.log("SimilarProducts", response);
-      },
-    })
-
-    Tagalys.APIConnector.SmartWidget.call({
-      params: {
-        widgetId: "a7d4fb11dd14d3a4a6c0"
-      },
-      onSuccess: function(response, analyticsData = {}){
-        console.log("Smart widget", response);
-      },
-    })
-
   </script>
 </body>
 </html>

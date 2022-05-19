@@ -28,4 +28,8 @@ exports.APIConnector = {
     },
     setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); },
 };
+window.addEventListener("load", function () {
+    var event = new Event("tagalys:ready");
+    document.dispatchEvent(event);
+});
 //# sourceMappingURL=index.js.map
