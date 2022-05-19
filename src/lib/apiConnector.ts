@@ -38,17 +38,18 @@ class APIConnector{
         identification: configuration.getApiIdentification()
       }),
       onSuccess: (response) => {
-        const analyticsData = this.extractAnalyticsData(response);
-        response = this.formatResponse(response)
-        requestOptions.onSuccess(response, analyticsData);
-        if (configuration.canTrackAnalytics()) {
-          if (response.status === "OK") {
-            // Track analytics data if track is enabled
+        if (this.isFailureResponse(response)) {
+          requestOptions.onFailure(response)
+        } else {
+          const analyticsData = this.extractAnalyticsData(response);
+          response = this.formatResponse(response)
+          requestOptions.onSuccess(response, analyticsData);
+          if (configuration.canTrackAnalytics()) {
             AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
           }
-        }
-      if(!configuration.analyticsStorageConsentProvided()){
-          cookie.batchDelete(Object.values(COOKIES))
+          if(!configuration.analyticsStorageConsentProvided()){
+            cookie.batchDelete(Object.values(COOKIES))
+          }
         }
       },
       onFailure: (response) => {
@@ -67,6 +68,10 @@ class APIConnector{
 
   getRequestOptions() {
     return {}
+  }
+
+  isFailureResponse(response) {
+    return false
   }
 }
 

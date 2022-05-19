@@ -16,6 +16,10 @@ class SimilarProductsWidget extends APIConnector {
     return this.responseFormatter.similarProducts(response)
   }
 
+  isFailureResponse(response) {
+    return response.status != "OK"
+  }
+
   extractAnalyticsData(response) : AnalyticsData {
     let plDetails: any = {}
     if (response.hasOwnProperty("sku")) {
