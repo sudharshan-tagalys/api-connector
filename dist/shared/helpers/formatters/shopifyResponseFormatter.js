@@ -15,7 +15,6 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.similarProductsResponseFormatter = void 0;
 var formatter_1 = require("./formatter");
 var ShopifyResponseFormatter = /** @class */ (function (_super) {
     __extends(ShopifyResponseFormatter, _super);
@@ -24,34 +23,46 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
     }
     ShopifyResponseFormatter.prototype.platformFieldTranslations = function () {
         return {
-            // __id: 'id',
-            // name: 'title',
-            // price: 'compare_at_price',
-            // sale_price: 'price',
+            __id: function (data) {
+                return {
+                    key: 'id',
+                    value: parseInt(data.__id)
+                };
+            },
+            name: 'title',
+            price: 'compare_at_price',
+            sale_price: 'price',
             introduced_at: 'published_at',
-            // shopify_tags: 'tags',
+            shopify_tags: 'tags',
             _vendor: 'vendor',
-            // images: 'images',
-            // variants: 'variants',
-            // handle: 'handle'
+            images: 'images',
+            variants: 'variants'
         };
+    };
+    ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
+        return {
+            handle: detail.link.split("/products/")[1]
+        };
+    };
+    ShopifyResponseFormatter.prototype.similarProducts = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
+    ShopifyResponseFormatter.prototype.smartWidgets = function (response) {
+        return {
+            name: response.name,
+            widget_name: response.widget_name,
+            products: this.formatDetails(response.details)
+        };
+    };
+    ShopifyResponseFormatter.prototype.searchSuggestions = function (response) {
+        return response;
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {
         return ['sku'];
     };
     return ShopifyResponseFormatter;
 }(formatter_1.default));
-var SimilarProductsResponseFormatter = /** @class */ (function (_super) {
-    __extends(SimilarProductsResponseFormatter, _super);
-    function SimilarProductsResponseFormatter() {
-        return _super !== null && _super.apply(this, arguments) || this;
-    }
-    SimilarProductsResponseFormatter.prototype.getFormattedResponse = function (response) {
-        delete response.sku;
-        _super.prototype.getFormattedResponse.call(this, response);
-    };
-    return SimilarProductsResponseFormatter;
-}(ShopifyResponseFormatter));
-var similarProductsResponseFormatter = new SimilarProductsResponseFormatter();
-exports.similarProductsResponseFormatter = similarProductsResponseFormatter;
+exports.default = ShopifyResponseFormatter;
 //# sourceMappingURL=shopifyResponseFormatter.js.map

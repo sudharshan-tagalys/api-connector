@@ -8,7 +8,7 @@ declare const DEFAULT_CONFIGURATION: {
         release: string;
     };
     track: boolean;
-    trackingConsentProvided: () => boolean;
+    analyticsStorageConsentProvided: () => boolean;
 };
 declare const DEFAULT_REQUEST_OPTIONS: {
     onSuccess: (response: any) => void;

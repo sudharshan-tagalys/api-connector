@@ -33,7 +33,7 @@ class AnalyticsTracker{
       },{
         name: COOKIES.TA_VISIT,
         expiryTime: 1800000
-        }])
+      }])
 
       const user = {
         device_id: cookie.get(COOKIES.TA_DEVICE),
@@ -49,8 +49,10 @@ class AnalyticsTracker{
         rapid_event_sequence: this.analyticsRapidEventSequence,
         tracker_version: trackerVersion,
         device_info: {},
-        user: user,
-        identification: configuration.getApiIdentification()
+        identification: {
+          ...configuration.getApiIdentification(),
+          user
+        }
       }
       api.call('POST', endpoint, {
         params: JSON.stringify(params),

@@ -16,9 +16,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
-var configuration_1 = require("../lib/configuration");
-var constants_1 = require("../shared/constants");
-var shopifyResponseFormatter_1 = require("../shared/helpers/formatters/shopifyResponseFormatter");
 var SimilarProductsWidget = /** @class */ (function (_super) {
     __extends(SimilarProductsWidget, _super);
     function SimilarProductsWidget() {
@@ -27,21 +24,17 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
     SimilarProductsWidget.prototype.getRequestOptions = function () {
         return {
             path: "products/".concat(this.requestOptions.params.productId, "/similar"),
-            method: "post",
-            headers: {
-                contentType: "application/x-www-form-urlencoded"
-            },
             params: {
                 request: ["result", "details"],
-                max_products: this.requestOptions.params.limit,
+                max_products: this.requestOptions.params.limit || 16,
             },
         };
     };
     SimilarProductsWidget.prototype.formatResponse = function (response) {
-        if (configuration_1.default.getPlatform() === constants_1.SHOPIFY_PLATFORM) {
-            return shopifyResponseFormatter_1.similarProductsResponseFormatter.getFormattedResponse(response);
-        }
-        return response;
+        return this.responseFormatter.similarProducts(response);
+    };
+    SimilarProductsWidget.prototype.isFailureResponse = function (response) {
+        return response.status != "OK";
     };
     SimilarProductsWidget.prototype.extractAnalyticsData = function (response) {
         var plDetails = {};

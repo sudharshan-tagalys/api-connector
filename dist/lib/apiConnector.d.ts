@@ -1,16 +1,12 @@
 declare class APIConnector {
     requestOptions: any;
+    responseFormatter: any;
+    setResponseFormatter(): void;
     call(requestOptions: any): void;
+    onSuccessfulResponse(response: any): void;
     extractAnalyticsData(response: any): any;
     formatResponse(response: any): any;
-    getRequestOptions(): {
-        method: string;
-        path: string;
-        headers: {
-            contentType: string;
-        };
-        params: {};
-    };
+    getRequestOptions(): {};
     isFailureResponse(response: any): boolean;
 }
 export default APIConnector;

@@ -1,9 +1,5 @@
 interface RequestOptions {
-    method: string;
     path: string;
-    headers: {
-        contentType: string;
-    };
 }
 interface AnalyticsData {
     event_type: string;

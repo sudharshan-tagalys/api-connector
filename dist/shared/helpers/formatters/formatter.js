@@ -19,23 +19,26 @@ var Formatter = /** @class */ (function () {
             var platform_fields = {};
             for (var _i = 0, _a = Object.entries(detail); _i < _a.length; _i++) {
                 var _b = _a[_i], fieldName = _b[0], fieldValue = _b[1];
-                if (!_this.ignoredField(fieldName)) {
+                if (!_this.isIgnoredField(fieldName)) {
                     if (_this.isPlatformField(fieldName)) {
-                        platform_fields[_this.translatedPlatformFieldName(fieldName)] = fieldValue;
+                        var _c = _this.translatePlatformField(fieldName, detail), key = _c.key, value = _c.value;
+                        platform_fields[key] = value;
                     }
                     else {
                         __tagalys_fields[fieldName] = fieldValue;
                     }
                 }
             }
-            return __assign(__assign({}, platform_fields), { __tagalys_fields: __tagalys_fields });
+            return __assign(__assign(__assign({}, platform_fields), _this.additionalPlatformFields(detail)), { __tagalys_fields: __tagalys_fields });
         };
     }
-    Formatter.prototype.getFormattedResponse = function (response) {
-        response.formatted_details = response.details.map(this.formatDetail);
-        return response;
+    Formatter.prototype.formatDetails = function (details) {
+        return details.map(this.formatDetail);
     };
     Formatter.prototype.platformFieldTranslations = function () {
+        return {};
+    };
+    Formatter.prototype.additionalPlatformFields = function (detail) {
         return {};
     };
     Formatter.prototype.fieldsToIgnore = function () {
@@ -45,13 +48,29 @@ var Formatter = /** @class */ (function () {
         var platformFieldTranslations = this.platformFieldTranslations();
         return platformFieldTranslations.hasOwnProperty(fieldName);
     };
-    Formatter.prototype.ignoredField = function (fieldName) {
+    Formatter.prototype.isIgnoredField = function (fieldName) {
         var fieldsToIgnore = this.fieldsToIgnore();
         return fieldsToIgnore.includes(fieldName);
     };
-    Formatter.prototype.translatedPlatformFieldName = function (fieldName) {
+    Formatter.prototype.translatePlatformField = function (fieldName, detail) {
         var platformFieldTranslations = this.platformFieldTranslations();
-        return platformFieldTranslations[fieldName];
+        if (typeof platformFieldTranslations[fieldName] === 'function') {
+            var formatter = platformFieldTranslations[fieldName];
+            return formatter(detail);
+        }
+        return {
+            key: platformFieldTranslations[fieldName],
+            value: detail[fieldName]
+        };
+    };
+    Formatter.prototype.similarProducts = function (response) {
+        return response;
+    };
+    Formatter.prototype.smartWidgets = function (response) {
+        return response;
+    };
+    Formatter.prototype.searchSuggestions = function (response) {
+        return response;
     };
     return Formatter;
 }());

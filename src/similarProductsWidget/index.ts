@@ -1,13 +1,14 @@
 import APIConnector from "../lib/apiConnector"
 import { AnalyticsData } from "../shared/types"
 import { SimilarProductsWidgetRequestOptions } from "./types"
+
 class SimilarProductsWidget extends APIConnector {
   getRequestOptions() : SimilarProductsWidgetRequestOptions{
     return {
       path: `products/${this.requestOptions.params.productId}/similar`,
       params: {
         request: ["result", "details"],
-        max_products: this.requestOptions.params.limit,
+        max_products: this.requestOptions.params.limit || 16,
       },
     }
   }
@@ -37,4 +38,5 @@ class SimilarProductsWidget extends APIConnector {
     }
   }
 }
+
 export default new SimilarProductsWidget();

@@ -10,7 +10,6 @@ class Configuration{
         api_key: configuration.credentials.apiKey,
         store_id: configuration.storeId,
         currency: configuration.currencyCode,
-        // TODO: Confirm whether the API client should be dynamic
         api_client: configuration.apiClient,
       },
       platform: configuration.platform,

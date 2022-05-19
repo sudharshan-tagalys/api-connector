@@ -7,13 +7,11 @@
   <title>Document</title>
 </head>
 <body>
-  <script src="./client/bundle.js"></script>
+  <script src="./bundle.js"></script>
   <script>
-    window.track = false
-    window.trackingConsentProvided = false
     Tagalys.APIConnector.setConfiguration({
       apiServer: "https://api-r1.tagalys.com",
-      platform: "shopify",
+      // platform: "shopify",
       credentials: {
         clientCode: "4F6C17914C39D1E8",
         apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
@@ -21,7 +19,7 @@
       currencyCode: "USD",
       storeId: "2611380259",
       track: true,
-      trackingConsentProvided: function(){
+      analyticsStorageConsentProvided: function(){
         // should return true/false based on user's consent settings
         return true
       },
@@ -33,18 +31,16 @@
         productId: 1669078908963
       },
       onSuccess: function(response, analyticsData = {}){
-        console.log(response);
+        console.log("SimilarProducts", response);
       },
     })
 
     Tagalys.APIConnector.SmartWidget.call({
       params: {
-        widgetId: "6e0a7f5793d2ebf00371"
+        widgetId: "a7d4fb11dd14d3a4a6c0"
       },
       onSuccess: function(response, analyticsData = {}){
-        var div = document.createElement("div");
-        div.innerHTML = JSON.stringify(response);
-        document.body.appendChild(div);
+        console.log("Smart widget", response);
       },
     })
 

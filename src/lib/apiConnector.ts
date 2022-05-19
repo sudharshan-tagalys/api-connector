@@ -39,23 +39,27 @@ class APIConnector{
       }),
       onSuccess: (response) => {
         if (this.isFailureResponse(response)) {
-          requestOptions.onFailure(response)
+          this.requestOptions.onFailure(response)
         } else {
-          const analyticsData = this.extractAnalyticsData(response);
-          response = this.formatResponse(response)
-          requestOptions.onSuccess(response, analyticsData);
-          if (configuration.canTrackAnalytics()) {
-            AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
-          }
-          if(!configuration.analyticsStorageConsentProvided()){
-            cookie.batchDelete(Object.values(COOKIES))
-          }
+          this.onSuccessfulResponse(response)
         }
       },
       onFailure: (response) => {
-        requestOptions.onFailure(response)
+        this.requestOptions.onFailure(response)
       }
     });
+  }
+
+  onSuccessfulResponse(response){
+    const analyticsData = this.extractAnalyticsData(response);
+    const formattedResponse = this.formatResponse(response)
+    this.requestOptions.onSuccess(formattedResponse, analyticsData);
+    if (configuration.canTrackAnalytics()) {
+      AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
+    }
+    if(!configuration.analyticsStorageConsentProvided()){
+      cookie.batchDelete(Object.values(COOKIES))
+    }
   }
 
   extractAnalyticsData(response) {
@@ -70,7 +74,7 @@ class APIConnector{
     return {}
   }
 
-  isFailureResponse(response) {
+  isFailureResponse(response): boolean{
     return false
   }
 }

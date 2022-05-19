@@ -24,21 +24,21 @@ var SmartWidget = /** @class */ (function (_super) {
     SmartWidget.prototype.getRequestOptions = function () {
         return {
             path: "custom_widgets/".concat(this.requestOptions.params.widgetId),
-            method: "post",
-            headers: {
-                contentType: "application/x-www-form-urlencoded"
-            },
             params: {
                 request: ["result", "details"],
-                max_products: this.requestOptions.params.limit,
+                max_products: this.requestOptions.params.limit || 16,
             },
         };
     };
+    SmartWidget.prototype.formatResponse = function (response) {
+        return this.responseFormatter.smartWidgets(response);
+    };
     SmartWidget.prototype.extractAnalyticsData = function (response) {
-        var plDetails = {};
-        if (response.hasOwnProperty("sku")) {
-            plDetails["sku"] = response.sku;
-        }
+        var plDetails = {
+            id: this.requestOptions.params.widgetId,
+            title: response.name
+            // TODO: confirm url
+        };
         var productSkus = response["details"].map(function (product) { return product.sku; });
         return {
             event_type: "product_list",

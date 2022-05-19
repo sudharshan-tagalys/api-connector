@@ -9,7 +9,7 @@ const DEFAULT_CONFIGURATION = {
     release: "1",
   },
   track: true,
-  trackingConsentProvided: function(){
+  analyticsStorageConsentProvided: function(){
     return false
   }
 }
@@ -19,7 +19,7 @@ const DEFAULT_REQUEST_OPTIONS = {
     console.log("API response:", response)
   },
   onFailure: (response) => {
-    console.log("Failed API response:", response)
+    console.error("Failed API response:", response)
   }
 }
 

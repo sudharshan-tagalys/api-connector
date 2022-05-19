@@ -1,13 +1,14 @@
 import APIConnector from "../lib/apiConnector"
 import { AnalyticsData } from "../shared/types"
 import { SmartWidgetRequestOptions } from "./types"
+
 class SmartWidget extends APIConnector {
   getRequestOptions() : SmartWidgetRequestOptions{
     return {
       path: `custom_widgets/${this.requestOptions.params.widgetId}`,
       params: {
         request: ["result", "details"],
-        max_products: this.requestOptions.params.limit,
+        max_products: this.requestOptions.params.limit || 16,
       },
     }
   }
@@ -17,9 +18,10 @@ class SmartWidget extends APIConnector {
   }
 
   extractAnalyticsData(response) : AnalyticsData {
-    let plDetails: any = {}
-    if (response.hasOwnProperty("sku")) {
-      plDetails["sku"] = response.sku
+    let plDetails: any = {
+      id: this.requestOptions.params.widgetId,
+      title: response.name
+      // TODO: confirm url
     }
     const productSkus = response["details"].map((product) => product.sku)
     return {
@@ -33,4 +35,5 @@ class SmartWidget extends APIConnector {
     }
   }
 }
+
 export default new SmartWidget();

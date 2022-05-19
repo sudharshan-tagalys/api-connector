@@ -20,7 +20,7 @@ class Formatter {
     return platformFieldTranslations.hasOwnProperty(fieldName)
   }
 
-  ignoredField(fieldName){
+  isIgnoredField(fieldName){
     const fieldsToIgnore = this.fieldsToIgnore()
     return fieldsToIgnore.includes(fieldName)
   }
@@ -54,7 +54,7 @@ class Formatter {
     let platform_fields = {}
 
     for (const [fieldName, fieldValue] of Object.entries(detail)) {
-      if(!this.ignoredField(fieldName)){
+      if(!this.isIgnoredField(fieldName)){
         if(this.isPlatformField(fieldName)){
           const { key, value } = this.translatePlatformField(fieldName, detail)
           platform_fields[key] = value
