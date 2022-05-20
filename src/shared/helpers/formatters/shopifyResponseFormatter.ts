@@ -13,8 +13,30 @@ class ShopifyResponseFormatter extends Formatter {
       price: 'compare_at_price',
       sale_price: 'price',
       introduced_at: 'published_at',
-      shopify_tags: 'tags',
-      _vendor: 'vendor',
+      shopify_tags: (data) => {
+        if(Array.isArray(data.shopify_tags)){
+          return {
+            key: 'tags',
+            value: data.shopify_tags
+          }
+        }
+        return {
+          key: 'tags',
+          value: data.shopify_tags.split(", ").sort()
+        }
+      },
+      _vendor: (data) => {
+        if(Array.isArray(data._vendor)){
+          return {
+            key: 'vendor',
+            value: data._vendor[0]
+          }
+        }
+        return {
+          key: 'vendor',
+          value: data._vendor
+        }
+      },
       images: 'images',
       variants: 'variants'
     }
