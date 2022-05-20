@@ -9,8 +9,14 @@ declare class ShopifyResponseFormatter extends Formatter {
         price: string;
         sale_price: string;
         introduced_at: string;
-        shopify_tags: string;
-        _vendor: string;
+        shopify_tags: (data: any) => {
+            key: string;
+            value: any;
+        };
+        _vendor: (data: any) => {
+            key: string;
+            value: any;
+        };
         images: string;
         variants: string;
     };
