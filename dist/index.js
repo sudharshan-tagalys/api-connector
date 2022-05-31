@@ -17,8 +17,9 @@ var constants_1 = require("./shared/constants");
 var similarProductsWidget_1 = require("./similarProductsWidget");
 var smartWidget_1 = require("./smartWidget");
 var searchSuggestions_1 = require("./searchSuggestions");
-var withDefaultRequestOptions = function (requestOptions) {
-    return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), requestOptions);
+var withDefaultRequestOptions = function (requestOptions, defaultRequestOptions) {
+    if (defaultRequestOptions === void 0) { defaultRequestOptions = constants_1.DEFAULT_REQUEST_OPTIONS; }
+    return __assign(__assign({}, defaultRequestOptions), requestOptions);
 };
 exports.APIConnector = {
     SimilarProducts: {
@@ -28,8 +29,8 @@ exports.APIConnector = {
         call: function (requestOptions) { return smartWidget_1.default.call(withDefaultRequestOptions(requestOptions)); },
     },
     SearchSuggestions: {
-        call: function (requestOptions) { return searchSuggestions_1.default.call(withDefaultRequestOptions(requestOptions)); },
-        new: function (requestOptions) { return searchSuggestions_1.default.new(withDefaultRequestOptions(requestOptions)); }
+        call: function (requestOptions) { return searchSuggestions_1.default.instance.call(withDefaultRequestOptions(requestOptions, searchSuggestions_1.default.defaultRequestOptions)); },
+        new: function (requestOptions) { return searchSuggestions_1.default.instance.new(withDefaultRequestOptions(requestOptions, searchSuggestions_1.default.defaultRequestOptions)); }
     },
     setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); },
 };

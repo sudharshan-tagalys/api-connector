@@ -16,5 +16,19 @@ declare class SearchSuggestions extends APIConnector {
         setQuery: (query: any, makeApiRequest?: boolean) => void;
     };
 }
-declare const _default: SearchSuggestions;
+declare const _default: {
+    instance: SearchSuggestions;
+    defaultRequestOptions: {
+        configuration: {
+            queryString: {
+                query: string;
+                queryFilter: string;
+            };
+            categorySeperator: string;
+            hierachySeperator: string;
+        };
+        onSuccess: (response: any) => void;
+        onFailure: (response: any) => void;
+    };
+};
 export default _default;

@@ -27,6 +27,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
+var constants_1 = require("../shared/constants");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
@@ -67,5 +68,15 @@ var SearchSuggestions = /** @class */ (function (_super) {
     };
     return SearchSuggestions;
 }(apiConnector_1.default));
-exports.default = new SearchSuggestions();
+exports.default = {
+    instance: new SearchSuggestions(),
+    defaultRequestOptions: __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
+            queryString: {
+                query: "q",
+                queryFilter: "qf"
+            },
+            categorySeperator: ">",
+            hierachySeperator: "->"
+        } })
+};
 //# sourceMappingURL=index.js.map
