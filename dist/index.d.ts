@@ -5,5 +5,11 @@ export declare const APIConnector: {
     SmartWidget: {
         call: (requestOptions: any) => void;
     };
+    SearchSuggestions: {
+        call: (requestOptions: any) => void;
+        new: (requestOptions: any) => {
+            setQuery: (query: any, makeApiRequest?: boolean) => void;
+        };
+    };
     setConfiguration: (config: any) => void;
 };

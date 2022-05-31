@@ -39,7 +39,7 @@ var APIConnector = /** @class */ (function () {
         this.setResponseFormatter();
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params;
         api_2.default.call(method, path, {
-            params: (0, api_1.objectToFormData)(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() })),
+            params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() })),
             onSuccess: function (response) {
                 if (_this.isFailureResponse(response)) {
                     _this.requestOptions.onFailure(response);
@@ -52,6 +52,9 @@ var APIConnector = /** @class */ (function () {
                 _this.requestOptions.onFailure(response);
             }
         });
+    };
+    APIConnector.prototype.formatRequestParams = function (params) {
+        return (0, api_1.objectToFormData)(params);
     };
     APIConnector.prototype.onSuccessfulResponse = function (response) {
         var analyticsData = this.extractAnalyticsData(response);

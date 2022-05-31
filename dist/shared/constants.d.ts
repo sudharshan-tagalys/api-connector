@@ -11,6 +11,7 @@ declare const DEFAULT_CONFIGURATION: {
     analyticsStorageConsentProvided: () => boolean;
 };
 declare const DEFAULT_REQUEST_OPTIONS: {
+    configuration: {};
     onSuccess: (response: any) => void;
     onFailure: (response: any) => void;
 };

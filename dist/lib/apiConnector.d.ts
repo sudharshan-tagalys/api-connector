@@ -3,6 +3,7 @@ declare class APIConnector {
     responseFormatter: any;
     setResponseFormatter(): void;
     call(requestOptions: any): void;
+    formatRequestParams(params: any): string;
     onSuccessfulResponse(response: any): void;
     extractAnalyticsData(response: any): any;
     formatResponse(response: any): any;

@@ -31,7 +31,10 @@ declare class ShopifyResponseFormatter extends Formatter {
         widget_name: any;
         products: any;
     };
-    searchSuggestions(response: any): any;
+    searchSuggestions(response: any, configuration: any): {
+        queries: any;
+        products: any;
+    };
     fieldsToIgnore(): string[];
 }
 export default ShopifyResponseFormatter;

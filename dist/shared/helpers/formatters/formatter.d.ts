@@ -8,7 +8,7 @@ declare class Formatter {
     translatePlatformField(fieldName: any, detail: any): any;
     similarProducts(response: any): any;
     smartWidgets(response: any): any;
-    searchSuggestions(response: any): any;
+    searchSuggestions(response: any, configuration: any): any;
     formatDetail: (detail: any) => {
         __tagalys_fields: {};
     };

@@ -69,7 +69,7 @@ var Formatter = /** @class */ (function () {
     Formatter.prototype.smartWidgets = function (response) {
         return response;
     };
-    Formatter.prototype.searchSuggestions = function (response) {
+    Formatter.prototype.searchSuggestions = function (response, configuration) {
         return response;
     };
     return Formatter;

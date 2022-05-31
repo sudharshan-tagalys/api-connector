@@ -16,6 +16,7 @@ var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similarProductsWidget_1 = require("./similarProductsWidget");
 var smartWidget_1 = require("./smartWidget");
+var searchSuggestions_1 = require("./searchSuggestions");
 var withDefaultRequestOptions = function (requestOptions) {
     return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), requestOptions);
 };
@@ -25,6 +26,10 @@ exports.APIConnector = {
     },
     SmartWidget: {
         call: function (requestOptions) { return smartWidget_1.default.call(withDefaultRequestOptions(requestOptions)); },
+    },
+    SearchSuggestions: {
+        call: function (requestOptions) { return searchSuggestions_1.default.call(withDefaultRequestOptions(requestOptions)); },
+        new: function (requestOptions) { return searchSuggestions_1.default.new(withDefaultRequestOptions(requestOptions)); }
     },
     setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); },
 };
