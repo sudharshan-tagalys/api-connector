@@ -45,7 +45,7 @@ class Formatter {
     return response
   }
 
-  searchSuggestions(response){
+  searchSuggestions(response, configuration){
     return response
   }
 

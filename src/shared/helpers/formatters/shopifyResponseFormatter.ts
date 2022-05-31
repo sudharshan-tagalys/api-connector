@@ -62,8 +62,61 @@ class ShopifyResponseFormatter extends Formatter {
     }
   }
 
-  searchSuggestions(response){
-    return response
+  searchSuggestions(response, configuration) {
+    const getQueryString = (q, qf = {}) => {
+      const { query, queryFilter } = configuration.queryString
+      const baseQueryString = `?${query}=`;
+      let str = ""
+        if (typeof(qf) == 'undefined' || Object.keys(qf).length === 0) {
+            return (baseQueryString + encodeURIComponent(q));
+        } else {
+            str = Object.keys(qf).map(function(key){
+                return  encodeURIComponent(key) + "-"+ encodeURIComponent(qf[key])
+            }).join('~');
+            let qf_param = encodeURIComponent(`${queryFilter}`) + '=' + str;
+            return baseQueryString.concat(encodeURIComponent(q) +"&"+ qf_param);
+        }
+    }
+
+    const getFormattedQueries = (response) => {
+      if (!response.queries) return []
+
+      return response.queries.map((queryObj) => {
+        let formattedQuery = {
+          displayString: "",
+          queryString: "",
+          rawQuery: queryObj
+        }
+
+        if (typeof queryObj.query === 'string') {
+          formattedQuery.displayString = queryObj.query
+          formattedQuery.queryString = getQueryString(queryObj.query)
+          return formattedQuery
+        }
+
+        if (Array.isArray(queryObj.query)) {
+          if (queryObj.hasOwnProperty('in')) {
+            const prefix = queryObj.query.join('')
+            const suffix = queryObj.in.hierarchy.map((item) => item.name).join(` ${configuration.hierachySeperator} `)
+            const qf = {
+              ...queryObj.filter,
+              [`${queryObj.in.tag_set.id}`]: queryObj.in.hierarchy.map((item) => item.id),
+            }
+            formattedQuery.displayString = `${prefix} ${configuration.hierachySeperator} ${suffix}`
+            formattedQuery.queryString = getQueryString(formattedQuery.displayString, qf)
+          } else {
+            formattedQuery.displayString = queryObj.query.join(` ${configuration.categorySeperator} `)
+            formattedQuery.queryString = getQueryString(formattedQuery.displayString, queryObj.filter)
+          }
+        }
+
+        return formattedQuery
+      })
+    }
+    return {
+      queries: getFormattedQueries(response),
+      products: this.formatDetails(response.products)
+    }
   }
 
   fieldsToIgnore(){

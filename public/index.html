@@ -8,6 +8,8 @@
   <script src="./bundle.js" async></script>
 </head>
 <body>
+  <input type="text" id="mock-search-input"/>
+  <div id="response"/>
   <script>
     document.addEventListener("tagalys:ready", function () {
       Tagalys.APIConnector.setConfiguration({
@@ -25,6 +27,48 @@
           return true;
         },
       });
+
+
+    Tagalys.APIConnector.SearchSuggestions.call({
+      params: {
+        query: "dre",
+        request: {
+          products: 4,
+          queries: 8
+        }
+      },
+      onSuccess: function(responseInstance) {
+        console.log(responseInstance.getQueries())
+        console.log(responseInstance.getProducts())
+        console.log(responseInstance.getUrlEncodedQuery())
+        // render here
+      }
+    })
+
+    var ssInstance = Tagalys.APIConnector.SearchSuggestions.new({
+      params: {
+        query: "dre",
+        request: {
+          products: 4,
+          queries: 20
+        }
+      },
+      configuration: {
+        queryString: {
+          query: "q",
+          queryFilter: "qf"
+        },
+        categorySeperator: ">",
+        hierachySeperator: "->"
+      },
+      onSuccess: function(responseInstance) {
+        var dom = document.querySelector("#response")
+        dom.innerHTML = JSON.stringify(responseInstance, null, true)
+      }
+    })
+    document.querySelector('#mock-search-input').addEventListener("input", function(evt){
+      ssInstance.setQuery(evt.target.value)
+    })
 
       Tagalys.APIConnector.SimilarProducts.call({
         params: {

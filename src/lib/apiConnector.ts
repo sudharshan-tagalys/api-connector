@@ -33,7 +33,7 @@ class APIConnector{
       ...this.getRequestOptions()
     };
     api.call(method, path, {
-      params: objectToFormData({
+      params: this.formatRequestParams({
         ...params,
         identification: configuration.getApiIdentification()
       }),
@@ -48,6 +48,10 @@ class APIConnector{
         this.requestOptions.onFailure(response)
       }
     });
+  }
+
+  formatRequestParams(params) {
+    return objectToFormData(params)
   }
 
   onSuccessfulResponse(response){
