@@ -13,14 +13,14 @@
   <script>
     document.addEventListener("tagalys:ready", function () {
       Tagalys.APIConnector.setConfiguration({
-        apiServer: "https://api-r1.tagalys.com",
+        apiServer: "https://api-r3.tagalys.com",
         platform: "shopify",
         credentials: {
-          clientCode: "4F6C17914C39D1E8",
-          apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
+          clientCode: "9A5164025FF543E9",
+          apiKey: "788d8be3a2c0fdf48c1089e052946106",
         },
         currencyCode: "USD",
-        storeId: "2611380259",
+        storeId: "1",
         track: true,
         analyticsStorageConsentProvided: function () {
           // should return true/false based on user's consent settings
@@ -28,22 +28,6 @@
         },
       });
 
-
-    Tagalys.APIConnector.SearchSuggestions.call({
-      params: {
-        query: "dre",
-        request: {
-          products: 4,
-          queries: 8
-        }
-      },
-      onSuccess: function(responseInstance) {
-        console.log(responseInstance.getQueries())
-        console.log(responseInstance.getProducts())
-        console.log(responseInstance.getUrlEncodedQuery())
-        // render here
-      }
-    })
 
     var ssInstance = Tagalys.APIConnector.SearchSuggestions.new({
       params: {
@@ -70,24 +54,24 @@
       ssInstance.setQuery(evt.target.value)
     })
 
-      Tagalys.APIConnector.SimilarProducts.call({
-        params: {
-          limit: 2,
-          productId: 1669078908963,
-        },
-        onSuccess: function (response, analyticsData = {}) {
-          console.log("SimilarProducts", response);
-        },
-      });
+      // Tagalys.APIConnector.SimilarProducts.call({
+      //   params: {
+      //     limit: 2,
+      //     productId: 1669078908963,
+      //   },
+      //   onSuccess: function (response, analyticsData = {}) {
+      //     console.log("SimilarProducts", response);
+      //   },
+      // });
 
-      Tagalys.APIConnector.SmartWidget.call({
-        params: {
-          widgetId: "a7d4fb11dd14d3a4a6c0",
-        },
-        onSuccess: function (response, analyticsData = {}) {
-          console.log("Smart widget", response);
-        },
-      });
+      // Tagalys.APIConnector.SmartWidget.call({
+      //   params: {
+      //     widgetId: "a7d4fb11dd14d3a4a6c0",
+      //   },
+      //   onSuccess: function (response, analyticsData = {}) {
+      //     console.log("Smart widget", response);
+      //   },
+      // });
     });
   </script>
 </body>

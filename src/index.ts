@@ -5,9 +5,9 @@ import smartWidget from "./smartWidget";
 import searchSuggestions from "./searchSuggestions"
 
 
-const withDefaultRequestOptions = (requestOptions) => {
+const withDefaultRequestOptions = (requestOptions, defaultRequestOptions = DEFAULT_REQUEST_OPTIONS) => {
   return {
-    ...DEFAULT_REQUEST_OPTIONS,
+    ...defaultRequestOptions,
     ...requestOptions
   }
 }
@@ -20,8 +20,8 @@ export const APIConnector = {
     call: (requestOptions) => smartWidget.call(withDefaultRequestOptions(requestOptions)),
   },
   SearchSuggestions: {
-    call: (requestOptions) => searchSuggestions.call(withDefaultRequestOptions(requestOptions)),
-    new: (requestOptions) => searchSuggestions.new(withDefaultRequestOptions(requestOptions))
+    call: (requestOptions) => searchSuggestions.instance.call(withDefaultRequestOptions(requestOptions, searchSuggestions.defaultRequestOptions)),
+    new: (requestOptions) => searchSuggestions.instance.new(withDefaultRequestOptions(requestOptions, searchSuggestions.defaultRequestOptions))
   },
   setConfiguration: (config) => configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,

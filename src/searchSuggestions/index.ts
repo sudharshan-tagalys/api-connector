@@ -1,5 +1,5 @@
 import APIConnector from "../lib/apiConnector"
-
+import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants"
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -43,4 +43,17 @@ class SearchSuggestions extends APIConnector {
   }
 }
 
-export default new SearchSuggestions();
+export default {
+  instance: new SearchSuggestions(),
+  defaultRequestOptions: {
+    ...DEFAULT_REQUEST_OPTIONS,
+    configuration: {
+      queryString: {
+        query: "q",
+        queryFilter: "qf"
+      },
+      categorySeperator: ">",
+      hierachySeperator: "->"
+    }
+  }
+}
