@@ -63,6 +63,7 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   searchSuggestions(response, configuration) {
+    // move into searchSuggestions formatter class
     const getQueryString = (q, qf = {}) => {
       const { query, queryFilter } = configuration.queryString
       const baseQueryString = `?${query}=`;
@@ -96,7 +97,7 @@ class ShopifyResponseFormatter extends Formatter {
 
         if (Array.isArray(queryObj.query)) {
           if (queryObj.hasOwnProperty('in')) {
-            const prefix = queryObj.query.join('')
+            const prefix = queryObj.query[0]
             const suffix = queryObj.in.hierarchy.map((item) => item.name).join(` ${configuration.hierachySeperator} `)
             const qf = {
               ...queryObj.filter,

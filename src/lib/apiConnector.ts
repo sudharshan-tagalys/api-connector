@@ -81,6 +81,34 @@ class APIConnector{
   isFailureResponse(response): boolean{
     return false
   }
+
+  defaultRequestOptions(){
+    return {}
+  }
+  
+  new(requestOptions){
+    return undefined
+  }
+
+  exporterName(){
+    throw new Error("Should specify exporter name") 
+  }
+
+  export(){
+    let exporterKey:any = this.exporterName()
+    return {
+      [exporterKey]: {
+        call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => this.call({
+          defaultRequestOptions,
+          ...requestOptions
+        }),
+        new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => this.new({
+          defaultRequestOptions,
+          ...requestOptions
+        })
+      }
+    }
+  }
 }
 
 export default APIConnector;

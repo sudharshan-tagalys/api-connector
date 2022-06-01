@@ -13,6 +13,7 @@ const withDefaultRequestOptions = (requestOptions, defaultRequestOptions = DEFAU
 }
 
 export const APIConnector = {
+  ...searchSuggestions.export(),
   SimilarProducts: {
     call: (requestOptions) => similarProductsWidget.call(withDefaultRequestOptions(requestOptions)),
   },
