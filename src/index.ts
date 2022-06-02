@@ -4,14 +4,6 @@ import similarProductsWidget from "./similarProductsWidget";
 import smartWidget from "./smartWidget";
 import searchSuggestions from "./searchSuggestions"
 
-
-const withDefaultRequestOptions = (requestOptions, defaultRequestOptions = DEFAULT_REQUEST_OPTIONS) => {
-  return {
-    ...defaultRequestOptions,
-    ...requestOptions
-  }
-}
-
 export const APIConnector = {
   ...similarProductsWidget.export(),
   ...smartWidget.export(),

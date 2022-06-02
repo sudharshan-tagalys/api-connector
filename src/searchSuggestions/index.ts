@@ -1,5 +1,7 @@
 import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
+import localStorage from "../lib/localStorage"
+import popularSearches from "../popular-searches"
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -30,13 +32,29 @@ class SearchSuggestions extends APIConnector {
     callAPI && this.call(this.requestOptions)
   }
 
-  new = (requestOptions) => {
+  new(requestOptions){
     this.requestOptions = requestOptions
     return {
-      setQuery: (query, callAPI = true) => this.setQuery(query, callAPI)
+      setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
+      recentSearches: () => this.getPopularSearches(),
     }
   }
 
+  getPopularSearches() {
+    return new Promise((resolve, reject) => {
+      popularSearches.call({
+        onSuccess: (response) => {
+          resolve(this.responseFormatter.searchSuggestions({
+            queries: response.popular_searches
+          }, this.requestOptions.configuration))
+        },
+        onFailure: (response) => {
+          reject(response)
+        }
+      })
+    })
+  }
+ 
   defaultRequestOptions(){
     return {
       ...DEFAULT_REQUEST_OPTIONS,

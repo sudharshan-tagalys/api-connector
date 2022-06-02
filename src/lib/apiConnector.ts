@@ -93,7 +93,7 @@ class APIConnector{
   defaultRequestOptions(){
     return {}
   }
-  
+
   new(requestOptions){
     return undefined
   }

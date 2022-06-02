@@ -16,18 +16,17 @@
         apiServer: "https://api-r3.tagalys.com",
         platform: "shopify",
         credentials: {
-          clientCode: "9A5164025FF543E9",
-          apiKey: "788d8be3a2c0fdf48c1089e052946106",
+          clientCode: "39D2E8D16FB8EC72",
+          apiKey: "1f53183fac482d47bc62b0284d5c33da",
         },
         currencyCode: "USD",
         storeId: "1",
-        track: true,
+        track: false,
         analyticsStorageConsentProvided: function () {
           // should return true/false based on user's consent settings
           return true;
         },
       });
-
 
     var ssInstance = Tagalys.APIConnector.SearchSuggestions.new({
       params: {
@@ -53,6 +52,9 @@
 
     document.querySelector('#mock-search-input').addEventListener("input", function(evt){
       ssInstance.setQuery(evt.target.value)
+      ssInstance.recentSearches().then((response)=>{
+        console.log(response)
+      })
     })
 
       // Tagalys.APIConnector.SimilarProducts.call({
