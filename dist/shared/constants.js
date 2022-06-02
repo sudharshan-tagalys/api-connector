@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.DEFAULT_REQUEST_OPTIONS = exports.DEFAULT_CONFIGURATION = exports.SHOPIFY_PLATFORM = void 0;
+exports.REQUEST_FORMAT = exports.DEFAULT_REQUEST_OPTIONS = exports.DEFAULT_CONFIGURATION = exports.SHOPIFY_PLATFORM = void 0;
 var SHOPIFY_PLATFORM = "shopify";
 exports.SHOPIFY_PLATFORM = SHOPIFY_PLATFORM;
 var DEFAULT_CONFIGURATION = {
     platform: "custom",
     apiClient: {
-        vendor: "tagalys",
+        vendor: "tagalys-api-connector",
         language: "js",
-        version: "3",
+        version: "1",
         release: "1",
     },
     track: true,
@@ -27,4 +27,9 @@ var DEFAULT_REQUEST_OPTIONS = {
     }
 };
 exports.DEFAULT_REQUEST_OPTIONS = DEFAULT_REQUEST_OPTIONS;
+var REQUEST_FORMAT = {
+    FORM_DATA: "FormData",
+    JSON: "JSON"
+};
+exports.REQUEST_FORMAT = REQUEST_FORMAT;
 //# sourceMappingURL=constants.js.map

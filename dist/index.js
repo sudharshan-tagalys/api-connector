@@ -21,19 +21,7 @@ var withDefaultRequestOptions = function (requestOptions, defaultRequestOptions)
     if (defaultRequestOptions === void 0) { defaultRequestOptions = constants_1.DEFAULT_REQUEST_OPTIONS; }
     return __assign(__assign({}, defaultRequestOptions), requestOptions);
 };
-exports.APIConnector = {
-    SimilarProducts: {
-        call: function (requestOptions) { return similarProductsWidget_1.default.call(withDefaultRequestOptions(requestOptions)); },
-    },
-    SmartWidget: {
-        call: function (requestOptions) { return smartWidget_1.default.call(withDefaultRequestOptions(requestOptions)); },
-    },
-    SearchSuggestions: {
-        call: function (requestOptions) { return searchSuggestions_1.default.instance.call(withDefaultRequestOptions(requestOptions, searchSuggestions_1.default.defaultRequestOptions)); },
-        new: function (requestOptions) { return searchSuggestions_1.default.instance.new(withDefaultRequestOptions(requestOptions, searchSuggestions_1.default.defaultRequestOptions)); }
-    },
-    setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); },
-};
+exports.APIConnector = __assign(__assign(__assign(__assign({}, similarProductsWidget_1.default.export()), smartWidget_1.default.export()), searchSuggestions_1.default.export()), { setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); } });
 window.addEventListener("load", function () {
     var event = new Event("tagalys:ready");
     document.dispatchEvent(event);

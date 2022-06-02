@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var constants_1 = require("../shared/constants");
 var api_1 = require("../shared/helpers/api");
 var formatFactory_1 = require("../shared/helpers/formatters/formatFactory");
 var analyticsTracker_1 = require("./analyticsTracker");
@@ -20,6 +21,7 @@ var cookie_1 = require("./cookie");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
+    format: constants_1.REQUEST_FORMAT.FORM_DATA,
     headers: {
         contentType: "application/x-www-form-urlencoded"
     },
@@ -37,9 +39,9 @@ var APIConnector = /** @class */ (function () {
         var _this = this;
         this.requestOptions = requestOptions;
         this.setResponseFormatter();
-        var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params;
+        var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
         api_2.default.call(method, path, {
-            params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() })),
+            params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
             onSuccess: function (response) {
                 if (_this.isFailureResponse(response)) {
                     _this.requestOptions.onFailure(response);
@@ -53,8 +55,14 @@ var APIConnector = /** @class */ (function () {
             }
         });
     };
-    APIConnector.prototype.formatRequestParams = function (params) {
-        return (0, api_1.objectToFormData)(params);
+    APIConnector.prototype.formatRequestParams = function (params, format) {
+        if (format === constants_1.REQUEST_FORMAT.FORM_DATA) {
+            return (0, api_1.objectToFormData)(params);
+        }
+        if (format === constants_1.REQUEST_FORMAT.JSON) {
+            return JSON.stringify(params);
+        }
+        return params;
     };
     APIConnector.prototype.onSuccessfulResponse = function (response) {
         var analyticsData = this.extractAnalyticsData(response);
@@ -78,6 +86,32 @@ var APIConnector = /** @class */ (function () {
     };
     APIConnector.prototype.isFailureResponse = function (response) {
         return false;
+    };
+    APIConnector.prototype.defaultRequestOptions = function () {
+        return {};
+    };
+    APIConnector.prototype.new = function (requestOptions) {
+        return undefined;
+    };
+    APIConnector.prototype.exporterName = function () {
+        throw new Error("Should specify exporter name");
+    };
+    APIConnector.prototype.export = function () {
+        var _a;
+        var _this = this;
+        var exporterKey = this.exporterName();
+        return _a = {},
+            _a[exporterKey] = {
+                call: function (requestOptions, defaultRequestOptions) {
+                    if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
+                    return _this.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                },
+                new: function (requestOptions, defaultRequestOptions) {
+                    if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
+                    return _this.new(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                }
+            },
+            _a;
     };
     return APIConnector;
 }());

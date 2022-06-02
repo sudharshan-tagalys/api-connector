@@ -2,23 +2,21 @@ import APIConnector from "../lib/apiConnector";
 declare class SearchSuggestions extends APIConnector {
     getRequestOptions(): {
         path: string;
+        format: string;
         params: {
             q: any;
             products: any;
             queries: any;
         };
     };
+    exporterName(): string;
     extractAnalyticsData(response: any): any;
     onSuccessfulResponse(response: any): void;
-    formatRequestParams(params: any): string;
-    setQuery(query: any, makeApiRequest: any): void;
-    new(requestOptions: any): {
-        setQuery: (query: any, makeApiRequest?: boolean) => void;
+    setQuery(query: any, callAPI?: boolean): void;
+    new: (requestOptions: any) => {
+        setQuery: (query: any, callAPI?: boolean) => void;
     };
-}
-declare const _default: {
-    instance: SearchSuggestions;
-    defaultRequestOptions: {
+    defaultRequestOptions(): {
         configuration: {
             queryString: {
                 query: string;
@@ -30,5 +28,6 @@ declare const _default: {
         onSuccess: (response: any) => void;
         onFailure: (response: any) => void;
     };
-};
+}
+declare const _default: SearchSuggestions;
 export default _default;

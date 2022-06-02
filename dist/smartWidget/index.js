@@ -30,6 +30,9 @@ var SmartWidget = /** @class */ (function (_super) {
             },
         };
     };
+    SmartWidget.prototype.exporterName = function () {
+        return 'SmartWidget';
+    };
     SmartWidget.prototype.formatResponse = function (response) {
         return this.responseFormatter.smartWidgets(response);
     };

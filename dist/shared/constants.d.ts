@@ -15,4 +15,8 @@ declare const DEFAULT_REQUEST_OPTIONS: {
     onSuccess: (response: any) => void;
     onFailure: (response: any) => void;
 };
-export { SHOPIFY_PLATFORM, DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS };
+declare const REQUEST_FORMAT: {
+    FORM_DATA: string;
+    JSON: string;
+};
+export { SHOPIFY_PLATFORM, DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT };

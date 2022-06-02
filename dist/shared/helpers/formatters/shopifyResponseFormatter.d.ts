@@ -33,7 +33,6 @@ declare class ShopifyResponseFormatter extends Formatter {
     };
     searchSuggestions(response: any, configuration: any): {
         queries: any;
-        products: any;
     };
     fieldsToIgnore(): string[];
 }

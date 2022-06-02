@@ -31,11 +31,22 @@ var constants_1 = require("../shared/constants");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.new = function (requestOptions) {
+            _this.requestOptions = requestOptions;
+            return {
+                setQuery: function (query, callAPI) {
+                    if (callAPI === void 0) { callAPI = true; }
+                    return _this.setQuery(query, callAPI);
+                }
+            };
+        };
+        return _this;
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
         return {
             path: "ss",
+            format: constants_1.REQUEST_FORMAT.JSON,
             params: {
                 q: this.requestOptions.params.query,
                 products: this.requestOptions.params.request.products,
@@ -43,40 +54,31 @@ var SearchSuggestions = /** @class */ (function (_super) {
             },
         };
     };
+    SearchSuggestions.prototype.exporterName = function () {
+        return 'SearchSuggestions';
+    };
     SearchSuggestions.prototype.extractAnalyticsData = function (response) {
         return response;
     };
     SearchSuggestions.prototype.onSuccessfulResponse = function (response) {
         this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration));
     };
-    SearchSuggestions.prototype.formatRequestParams = function (params) {
-        return JSON.stringify(params);
+    SearchSuggestions.prototype.setQuery = function (query, callAPI) {
+        if (callAPI === void 0) { callAPI = true; }
+        this.requestOptions.params.query = query;
+        callAPI && this.call(this.requestOptions);
     };
-    SearchSuggestions.prototype.setQuery = function (query, makeApiRequest) {
-        this.requestOptions = __assign(__assign({}, this.requestOptions), { params: __assign(__assign({}, this.requestOptions.params), { query: query }) });
-        makeApiRequest && this.call(this.requestOptions);
-    };
-    SearchSuggestions.prototype.new = function (requestOptions) {
-        var _this = this;
-        this.requestOptions = requestOptions;
-        return {
-            setQuery: function (query, makeApiRequest) {
-                if (makeApiRequest === void 0) { makeApiRequest = true; }
-                return _this.setQuery(query, makeApiRequest);
-            }
-        };
+    SearchSuggestions.prototype.defaultRequestOptions = function () {
+        return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
+                queryString: {
+                    query: "q",
+                    queryFilter: "qf"
+                },
+                categorySeperator: ">",
+                hierachySeperator: "->"
+            } });
     };
     return SearchSuggestions;
 }(apiConnector_1.default));
-exports.default = {
-    instance: new SearchSuggestions(),
-    defaultRequestOptions: __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
-            queryString: {
-                query: "q",
-                queryFilter: "qf"
-            },
-            categorySeperator: ">",
-            hierachySeperator: "->"
-        } })
-};
+exports.default = new SearchSuggestions();
 //# sourceMappingURL=index.js.map

@@ -30,6 +30,9 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
             },
         };
     };
+    SimilarProductsWidget.prototype.exporterName = function () {
+        return 'SimilarProducts';
+    };
     SimilarProductsWidget.prototype.formatResponse = function (response) {
         return this.responseFormatter.similarProducts(response);
     };

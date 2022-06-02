@@ -3,6 +3,7 @@ import { AnalyticsData } from "../shared/types";
 import { SimilarProductsWidgetRequestOptions } from "./types";
 declare class SimilarProductsWidget extends APIConnector {
     getRequestOptions(): SimilarProductsWidgetRequestOptions;
+    exporterName(): string;
     formatResponse(response: any): any;
     isFailureResponse(response: any): boolean;
     extractAnalyticsData(response: any): AnalyticsData;
