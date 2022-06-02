@@ -28,20 +28,11 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
 var constants_1 = require("../shared/constants");
+var popular_searches_1 = require("../popular-searches");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.new = function (requestOptions) {
-            _this.requestOptions = requestOptions;
-            return {
-                setQuery: function (query, callAPI) {
-                    if (callAPI === void 0) { callAPI = true; }
-                    return _this.setQuery(query, callAPI);
-                }
-            };
-        };
-        return _this;
+        return _super !== null && _super.apply(this, arguments) || this;
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
         return {
@@ -67,6 +58,32 @@ var SearchSuggestions = /** @class */ (function (_super) {
         if (callAPI === void 0) { callAPI = true; }
         this.requestOptions.params.query = query;
         callAPI && this.call(this.requestOptions);
+    };
+    SearchSuggestions.prototype.new = function (requestOptions) {
+        var _this = this;
+        this.requestOptions = requestOptions;
+        return {
+            setQuery: function (query, callAPI) {
+                if (callAPI === void 0) { callAPI = true; }
+                return _this.setQuery(query, callAPI);
+            },
+            recentSearches: function () { return _this.getPopularSearches(); },
+        };
+    };
+    SearchSuggestions.prototype.getPopularSearches = function () {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            popular_searches_1.default.call({
+                onSuccess: function (response) {
+                    resolve(_this.responseFormatter.searchSuggestions({
+                        queries: response.popular_searches
+                    }, _this.requestOptions.configuration));
+                },
+                onFailure: function (response) {
+                    reject(response);
+                }
+            });
+        });
     };
     SearchSuggestions.prototype.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {

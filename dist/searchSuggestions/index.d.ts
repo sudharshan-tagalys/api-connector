@@ -13,9 +13,11 @@ declare class SearchSuggestions extends APIConnector {
     extractAnalyticsData(response: any): any;
     onSuccessfulResponse(response: any): void;
     setQuery(query: any, callAPI?: boolean): void;
-    new: (requestOptions: any) => {
+    new(requestOptions: any): {
         setQuery: (query: any, callAPI?: boolean) => void;
+        recentSearches: () => Promise<unknown>;
     };
+    getPopularSearches(): Promise<unknown>;
     defaultRequestOptions(): {
         configuration: {
             queryString: {

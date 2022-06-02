@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sourceRoot":"","sources":["../../src/popular-searches/index.ts"],"names":[],"mappings":";;;;;;;;;;;;;;;;;AAAA,oDAA8C;AAG9C;IAA8B,mCAAY;IAA1C;;IAUA,CAAC;IATC,2CAAiB,GAAjB;QACE,OAAO;YACL,IAAI,EAAE,kBAAkB;SACzB,CAAA;IACH,CAAC;IAED,sCAAY,GAAZ;QACE,OAAO,iBAAiB,CAAA;IAC1B,CAAC;IACH,sBAAC;AAAD,CAAC,AAVD,CAA8B,sBAAY,GAUzC;AAED,kBAAe,IAAI,eAAe,EAAE,CAAC"}
