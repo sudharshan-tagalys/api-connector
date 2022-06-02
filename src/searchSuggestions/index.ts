@@ -22,7 +22,6 @@ class SearchSuggestions extends APIConnector {
   }
 
   onSuccessfulResponse(response) {
-    console.log("ind",this.requestOptions)
     this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration))
   }
 

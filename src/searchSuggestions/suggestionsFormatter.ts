@@ -38,8 +38,6 @@ class SuggestionsFormatter {
         return formattedQuery
       }
 
-      console.log(configuration)
-
       if (Array.isArray(queryObj.query)) {
         if (queryObj.hasOwnProperty('in')) {
           const prefix = queryObj.query[0]
