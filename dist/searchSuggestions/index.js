@@ -61,7 +61,6 @@ var SearchSuggestions = /** @class */ (function (_super) {
         return response;
     };
     SearchSuggestions.prototype.onSuccessfulResponse = function (response) {
-        console.log("ind", this.requestOptions);
         this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration));
     };
     SearchSuggestions.prototype.setQuery = function (query, callAPI) {

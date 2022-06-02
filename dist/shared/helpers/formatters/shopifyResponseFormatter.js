@@ -81,7 +81,6 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
     };
     ShopifyResponseFormatter.prototype.searchSuggestions = function (response, configuration) {
         // move into searchSuggestions formatter class
-        console.log("con", configuration);
         return {
             queries: suggestionsFormatter_1.default.format(response, configuration),
             // products: this.formatDetails(response.products)
