@@ -13,6 +13,10 @@ class SmartWidget extends APIConnector {
     }
   }
 
+  exporterName(){
+    return 'SmartWidget'
+  }
+
   formatResponse(response){
     return this.responseFormatter.smartWidgets(response)
   }

@@ -13,6 +13,10 @@ class SimilarProductsWidget extends APIConnector {
     }
   }
 
+  exporterName(){
+    return 'SimilarProducts'
+  }
+
   formatResponse(response){
     return this.responseFormatter.similarProducts(response)
   }

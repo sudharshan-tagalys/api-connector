@@ -1,3 +1,4 @@
+import { REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
 import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
@@ -8,6 +9,7 @@ import cookie from "./cookie";
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
   path: "",
+  format: REQUEST_FORMAT.FORM_DATA,
   headers: {
     contentType: "application/x-www-form-urlencoded"
   },
@@ -28,7 +30,7 @@ class APIConnector{
   call(requestOptions) {
     this.requestOptions = requestOptions;
     this.setResponseFormatter()
-    const { method, path, params } = {
+    const { method, path, params, format } = {
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
     };
@@ -36,7 +38,7 @@ class APIConnector{
       params: this.formatRequestParams({
         ...params,
         identification: configuration.getApiIdentification()
-      }),
+      }, format),
       onSuccess: (response) => {
         if (this.isFailureResponse(response)) {
           this.requestOptions.onFailure(response)
@@ -50,8 +52,14 @@ class APIConnector{
     });
   }
 
-  formatRequestParams(params) {
-    return objectToFormData(params)
+  formatRequestParams(params, format) {
+    if (format === REQUEST_FORMAT.FORM_DATA) {
+      return objectToFormData(params)
+    }
+    if (format === REQUEST_FORMAT.JSON) {
+      return JSON.stringify(params)
+    }
+    return params
   }
 
   onSuccessfulResponse(response){

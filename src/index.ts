@@ -13,17 +13,9 @@ const withDefaultRequestOptions = (requestOptions, defaultRequestOptions = DEFAU
 }
 
 export const APIConnector = {
+  ...similarProductsWidget.export(),
+  ...smartWidget.export(),
   ...searchSuggestions.export(),
-  SimilarProducts: {
-    call: (requestOptions) => similarProductsWidget.call(withDefaultRequestOptions(requestOptions)),
-  },
-  SmartWidget: {
-    call: (requestOptions) => smartWidget.call(withDefaultRequestOptions(requestOptions)),
-  },
-  SearchSuggestions: {
-    call: (requestOptions) => searchSuggestions.instance.call(withDefaultRequestOptions(requestOptions, searchSuggestions.defaultRequestOptions)),
-    new: (requestOptions) => searchSuggestions.instance.new(withDefaultRequestOptions(requestOptions, searchSuggestions.defaultRequestOptions))
-  },
   setConfiguration: (config) => configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config

@@ -1,10 +1,10 @@
 import APIConnector from "../lib/apiConnector"
-import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants"
+import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
       path: `ss`,
-      format: 'FormData',
+      format: REQUEST_FORMAT.JSON,
       params: {
         q: this.requestOptions.params.query,
         products: this.requestOptions.params.request.products,
@@ -12,7 +12,7 @@ class SearchSuggestions extends APIConnector {
       },
     }
   }
-  
+
   exporterName(){
     return 'SearchSuggestions'
   }
@@ -25,10 +25,6 @@ class SearchSuggestions extends APIConnector {
     this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration))
   }
 
-  formatRequestParams(params) {
-    return JSON.stringify(params)
-  }
-
   setQuery(query, callAPI = true) {
     this.requestOptions.params.query = query
     callAPI && this.call(this.requestOptions)
@@ -37,7 +33,7 @@ class SearchSuggestions extends APIConnector {
   new = (requestOptions) => {
     this.requestOptions = requestOptions
     return {
-      setQuery:this.setQuery
+      setQuery: (query, callAPI = true) => this.setQuery(query, callAPI)
     }
   }
 
