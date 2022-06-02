@@ -67,7 +67,7 @@ class ShopifyResponseFormatter extends Formatter {
     // move into searchSuggestions formatter class
     return {
       queries: suggestionsFormatter.format(response, configuration),
-      // products: this.formatDetails(response.products)
+      products: this.formatDetails(response.products)
     }
   }
 
