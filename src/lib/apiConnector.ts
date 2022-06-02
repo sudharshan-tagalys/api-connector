@@ -111,7 +111,7 @@ class APIConnector{
           ...requestOptions
         }),
         new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => this.new({
-          defaultRequestOptions,
+          ...defaultRequestOptions,
           ...requestOptions
         })
       }
