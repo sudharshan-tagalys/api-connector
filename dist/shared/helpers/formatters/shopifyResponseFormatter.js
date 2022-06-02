@@ -83,7 +83,7 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
         // move into searchSuggestions formatter class
         return {
             queries: suggestionsFormatter_1.default.format(response, configuration),
-            // products: this.formatDetails(response.products)
+            products: this.formatDetails(response.products)
         };
     };
     ShopifyResponseFormatter.prototype.popularSearches = function (response, configuration) {
