@@ -7,6 +7,13 @@ interface AnalyticsData {
   event_details: Object;
 }
 
+interface WidgetRequestOptions extends RequestOptions {
+  params: {
+    request: string[];
+    max_products?: number;
+  }
+}
+
 
 interface APIIdentification {
   client_code: string;
@@ -29,4 +36,10 @@ interface APIConfiguration {
   analyticsStorageConsentProvided: () => boolean
 }
 
-export { RequestOptions, AnalyticsData, APIIdentification, APIConfiguration }
+export {
+  RequestOptions,
+  AnalyticsData,
+  APIIdentification,
+  APIConfiguration,
+  WidgetRequestOptions
+}

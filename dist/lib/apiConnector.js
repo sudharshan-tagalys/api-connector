@@ -108,7 +108,7 @@ var APIConnector = /** @class */ (function () {
                 },
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    return _this.new(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                    return _this.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
                 }
             },
             _a;

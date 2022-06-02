@@ -15,7 +15,6 @@ const DEFAULT_CONFIGURATION = {
 }
 
 const DEFAULT_REQUEST_OPTIONS = {
-  configuration: {},
   onSuccess: (response) => {
     console.log("API response:", response)
   },

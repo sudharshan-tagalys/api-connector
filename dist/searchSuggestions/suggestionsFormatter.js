@@ -46,6 +46,7 @@ var SuggestionsFormatter = /** @class */ (function () {
                 formattedQuery.queryString = _this.getQueryString(queryObj.query);
                 return formattedQuery;
             }
+            console.log(configuration);
             if (Array.isArray(queryObj.query)) {
                 if (queryObj.hasOwnProperty('in')) {
                     var prefix = queryObj.query[0];

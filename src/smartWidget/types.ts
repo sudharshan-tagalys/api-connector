@@ -1,9 +1,5 @@
-import { RequestOptions } from "../shared/types";
+import { WidgetRequestOptions } from "../shared/types";
 
-interface SmartWidgetRequestOptions extends RequestOptions {
-  params: {
-    request: string[];
-    max_products?: number;
-  }
+interface SmartWidgetRequestOptions extends WidgetRequestOptions {
 }
 export { SmartWidgetRequestOptions }

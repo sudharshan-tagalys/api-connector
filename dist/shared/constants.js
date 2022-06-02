@@ -18,7 +18,6 @@ var DEFAULT_CONFIGURATION = {
 };
 exports.DEFAULT_CONFIGURATION = DEFAULT_CONFIGURATION;
 var DEFAULT_REQUEST_OPTIONS = {
-    configuration: {},
     onSuccess: function (response) {
         console.log("API response:", response);
     },
