@@ -50,6 +50,7 @@
         dom.innerHTML = JSON.stringify(responseInstance, null, true)
       }
     })
+
     document.querySelector('#mock-search-input').addEventListener("input", function(evt){
       ssInstance.setQuery(evt.target.value)
     })
@@ -57,7 +58,7 @@
       // Tagalys.APIConnector.SimilarProducts.call({
       //   params: {
       //     limit: 2,
-      //     productId: 1669078908963,
+      //     productId: 142357,
       //   },
       //   onSuccess: function (response, analyticsData = {}) {
       //     console.log("SimilarProducts", response);
@@ -66,7 +67,7 @@
 
       // Tagalys.APIConnector.SmartWidget.call({
       //   params: {
-      //     widgetId: "a7d4fb11dd14d3a4a6c0",
+      //     widgetId: "d89a516f5e5d60146197",
       //   },
       //   onSuccess: function (response, analyticsData = {}) {
       //     console.log("Smart widget", response);
