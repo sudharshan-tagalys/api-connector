@@ -43,7 +43,8 @@ class SearchSuggestions extends APIConnector {
   getPopularSearches() {
     return new Promise((resolve, reject) => {
       const recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
-      popularSearches.fetchPopularSearches().then((popularSearches: any) => {
+      // TODO: A way to have configuration inside the popularSearches interface itself.
+      popularSearches.fetchPopularSearches(this.requestOptions.configuration).then((popularSearches: any) => {
         resolve({
           recentSearches: recentSearches.queries.slice(0,5),
           popularSearches: popularSearches.queries

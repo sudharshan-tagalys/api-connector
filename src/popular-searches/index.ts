@@ -8,7 +8,7 @@ class PopularSearches extends APIConnector {
     }
   }
 
-  fetchPopularSearches() {
+  fetchPopularSearches(configuration) {
     // if popular searches exist in user's local storage, then merge it with recentSearches and return it
     return new Promise((resolve, reject) => {
       const localPopularSearches = localStorage.getItem("tagalysPopularSearches") || { queries: [] }
@@ -17,9 +17,7 @@ class PopularSearches extends APIConnector {
       } else {
         this.call({
           onSuccess: (response) => {
-            const popularSearchesFromResponse = this.responseFormatter.popularSearches({
-              queries: response.popular_searches
-            }, this.requestOptions.configuration)
+            const popularSearchesFromResponse = this.responseFormatter.popularSearches(response, configuration)
             localStorage.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000)
             resolve(popularSearchesFromResponse)
           },
