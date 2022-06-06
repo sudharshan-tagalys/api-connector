@@ -36,25 +36,22 @@ class SearchSuggestions extends APIConnector {
     this.requestOptions = requestOptions
     return {
       setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
-      recentSearches: () => this.getPopularSearches(),
+      getPopularSearches: () => this.getPopularSearches(),
     }
   }
 
   getPopularSearches() {
     return new Promise((resolve, reject) => {
-      popularSearches.call({
-        onSuccess: (response) => {
-          resolve(this.responseFormatter.searchSuggestions({
-            queries: response.popular_searches
-          }, this.requestOptions.configuration))
-        },
-        onFailure: (response) => {
-          reject(response)
-        }
+      const recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
+      popularSearches.fetchPopularSearches().then((popularSearches: any) => {
+        resolve({
+          recentSearches: recentSearches.queries.slice(0,5),
+          popularSearches: popularSearches.queries
+        })
       })
     })
   }
- 
+
   defaultRequestOptions(){
     return {
       ...DEFAULT_REQUEST_OPTIONS,

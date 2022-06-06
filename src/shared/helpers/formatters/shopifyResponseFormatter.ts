@@ -72,7 +72,9 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   popularSearches(response, configuration) {
-
+    return {
+      queries: suggestionsFormatter.format({ queries: response.popular_searches}, configuration),
+    }
   }
 
   fieldsToIgnore(){
