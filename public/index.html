@@ -52,7 +52,7 @@
 
     document.querySelector('#mock-search-input').addEventListener("input", function(evt){
       ssInstance.setQuery(evt.target.value)
-      ssInstance.recentSearches().then((response)=>{
+      ssInstance.getPopularSearches().then((response)=>{
         console.log(response)
       })
     })

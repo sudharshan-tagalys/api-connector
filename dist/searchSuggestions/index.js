@@ -28,6 +28,7 @@ var __assign = (this && this.__assign) || function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
 var constants_1 = require("../shared/constants");
+var localStorage_1 = require("../lib/localStorage");
 var popular_searches_1 = require("../popular-searches");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
@@ -67,21 +68,17 @@ var SearchSuggestions = /** @class */ (function (_super) {
                 if (callAPI === void 0) { callAPI = true; }
                 return _this.setQuery(query, callAPI);
             },
-            recentSearches: function () { return _this.getPopularSearches(); },
+            getPopularSearches: function () { return _this.getPopularSearches(); },
         };
     };
     SearchSuggestions.prototype.getPopularSearches = function () {
-        var _this = this;
         return new Promise(function (resolve, reject) {
-            popular_searches_1.default.call({
-                onSuccess: function (response) {
-                    resolve(_this.responseFormatter.searchSuggestions({
-                        queries: response.popular_searches
-                    }, _this.requestOptions.configuration));
-                },
-                onFailure: function (response) {
-                    reject(response);
-                }
+            var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
+            popular_searches_1.default.fetchPopularSearches().then(function (popularSearches) {
+                resolve({
+                    recentSearches: recentSearches.queries.slice(0, 5),
+                    popularSearches: popularSearches.queries
+                });
             });
         });
     };

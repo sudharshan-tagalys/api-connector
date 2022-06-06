@@ -35,7 +35,9 @@ declare class ShopifyResponseFormatter extends Formatter {
         queries: any;
         products: any;
     };
-    popularSearches(response: any, configuration: any): void;
+    popularSearches(response: any, configuration: any): {
+        queries: any;
+    };
     fieldsToIgnore(): string[];
 }
 export default ShopifyResponseFormatter;

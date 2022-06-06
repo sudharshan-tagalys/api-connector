@@ -15,7 +15,7 @@ declare class SearchSuggestions extends APIConnector {
     setQuery(query: any, callAPI?: boolean): void;
     new(requestOptions: any): {
         setQuery: (query: any, callAPI?: boolean) => void;
-        recentSearches: () => Promise<unknown>;
+        getPopularSearches: () => Promise<unknown>;
     };
     getPopularSearches(): Promise<unknown>;
     defaultRequestOptions(): {

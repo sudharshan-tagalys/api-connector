@@ -87,6 +87,9 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
         };
     };
     ShopifyResponseFormatter.prototype.popularSearches = function (response, configuration) {
+        return {
+            queries: suggestionsFormatter_1.default.format({ queries: response.popular_searches }, configuration),
+        };
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {
         return ['sku'];

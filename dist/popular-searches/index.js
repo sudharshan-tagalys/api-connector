@@ -16,6 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
+var localStorage_1 = require("../lib/localStorage");
 var PopularSearches = /** @class */ (function (_super) {
     __extends(PopularSearches, _super);
     function PopularSearches() {
@@ -25,6 +26,30 @@ var PopularSearches = /** @class */ (function (_super) {
         return {
             path: "popular_searches"
         };
+    };
+    PopularSearches.prototype.fetchPopularSearches = function () {
+        var _this = this;
+        // if popular searches exist in user's local storage, then merge it with recentSearches and return it
+        return new Promise(function (resolve, reject) {
+            var localPopularSearches = localStorage_1.default.getItem("tagalysPopularSearches") || { queries: [] };
+            if (localPopularSearches.queries.length > 0) {
+                resolve(localPopularSearches);
+            }
+            else {
+                _this.call({
+                    onSuccess: function (response) {
+                        var popularSearchesFromResponse = _this.responseFormatter.popularSearches({
+                            queries: response.popular_searches
+                        }, _this.requestOptions.configuration);
+                        localStorage_1.default.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000);
+                        resolve(popularSearchesFromResponse);
+                    },
+                    onFailure: function (response) {
+                        reject(response);
+                    }
+                });
+            }
+        });
     };
     PopularSearches.prototype.exporterName = function () {
         return 'PopularSearches';
