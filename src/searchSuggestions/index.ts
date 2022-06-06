@@ -37,6 +37,8 @@ class SearchSuggestions extends APIConnector {
     return {
       setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
       getPopularSearches: () => this.getPopularSearches(),
+      addRecentSearch: (query) => this.addRecentSearch(query),
+      removeRecentSearch: (query) => this.removeRecentSearch(query)
     }
   }
 
@@ -53,6 +55,18 @@ class SearchSuggestions extends APIConnector {
     })
   }
 
+  addRecentSearch(displayString: string) {
+    const recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
+    recentSearches.queries = recentSearches.concat([displayString])
+    localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000)
+  }
+
+  removeRecentSearch(displayString: string) {
+    const recentSearches = localStorage.getItem("tagalysPopularSearches") || { queries: [] }
+    recentSearches.queries = recentSearches.queries.filter(recentSearch => recentSearch.displayString !== displayString)
+    localStorage.setValue("tagalysPopularSearches", recentSearches, 3600000)
+  }
+
   defaultRequestOptions(){
     return {
       ...DEFAULT_REQUEST_OPTIONS,
@@ -61,7 +75,7 @@ class SearchSuggestions extends APIConnector {
           query: "q",
           queryFilter: "qf"
         },
-        categorySeperator: ">",
+        categorySeperator: "▸",
         hierachySeperator: "->"
       }
     }
