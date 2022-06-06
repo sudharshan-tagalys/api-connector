@@ -72,9 +72,11 @@ var SearchSuggestions = /** @class */ (function (_super) {
         };
     };
     SearchSuggestions.prototype.getPopularSearches = function () {
+        var _this = this;
         return new Promise(function (resolve, reject) {
             var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
-            popular_searches_1.default.fetchPopularSearches().then(function (popularSearches) {
+            // TODO: A way to have configuration inside the popularSearches interface itself.
+            popular_searches_1.default.fetchPopularSearches(_this.requestOptions.configuration).then(function (popularSearches) {
                 resolve({
                     recentSearches: recentSearches.queries.slice(0, 5),
                     popularSearches: popularSearches.queries

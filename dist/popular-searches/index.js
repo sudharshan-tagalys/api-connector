@@ -27,7 +27,7 @@ var PopularSearches = /** @class */ (function (_super) {
             path: "popular_searches"
         };
     };
-    PopularSearches.prototype.fetchPopularSearches = function () {
+    PopularSearches.prototype.fetchPopularSearches = function (configuration) {
         var _this = this;
         // if popular searches exist in user's local storage, then merge it with recentSearches and return it
         return new Promise(function (resolve, reject) {
@@ -38,9 +38,7 @@ var PopularSearches = /** @class */ (function (_super) {
             else {
                 _this.call({
                     onSuccess: function (response) {
-                        var popularSearchesFromResponse = _this.responseFormatter.popularSearches({
-                            queries: response.popular_searches
-                        }, _this.requestOptions.configuration);
+                        var popularSearchesFromResponse = _this.responseFormatter.popularSearches(response, configuration);
                         localStorage_1.default.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000);
                         resolve(popularSearchesFromResponse);
                     },
