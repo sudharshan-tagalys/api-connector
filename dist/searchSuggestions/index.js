@@ -69,6 +69,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
                 return _this.setQuery(query, callAPI);
             },
             getPopularSearches: function () { return _this.getPopularSearches(); },
+            addRecentSearch: function (query) { return _this.addRecentSearch(query); },
+            removeRecentSearch: function (query) { return _this.removeRecentSearch(query); }
         };
     };
     SearchSuggestions.prototype.getPopularSearches = function () {
@@ -84,13 +86,23 @@ var SearchSuggestions = /** @class */ (function (_super) {
             });
         });
     };
+    SearchSuggestions.prototype.addRecentSearch = function (displayString) {
+        var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
+        recentSearches.queries = recentSearches.concat([displayString]);
+        localStorage_1.default.setValue("tagalysRecentSearches", recentSearches, 3600000);
+    };
+    SearchSuggestions.prototype.removeRecentSearch = function (displayString) {
+        var recentSearches = localStorage_1.default.getItem("tagalysPopularSearches") || { queries: [] };
+        recentSearches.queries = recentSearches.queries.filter(function (recentSearch) { return recentSearch.displayString !== displayString; });
+        localStorage_1.default.setValue("tagalysPopularSearches", recentSearches, 3600000);
+    };
     SearchSuggestions.prototype.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
                 queryString: {
                     query: "q",
                     queryFilter: "qf"
                 },
-                categorySeperator: ">",
+                categorySeperator: "▸",
                 hierachySeperator: "->"
             } });
     };
