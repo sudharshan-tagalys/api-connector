@@ -8,6 +8,8 @@ class PopularSearches extends APIConnector {
     }
   }
 
+  // rename to fetch
+  // configuration to requestOptions
   fetchPopularSearches(configuration) {
     // if popular searches exist in user's local storage, then merge it with recentSearches and return it
     return new Promise((resolve, reject) => {
