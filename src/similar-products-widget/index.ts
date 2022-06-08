@@ -1,20 +1,17 @@
-import APIConnector from "../lib/apiConnector"
-import { AnalyticsData } from "../shared/types"
-import { WidgetRequestOptions } from "../shared/types"
+import Widget from "../lib/widget"
 
-class SimilarProductsWidget extends APIConnector {
-  getRequestOptions() : WidgetRequestOptions{
-    return {
-      path: `products/${this.requestOptions.params.productId}/similar`,
-      params: {
-        request: ["result", "details"],
-        max_products: this.requestOptions.params.limit || 16,
-      },
-    }
+class SimilarProductsWidget extends Widget {
+
+  exporterName() {
+    return 'SimilarProducts'
   }
 
-  exporterName(){
-    return 'SimilarProducts'
+  path(): string {
+    return `products/${this.requestOptions.params.productId}/similar`
+  }
+
+  plType(): string{
+    return "widget-similar_products"
   }
 
   formatResponse(response){
@@ -23,23 +20,6 @@ class SimilarProductsWidget extends APIConnector {
 
   isFailureResponse(response) {
     return response.status != "OK"
-  }
-
-  extractAnalyticsData(response) : AnalyticsData {
-    let plDetails: any = {}
-    if (response.hasOwnProperty("sku")) {
-      plDetails["sku"] = response.sku
-    }
-    const productSkus = response["details"].map((product) => product.sku)
-    return {
-      event_type: "product_list",
-      event_details: {
-        pl_type: "widget-similar_products",
-        pl_details: plDetails,
-        pl_products: productSkus,
-        pl_total: productSkus.length
-      }
-    }
   }
 }
 

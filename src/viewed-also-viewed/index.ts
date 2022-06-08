@@ -1,42 +1,23 @@
-import APIConnector from "../lib/apiConnector"
-import { AnalyticsData } from "../shared/types"
-import { WidgetRequestOptions } from "../shared/types"
+import Widget from "../lib/widget"
 
-class ViewedAlsoViewed extends APIConnector {
-  getRequestOptions() : WidgetRequestOptions{
-    return {
-      path: `products/${this.requestOptions.params.productId}/viewed_also_viewed`,
-      params: {
-        request: ["result", "details"],
-        max_products: this.requestOptions.params.limit || 16,
-      },
-    }
+class ViewedAlsoViewed extends Widget {
+
+  exporterName(): string{
+    return 'ViewedAlsoViewed'
   }
 
-  exporterName(){
-    return 'ViewedAlsoViewed'
+  path(): string {
+    return `products/${this.requestOptions.params.productId}/viewed_also_viewed`
+  }
+
+  plType(): string{
+    return "widget-viewed_also_viewed"
   }
 
   formatResponse(response){
     return this.responseFormatter.viewedAlsoViewed(response)
   }
 
-  extractAnalyticsData(response) : AnalyticsData {
-    let plDetails: any = {}
-    if (response.hasOwnProperty("sku")) {
-      plDetails["product"] = response.sku
-    }
-    const productSkus = response["details"].map((product) => product.sku)
-    return {
-      event_type: "product_list",
-      event_details: {
-        pl_type: "widget-viewed_also_viewed",
-        pl_details: plDetails,
-        pl_products: productSkus,
-        pl_total: productSkus.length
-      }
-    }
-  }
 }
 
 export default new ViewedAlsoViewed();

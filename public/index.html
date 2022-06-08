@@ -8,35 +8,36 @@
   <script src="./bundle.js" async></script>
 </head>
 <body>
-  <input type="text" id="mock-search-input"/>
+  <!-- <input type="text" id="mock-search-input"/> -->
   <div id="response"/>
   <script>
     document.addEventListener("tagalys:ready", function () {
       Tagalys.APIConnector.setConfiguration({
-        apiServer: "https://api-r3.tagalys.com",
+        apiServer: "https://stage2-api.tagalys.com",
         platform: "shopify",
         credentials: {
-          clientCode: "4E11508CF294F71C",
-          apiKey: "14024c78c49def093aaaa842aece2d6e",
+          clientCode: "E7303D10C6F8DD0C",
+          apiKey: "86d3ef13e6fa14950b1bca5ff2629fc5",
         },
-        currencyCode: "USD",
-        storeId: "ioeqgnfrr7",
+        currencyCode: "AED",
+        storeId: "64949387478",
         track: true,
         analyticsStorageConsentProvided: function () {
-          // should return true/false based on user's consent settings
           return true;
         },
       });
 
+      var productId = 7669655830742
+
       // Tagalys.APIConnector.setConfiguration({
-      //   apiServer: "https://api-r3.tagalys.com",
-      //   platform: "shopify",
-      //   credentials: {
-      //     clientCode: "0E7D582C1A533324",
-      //     apiKey: "85bc6c2645fa71e67e0e1ee00297e97b",
-      //   },
-      //   currencyCode: "AUD",
-      //   storeId: "1",
+        // apiServer: "https://api-r3.tagalys.com",
+        // platform: "shopify",
+        // credentials: {
+        //   clientCode: "0E7D582C1A533324",
+        //   apiKey: "85bc6c2645fa71e67e0e1ee00297e97b",
+        // },
+        // currencyCode: "AUD",
+        // storeId: "1",
       //   track: true,
       //   analyticsStorageConsentProvided: function () {
       //     // should return true/false based on user's consent settings
@@ -66,52 +67,71 @@
     //   }
     // })
 
-    document.querySelector('#mock-search-input').addEventListener("input", function(evt){
-      ssInstance.setQuery(evt.target.value)
-      ssInstance.getPopularSearches().then((response)=>{
-        console.log(response)
-      })
-    })
+    // document.querySelector('#mock-search-input').addEventListener("input", function(evt){
+    //   ssInstance.setQuery(evt.target.value)
+    //   ssInstance.getPopularSearches().then((response)=>{
+    //     console.log(response)
+    //   })
+    // })
 
       // Tagalys.APIConnector.SimilarProducts.call({
       //   params: {
       //     limit: 2,
-      //     productId: 142357,
+      //     productId: productId,
       //   },
       //   onSuccess: function (response, analyticsData = {}) {
-      //     console.log("SimilarProducts", response);
+      //     appendToBody(response, analyticsData)
       //   },
       // });
 
       // Tagalys.APIConnector.ViewedAlsoViewed.call({
       //   params: {
       //     limit: 2,
-      //     productId: 13252,
+      //     productId: productId,
       //   },
       //   onSuccess: function (response, analyticsData = {}) {
-      //     console.log("VaV", response);
+      //     appendToBody(response, analyticsData)
       //   },
       // });
 
-      Tagalys.APIConnector.BoughtAlsoBought.call({
-        params: {
-          limit: 2,
-          productId: 135705,
-        },
-        onSuccess: function (response, analyticsData = {}) {
-          console.log("VaV", response);
-        },
-      });
-
-      // Tagalys.APIConnector.SmartWidget.call({
+      // Tagalys.APIConnector.BoughtAlsoBought.call({
       //   params: {
-      //     widgetId: "d89a516f5e5d60146197",
+      //     limit: 2,
+      //     productId: productId,
       //   },
       //   onSuccess: function (response, analyticsData = {}) {
-      //     console.log("Smart widget", response);
+      //     appendToBody(response, analyticsData)
+      //   },
+      // });
+
+      Tagalys.APIConnector.SmartWidget.call({
+        params: {
+          widgetId: "638c9363032cc5e4a28e",
+        },
+        onSuccess: function (response, analyticsData = {}) {
+          appendToBody(response, analyticsData)
+        },
+      });
+      // Tagalys.APIConnector.AddedToCartAlsoAddedToCart.call({
+      //   params: {
+      //     limit: 2,
+      //     productId: productId,
+      //   },
+      //   onSuccess: function (response, analyticsData = {}) {
+      //     appendToBody(response, analyticsData)
       //   },
       // });
     });
+
+    function appendToBody(response, analyticsData = {}) {
+      var div = document.createElement("div");
+      div.innerHTML = JSON.stringify(response, null, 2);
+
+      var analyticsDataDiv = document.createElement("div");
+      analyticsDataDiv.innerHTML = "<br/><br/> analyticsData:" + JSON.stringify(analyticsData, null, 2)
+      document.body.appendChild(div)
+      document.body.appendChild(analyticsDataDiv)
+    }
   </script>
 </body>
 </html>

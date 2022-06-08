@@ -1,20 +1,17 @@
-import APIConnector from "../lib/apiConnector"
+import Widget from "../lib/widget"
 import { AnalyticsData } from "../shared/types"
-import { WidgetRequestOptions } from "../shared/types"
+class SmartWidget extends Widget {
 
-class SmartWidget extends APIConnector {
-  getRequestOptions() : WidgetRequestOptions{
-    return {
-      path: `custom_widgets/${this.requestOptions.params.widgetId}`,
-      params: {
-        request: ["result", "details"],
-        max_products: this.requestOptions.params.limit || 16,
-      },
-    }
+  exporterName(): string{
+    return 'SmartWidget'
   }
 
-  exporterName(){
-    return 'SmartWidget'
+  path(): string{
+    return `custom_widgets/${this.requestOptions.params.widgetId}`
+  }
+
+  plType(): string{
+    return 'widget-custom'
   }
 
   formatResponse(response){

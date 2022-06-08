@@ -67,6 +67,13 @@ class ShopifyResponseFormatter extends Formatter {
     }
   }
 
+
+  addedToCartAlsoAddedToCart(response) {
+    return {
+      products: this.formatDetails(response.details)
+    }
+  }
+
   smartWidgets(response){
     return {
       name: response.name,
@@ -76,7 +83,6 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   searchSuggestions(response, configuration) {
-    // move into searchSuggestions formatter class
     return {
       queries: suggestionsFormatter.format(response, configuration),
       products: this.formatDetails(response.products)

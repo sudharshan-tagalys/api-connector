@@ -7,11 +7,12 @@ interface AnalyticsData {
   event_details: Object;
 }
 
+interface WidgetParams {
+  request: string[];
+  max_products?: number;
+}
 interface WidgetRequestOptions extends RequestOptions {
-  params: {
-    request: string[];
-    max_products?: number;
-  }
+  params: WidgetParams
 }
 
 
@@ -39,6 +40,7 @@ interface APIConfiguration {
 export {
   RequestOptions,
   AnalyticsData,
+  WidgetParams,
   APIIdentification,
   APIConfiguration,
   WidgetRequestOptions
