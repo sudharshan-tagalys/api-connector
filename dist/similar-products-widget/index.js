@@ -15,23 +15,20 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var apiConnector_1 = require("../lib/apiConnector");
+var widget_1 = require("../lib/widget");
 var SimilarProductsWidget = /** @class */ (function (_super) {
     __extends(SimilarProductsWidget, _super);
     function SimilarProductsWidget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SimilarProductsWidget.prototype.getRequestOptions = function () {
-        return {
-            path: "products/".concat(this.requestOptions.params.productId, "/similar"),
-            params: {
-                request: ["result", "details"],
-                max_products: this.requestOptions.params.limit || 16,
-            },
-        };
-    };
     SimilarProductsWidget.prototype.exporterName = function () {
         return 'SimilarProducts';
+    };
+    SimilarProductsWidget.prototype.path = function () {
+        return "products/".concat(this.requestOptions.params.productId, "/similar");
+    };
+    SimilarProductsWidget.prototype.plType = function () {
+        return "widget-similar_products";
     };
     SimilarProductsWidget.prototype.formatResponse = function (response) {
         return this.responseFormatter.similarProducts(response);
@@ -39,23 +36,7 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
     SimilarProductsWidget.prototype.isFailureResponse = function (response) {
         return response.status != "OK";
     };
-    SimilarProductsWidget.prototype.extractAnalyticsData = function (response) {
-        var plDetails = {};
-        if (response.hasOwnProperty("sku")) {
-            plDetails["sku"] = response.sku;
-        }
-        var productSkus = response["details"].map(function (product) { return product.sku; });
-        return {
-            event_type: "product_list",
-            event_details: {
-                pl_type: "widget-similar_products",
-                pl_details: plDetails,
-                pl_products: productSkus,
-                pl_total: productSkus.length
-            }
-        };
-    };
     return SimilarProductsWidget;
-}(apiConnector_1.default));
+}(widget_1.default));
 exports.default = new SimilarProductsWidget();
 //# sourceMappingURL=index.js.map

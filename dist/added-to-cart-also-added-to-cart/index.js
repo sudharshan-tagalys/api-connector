@@ -16,24 +16,24 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var widget_1 = require("../lib/widget");
-var BoughtAlsoBought = /** @class */ (function (_super) {
-    __extends(BoughtAlsoBought, _super);
-    function BoughtAlsoBought() {
+var AddedToCartAlsoAddedToCart = /** @class */ (function (_super) {
+    __extends(AddedToCartAlsoAddedToCart, _super);
+    function AddedToCartAlsoAddedToCart() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    BoughtAlsoBought.prototype.exporterName = function () {
-        return 'BoughtAlsoBought';
+    AddedToCartAlsoAddedToCart.prototype.exporterName = function () {
+        return 'AddedToCartAlsoAddedToCart';
     };
-    BoughtAlsoBought.prototype.path = function () {
-        return "products/".concat(this.requestOptions.params.productId, "/bought_also_bought");
+    AddedToCartAlsoAddedToCart.prototype.path = function () {
+        return "products/".concat(this.requestOptions.params.productId, "/atc_also_atc");
     };
-    BoughtAlsoBought.prototype.plType = function () {
-        return "widget-bought_also_bought";
+    AddedToCartAlsoAddedToCart.prototype.plType = function () {
+        return 'widget-atc_also_atc';
     };
-    BoughtAlsoBought.prototype.formatResponse = function (response) {
-        return this.responseFormatter.boughtAlsoBought(response);
+    AddedToCartAlsoAddedToCart.prototype.formatResponse = function (response) {
+        return this.responseFormatter.addedToCartAlsoAddedToCart(response);
     };
-    return BoughtAlsoBought;
+    return AddedToCartAlsoAddedToCart;
 }(widget_1.default));
-exports.default = new BoughtAlsoBought();
+exports.default = new AddedToCartAlsoAddedToCart();
 //# sourceMappingURL=index.js.map

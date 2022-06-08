@@ -82,6 +82,11 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             products: this.formatDetails(response.details)
         };
     };
+    ShopifyResponseFormatter.prototype.addedToCartAlsoAddedToCart = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
     ShopifyResponseFormatter.prototype.smartWidgets = function (response) {
         return {
             name: response.name,
@@ -90,7 +95,6 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
         };
     };
     ShopifyResponseFormatter.prototype.searchSuggestions = function (response, configuration) {
-        // move into searchSuggestions formatter class
         return {
             queries: suggestionsFormatter_1.default.format(response, configuration),
             products: this.formatDetails(response.products)

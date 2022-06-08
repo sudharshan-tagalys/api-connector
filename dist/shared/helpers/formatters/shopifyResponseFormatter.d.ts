@@ -32,6 +32,9 @@ declare class ShopifyResponseFormatter extends Formatter {
     viewedAlsoViewed(response: any): {
         products: any;
     };
+    addedToCartAlsoAddedToCart(response: any): {
+        products: any;
+    };
     smartWidgets(response: any): {
         name: any;
         widget_name: any;

@@ -1,10 +1,9 @@
 import Widget from "../lib/widget";
-declare class SimilarProductsWidget extends Widget {
+declare class AddedToCartAlsoAddedToCart extends Widget {
     exporterName(): string;
     path(): string;
     plType(): string;
     formatResponse(response: any): any;
-    isFailureResponse(response: any): boolean;
 }
-declare const _default: SimilarProductsWidget;
+declare const _default: AddedToCartAlsoAddedToCart;
 export default _default;

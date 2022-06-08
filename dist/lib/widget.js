@@ -15,42 +15,47 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var widget_1 = require("../lib/widget");
-var SmartWidget = /** @class */ (function (_super) {
-    __extends(SmartWidget, _super);
-    function SmartWidget() {
+var apiConnector_1 = require("../lib/apiConnector");
+var Widget = /** @class */ (function (_super) {
+    __extends(Widget, _super);
+    function Widget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SmartWidget.prototype.exporterName = function () {
-        return 'SmartWidget';
-    };
-    SmartWidget.prototype.path = function () {
-        return "custom_widgets/".concat(this.requestOptions.params.widgetId);
-    };
-    SmartWidget.prototype.plType = function () {
-        return 'widget-custom';
-    };
-    SmartWidget.prototype.formatResponse = function (response) {
-        return this.responseFormatter.smartWidgets(response);
-    };
-    SmartWidget.prototype.extractAnalyticsData = function (response) {
-        var plDetails = {
-            id: this.requestOptions.params.widgetId,
-            title: response.name
-            // TODO: confirm url
+    Widget.prototype.getRequestOptions = function () {
+        return {
+            path: this.path(),
+            params: this.getParams()
         };
+    };
+    Widget.prototype.getParams = function () {
+        return {
+            request: ["result", "details"],
+            max_products: this.requestOptions.params.limit || 16,
+        };
+    };
+    Widget.prototype.path = function () {
+        return "";
+    };
+    Widget.prototype.plType = function () {
+        return "";
+    };
+    Widget.prototype.extractAnalyticsData = function (response) {
+        var plDetails = {};
+        if (response.hasOwnProperty("sku")) {
+            plDetails["product"] = response.sku;
+        }
         var productSkus = response["details"].map(function (product) { return product.sku; });
         return {
             event_type: "product_list",
             event_details: {
-                pl_type: "widget-custom",
+                pl_type: this.plType(),
                 pl_details: plDetails,
                 pl_products: productSkus,
                 pl_total: productSkus.length
             }
         };
     };
-    return SmartWidget;
-}(widget_1.default));
-exports.default = new SmartWidget();
-//# sourceMappingURL=index.js.map
+    return Widget;
+}(apiConnector_1.default));
+exports.default = Widget;
+//# sourceMappingURL=widget.js.map

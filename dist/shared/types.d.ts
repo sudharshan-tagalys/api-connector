@@ -5,11 +5,12 @@ interface AnalyticsData {
     event_type: string;
     event_details: Object;
 }
+interface WidgetParams {
+    request: string[];
+    max_products?: number;
+}
 interface WidgetRequestOptions extends RequestOptions {
-    params: {
-        request: string[];
-        max_products?: number;
-    };
+    params: WidgetParams;
 }
 interface APIIdentification {
     client_code: string;
@@ -30,4 +31,4 @@ interface APIConfiguration {
     track: boolean;
     analyticsStorageConsentProvided: () => boolean;
 }
-export { RequestOptions, AnalyticsData, APIIdentification, APIConfiguration, WidgetRequestOptions };
+export { RequestOptions, AnalyticsData, WidgetParams, APIIdentification, APIConfiguration, WidgetRequestOptions };

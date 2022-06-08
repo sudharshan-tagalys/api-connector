@@ -1,11 +1,9 @@
-import APIConnector from "../lib/apiConnector";
-import { AnalyticsData } from "../shared/types";
-import { WidgetRequestOptions } from "../shared/types";
-declare class BoughtAlsoBought extends APIConnector {
-    getRequestOptions(): WidgetRequestOptions;
+import Widget from "../lib/widget";
+declare class BoughtAlsoBought extends Widget {
     exporterName(): string;
+    path(): string;
+    plType(): string;
     formatResponse(response: any): any;
-    extractAnalyticsData(response: any): AnalyticsData;
 }
 declare const _default: BoughtAlsoBought;
 export default _default;
