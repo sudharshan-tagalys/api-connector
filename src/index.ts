@@ -1,8 +1,8 @@
 import configuration from "./lib/configuration";
 import { DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS } from "./shared/constants";
-import similarProductsWidget from "./similarProductsWidget";
-import smartWidget from "./smartWidget";
-import searchSuggestions from "./searchSuggestions"
+import similarProductsWidget from "./similar-products-widget";
+import smartWidget from "./smart-widget";
+import searchSuggestions from "./search-suggestions"
 
 export const APIConnector = {
   ...similarProductsWidget.export(),

@@ -1,5 +1,5 @@
 import Formatter from './formatter';
-import suggestionsFormatter from "../../../searchSuggestions/suggestionsFormatter"
+import suggestionsFormatter from "../../../search-suggestions/suggestionsFormatter"
 
 class ShopifyResponseFormatter extends Formatter {
   platformFieldTranslations(){
