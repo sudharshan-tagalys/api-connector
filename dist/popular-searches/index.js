@@ -27,6 +27,8 @@ var PopularSearches = /** @class */ (function (_super) {
             path: "popular_searches"
         };
     };
+    // rename to fetch
+    // configuration to requestOptions
     PopularSearches.prototype.fetchPopularSearches = function (configuration) {
         var _this = this;
         // if popular searches exist in user's local storage, then merge it with recentSearches and return it

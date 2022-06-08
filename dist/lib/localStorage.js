@@ -5,27 +5,26 @@ var LocalStorage = /** @class */ (function () {
     }
     LocalStorage.prototype.getItem = function (key) {
         var item = window.localStorage.getItem(key);
-        var parsedItem = item ? JSON.parse(item) : "";
+        var parsedItem = item ? JSON.parse(item) : null;
         if (parsedItem) {
-            if (parsedItem.hasOwnProperty("expiry") && parsedItem.expiry <= this.getCurrentTime()) {
+            if (parsedItem.hasOwnProperty("expiry") && this.getCurrentTime() >= parsedItem.expiry) {
                 this.removeItem(key);
                 return null;
             }
             return parsedItem.value;
         }
-        return "";
+        return null;
     };
     LocalStorage.prototype.removeItem = function (key) {
         window.localStorage.removeItem(key);
     };
+    // accept 1-h/1-ms instead of raw ttl
     LocalStorage.prototype.setValue = function (key, value, ttl) {
         var valueToStore = {
             value: value,
         };
-        console.log(ttl);
         if (ttl) {
-            var now = new Date();
-            valueToStore.expiry = now.getTime() + ttl;
+            valueToStore.expiry = this.getCurrentTime() + ttl;
         }
         return window.localStorage.setItem(key, JSON.stringify(valueToStore));
     };

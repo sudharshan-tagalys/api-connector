@@ -16,7 +16,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var formatter_1 = require("./formatter");
-var suggestionsFormatter_1 = require("../../../searchSuggestions/suggestionsFormatter");
+var suggestionsFormatter_1 = require("../../../search-suggestions/suggestionsFormatter");
 var ShopifyResponseFormatter = /** @class */ (function (_super) {
     __extends(ShopifyResponseFormatter, _super);
     function ShopifyResponseFormatter() {
