@@ -16,39 +16,55 @@
         apiServer: "https://api-r3.tagalys.com",
         platform: "shopify",
         credentials: {
-          clientCode: "39D2E8D16FB8EC72",
-          apiKey: "1f53183fac482d47bc62b0284d5c33da",
+          clientCode: "4E11508CF294F71C",
+          apiKey: "14024c78c49def093aaaa842aece2d6e",
         },
         currencyCode: "USD",
-        storeId: "1",
-        track: false,
+        storeId: "ioeqgnfrr7",
+        track: true,
         analyticsStorageConsentProvided: function () {
           // should return true/false based on user's consent settings
           return true;
         },
       });
 
-    var ssInstance = Tagalys.APIConnector.SearchSuggestions.new({
-      params: {
-        query: "dre",
-        request: {
-          products: 4,
-          queries: 20
-        }
-      },
-      configuration: {
-        queryString: {
-          query: "q",
-          queryFilter: "qf"
-        },
-        categorySeperator: ">",
-        hierachySeperator: "->"
-      },
-      onSuccess: function(responseInstance) {
-        var dom = document.querySelector("#response")
-        dom.innerHTML = JSON.stringify(responseInstance, null, true)
-      }
-    })
+      // Tagalys.APIConnector.setConfiguration({
+      //   apiServer: "https://api-r3.tagalys.com",
+      //   platform: "shopify",
+      //   credentials: {
+      //     clientCode: "0E7D582C1A533324",
+      //     apiKey: "85bc6c2645fa71e67e0e1ee00297e97b",
+      //   },
+      //   currencyCode: "AUD",
+      //   storeId: "1",
+      //   track: true,
+      //   analyticsStorageConsentProvided: function () {
+      //     // should return true/false based on user's consent settings
+      //     return true;
+      //   },
+      // });
+
+    // var ssInstance = Tagalys.APIConnector.SearchSuggestions.new({
+    //   params: {
+    //     query: "dre",
+    //     request: {
+    //       products: 4,
+    //       queries: 20
+    //     }
+    //   },
+    //   configuration: {
+    //     queryString: {
+    //       query: "q",
+    //       queryFilter: "qf"
+    //     },
+    //     categorySeperator: ">",
+    //     hierachySeperator: "->"
+    //   },
+    //   onSuccess: function(responseInstance) {
+    //     var dom = document.querySelector("#response")
+    //     dom.innerHTML = JSON.stringify(responseInstance, null, true)
+    //   }
+    // })
 
     document.querySelector('#mock-search-input').addEventListener("input", function(evt){
       ssInstance.setQuery(evt.target.value)
@@ -66,6 +82,26 @@
       //     console.log("SimilarProducts", response);
       //   },
       // });
+
+      // Tagalys.APIConnector.ViewedAlsoViewed.call({
+      //   params: {
+      //     limit: 2,
+      //     productId: 13252,
+      //   },
+      //   onSuccess: function (response, analyticsData = {}) {
+      //     console.log("VaV", response);
+      //   },
+      // });
+
+      Tagalys.APIConnector.BoughtAlsoBought.call({
+        params: {
+          limit: 2,
+          productId: 135705,
+        },
+        onSuccess: function (response, analyticsData = {}) {
+          console.log("VaV", response);
+        },
+      });
 
       // Tagalys.APIConnector.SmartWidget.call({
       //   params: {

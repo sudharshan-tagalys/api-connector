@@ -1,9 +1,9 @@
 import APIConnector from "../lib/apiConnector"
 import { AnalyticsData } from "../shared/types"
-import { SmartWidgetRequestOptions } from "./types"
+import { WidgetRequestOptions } from "../shared/types"
 
 class SmartWidget extends APIConnector {
-  getRequestOptions() : SmartWidgetRequestOptions{
+  getRequestOptions() : WidgetRequestOptions{
     return {
       path: `custom_widgets/${this.requestOptions.params.widgetId}`,
       params: {

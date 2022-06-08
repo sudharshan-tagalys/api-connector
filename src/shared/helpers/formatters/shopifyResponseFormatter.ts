@@ -55,6 +55,18 @@ class ShopifyResponseFormatter extends Formatter {
     }
   }
 
+  boughtAlsoBought(response) {
+    return {
+      products: this.formatDetails(response.details)
+    }
+  }
+
+  viewedAlsoViewed(response) {
+    return {
+      products: this.formatDetails(response.details)
+    }
+  }
+
   smartWidgets(response){
     return {
       name: response.name,

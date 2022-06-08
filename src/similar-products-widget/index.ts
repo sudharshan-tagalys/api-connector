@@ -1,9 +1,9 @@
 import APIConnector from "../lib/apiConnector"
 import { AnalyticsData } from "../shared/types"
-import { SimilarProductsWidgetRequestOptions } from "./types"
+import { WidgetRequestOptions } from "../shared/types"
 
 class SimilarProductsWidget extends APIConnector {
-  getRequestOptions() : SimilarProductsWidgetRequestOptions{
+  getRequestOptions() : WidgetRequestOptions{
     return {
       path: `products/${this.requestOptions.params.productId}/similar`,
       params: {
