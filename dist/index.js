@@ -17,7 +17,9 @@ var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
 var smart_widget_1 = require("./smart-widget");
 var search_suggestions_1 = require("./search-suggestions");
-exports.APIConnector = __assign(__assign(__assign(__assign({}, similar_products_widget_1.default.export()), smart_widget_1.default.export()), search_suggestions_1.default.export()), { setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); } });
+var bought_also_bought_1 = require("./bought-also-bought");
+var viewed_also_viewed_1 = require("./viewed-also-viewed");
+exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign({}, similar_products_widget_1.default.export()), smart_widget_1.default.export()), search_suggestions_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), { setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); } });
 window.addEventListener("load", function () {
     var event = new Event("tagalys:ready");
     document.dispatchEvent(event);

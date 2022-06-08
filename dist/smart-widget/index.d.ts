@@ -1,8 +1,8 @@
 import APIConnector from "../lib/apiConnector";
 import { AnalyticsData } from "../shared/types";
-import { SmartWidgetRequestOptions } from "./types";
+import { WidgetRequestOptions } from "../shared/types";
 declare class SmartWidget extends APIConnector {
-    getRequestOptions(): SmartWidgetRequestOptions;
+    getRequestOptions(): WidgetRequestOptions;
     exporterName(): string;
     formatResponse(response: any): any;
     extractAnalyticsData(response: any): AnalyticsData;

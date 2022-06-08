@@ -72,6 +72,16 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             products: this.formatDetails(response.details)
         };
     };
+    ShopifyResponseFormatter.prototype.boughtAlsoBought = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
+    ShopifyResponseFormatter.prototype.viewedAlsoViewed = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
     ShopifyResponseFormatter.prototype.smartWidgets = function (response) {
         return {
             name: response.name,
