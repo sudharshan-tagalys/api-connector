@@ -1,5 +1,5 @@
 import Formatter from './formatter';
-import suggestionsFormatter from "../../../search-suggestions/suggestionsFormatter"
+import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatter"
 
 class ShopifyResponseFormatter extends Formatter {
   platformFieldTranslations(){
@@ -83,6 +83,7 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   searchSuggestions(response, configuration) {
+    const suggestionsFormatter = new SuggestionsFormatter()
     return {
       queries: suggestionsFormatter.format(response, configuration),
       products: this.formatDetails(response.products)
@@ -90,6 +91,7 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   popularSearches(response, configuration) {
+    const suggestionsFormatter = new SuggestionsFormatter()
     return {
       queries: suggestionsFormatter.format({ queries: response.popular_searches}, configuration),
     }

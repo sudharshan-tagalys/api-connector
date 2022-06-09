@@ -57,4 +57,4 @@ class SuggestionsFormatter {
     })
   }
 }
-export default new SuggestionsFormatter()
+export default SuggestionsFormatter
