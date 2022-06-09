@@ -2,7 +2,7 @@ import Widget from "../lib/widget"
 
 class ViewedAlsoViewed extends Widget {
 
-  exporterName(): string{
+  static exporterName(): string{
     return 'ViewedAlsoViewed'
   }
 
@@ -20,4 +20,4 @@ class ViewedAlsoViewed extends Widget {
 
 }
 
-export default new ViewedAlsoViewed();
+export default ViewedAlsoViewed;

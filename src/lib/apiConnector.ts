@@ -90,7 +90,7 @@ class APIConnector{
     return false
   }
 
-  defaultRequestOptions(){
+  static defaultRequestOptions(){
     return {}
   }
 
@@ -98,24 +98,24 @@ class APIConnector{
     return undefined
   }
 
-  exporterName(){
+  static exporterName(){
     throw new Error("Should specify exporter name") 
   }
 
-  export(){
+  static export(){
     let exporterKey:any = this.exporterName()
     return {
       [exporterKey]: {
         call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
-          const instance = this.constructor()
-          instance.call({
+          const instance = new this()
+          return instance.call({
             defaultRequestOptions,
             ...requestOptions
           })
         },
         new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
-          const instance = this.constructor()
-          instance.call({
+          const instance = new this()
+          return instance.new({
             ...defaultRequestOptions,
             ...requestOptions
           })

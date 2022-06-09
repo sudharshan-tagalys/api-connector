@@ -1,8 +1,8 @@
 import Widget from "../lib/widget"
 
-export class SimilarProductsWidget extends Widget {
+class SimilarProductsWidget extends Widget {
 
-  exporterName() {
+  static exporterName() {
     return 'SimilarProducts'
   }
 
@@ -23,4 +23,4 @@ export class SimilarProductsWidget extends Widget {
   }
 }
 
-export default new SimilarProductsWidget();
+export default SimilarProductsWidget;

@@ -2,7 +2,7 @@ import Widget from "../lib/widget"
 
 class BoughtAlsoBought extends Widget {
 
-  exporterName(): string{
+  static exporterName(): string{
     return 'BoughtAlsoBought'
   }
 
@@ -19,4 +19,4 @@ class BoughtAlsoBought extends Widget {
   }
 }
 
-export default new BoughtAlsoBought();
+export default BoughtAlsoBought;

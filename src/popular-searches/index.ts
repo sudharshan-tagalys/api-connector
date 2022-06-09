@@ -31,9 +31,9 @@ class PopularSearches extends APIConnector {
     })
   }
 
-  exporterName(){
+  static exporterName(){
     return 'PopularSearches'
   }
 }
 
-export default new PopularSearches();
+export default PopularSearches;

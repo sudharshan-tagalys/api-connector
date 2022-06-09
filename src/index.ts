@@ -1,6 +1,6 @@
 import configuration from "./lib/configuration";
 import { DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS } from "./shared/constants";
-import similarProductsWidget, { SimilarProductsWidget } from "./similar-products-widget";
+import similarProductsWidget from "./similar-products-widget";
 import smartWidget from "./smart-widget";
 import boughtAlsoBought from "./bought-also-bought"
 import viewedAlsoViewed from "./viewed-also-viewed"
@@ -8,7 +8,6 @@ import addedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
 import searchSuggestions from "./search-suggestions"
 
 export const APIConnector = {
-  similarProductsWidget: SimilarProductsWidget,
   ...similarProductsWidget.export(),
   ...smartWidget.export(),
   ...boughtAlsoBought.export(),

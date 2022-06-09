@@ -2,7 +2,7 @@ import Widget from "../lib/widget"
 
 class AddedToCartAlsoAddedToCart extends Widget {
 
-  exporterName(){
+  static exporterName(){
     return 'AddedToCartAlsoAddedToCart'
   }
 
@@ -20,4 +20,4 @@ class AddedToCartAlsoAddedToCart extends Widget {
 
 }
 
-export default new AddedToCartAlsoAddedToCart();
+export default AddedToCartAlsoAddedToCart;

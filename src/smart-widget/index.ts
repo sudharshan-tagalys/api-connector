@@ -2,7 +2,7 @@ import Widget from "../lib/widget"
 import { AnalyticsData } from "../shared/types"
 class SmartWidget extends Widget {
 
-  exporterName(): string{
+  static exporterName(): string{
     return 'SmartWidget'
   }
 
@@ -37,4 +37,4 @@ class SmartWidget extends Widget {
   }
 }
 
-export default new SmartWidget();
+export default SmartWidget;

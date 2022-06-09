@@ -1,7 +1,7 @@
 import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
-import popularSearches from "../popular-searches"
+import PopularSearches from "../popular-searches"
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -15,7 +15,7 @@ class SearchSuggestions extends APIConnector {
     }
   }
 
-  exporterName(){
+  static exporterName(){
     return 'SearchSuggestions'
   }
 
@@ -45,6 +45,7 @@ class SearchSuggestions extends APIConnector {
   getPopularSearches() {
     return new Promise((resolve, reject) => {
       const recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
+      const popularSearches = new PopularSearches()
       // TODO: A way to have configuration inside the popularSearches interface itself.
       popularSearches.fetchPopularSearches(this.requestOptions.configuration).then((popularSearches: any) => {
         // move slice value to constant
@@ -68,7 +69,7 @@ class SearchSuggestions extends APIConnector {
     localStorage.setValue("tagalysPopularSearches", recentSearches, 3600000)
   }
 
-  defaultRequestOptions(){
+  static defaultRequestOptions(){
     return {
       ...DEFAULT_REQUEST_OPTIONS,
       configuration: {
@@ -83,4 +84,4 @@ class SearchSuggestions extends APIConnector {
   }
 }
 
-export default new SearchSuggestions()
+export default SearchSuggestions
