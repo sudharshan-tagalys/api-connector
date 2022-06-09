@@ -1,6 +1,6 @@
 import Widget from "../lib/widget"
 
-class SimilarProductsWidget extends Widget {
+export class SimilarProductsWidget extends Widget {
 
   exporterName() {
     return 'SimilarProducts'

@@ -1,5 +1,5 @@
 import Widget from "../lib/widget";
-declare class SimilarProductsWidget extends Widget {
+export declare class SimilarProductsWidget extends Widget {
     exporterName(): string;
     path(): string;
     plType(): string;
