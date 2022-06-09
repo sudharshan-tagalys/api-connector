@@ -104,11 +104,13 @@ var APIConnector = /** @class */ (function () {
             _a[exporterKey] = {
                 call: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    return _this.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                    var instance = _this.constructor();
+                    instance.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
                 },
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    return _this.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
+                    var instance = _this.constructor();
+                    instance.call(__assign(__assign({}, defaultRequestOptions), requestOptions));
                 }
             },
             _a;

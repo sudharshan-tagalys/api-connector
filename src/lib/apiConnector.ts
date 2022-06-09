@@ -106,14 +106,20 @@ class APIConnector{
     let exporterKey:any = this.exporterName()
     return {
       [exporterKey]: {
-        call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => this.call({
-          defaultRequestOptions,
-          ...requestOptions
-        }),
-        new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => this.new({
-          ...defaultRequestOptions,
-          ...requestOptions
-        })
+        call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
+          const instance = this.constructor()
+          instance.call({
+            defaultRequestOptions,
+            ...requestOptions
+          })
+        },
+        new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
+          const instance = this.constructor()
+          instance.call({
+            ...defaultRequestOptions,
+            ...requestOptions
+          })
+        }
       }
     }
   }
