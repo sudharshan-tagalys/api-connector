@@ -15,14 +15,13 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SimilarProductsWidget = void 0;
 var widget_1 = require("../lib/widget");
 var SimilarProductsWidget = /** @class */ (function (_super) {
     __extends(SimilarProductsWidget, _super);
     function SimilarProductsWidget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SimilarProductsWidget.prototype.exporterName = function () {
+    SimilarProductsWidget.exporterName = function () {
         return 'SimilarProducts';
     };
     SimilarProductsWidget.prototype.path = function () {
@@ -39,6 +38,5 @@ var SimilarProductsWidget = /** @class */ (function (_super) {
     };
     return SimilarProductsWidget;
 }(widget_1.default));
-exports.SimilarProductsWidget = SimilarProductsWidget;
-exports.default = new SimilarProductsWidget();
+exports.default = SimilarProductsWidget;
 //# sourceMappingURL=index.js.map

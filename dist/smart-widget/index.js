@@ -21,7 +21,7 @@ var SmartWidget = /** @class */ (function (_super) {
     function SmartWidget() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    SmartWidget.prototype.exporterName = function () {
+    SmartWidget.exporterName = function () {
         return 'SmartWidget';
     };
     SmartWidget.prototype.path = function () {
@@ -52,5 +52,5 @@ var SmartWidget = /** @class */ (function (_super) {
     };
     return SmartWidget;
 }(widget_1.default));
-exports.default = new SmartWidget();
+exports.default = SmartWidget;
 //# sourceMappingURL=index.js.map

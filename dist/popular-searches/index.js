@@ -51,10 +51,10 @@ var PopularSearches = /** @class */ (function (_super) {
             }
         });
     };
-    PopularSearches.prototype.exporterName = function () {
+    PopularSearches.exporterName = function () {
         return 'PopularSearches';
     };
     return PopularSearches;
 }(apiConnector_1.default));
-exports.default = new PopularSearches();
+exports.default = PopularSearches;
 //# sourceMappingURL=index.js.map

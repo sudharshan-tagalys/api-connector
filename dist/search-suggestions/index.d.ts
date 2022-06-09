@@ -9,7 +9,7 @@ declare class SearchSuggestions extends APIConnector {
             queries: any;
         };
     };
-    exporterName(): string;
+    static exporterName(): string;
     extractAnalyticsData(response: any): any;
     onSuccessfulResponse(response: any): void;
     setQuery(query: any, callAPI?: boolean): void;
@@ -22,7 +22,7 @@ declare class SearchSuggestions extends APIConnector {
     getPopularSearches(): Promise<unknown>;
     addRecentSearch(displayString: string): void;
     removeRecentSearch(displayString: string): void;
-    defaultRequestOptions(): {
+    static defaultRequestOptions(): {
         configuration: {
             queryString: {
                 query: string;
@@ -35,5 +35,4 @@ declare class SearchSuggestions extends APIConnector {
         onFailure: (response: any) => void;
     };
 }
-declare const _default: SearchSuggestions;
-export default _default;
+export default SearchSuggestions;

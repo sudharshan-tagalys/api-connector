@@ -21,7 +21,7 @@ var ViewedAlsoViewed = /** @class */ (function (_super) {
     function ViewedAlsoViewed() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    ViewedAlsoViewed.prototype.exporterName = function () {
+    ViewedAlsoViewed.exporterName = function () {
         return 'ViewedAlsoViewed';
     };
     ViewedAlsoViewed.prototype.path = function () {
@@ -35,5 +35,5 @@ var ViewedAlsoViewed = /** @class */ (function (_super) {
     };
     return ViewedAlsoViewed;
 }(widget_1.default));
-exports.default = new ViewedAlsoViewed();
+exports.default = ViewedAlsoViewed;
 //# sourceMappingURL=index.js.map

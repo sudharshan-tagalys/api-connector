@@ -87,16 +87,16 @@ var APIConnector = /** @class */ (function () {
     APIConnector.prototype.isFailureResponse = function (response) {
         return false;
     };
-    APIConnector.prototype.defaultRequestOptions = function () {
+    APIConnector.defaultRequestOptions = function () {
         return {};
     };
     APIConnector.prototype.new = function (requestOptions) {
         return undefined;
     };
-    APIConnector.prototype.exporterName = function () {
+    APIConnector.exporterName = function () {
         throw new Error("Should specify exporter name");
     };
-    APIConnector.prototype.export = function () {
+    APIConnector.export = function () {
         var _a;
         var _this = this;
         var exporterKey = this.exporterName();
@@ -104,13 +104,13 @@ var APIConnector = /** @class */ (function () {
             _a[exporterKey] = {
                 call: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    var instance = _this.constructor();
-                    instance.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                    var instance = new _this();
+                    return instance.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
                 },
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    var instance = _this.constructor();
-                    instance.call(__assign(__assign({}, defaultRequestOptions), requestOptions));
+                    var instance = new _this();
+                    return instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
                 }
             },
             _a;

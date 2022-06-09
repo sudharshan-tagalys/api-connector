@@ -21,7 +21,7 @@ var BoughtAlsoBought = /** @class */ (function (_super) {
     function BoughtAlsoBought() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    BoughtAlsoBought.prototype.exporterName = function () {
+    BoughtAlsoBought.exporterName = function () {
         return 'BoughtAlsoBought';
     };
     BoughtAlsoBought.prototype.path = function () {
@@ -35,5 +35,5 @@ var BoughtAlsoBought = /** @class */ (function (_super) {
     };
     return BoughtAlsoBought;
 }(widget_1.default));
-exports.default = new BoughtAlsoBought();
+exports.default = BoughtAlsoBought;
 //# sourceMappingURL=index.js.map

@@ -21,7 +21,7 @@ var AddedToCartAlsoAddedToCart = /** @class */ (function (_super) {
     function AddedToCartAlsoAddedToCart() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
-    AddedToCartAlsoAddedToCart.prototype.exporterName = function () {
+    AddedToCartAlsoAddedToCart.exporterName = function () {
         return 'AddedToCartAlsoAddedToCart';
     };
     AddedToCartAlsoAddedToCart.prototype.path = function () {
@@ -35,5 +35,5 @@ var AddedToCartAlsoAddedToCart = /** @class */ (function (_super) {
     };
     return AddedToCartAlsoAddedToCart;
 }(widget_1.default));
-exports.default = new AddedToCartAlsoAddedToCart();
+exports.default = AddedToCartAlsoAddedToCart;
 //# sourceMappingURL=index.js.map

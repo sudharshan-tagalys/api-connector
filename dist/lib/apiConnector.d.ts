@@ -9,13 +9,13 @@ declare class APIConnector {
     formatResponse(response: any): any;
     getRequestOptions(): {};
     isFailureResponse(response: any): boolean;
-    defaultRequestOptions(): {};
+    static defaultRequestOptions(): {};
     new(requestOptions: any): any;
-    exporterName(): void;
-    export(): {
+    static exporterName(): void;
+    static export(): {
         [x: number]: {
             call: (requestOptions: any, defaultRequestOptions?: {}) => void;
-            new: (requestOptions: any, defaultRequestOptions?: {}) => void;
+            new: (requestOptions: any, defaultRequestOptions?: {}) => any;
         };
     };
 }

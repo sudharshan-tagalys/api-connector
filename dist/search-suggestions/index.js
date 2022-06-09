@@ -46,7 +46,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
             },
         };
     };
-    SearchSuggestions.prototype.exporterName = function () {
+    SearchSuggestions.exporterName = function () {
         return 'SearchSuggestions';
     };
     SearchSuggestions.prototype.extractAnalyticsData = function (response) {
@@ -77,8 +77,9 @@ var SearchSuggestions = /** @class */ (function (_super) {
         var _this = this;
         return new Promise(function (resolve, reject) {
             var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
+            var popularSearches = new popular_searches_1.default();
             // TODO: A way to have configuration inside the popularSearches interface itself.
-            popular_searches_1.default.fetchPopularSearches(_this.requestOptions.configuration).then(function (popularSearches) {
+            popularSearches.fetchPopularSearches(_this.requestOptions.configuration).then(function (popularSearches) {
                 // move slice value to constant
                 resolve({
                     recentSearches: recentSearches.queries.slice(0, 5),
@@ -97,7 +98,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
         recentSearches.queries = recentSearches.queries.filter(function (recentSearch) { return recentSearch.displayString !== displayString; });
         localStorage_1.default.setValue("tagalysPopularSearches", recentSearches, 3600000);
     };
-    SearchSuggestions.prototype.defaultRequestOptions = function () {
+    SearchSuggestions.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
                 queryString: {
                     query: "q",
@@ -109,5 +110,5 @@ var SearchSuggestions = /** @class */ (function (_super) {
     };
     return SearchSuggestions;
 }(apiConnector_1.default));
-exports.default = new SearchSuggestions();
+exports.default = SearchSuggestions;
 //# sourceMappingURL=index.js.map
