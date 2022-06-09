@@ -64,5 +64,5 @@ var SuggestionsFormatter = /** @class */ (function () {
     };
     return SuggestionsFormatter;
 }());
-exports.default = new SuggestionsFormatter();
+exports.default = SuggestionsFormatter;
 //# sourceMappingURL=suggestionsFormatter.js.map

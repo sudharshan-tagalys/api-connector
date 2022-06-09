@@ -95,14 +95,16 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
         };
     };
     ShopifyResponseFormatter.prototype.searchSuggestions = function (response, configuration) {
+        var suggestionsFormatter = new suggestionsFormatter_1.default();
         return {
-            queries: suggestionsFormatter_1.default.format(response, configuration),
+            queries: suggestionsFormatter.format(response, configuration),
             products: this.formatDetails(response.products)
         };
     };
     ShopifyResponseFormatter.prototype.popularSearches = function (response, configuration) {
+        var suggestionsFormatter = new suggestionsFormatter_1.default();
         return {
-            queries: suggestionsFormatter_1.default.format({ queries: response.popular_searches }, configuration),
+            queries: suggestionsFormatter.format({ queries: response.popular_searches }, configuration),
         };
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {

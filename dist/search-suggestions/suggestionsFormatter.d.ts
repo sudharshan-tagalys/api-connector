@@ -3,5 +3,4 @@ declare class SuggestionsFormatter {
     getQueryString(q: any, qf?: {}): string;
     format(response: any, configuration: any): any;
 }
-declare const _default: SuggestionsFormatter;
-export default _default;
+export default SuggestionsFormatter;
