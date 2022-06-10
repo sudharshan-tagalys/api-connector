@@ -14,14 +14,14 @@ var Configuration = /** @class */ (function () {
                 api_client: configuration.apiClient,
             },
             platform: configuration.platform,
-            apiServer: configuration.apiServer,
+            serverUrl: configuration.serverUrl,
             track: configuration.track,
             analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided,
         };
     };
     Configuration.prototype.validateConfiguration = function (configuration) {
         var _this = this;
-        ["apiServer", "credentials", "storeId", "currencyCode"].forEach(function (configProperty) {
+        ["serverUrl", "credentials", "storeId", "currencyCode"].forEach(function (configProperty) {
             if (!configuration.hasOwnProperty(configProperty)) {
                 throw new Error(_this.getConstructedErrorLabel(configProperty));
             }
@@ -39,8 +39,8 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getConfiguration = function () {
         return this.configuration;
     };
-    Configuration.prototype.getApiServer = function () {
-        return this.configuration.apiServer;
+    Configuration.prototype.getServerUrl = function () {
+        return this.configuration.serverUrl;
     };
     Configuration.prototype.getApiIdentification = function () {
         return this.configuration.identification;

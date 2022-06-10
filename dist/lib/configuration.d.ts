@@ -5,7 +5,7 @@ declare class Configuration {
     validateConfiguration(configuration: any): void;
     getConstructedErrorLabel(missingConfiguration: any): string;
     getConfiguration(): APIConfiguration;
-    getApiServer(): string;
+    getServerUrl(): string;
     getApiIdentification(): import("../shared/types").APIIdentification;
     getPlatform(): string;
     analyticsStorageConsentProvided(): boolean;
