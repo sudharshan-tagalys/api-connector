@@ -5,7 +5,6 @@ import smartWidget from "./smart-widget";
 import boughtAlsoBought from "./bought-also-bought"
 import viewedAlsoViewed from "./viewed-also-viewed"
 import addedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
-import searchSuggestions from "./search-suggestions"
 
 export const APIConnector = {
   ...similarProductsWidget.export(),
@@ -13,7 +12,6 @@ export const APIConnector = {
   ...boughtAlsoBought.export(),
   ...viewedAlsoViewed.export(),
   ...addedToCartAlsoAddedToCart.export(),
-  ...searchSuggestions.export(),
   setConfiguration: (config) => configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config
