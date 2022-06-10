@@ -24,7 +24,7 @@ class API{
   }
 
   url(path): string{
-    return `${configuration.getApiServer()}/v1/${path}`
+    return `${configuration.getServerUrl()}/v1/${path}`
   }
 }
 export default new API();

@@ -13,14 +13,14 @@ class Configuration{
         api_client: configuration.apiClient,
       },
       platform: configuration.platform,
-      apiServer: configuration.apiServer,
+      serverUrl: configuration.serverUrl,
       track: configuration.track,
       analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided,
     }
   }
 
   validateConfiguration(configuration) {
-    ["apiServer", "credentials", "storeId", "currencyCode"].forEach((configProperty) => {
+    ["serverUrl", "credentials", "storeId", "currencyCode"].forEach((configProperty) => {
       if (!configuration.hasOwnProperty(configProperty)) {
         throw new Error(this.getConstructedErrorLabel(configProperty))
       }
@@ -41,8 +41,8 @@ class Configuration{
     return this.configuration;
   }
 
-  getApiServer() {
-    return this.configuration.apiServer;
+  getServerUrl() {
+    return this.configuration.serverUrl;
   }
 
   getApiIdentification() {
