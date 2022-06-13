@@ -21,7 +21,7 @@ class Configuration{
 
   validateConfiguration(configuration) {
     ["serverUrl", "credentials", "storeId", "currencyCode"].forEach((configProperty) => {
-      if (!configuration.hasOwnProperty(configProperty)) {
+      if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
         throw new Error(this.getConstructedErrorLabel(configProperty))
       }
     })
