@@ -49,54 +49,6 @@ class ShopifyResponseFormatter extends Formatter {
     }
   }
 
-  similarProducts(response){
-    return {
-      products: this.formatDetails(response.details)
-    }
-  }
-
-  boughtAlsoBought(response) {
-    return {
-      products: this.formatDetails(response.details)
-    }
-  }
-
-  viewedAlsoViewed(response) {
-    return {
-      products: this.formatDetails(response.details)
-    }
-  }
-
-
-  addedToCartAlsoAddedToCart(response) {
-    return {
-      products: this.formatDetails(response.details)
-    }
-  }
-
-  smartWidgets(response){
-    return {
-      name: response.name,
-      widget_name: response.widget_name,
-      products: this.formatDetails(response.details)
-    }
-  }
-
-  searchSuggestions(response, configuration) {
-    const suggestionsFormatter = new SuggestionsFormatter()
-    return {
-      queries: suggestionsFormatter.format(response, configuration),
-      products: this.formatDetails(response.products)
-    }
-  }
-
-  popularSearches(response, configuration) {
-    const suggestionsFormatter = new SuggestionsFormatter()
-    return {
-      queries: suggestionsFormatter.format({ queries: response.popular_searches}, configuration),
-    }
-  }
-
   fieldsToIgnore(){
     return ['sku']
   }
