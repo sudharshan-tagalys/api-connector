@@ -22,7 +22,7 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.validateConfiguration = function (configuration) {
         var _this = this;
         ["serverUrl", "credentials", "storeId", "currencyCode"].forEach(function (configProperty) {
-            if (!configuration.hasOwnProperty(configProperty)) {
+            if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
                 throw new Error(_this.getConstructedErrorLabel(configProperty));
             }
         });
