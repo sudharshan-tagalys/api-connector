@@ -23,30 +23,6 @@ declare class ShopifyResponseFormatter extends Formatter {
     additionalPlatformFields(detail: any): {
         handle: any;
     };
-    similarProducts(response: any): {
-        products: any;
-    };
-    boughtAlsoBought(response: any): {
-        products: any;
-    };
-    viewedAlsoViewed(response: any): {
-        products: any;
-    };
-    addedToCartAlsoAddedToCart(response: any): {
-        products: any;
-    };
-    smartWidgets(response: any): {
-        name: any;
-        widget_name: any;
-        products: any;
-    };
-    searchSuggestions(response: any, configuration: any): {
-        queries: any;
-        products: any;
-    };
-    popularSearches(response: any, configuration: any): {
-        queries: any;
-    };
     fieldsToIgnore(): string[];
 }
 export default ShopifyResponseFormatter;

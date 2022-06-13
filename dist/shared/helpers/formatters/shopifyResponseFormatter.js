@@ -16,7 +16,6 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var formatter_1 = require("./formatter");
-var suggestionsFormatter_1 = require("../../../search-suggestions/suggestionsFormatter");
 var ShopifyResponseFormatter = /** @class */ (function (_super) {
     __extends(ShopifyResponseFormatter, _super);
     function ShopifyResponseFormatter() {
@@ -65,46 +64,6 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
         return {
             handle: detail.link.split("/products/")[1]
-        };
-    };
-    ShopifyResponseFormatter.prototype.similarProducts = function (response) {
-        return {
-            products: this.formatDetails(response.details)
-        };
-    };
-    ShopifyResponseFormatter.prototype.boughtAlsoBought = function (response) {
-        return {
-            products: this.formatDetails(response.details)
-        };
-    };
-    ShopifyResponseFormatter.prototype.viewedAlsoViewed = function (response) {
-        return {
-            products: this.formatDetails(response.details)
-        };
-    };
-    ShopifyResponseFormatter.prototype.addedToCartAlsoAddedToCart = function (response) {
-        return {
-            products: this.formatDetails(response.details)
-        };
-    };
-    ShopifyResponseFormatter.prototype.smartWidgets = function (response) {
-        return {
-            name: response.name,
-            widget_name: response.widget_name,
-            products: this.formatDetails(response.details)
-        };
-    };
-    ShopifyResponseFormatter.prototype.searchSuggestions = function (response, configuration) {
-        var suggestionsFormatter = new suggestionsFormatter_1.default();
-        return {
-            queries: suggestionsFormatter.format(response, configuration),
-            products: this.formatDetails(response.products)
-        };
-    };
-    ShopifyResponseFormatter.prototype.popularSearches = function (response, configuration) {
-        var suggestionsFormatter = new suggestionsFormatter_1.default();
-        return {
-            queries: suggestionsFormatter.format({ queries: response.popular_searches }, configuration),
         };
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {

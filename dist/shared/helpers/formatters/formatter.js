@@ -11,6 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var suggestionsFormatter_1 = require("../../../search-suggestions/suggestionsFormatter");
 var Formatter = /** @class */ (function () {
     function Formatter() {
         var _this = this;
@@ -64,13 +65,44 @@ var Formatter = /** @class */ (function () {
         };
     };
     Formatter.prototype.similarProducts = function (response) {
-        return response;
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
+    Formatter.prototype.boughtAlsoBought = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
+    Formatter.prototype.viewedAlsoViewed = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
+    Formatter.prototype.addedToCartAlsoAddedToCart = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
     };
     Formatter.prototype.smartWidgets = function (response) {
-        return response;
+        return {
+            name: response.name,
+            widget_name: response.widget_name,
+            products: this.formatDetails(response.details)
+        };
     };
     Formatter.prototype.searchSuggestions = function (response, configuration) {
-        return response;
+        var suggestionsFormatter = new suggestionsFormatter_1.default();
+        return {
+            queries: suggestionsFormatter.format(response, configuration),
+            products: this.formatDetails(response.products)
+        };
+    };
+    Formatter.prototype.popularSearches = function (response, configuration) {
+        var suggestionsFormatter = new suggestionsFormatter_1.default();
+        return {
+            queries: suggestionsFormatter.format({ queries: response.popular_searches }, configuration),
+        };
     };
     return Formatter;
 }());

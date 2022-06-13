@@ -6,11 +6,32 @@ declare class Formatter {
     isPlatformField(fieldName: any): boolean;
     isIgnoredField(fieldName: any): boolean;
     translatePlatformField(fieldName: any, detail: any): any;
-    similarProducts(response: any): any;
-    smartWidgets(response: any): any;
-    searchSuggestions(response: any, configuration: any): any;
     formatDetail: (detail: any) => {
         __tagalys_fields: {};
+    };
+    similarProducts(response: any): {
+        products: any;
+    };
+    boughtAlsoBought(response: any): {
+        products: any;
+    };
+    viewedAlsoViewed(response: any): {
+        products: any;
+    };
+    addedToCartAlsoAddedToCart(response: any): {
+        products: any;
+    };
+    smartWidgets(response: any): {
+        name: any;
+        widget_name: any;
+        products: any;
+    };
+    searchSuggestions(response: any, configuration: any): {
+        queries: any;
+        products: any;
+    };
+    popularSearches(response: any, configuration: any): {
+        queries: any;
     };
 }
 export default Formatter;
