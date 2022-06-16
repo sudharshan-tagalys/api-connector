@@ -6,6 +6,7 @@ import boughtAlsoBought from "./bought-also-bought"
 import viewedAlsoViewed from "./viewed-also-viewed"
 import addedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
 import searchSuggestions from "./search-suggestions"
+import queryStringManager from "./lib/queryStringManager";
 
 export const APIConnector = {
   ...similarProductsWidget.export(),
@@ -18,6 +19,9 @@ export const APIConnector = {
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
+  queryString: {
+    setConfiguration: (config) => queryStringManager.setConfiguration(config)
+  }
 }
 
 window.addEventListener("load", () => {

@@ -2,6 +2,7 @@ import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
+import { getUrlEncodedQueryString } from '../shared/helpers/common'
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -38,7 +39,8 @@ class SearchSuggestions extends APIConnector {
       setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
       getPopularSearches: () => this.getPopularSearches(),
       addRecentSearch: (query) => this.addRecentSearch(query),
-      removeRecentSearch: (query) => this.removeRecentSearch(query)
+      removeRecentSearch: (query) => this.removeRecentSearch(query),
+      getUrlEncodedQueryString
     }
   }
 
