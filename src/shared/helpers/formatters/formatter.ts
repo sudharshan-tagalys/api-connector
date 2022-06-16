@@ -95,17 +95,17 @@ class Formatter {
   }
 
   searchSuggestions(response, configuration) {
-    const suggestionsFormatter = new SuggestionsFormatter()
+    const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
-      queries: suggestionsFormatter.format(response, configuration),
+      queries: suggestionsFormatter.format(response),
       products: this.formatDetails(response.products)
     }
   }
 
   popularSearches(response, configuration) {
-    const suggestionsFormatter = new SuggestionsFormatter()
+    const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
-      queries: suggestionsFormatter.format({ queries: response.popular_searches}, configuration),
+      queries: suggestionsFormatter.format({ queries: response.popular_searches}),
     }
   }
 }
