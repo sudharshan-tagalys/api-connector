@@ -30,6 +30,7 @@ var apiConnector_1 = require("../lib/apiConnector");
 var constants_1 = require("../shared/constants");
 var localStorage_1 = require("../lib/localStorage");
 var popular_searches_1 = require("../popular-searches");
+var common_1 = require("../shared/helpers/common");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
@@ -70,7 +71,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
             },
             getPopularSearches: function () { return _this.getPopularSearches(); },
             addRecentSearch: function (query) { return _this.addRecentSearch(query); },
-            removeRecentSearch: function (query) { return _this.removeRecentSearch(query); }
+            removeRecentSearch: function (query) { return _this.removeRecentSearch(query); },
+            getUrlEncodedQueryString: common_1.getUrlEncodedQueryString
         };
     };
     SearchSuggestions.prototype.getPopularSearches = function () {

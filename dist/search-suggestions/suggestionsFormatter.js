@@ -11,27 +11,13 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("../shared/helpers/common");
 var SuggestionsFormatter = /** @class */ (function () {
-    function SuggestionsFormatter() {
-    }
-    SuggestionsFormatter.prototype.getQueryString = function (q, qf) {
-        if (qf === void 0) { qf = {}; }
-        var _a = this.configuration.queryString, query = _a.query, queryFilter = _a.queryFilter;
-        var baseQueryString = "?".concat(query, "=");
-        if (typeof (qf) == 'undefined' || Object.keys(qf).length === 0) {
-            return (baseQueryString + encodeURIComponent(q));
-        }
-        else {
-            var str = Object.keys(qf).map(function (key) {
-                return "".concat(encodeURIComponent(key), "-").concat(encodeURIComponent(qf[key]));
-            }).join('~');
-            var qf_param = "".concat(encodeURIComponent(queryFilter), "=").concat(str);
-            return baseQueryString.concat(encodeURIComponent(q) + "&" + qf_param);
-        }
-    };
-    SuggestionsFormatter.prototype.format = function (response, configuration) {
-        var _this = this;
+    function SuggestionsFormatter(configuration) {
         this.configuration = configuration;
+    }
+    SuggestionsFormatter.prototype.format = function (response) {
+        var _this = this;
         if (!response.queries)
             return [];
         return response.queries.map(function (queryObj) {
@@ -43,20 +29,28 @@ var SuggestionsFormatter = /** @class */ (function () {
             };
             if (typeof queryObj.query === 'string') {
                 formattedQuery.displayString = queryObj.query;
-                formattedQuery.queryString = _this.getQueryString(queryObj.query);
+                formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                    query: queryObj.query
+                });
                 return formattedQuery;
             }
             if (Array.isArray(queryObj.query)) {
                 if (queryObj.hasOwnProperty('in')) {
                     var prefix = queryObj.query[0];
-                    var suffix = queryObj.in.hierarchy.map(function (item) { return item.name; }).join(" ".concat(configuration.hierachySeperator, " "));
+                    var suffix = queryObj.in.hierarchy.map(function (item) { return item.name; }).join(" ".concat(_this.configuration.hierachySeperator, " "));
                     var qf = __assign(__assign({}, queryObj.filter), (_a = {}, _a["".concat(queryObj.in.tag_set.id)] = queryObj.in.hierarchy.map(function (item) { return item.id; }), _a));
-                    formattedQuery.displayString = "".concat(prefix, " ").concat(configuration.hierachySeperator, " ").concat(suffix);
-                    formattedQuery.queryString = _this.getQueryString(formattedQuery.displayString, qf);
+                    formattedQuery.displayString = "".concat(prefix, " ").concat(_this.configuration.hierachySeperator, " ").concat(suffix);
+                    formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                        query: formattedQuery.displayString,
+                        queryFilter: qf
+                    });
                 }
                 else {
-                    formattedQuery.displayString = queryObj.query.join(" ".concat(configuration.categorySeperator, " "));
-                    formattedQuery.queryString = _this.getQueryString(formattedQuery.displayString, queryObj.filter);
+                    formattedQuery.displayString = queryObj.query.join(" ".concat(_this.configuration.categorySeperator, " "));
+                    formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                        query: formattedQuery.displayString,
+                        queryFilter: queryObj.filter
+                    });
                 }
             }
             return formattedQuery;

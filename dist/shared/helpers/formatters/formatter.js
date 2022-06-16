@@ -92,16 +92,16 @@ var Formatter = /** @class */ (function () {
         };
     };
     Formatter.prototype.searchSuggestions = function (response, configuration) {
-        var suggestionsFormatter = new suggestionsFormatter_1.default();
+        var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
         return {
-            queries: suggestionsFormatter.format(response, configuration),
+            queries: suggestionsFormatter.format(response),
             products: this.formatDetails(response.products)
         };
     };
     Formatter.prototype.popularSearches = function (response, configuration) {
-        var suggestionsFormatter = new suggestionsFormatter_1.default();
+        var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
         return {
-            queries: suggestionsFormatter.format({ queries: response.popular_searches }, configuration),
+            queries: suggestionsFormatter.format({ queries: response.popular_searches }),
         };
     };
     return Formatter;

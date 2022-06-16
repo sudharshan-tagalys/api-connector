@@ -18,6 +18,7 @@ declare class SearchSuggestions extends APIConnector {
         getPopularSearches: () => Promise<unknown>;
         addRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
+        getUrlEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     getPopularSearches(): Promise<unknown>;
     addRecentSearch(displayString: string): void;
