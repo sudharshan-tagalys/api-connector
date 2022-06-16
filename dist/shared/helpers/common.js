@@ -24,7 +24,6 @@ var getEncodedQueryString = function (_a) {
     if (hasFilters) {
         params[filterReplacement] = filter;
     }
-    console.log(queryStringManager_1.default.stringify(params), params);
     return '?' + queryStringManager_1.default.stringify(params);
 };
 exports.getEncodedQueryString = getEncodedQueryString;
