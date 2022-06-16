@@ -19,9 +19,7 @@ export const APIConnector = {
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
-  queryString: {
-    setConfiguration: (config) => queryStringManager.setConfiguration(config)
-  }
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config)
 }
 
 window.addEventListener("load", () => {
