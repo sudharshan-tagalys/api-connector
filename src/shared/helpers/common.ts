@@ -21,7 +21,6 @@ const getEncodedQueryString = ({ query = '', queryFilter = {}, filter = {} }) =>
   if(hasFilters){
     params[filterReplacement] = filter
   }
-  console.log(queryStringManager.stringify(params), params)
   return  '?' + queryStringManager.stringify(params);
 }
 
