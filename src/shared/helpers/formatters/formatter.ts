@@ -102,13 +102,15 @@ class Formatter {
     }
   }
 
-  search(response){
+  search(response) {
+    const formattedResponse = {}
     if(response.details){
-      response.products = this.formatDetails(response.details)
+      formattedResponse["products"] = this.formatDetails(response.details)
     }
-    const fieldsToIgnore = ['total', 'results', 'status', 'page', 'per_page', 'details']
-    fieldsToIgnore.forEach((field)=>delete response[field]);
-    return response
+    const totalPages = Math.ceil(response.total / response.per_page)
+    formattedResponse["total_pages"] = totalPages
+    formattedResponse["page"] = response.page
+    return formattedResponse
   }
 
   popularSearches(response, configuration) {
