@@ -124,7 +124,7 @@
           request: ['details', 'filters']
         },
         onSuccess: function (response, helpers) {
-          console.log(helpers.getFilters())
+          console.log(helpers.getAppliedFilters())
           appendToBody(response)
         },
       });
