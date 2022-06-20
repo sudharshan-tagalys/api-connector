@@ -8,14 +8,14 @@ const getTotalPages = function(){
 
 const goToNextPage = function() {
   this.setRequestState((reqState)=>{
-    reqState.pagination.page += 1
+    reqState.page += 1
     return reqState
   })
 }
 
 const goToPrevPage = function(){
   this.setRequestState((reqState)=>{
-    reqState.pagination.page -= 1
+    reqState.page -= 1
     return reqState
   })
 }

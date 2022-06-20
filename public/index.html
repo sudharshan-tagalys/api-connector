@@ -117,17 +117,19 @@
       //     appendToBody(response, analyticsData)
       //   },
       // });
-
       const search = Tagalys.APIConnector.Search.new({
         params: {
           query: 'dress',
           queryMode: 'and',
-          request: ['details']
+          request: ['details', 'filters']
         },
-        onSuccess: function (response, analyticsData = {}) {
-          appendToBody(response, analyticsData)
+        onSuccess: function (response, helpers) {
+          console.log(helpers.getFilters())
+          appendToBody(response)
         },
       });
+    
+
       document.querySelector('#next-btn').addEventListener('click', ()=>{
         search.goToNextPage()
       })

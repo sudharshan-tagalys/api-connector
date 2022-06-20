@@ -1,16 +1,40 @@
-function getFilters(){
-  console.log(this)
-  this.setResponseState({
-    hi: 'thambi'
-  })
-  console.log(this)
+const getFilters = function(){
+  return this.responseState.filters
 }
 
-function getAppliedFilters(){
+const getAppliedFilters = function(){
 
 }
+
+const applyFilter = function(){
+
+}
+const getFilterById = function(){
+
+}
+const getAppliedFilterById = function(){
+
+}
+
+const isFilterApplied = function(){
+
+}
+
+const clearFilter = function(){
+
+}
+
+const clearAllFilters = function(){
+
+} 
 
 export default {
   getFilters,
-  getAppliedFilters
+  getAppliedFilters,
+  applyFilter,
+  getFilterById,
+  getAppliedFilterById,
+  isFilterApplied,
+  clearFilter,
+  clearAllFilters
 };

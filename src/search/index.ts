@@ -20,14 +20,10 @@ const DEFAULT_REQUEST_STATE =  {
   filters: {},
   queryFilters: {},
   request: [],
-  pagination: {
-    page: 1,
-    perPage: 16
-  },
-  sort: {
-    id: null,
-    direction: null
-  },
+  page: 1,
+  perPage: 16,
+  sortField: null,
+  sortDirection: null,
   cache: true,
 }
 
@@ -37,11 +33,9 @@ class Search extends APIConnector {
   public searchHelpers;
   public responseState = {
     filters: [],
-    sortOptions: [],
-    pagination: {
-      page: null,
-      total: null
-    },
+    sort_options: [],
+    page: null,
+    total_pages: null,
     products: [],
     variables: [],
     banners: []
@@ -98,7 +92,9 @@ class Search extends APIConnector {
   }
 
   onSuccessfulResponse(response) {
-    this.requestOptions.onSuccess(this.responseFormatter.search(response))
+    const formattedResponse = this.responseFormatter.search(response)
+    this.setResponseState(formattedResponse)
+    this.requestOptions.onSuccess(formattedResponse, this.getHelpersToExpose())
   }
 
   getRequestStateFromParams(params){
@@ -137,25 +133,48 @@ class Search extends APIConnector {
   }
 
   getParamsFromRequestState(){
-    console.log(this.requestState)
-    const { query, queryMode, queryFilters, filters, pagination, sort, cache, request } = this.requestState;
-    console.log(pagination)
+    const { 
+      query,
+      queryMode,
+      queryFilters,
+      filters,
+      cache,
+      request,
+      page,
+      perPage,
+      sortField,
+      sortDirection 
+    } = this.requestState;
     let params: any = {
       q: query,
       qm: queryMode,
       qf: queryFilters,
       request: request,
       f: filters,
-      page: pagination.page,
-      per_page: pagination.perPage,
+      page: page,
+      per_page: perPage,
       cache: cache,
     }
-    if(sort.id && sort.direction){
-      params['sort'] = `${sort.id}-${sort.direction}`
+    if(sortField && sortDirection){
+      params['sort'] = `${sortField}-${sortDirection}`
     }
     return params
   }
 
+  isRequested(requestItem){
+   return this.requestState.request.includes(requestItem)
+  }
+
+  getHelpersToExpose(){
+    let helpersToExpose = {
+      ...this.paginationHelpers,
+      ...this.searchHelpers
+    }
+    if(this.isRequested('filters')){
+      helpersToExpose = { ...helpersToExpose, ...this.filterHelpers }
+    }
+    return helpersToExpose
+  }
 
   new(requestOptions){
     this.requestOptions = requestOptions
@@ -163,11 +182,7 @@ class Search extends APIConnector {
     if(Object.keys(requestState).length){
       this.requestState = requestState
     }
-    return {
-      ...this.filterHelpers,
-      ...this.searchHelpers,
-      ...this.paginationHelpers
-    }
+    return this.getHelpersToExpose()
   }
 
   static defaultRequestOptions(){
