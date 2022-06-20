@@ -9,6 +9,8 @@
 </head>
 <body>
   <!-- <input type="text" id="mock-search-input"/> -->
+  <button id="next-btn">NEXT</button>
+  <button id="prev-btn">PREV</button>
   <div id="response"/>
   <script>
 
@@ -107,14 +109,31 @@
       //   },
       // });
 
-      Tagalys.APIConnector.SmartWidget.call({
+      // Tagalys.APIConnector.SmartWidget.call({
+      //   params: {
+      //     widgetId: "638c9363032cc5e4a28e",
+      //   },
+      //   onSuccess: function (response, analyticsData = {}) {
+      //     appendToBody(response, analyticsData)
+      //   },
+      // });
+
+      const search = Tagalys.APIConnector.Search.new({
         params: {
-          widgetId: "638c9363032cc5e4a28e",
+          query: 'dress',
+          queryMode: 'and',
+          request: ['details']
         },
         onSuccess: function (response, analyticsData = {}) {
           appendToBody(response, analyticsData)
         },
       });
+      document.querySelector('#next-btn').addEventListener('click', ()=>{
+        search.goToNextPage()
+      })
+      document.querySelector('#prev-btn').addEventListener('click', ()=>{
+        search.goToPrevPage()
+      })
       // Tagalys.APIConnector.AddedToCartAlsoAddedToCart.call({
       //   params: {
       //     limit: 2,

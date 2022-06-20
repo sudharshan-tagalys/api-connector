@@ -109,7 +109,7 @@ class APIConnector{
         call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
           const instance = new this()
           return instance.call({
-            defaultRequestOptions,
+            ...defaultRequestOptions,
             ...requestOptions
           })
         },
