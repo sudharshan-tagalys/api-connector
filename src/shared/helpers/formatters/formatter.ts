@@ -102,6 +102,15 @@ class Formatter {
     }
   }
 
+  search(response){
+    if(response.details){
+      response.products = this.formatDetails(response.details)
+    }
+    const fieldsToIgnore = ['total', 'results', 'status', 'page', 'per_page', 'details']
+    fieldsToIgnore.forEach((field)=>delete response[field]);
+    return response
+  }
+
   popularSearches(response, configuration) {
     const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
