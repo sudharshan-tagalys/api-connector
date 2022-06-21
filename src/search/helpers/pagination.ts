@@ -10,7 +10,7 @@ const hasNextPage = function () {
   const helpers = this.getHelpersToExpose()
   const totalPages = helpers.getTotalPages()
   const nextPage = helpers.getCurrentPage() + 1
-  if (totalPages) return (nextPage <= totalPages)
+  if (typeof totalPages === 'number') return (nextPage <= totalPages)
   return true
 }
 

@@ -1,8 +1,8 @@
-const applySortOption = function (sortOptionId) {
-  const sortOptions = this.getHelpersToExpose().getSortOptions()
-  return sortOptions.map((sortOption) => {
-    sortOption.selected = sortOption.id === sortOptionId
-    return sortOption
+const applySortOption = function (sortOptionId, sortDirection) {
+  this.setRequestState((reqState)=>{
+    reqState.sortField = sortOptionId
+    reqState.sortDirection = sortDirection
+    return reqState
   })
 }
 
