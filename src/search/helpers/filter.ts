@@ -82,6 +82,32 @@ const getAppliedFilterItems = function(items){
   return appliedFilterItems
 }
 
+const getResponseHelpers = function(){
+  const { 
+    getFilters,
+    getAppliedFilters,
+    getAppliedFilterById,
+    getFilterById,
+    isFilterApplied
+  } = this.filterHelpers
+  return {
+    getFilters,
+    getAppliedFilterById,
+    getAppliedFilters,
+    getFilterById,
+    isFilterApplied
+  }
+}
+
+const getRequestHelpers = function(){
+  const { applyFilter, clearFilter, clearAllFilters } = this.filterHelpers
+  return {
+    applyFilter,
+    clearFilter,
+    clearAllFilters
+  }
+}
+
 export default {
   getFilters,
   getAppliedFilters,
@@ -90,5 +116,7 @@ export default {
   getAppliedFilterById,
   isFilterApplied,
   clearFilter,
-  clearAllFilters
+  clearAllFilters,
+  getRequestHelpers,
+  getResponseHelpers
 };

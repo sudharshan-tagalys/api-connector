@@ -49,6 +49,25 @@ const goToPage = function (page) {
   })
 }
 
+const getRequestHelpers = function(){
+  const { goToNextPage, goToPrevPage, goToPage } = this.paginationHelpers
+  return {
+    goToNextPage,
+    goToPrevPage,
+    goToPage
+  }
+}
+
+const getResponseHelpers = function(){
+  const { getCurrentPage, getTotalPages, hasNextPage, hasPreviousPage } = this.paginationHelpers
+  return {
+    getCurrentPage,
+    getTotalPages,
+    hasNextPage,
+    hasPreviousPage
+  }
+}
+
 export default {
   goToNextPage,
   goToPrevPage,
@@ -56,5 +75,7 @@ export default {
   getTotalPages,
   hasNextPage,
   hasPreviousPage,
-  goToPage
+  goToPage,
+  getRequestHelpers,
+  getResponseHelpers
 }

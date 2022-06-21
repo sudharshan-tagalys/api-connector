@@ -3,18 +3,8 @@ import FilterHelpers from './helpers/filter';
 import SearchHelpers from './helpers/search';
 import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
-
-import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants";
-
-interface SearchRequestParams {
-  query: string
-  queryMode: string
-  filters: Array<any>
-  request: Array<string>
-  cache: boolean
-  queryFilter: Array<any>
-  perPage: number
-}
+import ProductHelpers from './helpers/product'
+import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants";
 
 const DEFAULT_REQUEST_STATE =  {
   query: "",
@@ -29,29 +19,32 @@ const DEFAULT_REQUEST_STATE =  {
   cache: true,
 }
 
+const DEFAULT_RESPONSE_STATE = {
+  filters: [],
+  sort_options: [],
+  page: null,
+  total_pages: null,
+  products: [],
+  variables: [],
+  banners: []
+};
+
 class Search extends APIConnector {
   public filterHelpers;
   public paginationHelpers;
   public searchHelpers;
   public sortOptionHelpers;
-  public responseState = {
-    filters: [],
-    sort_options: [],
-    page: null,
-    total_pages: null,
-    products: [],
-    variables: [],
-    banners: []
-  };
-
+  public productHelpers;
   public requestState = DEFAULT_REQUEST_STATE
+  public responseState = DEFAULT_RESPONSE_STATE
 
   constructor(){
     super()
     this.filterHelpers = this.bindThisToHelpers(FilterHelpers)
     this.paginationHelpers = this.bindThisToHelpers(PaginationHelpers);
     this.searchHelpers = this.bindThisToHelpers(SearchHelpers);
-    this.sortOptionHelpers = this.bindThisToHelpers(SortOptionHelpers)
+    this.sortOptionHelpers = this.bindThisToHelpers(SortOptionHelpers);
+    this.productHelpers = this.bindThisToHelpers(ProductHelpers);
   }
 
   bindThisToHelpers(helpers: object){
@@ -98,7 +91,7 @@ class Search extends APIConnector {
   onSuccessfulResponse(response) {
     const formattedResponse = this.responseFormatter.search(response)
     this.setResponseState(formattedResponse)
-    this.requestOptions.onSuccess(formattedResponse, this.getHelpersToExpose())
+    this.requestOptions.onSuccess(formattedResponse, this.getHelpersToExpose('response'))
   }
 
   getRequestStateFromParams(params){
@@ -184,16 +177,31 @@ class Search extends APIConnector {
    return this.requestState.request.includes(requestItem)
   }
 
-  getHelpersToExpose(){
-    let helpersToExpose = {
-      ...this.paginationHelpers,
-      ...this.searchHelpers,
-      ...this.sortOptionHelpers
+  getHelpersToExpose(type){
+    const functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers' 
+    let helpers = {
+      ...this.paginationHelpers[functionToCall](),
+      ...this.searchHelpers[functionToCall]()
     }
-    // if(this.isRequested('filters')){
-      helpersToExpose = { ...helpersToExpose, ...this.filterHelpers }
-    // }
-    return helpersToExpose
+    if(this.isRequested('filters')){
+      helpers = {
+        ...helpers,
+        ...this.filterHelpers[functionToCall]()
+      }
+    }
+    if(this.isRequested('sort_options')){
+      helpers = {
+        ...helpers,
+        ...this.sortOptionHelpers[functionToCall]()
+      }
+    }
+    if(this.isRequested('details')){
+      helpers = {
+        ...helpers,
+        ...this.productHelpers[functionToCall]()
+      }
+    }
+    return helpers
   }
 
   new(requestOptions){
@@ -202,7 +210,7 @@ class Search extends APIConnector {
     if(Object.keys(requestState).length){
       this.requestState = requestState
     }
-    return this.getHelpersToExpose()
+    return this.getHelpersToExpose('request')
   }
 
   static defaultRequestOptions(){

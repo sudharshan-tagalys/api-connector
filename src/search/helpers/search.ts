@@ -5,6 +5,28 @@ const setQuery = function(query){
   })
 }
 
+const setQueryMode = function(queryMode){
+  this.setRequestState((reqState)=>{
+    reqState.queryMode = queryMode
+    return reqState
+  })
+}
+
+const getRequestHelpers = function(){
+  const { setQuery, setQueryMode } = this.searchHelpers
+  return {
+    setQuery,
+    setQueryMode
+  }
+}
+
+const getResponseHelpers = function(){
+  return {}
+}
+
 export default {
-  setQuery
+  setQuery,
+  setQueryMode,
+  getRequestHelpers,
+  getResponseHelpers
 }
