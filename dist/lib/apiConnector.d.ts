@@ -9,13 +9,22 @@ declare class APIConnector {
     formatResponse(response: any): any;
     getRequestOptions(): {};
     isFailureResponse(response: any): boolean;
-    static defaultRequestOptions(): {};
+    static defaultRequestOptions(): {
+        onSuccess: (response: any) => void;
+        onFailure: (response: any) => void;
+    };
     new(requestOptions: any): any;
     static exporterName(): void;
     static export(): {
         [x: number]: {
-            call: (requestOptions: any, defaultRequestOptions?: {}) => void;
-            new: (requestOptions: any, defaultRequestOptions?: {}) => any;
+            call: (requestOptions: any, defaultRequestOptions?: {
+                onSuccess: (response: any) => void;
+                onFailure: (response: any) => void;
+            }) => void;
+            new: (requestOptions: any, defaultRequestOptions?: {
+                onSuccess: (response: any) => void;
+                onFailure: (response: any) => void;
+            }) => any;
         };
     };
 }

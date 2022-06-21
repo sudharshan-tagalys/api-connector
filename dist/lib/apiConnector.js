@@ -88,7 +88,10 @@ var APIConnector = /** @class */ (function () {
         return false;
     };
     APIConnector.defaultRequestOptions = function () {
-        return {};
+        return {
+            onSuccess: function (response) { },
+            onFailure: function (response) { }
+        };
     };
     APIConnector.prototype.new = function (requestOptions) {
         return undefined;
@@ -105,7 +108,7 @@ var APIConnector = /** @class */ (function () {
                 call: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
                     var instance = new _this();
-                    return instance.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                    return instance.call(__assign(__assign({}, defaultRequestOptions), requestOptions));
                 },
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
