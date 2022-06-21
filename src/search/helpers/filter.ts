@@ -1,3 +1,6 @@
+
+// ====== PUBLICLY EXPOSED HELPERS =======
+
 const getFilters = function(){
   return this.responseState.filters
 }
@@ -6,47 +9,35 @@ const getAppliedFilters = function(){
   return getAppliedFilterItems(this.responseState.filters)
 }
 
-const flattenFilterItems = function(items){
-  let appliedFilterItems = []
-  items.forEach((item)=>{
-    if(item.hasOwnProperty('items')){
-      appliedFilterItems.concat(flattenFilterItems(item.items))
-    }else{
-      appliedFilterItems.push(item);
-    }
-  })
-  return appliedFilterItems
-}
-
-const getAppliedFilterItems = function(items){
-  const flattenedFilterItems = flattenFilterItems(items);
-  return flattenedFilterItems.filter((filter)=>filter.selected)
-}
-
 const applyFilter = function(filterId, filterItemsToApply){
   this.setRequestState((reqState)=>{
     let filter = (reqState.filters[filterId] || [])
     if(Array.isArray(filterItemsToApply)){
       filter = filter.concat(filterItemsToApply)
     }else{
-      filter = filter.push(filterItemsToApply)
+      filter.push(filterItemsToApply)
     }
     reqState.filters[filterId] = filter;
     return reqState
   })
 }
+
 const getFilterById = function(filterId){
   const flattenedFilterItems = flattenFilterItems(this.responseState.filters);
-  return flattenedFilterItems.find((filter)=> filter.id === filterId)
+  const filter = flattenedFilterItems.find((filter)=> filter.id === filterId)
+  if(!filter) return false 
+  return filter
 }
 
 const getAppliedFilterById = function(filterId){
   const appliedFilters = getAppliedFilters.call(this)
-  return appliedFilters.find((filter)=>filter.id === filterId)
+  const appliedFilter = appliedFilters.find((filter)=>filter.id === filterId)
+  if(!appliedFilter) return false
+  return appliedFilter
 }
 
 const isFilterApplied = function(filterId){
-  const appliedFilter = getAppliedFilterById.call(this)
+  const appliedFilter = getAppliedFilterById.call(this, filterId)
   if(appliedFilter && Object.keys(appliedFilter).length){
     return true
   }
@@ -58,7 +49,7 @@ const clearFilter = function(filterId, filterItemIds = []){
     if(filterItemIds.length === 0){
       delete reqState.filters[filterId]
     }else{
-      reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>filterItemIds.includes(filterItemId))
+      reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!filterItemIds.includes(filterItemId))
     }
     return reqState
   })
@@ -69,7 +60,36 @@ const clearAllFilters = function(){
     reqState.filters = {}
     return reqState
   })
-} 
+}
+
+// ==== UTILITY METHODS ====
+
+const flattenFilterItems = function(items, flattenedItems = []){
+  items.forEach((item)=>{
+    if(item.hasOwnProperty('items')){
+      flattenedItems.push(omit(item, 'items'))
+      flattenedItems.concat(flattenFilterItems(item.items, flattenedItems))
+    }else{
+      flattenedItems.push(item);
+    }
+  })
+  return flattenedItems
+}
+
+const getAppliedFilterItems = function(items){
+  const flattenedFilterItems = flattenFilterItems(items);
+  const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
+  return appliedFilterItems
+}
+
+const omit = function(obj, omitKey) {
+  return Object.keys(obj).reduce((result, key) => {
+    if(key !== omitKey) {
+       result[key] = obj[key];
+    }
+    return result;
+  }, {});
+}
 
 export default {
   getFilters,

@@ -149,15 +149,30 @@ class Search extends APIConnector {
       sortField,
       sortDirection
     } = this.requestState;
-    let params: any = {
-      q: query,
-      qm: queryMode,
-      qf: queryFilters,
-      request: request,
-      f: filters,
-      page: page,
-      per_page: perPage,
-      cache: cache,
+    let params: any = {}
+    if(query){
+      params['q'] = query
+    }
+    if(queryMode){
+      params['qm'] = queryMode
+    }
+    if(queryFilters){
+      params['qf'] = queryFilters
+    }
+    if(filters){
+      params['f'] = filters
+    }
+    if(request){
+      params['request'] = request
+    }
+    if(page){
+      params['page'] = page
+    }
+    if(perPage){
+      params['per_page'] = perPage
+    }
+    if(cache){
+      params['cache'] = cache
     }
     if(sortField && sortDirection){
       params['sort'] = `${sortField}-${sortDirection}`
