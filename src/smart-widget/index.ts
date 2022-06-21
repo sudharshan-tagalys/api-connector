@@ -10,6 +10,13 @@ class SmartWidget extends Widget {
     return `custom_widgets/${this.requestOptions.params.widgetId}`
   }
 
+  getParams(){
+    return {
+      request: ["result", "details"],
+      per_page: this.requestOptions.params.limit || 16,
+    }
+  }
+
   plType(): string{
     return 'widget-custom'
   }
