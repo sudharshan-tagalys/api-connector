@@ -27,6 +27,12 @@ var SmartWidget = /** @class */ (function (_super) {
     SmartWidget.prototype.path = function () {
         return "custom_widgets/".concat(this.requestOptions.params.widgetId);
     };
+    SmartWidget.prototype.getParams = function () {
+        return {
+            request: ["result", "details"],
+            per_page: this.requestOptions.params.limit || 16,
+        };
+    };
     SmartWidget.prototype.plType = function () {
         return 'widget-custom';
     };
