@@ -91,7 +91,10 @@ class APIConnector{
   }
 
   static defaultRequestOptions(){
-    return {}
+    return {
+      onSuccess: (response) => {},
+      onFailure: (response) => {}
+    }
   }
 
   new(requestOptions){
@@ -109,7 +112,7 @@ class APIConnector{
         call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
           const instance = new this()
           return instance.call({
-            defaultRequestOptions,
+            ...defaultRequestOptions,
             ...requestOptions
           })
         },
