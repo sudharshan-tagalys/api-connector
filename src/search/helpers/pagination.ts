@@ -42,11 +42,19 @@ const goToPrevPage = function(){
   })
 }
 
+const goToPage = function (page) {
+  this.setRequestState((reqState) => {
+    reqState.page = page
+    return reqState
+  })
+}
+
 export default {
   goToNextPage,
   goToPrevPage,
   getCurrentPage,
   getTotalPages,
   hasNextPage,
-  hasPreviousPage
+  hasPreviousPage,
+  goToPage
 }

@@ -110,6 +110,7 @@ class Formatter {
     const totalPages = Math.ceil(response.total / response.per_page)
     formattedResponse["total_pages"] = totalPages
     formattedResponse["page"] = response.page
+    formattedResponse["sort_options"] = response.sort_options
     return formattedResponse
   }
 

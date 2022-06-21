@@ -2,6 +2,8 @@ import APIConnector from "../lib/apiConnector"
 import FilterHelpers from './helpers/filter';
 import SearchHelpers from './helpers/search';
 import PaginationHelpers from './helpers/pagination'
+import SortOptionHelpers from './helpers/sortOption'
+
 import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants";
 
 interface SearchRequestParams {
@@ -31,6 +33,7 @@ class Search extends APIConnector {
   public filterHelpers;
   public paginationHelpers;
   public searchHelpers;
+  public sortOptionHelpers;
   public responseState = {
     filters: [],
     sort_options: [],
@@ -48,6 +51,7 @@ class Search extends APIConnector {
     this.filterHelpers = this.bindThisToHelpers(FilterHelpers)
     this.paginationHelpers = this.bindThisToHelpers(PaginationHelpers);
     this.searchHelpers = this.bindThisToHelpers(SearchHelpers);
+    this.sortOptionHelpers = this.bindThisToHelpers(SortOptionHelpers)
   }
 
   bindThisToHelpers(helpers: object){
@@ -67,7 +71,7 @@ class Search extends APIConnector {
       ...responseState
     }
   }
-  
+
   setRequestState(mutationCallback){
     const newRequestState = mutationCallback(this.requestState);
     console.log("NEW STATE", newRequestState)
@@ -133,7 +137,7 @@ class Search extends APIConnector {
   }
 
   getParamsFromRequestState(){
-    const { 
+    const {
       query,
       queryMode,
       queryFilters,
@@ -143,7 +147,7 @@ class Search extends APIConnector {
       page,
       perPage,
       sortField,
-      sortDirection 
+      sortDirection
     } = this.requestState;
     let params: any = {
       q: query,
@@ -168,11 +172,12 @@ class Search extends APIConnector {
   getHelpersToExpose(){
     let helpersToExpose = {
       ...this.paginationHelpers,
-      ...this.searchHelpers
+      ...this.searchHelpers,
+      ...this.sortOptionHelpers
     }
-    if(this.isRequested('filters')){
+    // if(this.isRequested('filters')){
       helpersToExpose = { ...helpersToExpose, ...this.filterHelpers }
-    }
+    // }
     return helpersToExpose
   }
 
