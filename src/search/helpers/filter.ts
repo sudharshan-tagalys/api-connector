@@ -1,6 +1,8 @@
 
 // ====== PUBLICLY EXPOSED HELPERS =======
 
+import { omit } from "../../shared/helpers/common"
+
 const getFilters = function(){
   return this.responseState.filters
 }
@@ -24,7 +26,7 @@ const applyFilter = function(filterId, filterItemsToApply){
 
 const getFilterById = function(filterId){
   const flattenedFilterItems = flattenFilterItems(this.responseState.filters);
-  const filter = flattenedFilterItems.find((filter)=> filter.id === filterId)
+  const filter = flattenedFilterItems.find((filter)=>filter.id === filterId)
   if(!filter) return false 
   return filter
 }
@@ -38,9 +40,7 @@ const getAppliedFilterById = function(filterId){
 
 const isFilterApplied = function(filterId){
   const appliedFilter = getAppliedFilterById.call(this, filterId)
-  if(appliedFilter && Object.keys(appliedFilter).length){
-    return true
-  }
+  if(appliedFilter) return true
   return false
 }
 
@@ -80,15 +80,6 @@ const getAppliedFilterItems = function(items){
   const flattenedFilterItems = flattenFilterItems(items);
   const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
   return appliedFilterItems
-}
-
-const omit = function(obj, omitKey) {
-  return Object.keys(obj).reduce((result, key) => {
-    if(key !== omitKey) {
-       result[key] = obj[key];
-    }
-    return result;
-  }, {});
 }
 
 export default {

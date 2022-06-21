@@ -24,7 +24,17 @@ const getEncodedQueryString = ({ query = '', queryFilter = {}, filter = {} }) =>
   return  '?' + queryStringManager.stringify(params);
 }
 
+const omit = function(obj, omitKey) {
+  return Object.keys(obj).reduce((result, key) => {
+    if(key !== omitKey) {
+       result[key] = obj[key];
+    }
+    return result;
+  }, {});
+}
+
 export {
+  omit,
   getUrlEncodedQueryString,
   getEncodedQueryString
 }
