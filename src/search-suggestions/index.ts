@@ -2,7 +2,8 @@ import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
-import { getUrlEncodedQueryString } from '../shared/helpers/common'
+import { getEncodedQueryString, getURLEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
+import queryStringManager from "../lib/queryStringManager"
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -33,15 +34,20 @@ class SearchSuggestions extends APIConnector {
     callAPI && this.call(this.requestOptions)
   }
 
-  new(requestOptions){
-    this.requestOptions = requestOptions
+  getHelpersToExpose(){
     return {
       setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
       getPopularSearches: () => this.getPopularSearches(),
       addRecentSearch: (query) => this.addRecentSearch(query),
       removeRecentSearch: (query) => this.removeRecentSearch(query),
-      getUrlEncodedQueryString
+      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
+      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation()
     }
+  }
+
+  new(requestOptions){
+    this.requestOptions = requestOptions
+    return this.getHelpersToExpose()
   }
 
   getPopularSearches() {

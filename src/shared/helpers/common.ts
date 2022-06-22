@@ -1,6 +1,6 @@
 import queryStringManager from '../../lib/queryStringManager';
 
-const getUrlEncodedQueryString = (baseUrl, params) => {
+const getURLEncodedQueryString = (baseUrl, params) => {
   return `${baseUrl}${getEncodedQueryString(params)}`
 }
 
@@ -45,10 +45,49 @@ const getEncodedQueryString = ({
   return  `?${queryStringManager.stringify(params)}`;
 }
 
+const getRequestParamsFromWindowLocation = () => {
+  return getRequestParamsFromQueryString(window.location.search.replace("?", ''))
+}
+
+const getRequestParamsFromQueryString = (queryString) => {
+  const parsedObjectFromQueryString = queryStringManager.parse(queryString)
+  const { query, queryFilter, filter, page, sort } =  queryStringManager.getConfiguration()
+  let params = {}
+  if(parsedObjectFromQueryString[query]){
+    params['query'] = parsedObjectFromQueryString[query]
+  }
+  if(parsedObjectFromQueryString[queryFilter]){
+    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
+  }
+  if(parsedObjectFromQueryString[filter]){
+    params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
+  }
+  if(parsedObjectFromQueryString[page]){
+    params['page'] = parseInt(parsedObjectFromQueryString[page].toString())
+  }
+  if(parsedObjectFromQueryString[sort]){
+    params['sort'] = parsedObjectFromQueryString[sort]
+  }
+  return params
+}
+
 const getFilterQueryString = (filter) => {
   return Object.keys(filter).map(function(key){
     return `${key}-${filter[key]}`
   }).join('~');
+}
+
+const getFiltersFromQueryString = (filterQueryString) => {
+  const filtersFromQueryString = filterQueryString.split("~");
+  let filters = {}
+  filtersFromQueryString.forEach(filterFromQueryString => {
+    const filter = filterFromQueryString.split('-')
+    const filterKey = filter[0]
+    const filterValueString = filter[1]
+    const appliedFilterValues = filterValueString.split(',')
+    filters[filterKey] = appliedFilterValues
+  });
+  return filters
 }
 
 const omit = function(obj, omitKey) {
@@ -62,6 +101,8 @@ const omit = function(obj, omitKey) {
 
 export {
   omit,
-  getUrlEncodedQueryString,
-  getEncodedQueryString
+  getURLEncodedQueryString,
+  getEncodedQueryString,
+  getRequestParamsFromQueryString,
+  getRequestParamsFromWindowLocation
 }

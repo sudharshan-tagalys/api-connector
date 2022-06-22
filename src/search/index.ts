@@ -6,7 +6,7 @@ import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
 import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants";
 import queryStringManager from "../lib/queryStringManager";
-import { getEncodedQueryString } from "../shared/helpers/common";
+import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_STATE =  {
   query: "",
@@ -192,15 +192,20 @@ class Search extends APIConnector {
     })
   }
 
+  getQueryStringHelpers(){
+    return {
+      getEncodedQueryString: this.getEncodedQueryString.bind(this),
+      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
+      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation()
+    }
+  }
+
   getHelpersToExpose(type){
     const functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers'
-    const queryStringHelpers = {
-      getURLEncodedQueryString: this.getEncodedQueryString.bind(this)
-    }
     let helpers = {
       ...this.paginationHelpers[functionToCall](),
       ...this.searchHelpers[functionToCall](),
-      ...queryStringHelpers
+      ...this.getQueryStringHelpers()
     }
     if(this.isRequested('filters')){
       helpers = {
