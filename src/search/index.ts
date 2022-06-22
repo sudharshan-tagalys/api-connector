@@ -5,7 +5,6 @@ import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
 import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants";
-import queryStringManager from "../lib/queryStringManager";
 import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_STATE =  {
@@ -87,13 +86,29 @@ class Search extends APIConnector {
   }
 
   extractAnalyticsData(response) {
-    return response
+    const productSkus = response["details"].map((product) => product.sku)
+    let eventDetails = {
+      pl_type: 'search',
+      pl_details: {
+        q: this.requestState.query,
+        qm: this.requestState.queryMode,
+        f: this.requestState.filters
+      },
+      pl_products: productSkus,
+      pl_page: this.requestState.page,
+      pl_total: productSkus.length
+    }
+    if(this.getSortString().length){
+      eventDetails['pl_sort'] = this.getSortString()
+    }
+    return {
+      event_type: "product_list",
+      event_details: eventDetails
+    }
   }
 
-  onSuccessfulResponse(response) {
-    const formattedResponse = this.responseFormatter.search(response)
-    this.setResponseState(formattedResponse)
-    this.requestOptions.onSuccess(formattedResponse, this.getHelpersToExpose('response'))
+  formatResponse(response: any) {  
+    return this.responseFormatter.search(response)
   }
 
   getRequestStateFromParams(params){
@@ -141,8 +156,6 @@ class Search extends APIConnector {
       request,
       page,
       perPage,
-      sortField,
-      sortDirection
     } = this.requestState;
     let params: any = {}
     if(query){
@@ -169,10 +182,22 @@ class Search extends APIConnector {
     if(cache){
       params['cache'] = cache
     }
-    if(sortField && sortDirection){
-      params['sort'] = `${sortField}-${sortDirection}`
+    if(this.getSortString().length){
+      params['sort'] = this.getSortString()
     }
     return params
+  }
+
+  getSortString(){
+    const { sortField, sortDirection } = this.requestState;
+    if(sortField){
+      if(sortDirection){
+        return `${sortField}-${sortDirection}`
+      }else{
+        return sortField
+      }
+    }
+    return ''
   }
 
   isRequested(requestItem){
@@ -200,7 +225,11 @@ class Search extends APIConnector {
     }
   }
 
-  getHelpersToExpose(type){
+  internalSuccessCallback(_, formattedResponse){
+    this.setResponseState(formattedResponse)
+  }
+
+  getHelpersToExpose(type = 'request'){
     const functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers'
     let helpers = {
       ...this.paginationHelpers[functionToCall](),

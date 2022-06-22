@@ -62,10 +62,26 @@ class APIConnector{
     return params
   }
 
+  getHelpersToExpose(type = 'request'){
+    return {}
+  }
+
+  internalSuccessCallback(response, formattedResponse){
+
+  }
+
   onSuccessfulResponse(response){
     const analyticsData = this.extractAnalyticsData(response);
     const formattedResponse = this.formatResponse(response)
-    this.requestOptions.onSuccess(formattedResponse, analyticsData);
+    this.internalSuccessCallback(response, formattedResponse)
+    const responseHelpers = this.getHelpersToExpose('response')
+    const analyticsHelpers = {
+      getAnalyticsData: () => analyticsData
+    }
+    this.requestOptions.onSuccess(formattedResponse, {
+      ...responseHelpers,
+      ...analyticsHelpers
+    });
     if (configuration.canTrackAnalytics()) {
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }

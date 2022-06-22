@@ -25,8 +25,8 @@ class SearchSuggestions extends APIConnector {
     return response
   }
 
-  onSuccessfulResponse(response) {
-    this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration))
+  formatResponse(response: any) {
+    return this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration)
   }
 
   setQuery(query, callAPI = true) {
