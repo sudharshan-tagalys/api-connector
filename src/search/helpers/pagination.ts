@@ -7,7 +7,7 @@ const getTotalPages = function(){
 }
 
 const hasNextPage = function () {
-  const helpers = this.getHelpersToExpose()
+  const helpers = this.paginationHelpers
   const totalPages = helpers.getTotalPages()
   const nextPage = helpers.getCurrentPage() + 1
   if (typeof totalPages === 'number') return (nextPage <= totalPages)
@@ -15,13 +15,13 @@ const hasNextPage = function () {
 }
 
 const hasPreviousPage = function () {
-  const helpers = this.getHelpersToExpose()
+  const helpers = this.paginationHelpers
   const previousPage = helpers.getCurrentPage() - 1
   return (previousPage > 0)
 }
 
 const goToNextPage = function () {
-  if (!this.getHelpersToExpose().hasNextPage()) {
+  if (!this.paginationHelpers.hasNextPage()) {
     console.error('Max pages reached')
     return false
   }
@@ -32,7 +32,7 @@ const goToNextPage = function () {
 }
 
 const goToPrevPage = function(){
-  if (!this.getHelpersToExpose().hasPreviousPage()) {
+  if (!this.paginationHelpers.hasPreviousPage()) {
     console.error("Min pages reached")
     return false
   }
