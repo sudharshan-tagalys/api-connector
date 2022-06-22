@@ -2,6 +2,7 @@ const applySortOption = function (sortOptionId, sortDirection) {
   this.setRequestState((reqState)=>{
     reqState.sortField = sortOptionId
     reqState.sortDirection = sortDirection
+    reqState.page = 1
     return reqState
   })
 }

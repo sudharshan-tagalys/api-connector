@@ -8,7 +8,7 @@ class QueryStringManager{
   }
 
   stringify(params){
-    return qs.stringify(params)
+    return qs.stringify(params, { encode: false })
   }
 
   setConfiguration(configuration: any){

@@ -20,6 +20,7 @@ const applyFilter = function(filterId, filterItemsToApply){
       filter.push(filterItemsToApply)
     }
     reqState.filters[filterId] = filter;
+    reqState.page = 1
     return reqState
   })
 }
@@ -51,6 +52,7 @@ const clearFilter = function(filterId, filterItemIds = []){
     }else{
       reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!filterItemIds.includes(filterItemId))
     }
+    reqState.page = 1
     return reqState
   })
 }
@@ -58,6 +60,7 @@ const clearFilter = function(filterId, filterItemIds = []){
 const clearAllFilters = function(){
   this.setRequestState((reqState)=>{
     reqState.filters = {}
+    reqState.page = 1
     return reqState
   })
 }
