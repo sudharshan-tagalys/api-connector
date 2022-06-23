@@ -86,7 +86,6 @@ class Search extends APIConnector {
   }
 
   extractAnalyticsData(response) {
-    const productSkus = response["details"].map((product) => product.sku)
     let eventDetails = {
       pl_type: 'search',
       pl_details: {
@@ -94,9 +93,11 @@ class Search extends APIConnector {
         qm: this.requestState.queryMode,
         f: this.requestState.filters
       },
-      pl_products: productSkus,
       pl_page: this.requestState.page,
-      pl_total: productSkus.length
+    }
+    if(response.details){
+      eventDetails['pl_products'] = response["details"].map((product) => product.sku)
+      eventDetails['pl_total'] = response["details"].length
     }
     if(this.getSortString().length){
       eventDetails['pl_sort'] = this.getSortString()

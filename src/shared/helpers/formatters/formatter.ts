@@ -111,7 +111,12 @@ class Formatter {
     formattedResponse["total_pages"] = totalPages
     formattedResponse["page"] = response.page
     formattedResponse['total'] = response.total
-    formattedResponse["sort_options"] = response.sort_options
+    if(response.filters){
+      formattedResponse['filters'] = response.filters
+    }
+    if(response.sort_options){
+      formattedResponse["sort_options"] = response.sort_options
+    }
     return formattedResponse
   }
 
