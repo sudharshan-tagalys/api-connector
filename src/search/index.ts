@@ -263,6 +263,7 @@ class Search extends APIConnector {
     if(Object.keys(requestState).length){
       this.requestState = requestState
     }
+    this.requestOptions.params = this.getParamsFromRequestState()
     return this.getHelpersToExpose('request')
   }
 

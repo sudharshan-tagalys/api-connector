@@ -27,7 +27,7 @@ class APIConnector{
     }
   }
 
-  call(requestOptions) {
+  call(requestOptions = this.requestOptions) {
     this.requestOptions = requestOptions;
     this.setResponseFormatter()
     const { method, path, params, format } = {
@@ -131,10 +131,14 @@ class APIConnector{
         },
         new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
           const instance = new this()
-          return instance.new({
+          const helpers = instance.new({
             ...defaultRequestOptions,
             ...requestOptions
           })
+          return {
+            ...helpers,
+            call: (requestOptions) => instance.call(requestOptions)
+          }
         }
       }
     }
