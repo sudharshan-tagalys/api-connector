@@ -114,8 +114,22 @@ class Formatter {
     if(response.filters){
       formattedResponse['filters'] = response.filters
     }
-    if(response.sort_options){
-      formattedResponse["sort_options"] = response.sort_options
+    if (response.sort_options) {
+      let sortOptions = []
+      response.sort_options.forEach((sortOption) => {
+        if (sortOption.hasOwnProperty("directions")) {
+          sortOption.directions.forEach((sortDirection) => {
+            sortOptions.push({
+              id: `${sortOption.id}-${sortDirection.direction}`,
+              label: sortDirection.label,
+              selected: sortDirection.selected
+            })
+          })
+        } else {
+          sortOptions.push(sortOption)
+        }
+      })
+      formattedResponse["sort_options"] = sortOptions
     }
     return formattedResponse
   }

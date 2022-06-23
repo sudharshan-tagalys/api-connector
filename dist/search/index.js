@@ -42,8 +42,7 @@ var DEFAULT_REQUEST_STATE = {
     request: [],
     page: 1,
     perPage: 16,
-    sortField: null,
-    sortDirection: null,
+    sort: "",
     cache: true,
 };
 var DEFAULT_RESPONSE_STATE = {
@@ -143,11 +142,8 @@ var Search = /** @class */ (function (_super) {
             requestState['pagination']['perPage'] = params.perPage;
         }
         if (params.sort) {
-            var sort = params.sort.split("-");
-            requestState['sort'] = {
-                id: sort[0],
-                direction: sort[1]
-            };
+            // const sort = params.sort.split("-")
+            requestState['sort'] = params.sort;
         }
         return __assign(__assign({}, DEFAULT_REQUEST_STATE), requestState);
     };
@@ -184,14 +180,9 @@ var Search = /** @class */ (function (_super) {
         return params;
     };
     Search.prototype.getSortString = function () {
-        var _a = this.requestState, sortField = _a.sortField, sortDirection = _a.sortDirection;
-        if (sortField) {
-            if (sortDirection) {
-                return "".concat(sortField, "-").concat(sortDirection);
-            }
-            else {
-                return sortField;
-            }
+        var sort = this.requestState.sort;
+        if (sort) {
+            return sort;
         }
         return '';
     };
@@ -204,10 +195,7 @@ var Search = /** @class */ (function (_super) {
             queryFilter: this.requestState.queryFilters,
             filter: this.requestState.filters,
             page: this.requestState.page,
-            sort: {
-                field: this.requestState.sortField,
-                direction: this.requestState.sortDirection
-            }
+            sort: this.requestState.sort
         });
     };
     Search.prototype.getQueryStringHelpers = function () {

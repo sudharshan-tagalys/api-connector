@@ -15,8 +15,7 @@ const DEFAULT_REQUEST_STATE =  {
   request: [],
   page: 1,
   perPage: 16,
-  sortField: null,
-  sortDirection: null,
+  sort: "",
   cache: true,
 }
 
@@ -108,7 +107,7 @@ class Search extends APIConnector {
     }
   }
 
-  formatResponse(response: any) {  
+  formatResponse(response: any) {
     return this.responseFormatter.search(response)
   }
 
@@ -135,11 +134,8 @@ class Search extends APIConnector {
       requestState['pagination']['perPage'] = params.perPage
     }
     if(params.sort){
-      const sort = params.sort.split("-")
-      requestState['sort'] = {
-        id: sort[0],
-        direction: sort[1]
-      } 
+      // const sort = params.sort.split("-")
+      requestState['sort'] = params.sort
     }
     return {
       ...DEFAULT_REQUEST_STATE,
@@ -190,13 +186,9 @@ class Search extends APIConnector {
   }
 
   getSortString(){
-    const { sortField, sortDirection } = this.requestState;
-    if(sortField){
-      if(sortDirection){
-        return `${sortField}-${sortDirection}`
-      }else{
-        return sortField
-      }
+    const { sort } = this.requestState;
+    if (sort) {
+      return sort
     }
     return ''
   }
@@ -211,10 +203,7 @@ class Search extends APIConnector {
       queryFilter: this.requestState.queryFilters,
       filter: this.requestState.filters,
       page: this.requestState.page,
-      sort: {
-        field: this.requestState.sortField,
-        direction: this.requestState.sortDirection
-      }
+      sort: this.requestState.sort
     })
   }
 

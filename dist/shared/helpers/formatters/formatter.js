@@ -111,7 +111,22 @@ var Formatter = /** @class */ (function () {
             formattedResponse['filters'] = response.filters;
         }
         if (response.sort_options) {
-            formattedResponse["sort_options"] = response.sort_options;
+            var sortOptions_1 = [];
+            response.sort_options.forEach(function (sortOption) {
+                if (sortOption.hasOwnProperty("directions")) {
+                    sortOption.directions.forEach(function (sortDirection) {
+                        sortOptions_1.push({
+                            id: "".concat(sortOption.id, "-").concat(sortDirection.direction),
+                            label: sortDirection.label,
+                            selected: sortDirection.selected
+                        });
+                    });
+                }
+                else {
+                    sortOptions_1.push(sortOption);
+                }
+            });
+            formattedResponse["sort_options"] = sortOptions_1;
         }
         return formattedResponse;
     };

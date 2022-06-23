@@ -13,8 +13,7 @@ declare class Search extends APIConnector {
         request: any[];
         page: number;
         perPage: number;
-        sortField: any;
-        sortDirection: any;
+        sort: string;
         cache: boolean;
     };
     responseState: {
@@ -56,12 +55,11 @@ declare class Search extends APIConnector {
         request: any[];
         page: number;
         perPage: number;
-        sortField: any;
-        sortDirection: any;
+        sort: string;
         cache: boolean;
     };
     getParamsFromRequestState(): any;
-    getSortString(): any;
+    getSortString(): string;
     isRequested(requestItem: any): boolean;
     getEncodedQueryString(): string;
     getQueryStringHelpers(): {
