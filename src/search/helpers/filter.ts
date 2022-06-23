@@ -50,11 +50,29 @@ const clearFilter = function(filterId, filterItemIds = []){
     if(filterItemIds.length === 0){
       delete reqState.filters[filterId]
     }else{
-      reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!filterItemIds.includes(filterItemId))
+      filterItemIds.forEach((filterItemId)=>{
+        const childFilterItemIds = getChildFilterItemIds(this.responseState.filters, filterItemId)
+        console.log(childFilterItemIds)
+        reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
+      })
     }
     reqState.page = 1
     return reqState
   })
+}
+
+const getChildFilterItemIds = function(filterItems, filterItemId, childFilterIds = []){
+  filterItems.forEach((item)=>{
+    console.log(item.id)
+    if(item.id === filterItemId){
+      const flattenedFilterItems = flattenFilterItems([item])
+      childFilterIds = childFilterIds.concat(flattenedFilterItems.map((filterItem)=>filterItem.id))
+    }
+    if(item.hasOwnProperty('items')){
+      childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId))
+    }
+  })
+  return childFilterIds
 }
 
 const clearAllFilters = function(){
