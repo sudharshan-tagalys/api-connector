@@ -96,7 +96,6 @@ var Search = /** @class */ (function (_super) {
         return 'Search';
     };
     Search.prototype.extractAnalyticsData = function (response) {
-        var productSkus = response["details"].map(function (product) { return product.sku; });
         var eventDetails = {
             pl_type: 'search',
             pl_details: {
@@ -104,10 +103,12 @@ var Search = /** @class */ (function (_super) {
                 qm: this.requestState.queryMode,
                 f: this.requestState.filters
             },
-            pl_products: productSkus,
             pl_page: this.requestState.page,
-            pl_total: productSkus.length
         };
+        if (response.details) {
+            eventDetails['pl_products'] = response["details"].map(function (product) { return product.sku; });
+            eventDetails['pl_total'] = response["details"].length;
+        }
         if (this.getSortString().length) {
             eventDetails['pl_sort'] = this.getSortString();
         }

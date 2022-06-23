@@ -44,9 +44,7 @@ declare class Search extends APIConnector {
                 qm: string;
                 f: {};
             };
-            pl_products: any;
             pl_page: number;
-            pl_total: any;
         };
     };
     formatResponse(response: any): any;
