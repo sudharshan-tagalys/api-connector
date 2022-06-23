@@ -9,14 +9,14 @@ var applySortOption = function (sortOptionId, sortDirection) {
     });
 };
 var getAppliedSortOption = function () {
-    var sortOptions = this.getHelpersToExpose().getSortOptions();
+    var sortOptions = this.sortOptionHelpers.getSortOptions();
     return sortOptions.find(function (sortOption) { return sortOption.selected === true; });
 };
 var getSortOptions = function () {
     return this.responseState.sort_options;
 };
 var getSortOptionById = function (sortOptionId) {
-    var sortOptions = this.getHelpersToExpose().getSortOptions();
+    var sortOptions = this.sortOptionHelpers.getSortOptions();
     return sortOptions.find(function (sortOption) { return sortOption.id === sortOptionId; });
 };
 var getRequestHelpers = function () {
