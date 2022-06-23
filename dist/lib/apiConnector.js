@@ -64,10 +64,21 @@ var APIConnector = /** @class */ (function () {
         }
         return params;
     };
+    APIConnector.prototype.getHelpersToExpose = function (type) {
+        if (type === void 0) { type = 'request'; }
+        return {};
+    };
+    APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
+    };
     APIConnector.prototype.onSuccessfulResponse = function (response) {
         var analyticsData = this.extractAnalyticsData(response);
         var formattedResponse = this.formatResponse(response);
-        this.requestOptions.onSuccess(formattedResponse, analyticsData);
+        this.internalSuccessCallback(response, formattedResponse);
+        var responseHelpers = this.getHelpersToExpose('response');
+        var analyticsHelpers = {
+            getAnalyticsData: function () { return analyticsData; }
+        };
+        this.requestOptions.onSuccess(formattedResponse, __assign(__assign({}, responseHelpers), analyticsHelpers));
         if (configuration_1.default.canTrackAnalytics()) {
             analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
         }
@@ -105,7 +116,7 @@ var APIConnector = /** @class */ (function () {
                 call: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
                     var instance = new _this();
-                    return instance.call(__assign({ defaultRequestOptions: defaultRequestOptions }, requestOptions));
+                    return instance.call(__assign(__assign({}, defaultRequestOptions), requestOptions));
                 },
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }

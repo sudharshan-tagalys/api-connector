@@ -98,6 +98,18 @@ var Formatter = /** @class */ (function () {
             products: this.formatDetails(response.products)
         };
     };
+    Formatter.prototype.search = function (response) {
+        var formattedResponse = {};
+        if (response.details) {
+            formattedResponse["products"] = this.formatDetails(response.details);
+        }
+        var totalPages = Math.ceil(response.total / response.per_page);
+        formattedResponse["total_pages"] = totalPages;
+        formattedResponse["page"] = response.page;
+        formattedResponse['total'] = response.total;
+        formattedResponse["sort_options"] = response.sort_options;
+        return formattedResponse;
+    };
     Formatter.prototype.popularSearches = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
         return {

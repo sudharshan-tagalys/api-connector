@@ -53,17 +53,16 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.prototype.extractAnalyticsData = function (response) {
         return response;
     };
-    SearchSuggestions.prototype.onSuccessfulResponse = function (response) {
-        this.requestOptions.onSuccess(this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration));
+    SearchSuggestions.prototype.formatResponse = function (response) {
+        return this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration);
     };
     SearchSuggestions.prototype.setQuery = function (query, callAPI) {
         if (callAPI === void 0) { callAPI = true; }
         this.requestOptions.params.query = query;
         callAPI && this.call(this.requestOptions);
     };
-    SearchSuggestions.prototype.new = function (requestOptions) {
+    SearchSuggestions.prototype.getHelpersToExpose = function () {
         var _this = this;
-        this.requestOptions = requestOptions;
         return {
             setQuery: function (query, callAPI) {
                 if (callAPI === void 0) { callAPI = true; }
@@ -72,8 +71,13 @@ var SearchSuggestions = /** @class */ (function (_super) {
             getPopularSearches: function () { return _this.getPopularSearches(); },
             addRecentSearch: function (query) { return _this.addRecentSearch(query); },
             removeRecentSearch: function (query) { return _this.removeRecentSearch(query); },
-            getUrlEncodedQueryString: common_1.getUrlEncodedQueryString
+            getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
+            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); }
         };
+    };
+    SearchSuggestions.prototype.new = function (requestOptions) {
+        this.requestOptions = requestOptions;
+        return this.getHelpersToExpose();
     };
     SearchSuggestions.prototype.getPopularSearches = function () {
         var _this = this;

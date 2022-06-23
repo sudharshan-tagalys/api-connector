@@ -8,7 +8,7 @@ var QueryStringManager = /** @class */ (function () {
         return qs.parse(params);
     };
     QueryStringManager.prototype.stringify = function (params) {
-        return qs.stringify(params);
+        return qs.stringify(params, { encode: false });
     };
     QueryStringManager.prototype.setConfiguration = function (configuration) {
         this.configuration = configuration;

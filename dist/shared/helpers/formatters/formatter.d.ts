@@ -30,6 +30,7 @@ declare class Formatter {
         queries: any;
         products: any;
     };
+    search(response: any): {};
     popularSearches(response: any, configuration: any): {
         queries: any;
     };

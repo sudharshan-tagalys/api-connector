@@ -11,14 +11,23 @@ declare class SearchSuggestions extends APIConnector {
     };
     static exporterName(): string;
     extractAnalyticsData(response: any): any;
-    onSuccessfulResponse(response: any): void;
+    formatResponse(response: any): any;
     setQuery(query: any, callAPI?: boolean): void;
+    getHelpersToExpose(): {
+        setQuery: (query: any, callAPI?: boolean) => void;
+        getPopularSearches: () => Promise<unknown>;
+        addRecentSearch: (query: any) => void;
+        removeRecentSearch: (query: any) => void;
+        getRequestParamsFromQueryString: (queryString: any) => {};
+        getRequestParamsFromWindowLocation: () => {};
+    };
     new(requestOptions: any): {
         setQuery: (query: any, callAPI?: boolean) => void;
         getPopularSearches: () => Promise<unknown>;
         addRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
-        getUrlEncodedQueryString: (baseUrl: any, params: any) => string;
+        getRequestParamsFromQueryString: (queryString: any) => {};
+        getRequestParamsFromWindowLocation: () => {};
     };
     getPopularSearches(): Promise<unknown>;
     addRecentSearch(displayString: string): void;
