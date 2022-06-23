@@ -2,7 +2,7 @@ declare class APIConnector {
     requestOptions: any;
     responseFormatter: any;
     setResponseFormatter(): void;
-    call(requestOptions: any): void;
+    call(requestOptions?: any): void;
     formatRequestParams(params: any, format: any): any;
     getHelpersToExpose(type?: string): {};
     internalSuccessCallback(response: any, formattedResponse: any): void;

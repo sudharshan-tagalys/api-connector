@@ -37,6 +37,7 @@ var APIConnector = /** @class */ (function () {
     };
     APIConnector.prototype.call = function (requestOptions) {
         var _this = this;
+        if (requestOptions === void 0) { requestOptions = this.requestOptions; }
         this.requestOptions = requestOptions;
         this.setResponseFormatter();
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
@@ -121,7 +122,8 @@ var APIConnector = /** @class */ (function () {
                 new: function (requestOptions, defaultRequestOptions) {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
                     var instance = new _this();
-                    return instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
+                    var helpers = instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
+                    return __assign(__assign({}, helpers), { call: function (requestOptions) { return instance.call(requestOptions); } });
                 }
             },
             _a;

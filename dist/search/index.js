@@ -240,6 +240,7 @@ var Search = /** @class */ (function (_super) {
         if (Object.keys(requestState).length) {
             this.requestState = requestState;
         }
+        this.requestOptions.params = this.getParamsFromRequestState();
         return this.getHelpersToExpose('request');
     };
     Search.defaultRequestOptions = function () {
