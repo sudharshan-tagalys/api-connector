@@ -21,6 +21,7 @@ export const APIConnector = {
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
+  test: () => console.log("TEST"),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config)
 }
 
