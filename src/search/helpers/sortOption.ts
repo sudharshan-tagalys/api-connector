@@ -8,7 +8,7 @@ const applySortOption = function (sortOptionId, sortDirection) {
 }
 
 const getAppliedSortOption = function () {
-  const sortOptions = this.getHelpersToExpose().getSortOptions()
+  const sortOptions = this.sortOptionHelpers.getSortOptions()
   return sortOptions.find((sortOption) => sortOption.selected === true)
 }
 
@@ -17,7 +17,7 @@ const getSortOptions = function () {
 }
 
 const getSortOptionById = function (sortOptionId) {
-  const sortOptions = this.getHelpersToExpose().getSortOptions()
+  const sortOptions = this.sortOptionHelpers.getSortOptions()
   return sortOptions.find((sortOption) => sortOption.id === sortOptionId)
 }
 

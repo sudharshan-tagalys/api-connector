@@ -204,7 +204,7 @@ class Search extends APIConnector {
   isRequested(requestItem){
    return this.requestState.request.includes(requestItem)
   }
-  
+
   getEncodedQueryString(){
     return getEncodedQueryString({
       query: this.requestState.query,

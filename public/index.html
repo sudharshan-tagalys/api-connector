@@ -121,10 +121,9 @@
         params: {
           query: 'dress',
           queryMode: 'and',
-          request: ['details', 'filters']
+          request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, helpers) {
-          console.log(helpers.getAppliedFilters())
           appendToBody(response)
         },
       });
