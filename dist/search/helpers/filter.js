@@ -43,17 +43,36 @@ var isFilterApplied = function (filterId) {
     return false;
 };
 var clearFilter = function (filterId, filterItemIds) {
+    var _this = this;
     if (filterItemIds === void 0) { filterItemIds = []; }
     this.setRequestState(function (reqState) {
         if (filterItemIds.length === 0) {
             delete reqState.filters[filterId];
         }
         else {
-            reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !filterItemIds.includes(filterItemId); });
+            filterItemIds.forEach(function (filterItemId) {
+                var childFilterItemIds = getChildFilterItemIds(_this.responseState.filters, filterItemId);
+                console.log(childFilterItemIds);
+                reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
+            });
         }
         reqState.page = 1;
         return reqState;
     });
+};
+var getChildFilterItemIds = function (filterItems, filterItemId, childFilterIds) {
+    if (childFilterIds === void 0) { childFilterIds = []; }
+    filterItems.forEach(function (item) {
+        console.log(item.id);
+        if (item.id === filterItemId) {
+            var flattenedFilterItems = flattenFilterItems([item]);
+            childFilterIds = childFilterIds.concat(flattenedFilterItems.map(function (filterItem) { return filterItem.id; }));
+        }
+        if (item.hasOwnProperty('items')) {
+            childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId));
+        }
+    });
+    return childFilterIds;
 };
 var clearAllFilters = function () {
     this.setRequestState(function (reqState) {
