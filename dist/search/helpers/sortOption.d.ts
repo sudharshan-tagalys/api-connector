@@ -1,5 +1,5 @@
 declare const _default: {
-    applySortOption: (sortOptionId: any, sortDirection: any) => void;
+    applySortOption: (sortOptionId: any) => void;
     getAppliedSortOption: () => any;
     getSortOptions: () => any;
     getSortOptionById: (sortOptionId: any) => any;

@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var applySortOption = function (sortOptionId, sortDirection) {
+var applySortOption = function (sortOptionId) {
     this.setRequestState(function (reqState) {
-        reqState.sortField = sortOptionId;
-        reqState.sortDirection = sortDirection;
+        reqState.sort = sortOptionId;
         reqState.page = 1;
         return reqState;
     });

@@ -1,7 +1,6 @@
-const applySortOption = function (sortOptionId, sortDirection) {
+const applySortOption = function (sortOptionId) {
   this.setRequestState((reqState)=>{
-    reqState.sortField = sortOptionId
-    reqState.sortDirection = sortDirection
+    reqState.sort = sortOptionId
     reqState.page = 1
     return reqState
   })
