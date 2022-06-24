@@ -113,16 +113,23 @@ function getPath(object, search) {
   }
 }
 
-const flatten = (members) => {
+const flatten = (members, level = 1, rootParentId = null) => {
   let children = [];
   const flattenMembers = members.map(m => {
+    if(level === 1){
+      rootParentId = m.id
+    }
     if (m.items && m.items.length) {
+      level += 1
+      m.items = m.items.map((item)=>{
+        return {...item, parentId: m.id, rootParentId: rootParentId }
+      })
       children = [...children, ...m.items];
     }
     return m;
   });
 
-  return flattenMembers.concat(children.length ? flatten(children) : children);
+  return flattenMembers.concat(children.length ? flatten(children, level, rootParentId) : children);
 };
 
 
