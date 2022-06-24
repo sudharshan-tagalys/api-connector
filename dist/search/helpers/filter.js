@@ -55,6 +55,7 @@ var clearFilter = function (filterId, filterItemIds) {
         else {
             filterItemIds.forEach(function (filterItemId) {
                 var childFilterItemIds = getChildFilterItemIds(_this.responseState.filters, filterItemId);
+                console.log("CHILD", childFilterItemIds);
                 reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
             });
         }
@@ -62,12 +63,12 @@ var clearFilter = function (filterId, filterItemIds) {
         return reqState;
     });
 };
-var getChildFilterItemIds = function (filterItems, filterItemId, childFilterIds) {
-    if (childFilterIds === void 0) { childFilterIds = []; }
+var getChildFilterItemIds = function (filterItems, filterItemId) {
+    var childFilterIds = [];
     filterItems.forEach(function (item) {
         if (item.id === filterItemId) {
             var flattenedFilterItems = flattenFilterItems([item]);
-            childFilterIds = childFilterIds.concat(flattenedFilterItems.map(function (filterItem) { return filterItem.id; }));
+            childFilterIds = flattenedFilterItems.map(function (filterItem) { return filterItem.id; });
         }
         if (item.hasOwnProperty('items')) {
             childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId));
@@ -90,17 +91,8 @@ var clearAllFilters = function () {
     });
 };
 // ==== UTILITY METHODS ====
-var flattenFilterItems = function (items, flattenedItems) {
-    if (flattenedItems === void 0) { flattenedItems = []; }
-    items.forEach(function (item) {
-        if (item.hasOwnProperty('items')) {
-            flattenedItems = flattenFilterItems(item.items, flattenedItems);
-        }
-        else {
-            flattenedItems.push(item);
-        }
-    });
-    return flattenedItems;
+var flattenFilterItems = function (items) {
+    return (0, common_1.flatten)(items);
 };
 var getAppliedFilterItems = function (items) {
     var flattenedFilterItems = flattenFilterItems(items);

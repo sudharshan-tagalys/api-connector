@@ -10,4 +10,5 @@ declare const getRequestParamsFromWindowLocation: () => {};
 declare const getRequestParamsFromQueryString: (queryString: any) => {};
 declare const omit: (obj: any, omitKey: any) => {};
 declare function getPath(object: any, search: any): any;
-export { omit, getPath, getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation };
+declare const flatten: (members: any) => any;
+export { omit, getPath, flatten, getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation };

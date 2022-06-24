@@ -142,11 +142,11 @@
           // console.log(requstHelpers.getEncodedQueryString())
         },
       });
-      requstHelpers.applyFilter('__categories', ['117', '128', '130', '131', '149'])
+      requstHelpers.applyFilter('__categories', ['117', '128', '130', '143'])
       setTimeout(()=>{
-        requstHelpers.applyFilter('__categories', '143')
-        console.log(requstHelpers.getRequestState())
-        // requstHelpers.clearFilter('__categories', ['130'])
+        // requstHelpers.applyFilter('__categories', '143')
+        // console.log(requstHelpers.getRequestState())
+        requstHelpers.clearFilter('__categories', ['117'])
       }, 3000)
       // requstHelpers.goToNextPage() 
       // requstHelpers.applySortOption('trending')

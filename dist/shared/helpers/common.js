@@ -1,6 +1,15 @@
 "use strict";
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = exports.getPath = exports.omit = void 0;
+exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = exports.flatten = exports.getPath = exports.omit = void 0;
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
     return "".concat(baseUrl).concat(getEncodedQueryString(params));
@@ -106,4 +115,15 @@ function getPath(object, search) {
     }
 }
 exports.getPath = getPath;
+var flatten = function (members) {
+    var children = [];
+    var flattenMembers = members.map(function (m) {
+        if (m.items && m.items.length) {
+            children = __spreadArray(__spreadArray([], children, true), m.items, true);
+        }
+        return m;
+    });
+    return flattenMembers.concat(children.length ? flatten(children) : children);
+};
+exports.flatten = flatten;
 //# sourceMappingURL=common.js.map

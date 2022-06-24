@@ -1,6 +1,6 @@
 declare const _default: {
     getFilters: () => any;
-    getAppliedFilters: () => any[];
+    getAppliedFilters: () => any;
     applyFilter: (filterId: any, filterItemsToApply: any) => void;
     getFilterById: (filterId: any) => any;
     getAppliedFilterById: (filterId: any) => any;
