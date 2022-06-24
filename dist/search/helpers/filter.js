@@ -13,7 +13,6 @@ var applyFilter = function (filterId, filterItemsToApply) {
         var filter = (reqState.filters[filterId] || []);
         if (Array.isArray(filterItemsToApply)) {
             // filter out the exisiting items
-            filter = filter.filter(function (item) { return !filterItemsToApply.includes(item); });
             filter = filter.concat(filterItemsToApply);
         }
         else {
