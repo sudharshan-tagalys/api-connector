@@ -25,7 +25,9 @@ var getFilters = function () {
     return this.responseState.filters;
 };
 var getAppliedFilters = function () {
-    return getAppliedFilterItems(this.responseState.filters);
+    var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
+    var appliedFilterItems = flattenedFilterItems.filter(function (filter) { return filter.selected; });
+    return appliedFilterItems;
 };
 var applyFilter = function (filterId, filterType, filterItemsToApply) {
     this.setRequestState(function (reqState) {
@@ -51,21 +53,21 @@ var applyFilter = function (filterId, filterType, filterItemsToApply) {
     });
 };
 var getFilterById = function (filterId) {
-    var flattenedFilterItems = flattenFilterItems(this.responseState.filters);
+    var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
     var filter = flattenedFilterItems.find(function (filter) { return filter.id === filterId; });
     if (!filter)
         return false;
     return filter;
 };
 var getAppliedFilterById = function (filterId) {
-    var appliedFilters = getAppliedFilters.call(this);
+    var appliedFilters = this.filterHelpers.getAppliedFilters();
     var appliedFilter = appliedFilters.find(function (filter) { return filter.id === filterId; });
     if (!appliedFilter)
         return false;
     return appliedFilter;
 };
 var isFilterApplied = function (filterId) {
-    var appliedFilter = getAppliedFilterById.call(this, filterId);
+    var appliedFilter = getAppliedFilterById(filterId);
     if (appliedFilter)
         return true;
     return false;
@@ -79,7 +81,7 @@ var clearFilter = function (filterId, filterItemIds) {
         }
         else {
             filterItemIds.forEach(function (filterItemId) {
-                var childFilterItemIds = getChildFilterItemIds(_this.responseState.filters, filterItemId);
+                var childFilterItemIds = _this.filterHelpers.getChildFilterItemIds(_this.responseState.filters, filterItemId);
                 console.log("CHILD", childFilterItemIds);
                 reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
             });
@@ -89,14 +91,15 @@ var clearFilter = function (filterId, filterItemIds) {
     });
 };
 var getChildFilterItemIds = function (filterItems, filterItemId) {
+    var _this = this;
     var childFilterIds = [];
     filterItems.forEach(function (item) {
         if (item.id === filterItemId) {
-            var flattenedFilterItems = flattenFilterItems([item]);
+            var flattenedFilterItems = _this.filterHelpers.flattenFilterItems([item]);
             childFilterIds = flattenedFilterItems.map(function (filterItem) { return filterItem.id; });
         }
         if (item.hasOwnProperty('items')) {
-            childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId));
+            childFilterIds = childFilterIds.concat(_this.filterHelpers.getChildFilterItemIds(item.items, filterItemId));
         }
     });
     return childFilterIds;
@@ -108,6 +111,10 @@ var getParentFilterItemIds = function (filterItemId) {
     }
     return [];
 };
+var getFilterId = function (filterItemId) {
+    var parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterItemId);
+    return parentFilterItemIds[0];
+};
 var clearAllFilters = function () {
     this.setRequestState(function (reqState) {
         reqState.filters = {};
@@ -116,32 +123,19 @@ var clearAllFilters = function () {
     });
 };
 // ==== UTILITY METHODS ====
-var getAppliedFilterItems = function (items) {
-    var flattenedFilterItems = flattenFilterItems(items, true);
-    var appliedFilterItems = flattenedFilterItems.filter(function (filter) { return filter.selected; });
-    return appliedFilterItems;
-};
-var flattenFilterItems = function (members, includeFilterId, level, filterId) {
-    if (includeFilterId === void 0) { includeFilterId = false; }
-    if (level === void 0) { level = 1; }
-    if (filterId === void 0) { filterId = null; }
+var flattenFilterItems = function (items) {
+    var _this = this;
     var children = [];
-    var flattenMembers = members.map(function (m) {
-        if (level === 1) {
-            filterId = m.id;
+    var flattenItems = items.map(function (item) {
+        if (item.items && item.items.length) {
+            item.items = item.items.map(function (item) {
+                return __assign(__assign({}, item), { filterId: _this.filterHelpers.getFilterId(item.id) });
+            });
+            children = __spreadArray(__spreadArray([], children, true), item.items, true);
         }
-        if (m.items && m.items.length) {
-            level += 1;
-            if (includeFilterId) {
-                m.items = m.items.map(function (item) {
-                    return __assign(__assign({}, item), { filterId: filterId });
-                });
-            }
-            children = __spreadArray(__spreadArray([], children, true), m.items, true);
-        }
-        return m;
+        return item;
     });
-    return flattenMembers.concat(children.length ? flattenFilterItems(children, includeFilterId, level, filterId) : children);
+    return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
 };
 function getPath(object, search) {
     if (object.id === search)
@@ -188,6 +182,9 @@ exports.default = {
     clearAllFilters: clearAllFilters,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers,
-    getParentFilterItemIds: getParentFilterItemIds
+    getParentFilterItemIds: getParentFilterItemIds,
+    getFilterId: getFilterId,
+    flattenFilterItems: flattenFilterItems,
+    getChildFilterItemIds: getChildFilterItemIds
 };
 //# sourceMappingURL=filter.js.map

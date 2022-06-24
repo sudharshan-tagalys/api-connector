@@ -20,5 +20,8 @@ declare const _default: {
         isFilterApplied: any;
     };
     getParentFilterItemIds: (filterItemId: any) => any;
+    getFilterId: (filterItemId: any) => any;
+    flattenFilterItems: (items: any) => any;
+    getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
 };
 export default _default;
