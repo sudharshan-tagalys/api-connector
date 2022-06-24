@@ -9,15 +9,20 @@ const getAppliedFilters = function(){
   return getAppliedFilterItems(this.responseState.filters)
 }
 
-const applyFilter = function(filterId, filterItemsToApply){
-  this.setRequestState((reqState)=>{
-    let filter = (reqState.filters[filterId] || [])
-    if(Array.isArray(filterItemsToApply)){
-      // filter out the exisiting items
-      filter = filter.concat(filterItemsToApply)
-    }else{
-      if(!filter.includes(filterItemsToApply)){
-        filter.push(filterItemsToApply)
+const applyFilter = function(filterId, filterType, filterItemsToApply){
+  this.setRequestState((reqState) => {
+    let filter = []
+    if(filterType === "range"){
+      filter = filterItemsToApply
+    } else {
+      filter = (reqState.filters[filterId] || [])
+      if(Array.isArray(filterItemsToApply)){
+        // filter out the exisiting items
+        filter = filter.concat(filterItemsToApply)
+      }else{
+        if(!filter.includes(filterItemsToApply)){
+          filter.push(filterItemsToApply)
+        }
       }
     }
     reqState.filters[filterId] = filter;
@@ -29,7 +34,7 @@ const applyFilter = function(filterId, filterItemsToApply){
 const getFilterById = function(filterId){
   const flattenedFilterItems = flattenFilterItems(this.responseState.filters);
   const filter = flattenedFilterItems.find((filter)=>filter.id === filterId)
-  if(!filter) return false 
+  if(!filter) return false
   return filter
 }
 
