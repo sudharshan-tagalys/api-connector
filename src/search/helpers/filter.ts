@@ -16,7 +16,6 @@ const applyFilter = function(filterId, filterItemsToApply){
     let filter = (reqState.filters[filterId] || [])
     if(Array.isArray(filterItemsToApply)){
       // filter out the exisiting items
-      filter = filter.filter((item)=>!filterItemsToApply.includes(item)) 
       filter = filter.concat(filterItemsToApply)
     }else{
       if(!filter.includes(filterItemsToApply)){
