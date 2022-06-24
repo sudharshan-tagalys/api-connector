@@ -113,10 +113,24 @@ function getPath(object, search) {
   }
 }
 
+const flatten = (members) => {
+  let children = [];
+  const flattenMembers = members.map(m => {
+    if (m.items && m.items.length) {
+      children = [...children, ...m.items];
+    }
+    return m;
+  });
+
+  return flattenMembers.concat(children.length ? flatten(children) : children);
+};
+
+
 
 export {
   omit,
   getPath,
+  flatten,
   getURLEncodedQueryString,
   getEncodedQueryString,
   getRequestParamsFromQueryString,

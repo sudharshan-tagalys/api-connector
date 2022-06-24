@@ -1,7 +1,7 @@
 
 // ====== PUBLICLY EXPOSED HELPERS =======
 
-import { getPath, omit } from "../../shared/helpers/common"
+import { flatten, getPath, omit } from "../../shared/helpers/common"
 
 const getFilters = function(){
   return this.responseState.filters
@@ -55,6 +55,7 @@ const clearFilter = function(filterId, filterItemIds = []){
     }else{
       filterItemIds.forEach((filterItemId)=>{
         const childFilterItemIds = getChildFilterItemIds(this.responseState.filters, filterItemId)
+        console.log("CHILD", childFilterItemIds)
         reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
       })
     }
@@ -63,11 +64,12 @@ const clearFilter = function(filterId, filterItemIds = []){
   })
 }
 
-const getChildFilterItemIds = function(filterItems, filterItemId, childFilterIds = []){
+const getChildFilterItemIds = function(filterItems, filterItemId){
+  let childFilterIds = []
   filterItems.forEach((item)=>{
     if(item.id === filterItemId){
       const flattenedFilterItems = flattenFilterItems([item])
-      childFilterIds = childFilterIds.concat(flattenedFilterItems.map((filterItem)=>filterItem.id))
+      childFilterIds = flattenedFilterItems.map((filterItem)=>filterItem.id)
     }
     if(item.hasOwnProperty('items')){
       childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId))
@@ -94,15 +96,8 @@ const clearAllFilters = function(){
 
 // ==== UTILITY METHODS ====
 
-const flattenFilterItems = function(items, flattenedItems = []){
-  items.forEach((item)=>{
-    if(item.hasOwnProperty('items')){
-      flattenedItems = flattenFilterItems(item.items, flattenedItems)
-    }else{
-      flattenedItems.push(item);
-    }
-  })
-  return flattenedItems
+const flattenFilterItems = function(items){
+  return flatten(items)
 }
 
 const getAppliedFilterItems = function(items){
