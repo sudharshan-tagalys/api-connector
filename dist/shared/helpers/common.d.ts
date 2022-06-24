@@ -9,4 +9,5 @@ declare const getEncodedQueryString: ({ query, queryFilter, filter, page, sort }
 declare const getRequestParamsFromWindowLocation: () => {};
 declare const getRequestParamsFromQueryString: (queryString: any) => {};
 declare const omit: (obj: any, omitKey: any) => {};
-export { omit, getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation };
+declare function getPath(object: any, search: any): any;
+export { omit, getPath, getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation };

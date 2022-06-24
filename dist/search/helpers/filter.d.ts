@@ -19,5 +19,6 @@ declare const _default: {
         getFilterById: any;
         isFilterApplied: any;
     };
+    getParentFilterItemIds: (filterItemId: any) => any;
 };
 export default _default;

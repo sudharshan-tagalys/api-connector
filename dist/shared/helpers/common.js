@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = exports.omit = void 0;
+exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = exports.getPath = exports.omit = void 0;
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
     return "".concat(baseUrl).concat(getEncodedQueryString(params));
@@ -89,4 +89,21 @@ var omit = function (obj, omitKey) {
     }, {});
 };
 exports.omit = omit;
+function getPath(object, search) {
+    if (object.id === search)
+        return [object.id];
+    else if ((object.items) || Array.isArray(object)) {
+        var children = Array.isArray(object) ? object : object.items;
+        for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+            var child = children_1[_i];
+            var result = getPath(child, search);
+            if (result) {
+                if (object.id)
+                    result.unshift(object.id);
+                return result;
+            }
+        }
+    }
+}
+exports.getPath = getPath;
 //# sourceMappingURL=common.js.map

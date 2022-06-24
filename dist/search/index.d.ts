@@ -59,13 +59,34 @@ declare class Search extends APIConnector {
         cache: boolean;
     };
     getParamsFromRequestState(): any;
+    getFilterParams(filters: object): {};
     getSortString(): string;
     isRequested(requestItem: any): boolean;
     getEncodedQueryString(): string;
-    getQueryStringHelpers(): {
+    commonHelpers(): {
         getEncodedQueryString: any;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
+        getRequestState: () => {
+            query: string;
+            queryMode: string;
+            filters: {};
+            queryFilters: {};
+            request: any[];
+            page: number;
+            perPage: number;
+            sort: string;
+            cache: boolean;
+        };
+        getResponseState: () => {
+            filters: any[];
+            sort_options: any[];
+            page: any;
+            total_pages: any;
+            products: any[];
+            variables: any[];
+            banners: any[];
+        };
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpersToExpose(type?: string): any;

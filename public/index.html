@@ -13,20 +13,24 @@
   <button id="prev-btn">PREV</button>
   <div id="response"/>
   <script>
+// f[__categories][]: 117
+// f[__categories][]: 128
+// f[__categories][]: 130
+// f[__categories][]: 143
 
 
 
     document.addEventListener("tagalys:ready", function () {
       Tagalys.APIConnector.setConfiguration({
-        serverUrl: "https://api-r3.tagalys.com",
+        serverUrl: "https://stage2-api.tagalys.com",
         platform: "shopify",
         credentials: {
-          clientCode: "39D2E8D16FB8EC72",
-          apiKey: "1f53183fac482d47bc62b0284d5c33da",
+          clientCode: "DDFDB76CEE9FBD3F",
+          apiKey: "58e7df246ffadf5554a68534cf37f81a",
         },
-        currencyCode: "USD",
-        storeId: "1",
-        track: false,
+        currencyCode: "AFN",
+        storeId: "10001",
+        track: true,
         analyticsStorageConsentProvided: function () {
           return true;
         },
@@ -117,23 +121,42 @@
       //     appendToBody(response, analyticsData)
       //   },
       // });
-      const search = Tagalys.APIConnector.Search.new({
+
+      Tagalys.APIConnector.setQueryStringConfiguration({
+        query: 'q',
+        filter: 'f',
+        queryFilter: 'qf',
+        page: 'p',
+        sort: 's',
+        queryMode: 'qm'
+      })
+      const requstHelpers = Tagalys.APIConnector.Search.new({
         params: {
-          query: 'dress',
-          queryMode: 'and',
+          query: 'diamond sweaters',
           request: ['details', 'filters', 'sort_options']
         },
-        onSuccess: function (response, helpers) {
-          appendToBody(response)
+        onSuccess: function (response, responseHelpers) {
+          console.log(responseHelpers.getCurrentPage())
+          // appendToBody(response)
+          // console.log(responseHelpers.getAnalyticsData())
+          // console.log(requstHelpers.getEncodedQueryString())
         },
       });
-    
+      requstHelpers.applyFilter('__categories', ['117', '128', '130', '131', '149'])
+      setTimeout(()=>{
+        requstHelpers.applyFilter('__categories', '143')
+        console.log(requstHelpers.getRequestState())
+        // requstHelpers.clearFilter('__categories', ['130'])
+      }, 3000)
+      // requstHelpers.goToNextPage() 
+      // requstHelpers.applySortOption('trending')
+
 
       document.querySelector('#next-btn').addEventListener('click', ()=>{
-        search.goToNextPage()
+        requstHelpers.goToNextPage()
       })
       document.querySelector('#prev-btn').addEventListener('click', ()=>{
-        search.goToPrevPage()
+        requstHelpers.goToPrevPage()
       })
       // Tagalys.APIConnector.AddedToCartAlsoAddedToCart.call({
       //   params: {
@@ -147,13 +170,13 @@
     });
 
     function appendToBody(response, analyticsData = {}) {
-      var div = document.createElement("div");
-      div.innerHTML = JSON.stringify(response, null, 2);
-
-      var analyticsDataDiv = document.createElement("div");
-      analyticsDataDiv.innerHTML = "<br/><br/> analyticsData:" + JSON.stringify(analyticsData, null, 2)
+      var productNames = []
+      var div = document.querySelector('#response')
+      response.products.forEach(element => {
+        productNames.push('<li>'+element.title+'</li>')
+      });
+      div.innerHTML = JSON.stringify(productNames.join(''), null, 2);
       document.body.appendChild(div)
-      document.body.appendChild(analyticsDataDiv)
     }
   </script>
 </body>

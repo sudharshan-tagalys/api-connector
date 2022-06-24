@@ -52,7 +52,6 @@ var clearFilter = function (filterId, filterItemIds) {
         else {
             filterItemIds.forEach(function (filterItemId) {
                 var childFilterItemIds = getChildFilterItemIds(_this.responseState.filters, filterItemId);
-                console.log(childFilterItemIds);
                 reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
             });
         }
@@ -63,7 +62,6 @@ var clearFilter = function (filterId, filterItemIds) {
 var getChildFilterItemIds = function (filterItems, filterItemId, childFilterIds) {
     if (childFilterIds === void 0) { childFilterIds = []; }
     filterItems.forEach(function (item) {
-        console.log(item.id);
         if (item.id === filterItemId) {
             var flattenedFilterItems = flattenFilterItems([item]);
             childFilterIds = childFilterIds.concat(flattenedFilterItems.map(function (filterItem) { return filterItem.id; }));
@@ -73,6 +71,13 @@ var getChildFilterItemIds = function (filterItems, filterItemId, childFilterIds)
         }
     });
     return childFilterIds;
+};
+var getParentFilterItemIds = function (filterItemId) {
+    var path = (0, common_1.getPath)(this.responseState.filters, filterItemId);
+    if (path) {
+        return path.filter(function (p) { return p !== filterItemId; });
+    }
+    return [];
 };
 var clearAllFilters = function () {
     this.setRequestState(function (reqState) {
@@ -87,7 +92,7 @@ var flattenFilterItems = function (items, flattenedItems) {
     items.forEach(function (item) {
         if (item.hasOwnProperty('items')) {
             flattenedItems.push((0, common_1.omit)(item, 'items'));
-            flattenedItems.concat(flattenFilterItems(item.items, flattenedItems));
+            flattenedItems = flattenedItems.concat(flattenFilterItems(item.items, flattenedItems));
         }
         else {
             flattenedItems.push(item);
@@ -128,6 +133,7 @@ exports.default = {
     clearFilter: clearFilter,
     clearAllFilters: clearAllFilters,
     getRequestHelpers: getRequestHelpers,
-    getResponseHelpers: getResponseHelpers
+    getResponseHelpers: getResponseHelpers,
+    getParentFilterItemIds: getParentFilterItemIds
 };
 //# sourceMappingURL=filter.js.map

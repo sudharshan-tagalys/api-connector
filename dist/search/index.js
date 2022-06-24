@@ -82,6 +82,9 @@ var Search = /** @class */ (function (_super) {
         var newRequestState = mutationCallback(this.requestState);
         console.log("NEW STATE", newRequestState);
         this.requestState = newRequestState;
+        if (this.requestOptions.onStateChange) {
+            this.requestOptions.onStateChange(this.requestState);
+        }
         this.requestOptions.params = this.getParamsFromRequestState();
         this.call(this.requestOptions);
     };
@@ -160,7 +163,7 @@ var Search = /** @class */ (function (_super) {
             params['qf'] = queryFilters;
         }
         if (filters) {
-            params['f'] = filters;
+            params['f'] = this.getFilterParams(filters);
         }
         if (request) {
             params['request'] = request;
@@ -177,7 +180,25 @@ var Search = /** @class */ (function (_super) {
         if (this.getSortString().length) {
             params['sort'] = this.getSortString();
         }
+        this.getFilterParams(filters);
         return params;
+    };
+    Search.prototype.getFilterParams = function (filters) {
+        var _this = this;
+        var filterParamsForRequest = {};
+        var _loop_1 = function (filterId, appliedFilterItemIds) {
+            var parentIdsToRemove = [];
+            appliedFilterItemIds.forEach(function (appliedFilterItemId) {
+                var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(appliedFilterItemId);
+                parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds);
+            });
+            filterParamsForRequest[filterId] = filterParamsForRequest[filterId] = appliedFilterItemIds.filter(function (appliedFilterItemId) { return !parentIdsToRemove.includes(appliedFilterItemId); });
+        };
+        for (var _i = 0, _a = Object.entries(filters); _i < _a.length; _i++) {
+            var _b = _a[_i], filterId = _b[0], appliedFilterItemIds = _b[1];
+            _loop_1(filterId, appliedFilterItemIds);
+        }
+        return filterParamsForRequest;
     };
     Search.prototype.getSortString = function () {
         var sort = this.requestState.sort;
@@ -198,11 +219,14 @@ var Search = /** @class */ (function (_super) {
             sort: this.requestState.sort
         });
     };
-    Search.prototype.getQueryStringHelpers = function () {
+    Search.prototype.commonHelpers = function () {
+        var _this = this;
         return {
             getEncodedQueryString: this.getEncodedQueryString.bind(this),
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
-            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); }
+            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
+            getRequestState: function () { return _this.requestState; },
+            getResponseState: function () { return _this.responseState; }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {
@@ -211,7 +235,7 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.getHelpersToExpose = function (type) {
         if (type === void 0) { type = 'request'; }
         var functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers';
-        var helpers = __assign(__assign(__assign({}, this.paginationHelpers[functionToCall]()), this.searchHelpers[functionToCall]()), this.getQueryStringHelpers());
+        var helpers = __assign(__assign(__assign({}, this.paginationHelpers[functionToCall]()), this.searchHelpers[functionToCall]()), this.commonHelpers());
         if (this.isRequested('filters')) {
             helpers = __assign(__assign({}, helpers), this.filterHelpers[functionToCall]());
         }
