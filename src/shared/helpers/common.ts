@@ -90,54 +90,7 @@ const getFiltersFromQueryString = (filterQueryString) => {
   return filters
 }
 
-const omit = function(obj, omitKey) {
-  return Object.keys(obj).reduce((result, key) => {
-    if(key !== omitKey) {
-       result[key] = obj[key];
-    }
-    return result;
-  }, {});
-}
-
-function getPath(object, search) {
-  if (object.id === search) return [object.id];
-  else if ((object.items) || Array.isArray(object)) {
-      let children = Array.isArray(object) ? object : object.items;
-      for (let child of children) {
-          let result = getPath(child, search);
-          if (result) {
-              if (object.id )result.unshift(object.id);
-              return result;
-          }
-      }
-  }
-}
-
-const flatten = (members, level = 1, rootParentId = null) => {
-  let children = [];
-  const flattenMembers = members.map(m => {
-    if(level === 1){
-      rootParentId = m.id
-    }
-    if (m.items && m.items.length) {
-      level += 1
-      m.items = m.items.map((item)=>{
-        return {...item, parentId: m.id, rootParentId: rootParentId }
-      })
-      children = [...children, ...m.items];
-    }
-    return m;
-  });
-
-  return flattenMembers.concat(children.length ? flatten(children, level, rootParentId) : children);
-};
-
-
-
 export {
-  omit,
-  getPath,
-  flatten,
   getURLEncodedQueryString,
   getEncodedQueryString,
   getRequestParamsFromQueryString,

@@ -1,8 +1,6 @@
 
 // ====== PUBLICLY EXPOSED HELPERS =======
 
-import { flatten, getPath, omit } from "../../shared/helpers/common"
-
 const getFilters = function(){
   return this.responseState.filters
 }
@@ -96,14 +94,45 @@ const clearAllFilters = function(){
 
 // ==== UTILITY METHODS ====
 
-const flattenFilterItems = function(items){
-  return flatten(items)
-}
-
 const getAppliedFilterItems = function(items){
-  const flattenedFilterItems = flattenFilterItems(items);
+  const flattenedFilterItems = flattenFilterItems(items, true);
   const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
   return appliedFilterItems
+}
+
+
+const flattenFilterItems = function(members, includeFilterId = false, level = 1, filterId = null){
+  let children = [];
+  const flattenMembers = members.map(m => {
+    if(level === 1){
+      filterId = m.id
+    }
+    if (m.items && m.items.length) {
+      level += 1
+      if(includeFilterId){
+        m.items = m.items.map((item)=>{
+          return {...item, filterId: filterId }
+        })
+      }
+      children = [...children, ...m.items];
+    }
+    return m;
+  });
+  return flattenMembers.concat(children.length ? flattenFilterItems(children, includeFilterId, level, filterId) : children);
+}
+
+function getPath(object, search) {
+  if (object.id === search) return [object.id];
+  else if ((object.items) || Array.isArray(object)) {
+    let children = Array.isArray(object) ? object : object.items;
+    for (let child of children) {
+      let result = getPath(child, search);
+      if (result) {
+        if (object.id )result.unshift(object.id);
+        return result;
+      }
+    }
+  }
 }
 
 const getResponseHelpers = function(){
