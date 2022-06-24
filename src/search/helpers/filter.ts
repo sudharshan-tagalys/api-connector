@@ -6,7 +6,9 @@ const getFilters = function(){
 }
 
 const getAppliedFilters = function(){
-  return getAppliedFilterItems(this.responseState.filters)
+  const flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
+  const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
+  return appliedFilterItems
 }
 
 const applyFilter = function(filterId, filterType, filterItemsToApply){
@@ -32,21 +34,21 @@ const applyFilter = function(filterId, filterType, filterItemsToApply){
 }
 
 const getFilterById = function(filterId){
-  const flattenedFilterItems = flattenFilterItems(this.responseState.filters);
+  const flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
   const filter = flattenedFilterItems.find((filter)=>filter.id === filterId)
   if(!filter) return false
   return filter
 }
 
 const getAppliedFilterById = function(filterId){
-  const appliedFilters = getAppliedFilters.call(this)
+  const appliedFilters = this.filterHelpers.getAppliedFilters()
   const appliedFilter = appliedFilters.find((filter)=>filter.id === filterId)
   if(!appliedFilter) return false
   return appliedFilter
 }
 
 const isFilterApplied = function(filterId){
-  const appliedFilter = getAppliedFilterById.call(this, filterId)
+  const appliedFilter = getAppliedFilterById(filterId)
   if(appliedFilter) return true
   return false
 }
@@ -57,7 +59,7 @@ const clearFilter = function(filterId, filterItemIds = []){
       delete reqState.filters[filterId]
     }else{
       filterItemIds.forEach((filterItemId)=>{
-        const childFilterItemIds = getChildFilterItemIds(this.responseState.filters, filterItemId)
+        const childFilterItemIds = this.filterHelpers.getChildFilterItemIds(this.responseState.filters, filterItemId)
         console.log("CHILD", childFilterItemIds)
         reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
       })
@@ -71,11 +73,11 @@ const getChildFilterItemIds = function(filterItems, filterItemId){
   let childFilterIds = []
   filterItems.forEach((item)=>{
     if(item.id === filterItemId){
-      const flattenedFilterItems = flattenFilterItems([item])
+      const flattenedFilterItems = this.filterHelpers.flattenFilterItems([item])
       childFilterIds = flattenedFilterItems.map((filterItem)=>filterItem.id)
     }
     if(item.hasOwnProperty('items')){
-      childFilterIds = childFilterIds.concat(getChildFilterItemIds(item.items, filterItemId))
+      childFilterIds = childFilterIds.concat(this.filterHelpers.getChildFilterItemIds(item.items, filterItemId))
     }
   })
   return childFilterIds
@@ -89,6 +91,11 @@ const getParentFilterItemIds = function(filterItemId){
   return []
 }
 
+const getFilterId = function(filterItemId){
+  const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterItemId)
+  return parentFilterItemIds[0]
+}
+
 const clearAllFilters = function(){
   this.setRequestState((reqState)=>{
     reqState.filters = {}
@@ -99,31 +106,19 @@ const clearAllFilters = function(){
 
 // ==== UTILITY METHODS ====
 
-const getAppliedFilterItems = function(items){
-  const flattenedFilterItems = flattenFilterItems(items, true);
-  const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
-  return appliedFilterItems
-}
 
-
-const flattenFilterItems = function(members, includeFilterId = false, level = 1, filterId = null){
+const flattenFilterItems = function(items){
   let children = [];
-  const flattenMembers = members.map(m => {
-    if(level === 1){
-      filterId = m.id
+  const flattenItems = items.map(item => {
+    if (item.items && item.items.length) {
+      item.items = item.items.map((item)=>{
+        return {...item, filterId: this.filterHelpers.getFilterId(item.id) }
+      })
+     children = [...children, ...item.items];
     }
-    if (m.items && m.items.length) {
-      level += 1
-      if(includeFilterId){
-        m.items = m.items.map((item)=>{
-          return {...item, filterId: filterId }
-        })
-      }
-      children = [...children, ...m.items];
-    }
-    return m;
+    return item;
   });
-  return flattenMembers.concat(children.length ? flattenFilterItems(children, includeFilterId, level, filterId) : children);
+  return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
 }
 
 function getPath(object, search) {
@@ -177,5 +172,8 @@ export default {
   clearAllFilters,
   getRequestHelpers,
   getResponseHelpers,
-  getParentFilterItemIds
+  getParentFilterItemIds,
+  getFilterId,
+  flattenFilterItems,
+  getChildFilterItemIds
 };

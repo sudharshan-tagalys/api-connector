@@ -4,7 +4,7 @@ const getURLEncodedQueryString = (baseUrl, params) => {
   return `${baseUrl}${getEncodedQueryString(params)}`
 }
 
-const getEncodedQueryString = ({ 
+const getEncodedQueryString = ({
   query = '', 
   queryFilter = {}, 
   filter = {},
