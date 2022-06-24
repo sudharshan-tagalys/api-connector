@@ -1,7 +1,26 @@
 "use strict";
 // ====== PUBLICLY EXPOSED HELPERS =======
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = require("../../shared/helpers/common");
 var getFilters = function () {
     return this.responseState.filters;
 };
@@ -77,7 +96,7 @@ var getChildFilterItemIds = function (filterItems, filterItemId) {
     return childFilterIds;
 };
 var getParentFilterItemIds = function (filterItemId) {
-    var path = (0, common_1.getPath)(this.responseState.filters, filterItemId);
+    var path = getPath(this.responseState.filters, filterItemId);
     if (path) {
         return path.filter(function (p) { return p !== filterItemId; });
     }
@@ -91,14 +110,49 @@ var clearAllFilters = function () {
     });
 };
 // ==== UTILITY METHODS ====
-var flattenFilterItems = function (items) {
-    return (0, common_1.flatten)(items);
-};
 var getAppliedFilterItems = function (items) {
-    var flattenedFilterItems = flattenFilterItems(items);
+    var flattenedFilterItems = flattenFilterItems(items, true);
     var appliedFilterItems = flattenedFilterItems.filter(function (filter) { return filter.selected; });
     return appliedFilterItems;
 };
+var flattenFilterItems = function (members, includeFilterId, level, filterId) {
+    if (includeFilterId === void 0) { includeFilterId = false; }
+    if (level === void 0) { level = 1; }
+    if (filterId === void 0) { filterId = null; }
+    var children = [];
+    var flattenMembers = members.map(function (m) {
+        if (level === 1) {
+            filterId = m.id;
+        }
+        if (m.items && m.items.length) {
+            level += 1;
+            if (includeFilterId) {
+                m.items = m.items.map(function (item) {
+                    return __assign(__assign({}, item), { filterId: filterId });
+                });
+            }
+            children = __spreadArray(__spreadArray([], children, true), m.items, true);
+        }
+        return m;
+    });
+    return flattenMembers.concat(children.length ? flattenFilterItems(children, includeFilterId, level, filterId) : children);
+};
+function getPath(object, search) {
+    if (object.id === search)
+        return [object.id];
+    else if ((object.items) || Array.isArray(object)) {
+        var children = Array.isArray(object) ? object : object.items;
+        for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+            var child = children_1[_i];
+            var result = getPath(child, search);
+            if (result) {
+                if (object.id)
+                    result.unshift(object.id);
+                return result;
+            }
+        }
+    }
+}
 var getResponseHelpers = function () {
     var _a = this.filterHelpers, getFilters = _a.getFilters, getAppliedFilters = _a.getAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied;
     return {

@@ -136,7 +136,7 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
-          console.log(responseHelpers.getCurrentPage())
+          console.log(responseHelpers.getAppliedFilters())
           // appendToBody(response)
           // console.log(responseHelpers.getAnalyticsData())
           // console.log(requstHelpers.getEncodedQueryString())
