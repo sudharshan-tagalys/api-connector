@@ -12,10 +12,14 @@ var applyFilter = function (filterId, filterItemsToApply) {
     this.setRequestState(function (reqState) {
         var filter = (reqState.filters[filterId] || []);
         if (Array.isArray(filterItemsToApply)) {
+            // filter out the exisiting items
+            filter = filter.filter(function (item) { return !filterItemsToApply.includes(item); });
             filter = filter.concat(filterItemsToApply);
         }
         else {
-            filter.push(filterItemsToApply);
+            if (!filter.includes(filterItemsToApply)) {
+                filter.push(filterItemsToApply);
+            }
         }
         reqState.filters[filterId] = filter;
         reqState.page = 1;
@@ -91,8 +95,7 @@ var flattenFilterItems = function (items, flattenedItems) {
     if (flattenedItems === void 0) { flattenedItems = []; }
     items.forEach(function (item) {
         if (item.hasOwnProperty('items')) {
-            flattenedItems.push((0, common_1.omit)(item, 'items'));
-            flattenedItems = flattenedItems.concat(flattenFilterItems(item.items, flattenedItems));
+            flattenedItems = flattenFilterItems(item.items, flattenedItems);
         }
         else {
             flattenedItems.push(item);
