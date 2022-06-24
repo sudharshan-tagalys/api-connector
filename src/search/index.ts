@@ -191,13 +191,18 @@ class Search extends APIConnector {
 
   getFilterParams(filters: object){
     let filterParamsForRequest = {}
-    for (const [filterId, appliedFilterItemIds] of Object.entries(filters)) {
-      let parentIdsToRemove = []
-      appliedFilterItemIds.forEach((appliedFilterItemId)=>{
-        const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(appliedFilterItemId)
-        parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
-      })
-      filterParamsForRequest[filterId] = filterParamsForRequest[filterId] = appliedFilterItemIds.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
+    for (const [filterId, filterParams] of Object.entries(filters)) {
+      console.log(filters)
+      if(Array.isArray(filterParams)){
+        let parentIdsToRemove = []
+        filterParams.forEach((appliedFilterItemId)=>{
+          const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(appliedFilterItemId)
+          parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
+        })
+        filterParamsForRequest[filterId] = filterParams.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
+      }else{
+        filterParamsForRequest[filterId] = filterParams
+      }
     }
     return filterParamsForRequest
   }

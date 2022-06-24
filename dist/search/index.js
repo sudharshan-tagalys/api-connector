@@ -186,17 +186,23 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.getFilterParams = function (filters) {
         var _this = this;
         var filterParamsForRequest = {};
-        var _loop_1 = function (filterId, appliedFilterItemIds) {
-            var parentIdsToRemove = [];
-            appliedFilterItemIds.forEach(function (appliedFilterItemId) {
-                var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(appliedFilterItemId);
-                parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds);
-            });
-            filterParamsForRequest[filterId] = filterParamsForRequest[filterId] = appliedFilterItemIds.filter(function (appliedFilterItemId) { return !parentIdsToRemove.includes(appliedFilterItemId); });
+        var _loop_1 = function (filterId, filterParams) {
+            console.log(filters);
+            if (Array.isArray(filterParams)) {
+                var parentIdsToRemove_1 = [];
+                filterParams.forEach(function (appliedFilterItemId) {
+                    var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(appliedFilterItemId);
+                    parentIdsToRemove_1 = parentIdsToRemove_1.concat(parentFilterItemIds);
+                });
+                filterParamsForRequest[filterId] = filterParams.filter(function (appliedFilterItemId) { return !parentIdsToRemove_1.includes(appliedFilterItemId); });
+            }
+            else {
+                filterParamsForRequest[filterId] = filterParams;
+            }
         };
         for (var _i = 0, _a = Object.entries(filters); _i < _a.length; _i++) {
-            var _b = _a[_i], filterId = _b[0], appliedFilterItemIds = _b[1];
-            _loop_1(filterId, appliedFilterItemIds);
+            var _b = _a[_i], filterId = _b[0], filterParams = _b[1];
+            _loop_1(filterId, filterParams);
         }
         return filterParamsForRequest;
     };
