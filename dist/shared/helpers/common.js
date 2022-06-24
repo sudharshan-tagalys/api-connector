@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
         if (ar || !(i in from)) {
@@ -115,15 +126,24 @@ function getPath(object, search) {
     }
 }
 exports.getPath = getPath;
-var flatten = function (members) {
+var flatten = function (members, level, rootParentId) {
+    if (level === void 0) { level = 1; }
+    if (rootParentId === void 0) { rootParentId = null; }
     var children = [];
     var flattenMembers = members.map(function (m) {
+        if (level === 1) {
+            rootParentId = m.id;
+        }
         if (m.items && m.items.length) {
+            level += 1;
+            m.items = m.items.map(function (item) {
+                return __assign(__assign({}, item), { parentId: m.id, rootParentId: rootParentId });
+            });
             children = __spreadArray(__spreadArray([], children, true), m.items, true);
         }
         return m;
     });
-    return flattenMembers.concat(children.length ? flatten(children) : children);
+    return flattenMembers.concat(children.length ? flatten(children, level, rootParentId) : children);
 };
 exports.flatten = flatten;
 //# sourceMappingURL=common.js.map
