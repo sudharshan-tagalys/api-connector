@@ -99,8 +99,24 @@ const omit = function(obj, omitKey) {
   }, {});
 }
 
+function getPath(object, search) {
+  if (object.id === search) return [object.id];
+  else if ((object.items) || Array.isArray(object)) {
+      let children = Array.isArray(object) ? object : object.items;
+      for (let child of children) {
+          let result = getPath(child, search);
+          if (result) {
+              if (object.id )result.unshift(object.id);
+              return result;
+          }
+      }
+  }
+}
+
+
 export {
   omit,
+  getPath,
   getURLEncodedQueryString,
   getEncodedQueryString,
   getRequestParamsFromQueryString,

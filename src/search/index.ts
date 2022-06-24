@@ -69,6 +69,9 @@ class Search extends APIConnector {
     const newRequestState = mutationCallback(this.requestState);
     console.log("NEW STATE", newRequestState)
     this.requestState = newRequestState;
+    if(this.requestOptions.onStateChange){
+      this.requestOptions.onStateChange(this.requestState)
+    }
     this.requestOptions.params = this.getParamsFromRequestState()
     this.call(this.requestOptions)
   }
@@ -165,7 +168,7 @@ class Search extends APIConnector {
       params['qf'] = queryFilters
     }
     if(filters){
-      params['f'] = filters
+      params['f'] = this.getFilterParams(filters)
     }
     if(request){
       params['request'] = request
@@ -182,7 +185,21 @@ class Search extends APIConnector {
     if(this.getSortString().length){
       params['sort'] = this.getSortString()
     }
+    this.getFilterParams(filters)
     return params
+  }
+
+  getFilterParams(filters: object){
+    let filterParamsForRequest = {}
+    for (const [filterId, appliedFilterItemIds] of Object.entries(filters)) {
+      let parentIdsToRemove = []
+      appliedFilterItemIds.forEach((appliedFilterItemId)=>{
+        const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(appliedFilterItemId)
+        parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
+      })
+      filterParamsForRequest[filterId] = filterParamsForRequest[filterId] = appliedFilterItemIds.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
+    }
+    return filterParamsForRequest
   }
 
   getSortString(){
@@ -207,11 +224,13 @@ class Search extends APIConnector {
     })
   }
 
-  getQueryStringHelpers(){
+  commonHelpers(){
     return {
       getEncodedQueryString: this.getEncodedQueryString.bind(this),
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
-      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation()
+      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
+      getRequestState: () => this.requestState,
+      getResponseState: () => this.responseState
     }
   }
 
@@ -224,7 +243,7 @@ class Search extends APIConnector {
     let helpers = {
       ...this.paginationHelpers[functionToCall](),
       ...this.searchHelpers[functionToCall](),
-      ...this.getQueryStringHelpers()
+      ...this.commonHelpers()
     }
     if(this.isRequested('filters')){
       helpers = {

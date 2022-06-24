@@ -1,7 +1,7 @@
 
 // ====== PUBLICLY EXPOSED HELPERS =======
 
-import { omit } from "../../shared/helpers/common"
+import { getPath, omit } from "../../shared/helpers/common"
 
 const getFilters = function(){
   return this.responseState.filters
@@ -52,7 +52,6 @@ const clearFilter = function(filterId, filterItemIds = []){
     }else{
       filterItemIds.forEach((filterItemId)=>{
         const childFilterItemIds = getChildFilterItemIds(this.responseState.filters, filterItemId)
-        console.log(childFilterItemIds)
         reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
       })
     }
@@ -63,7 +62,6 @@ const clearFilter = function(filterId, filterItemIds = []){
 
 const getChildFilterItemIds = function(filterItems, filterItemId, childFilterIds = []){
   filterItems.forEach((item)=>{
-    console.log(item.id)
     if(item.id === filterItemId){
       const flattenedFilterItems = flattenFilterItems([item])
       childFilterIds = childFilterIds.concat(flattenedFilterItems.map((filterItem)=>filterItem.id))
@@ -73,6 +71,14 @@ const getChildFilterItemIds = function(filterItems, filterItemId, childFilterIds
     }
   })
   return childFilterIds
+}
+
+const getParentFilterItemIds = function(filterItemId){
+  const path = getPath(this.responseState.filters, filterItemId)
+  if(path){
+    return path.filter((p)=>p!==filterItemId)
+  }
+  return []
 }
 
 const clearAllFilters = function(){
@@ -89,7 +95,7 @@ const flattenFilterItems = function(items, flattenedItems = []){
   items.forEach((item)=>{
     if(item.hasOwnProperty('items')){
       flattenedItems.push(omit(item, 'items'))
-      flattenedItems.concat(flattenFilterItems(item.items, flattenedItems))
+      flattenedItems = flattenedItems.concat(flattenFilterItems(item.items, flattenedItems))
     }else{
       flattenedItems.push(item);
     }
@@ -139,5 +145,6 @@ export default {
   clearFilter,
   clearAllFilters,
   getRequestHelpers,
-  getResponseHelpers
+  getResponseHelpers,
+  getParentFilterItemIds
 };
