@@ -15,9 +15,13 @@ const applyFilter = function(filterId, filterItemsToApply){
   this.setRequestState((reqState)=>{
     let filter = (reqState.filters[filterId] || [])
     if(Array.isArray(filterItemsToApply)){
+      // filter out the exisiting items
+      filter = filter.filter((item)=>!filterItemsToApply.includes(item)) 
       filter = filter.concat(filterItemsToApply)
     }else{
-      filter.push(filterItemsToApply)
+      if(!filter.includes(filterItemsToApply)){
+        filter.push(filterItemsToApply)
+      }
     }
     reqState.filters[filterId] = filter;
     reqState.page = 1
@@ -94,8 +98,7 @@ const clearAllFilters = function(){
 const flattenFilterItems = function(items, flattenedItems = []){
   items.forEach((item)=>{
     if(item.hasOwnProperty('items')){
-      flattenedItems.push(omit(item, 'items'))
-      flattenedItems = flattenedItems.concat(flattenFilterItems(item.items, flattenedItems))
+      flattenedItems = flattenFilterItems(item.items, flattenedItems)
     }else{
       flattenedItems.push(item);
     }
