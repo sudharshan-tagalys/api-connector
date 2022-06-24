@@ -129,12 +129,10 @@ class Search extends APIConnector {
       requestState['filters'] = params.filters
     }
     if(params.page){
-      requestState['pagination'] = {
-        page: params.page
-      }
+      requestState['page'] = params.page
     }
-    if(params.perPage){
-      requestState['pagination']['perPage'] = params.perPage
+    if (params.perPage) {
+      requestState["perPage"] = params.perPage
     }
     if(params.sort){
       // const sort = params.sort.split("-")

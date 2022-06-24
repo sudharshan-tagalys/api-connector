@@ -137,12 +137,10 @@ var Search = /** @class */ (function (_super) {
             requestState['filters'] = params.filters;
         }
         if (params.page) {
-            requestState['pagination'] = {
-                page: params.page
-            };
+            requestState['page'] = params.page;
         }
         if (params.perPage) {
-            requestState['pagination']['perPage'] = params.perPage;
+            requestState["perPage"] = params.perPage;
         }
         if (params.sort) {
             // const sort = params.sort.split("-")
