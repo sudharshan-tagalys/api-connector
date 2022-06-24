@@ -27,16 +27,22 @@ var getFilters = function () {
 var getAppliedFilters = function () {
     return getAppliedFilterItems(this.responseState.filters);
 };
-var applyFilter = function (filterId, filterItemsToApply) {
+var applyFilter = function (filterId, filterType, filterItemsToApply) {
     this.setRequestState(function (reqState) {
-        var filter = (reqState.filters[filterId] || []);
-        if (Array.isArray(filterItemsToApply)) {
-            // filter out the exisiting items
-            filter = filter.concat(filterItemsToApply);
+        var filter = [];
+        if (filterType === "range") {
+            filter = filterItemsToApply;
         }
         else {
-            if (!filter.includes(filterItemsToApply)) {
-                filter.push(filterItemsToApply);
+            filter = (reqState.filters[filterId] || []);
+            if (Array.isArray(filterItemsToApply)) {
+                // filter out the exisiting items
+                filter = filter.concat(filterItemsToApply);
+            }
+            else {
+                if (!filter.includes(filterItemsToApply)) {
+                    filter.push(filterItemsToApply);
+                }
             }
         }
         reqState.filters[filterId] = filter;

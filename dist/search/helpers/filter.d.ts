@@ -1,7 +1,7 @@
 declare const _default: {
     getFilters: () => any;
     getAppliedFilters: () => any;
-    applyFilter: (filterId: any, filterItemsToApply: any) => void;
+    applyFilter: (filterId: any, filterType: any, filterItemsToApply: any) => void;
     getFilterById: (filterId: any) => any;
     getAppliedFilterById: (filterId: any) => any;
     isFilterApplied: (filterId: any) => boolean;
