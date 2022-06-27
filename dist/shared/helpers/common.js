@@ -37,6 +37,7 @@ exports.getRequestParamsFromWindowLocation = getRequestParamsFromWindowLocation;
 var getRequestParamsFromQueryString = function (queryString) {
     var parsedObjectFromQueryString = queryStringManager_1.default.parse(queryString);
     var _a = queryStringManager_1.default.getConfiguration(), query = _a.query, queryFilter = _a.queryFilter, filter = _a.filter, page = _a.page, sort = _a.sort;
+    var request = ['details'];
     var params = {};
     if (parsedObjectFromQueryString[query]) {
         params['query'] = parsedObjectFromQueryString[query];
@@ -45,14 +46,17 @@ var getRequestParamsFromQueryString = function (queryString) {
         params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter]);
     }
     if (parsedObjectFromQueryString[filter]) {
+        request.push('filters');
         params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter]);
     }
     if (parsedObjectFromQueryString[page]) {
         params['page'] = parseInt(parsedObjectFromQueryString[page].toString());
     }
     if (parsedObjectFromQueryString[sort]) {
+        request.push('sort_options');
         params['sort'] = parsedObjectFromQueryString[sort];
     }
+    params['request'] = request;
     return params;
 };
 exports.getRequestParamsFromQueryString = getRequestParamsFromQueryString;
