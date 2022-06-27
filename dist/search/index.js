@@ -233,6 +233,10 @@ var Search = /** @class */ (function (_super) {
             getResponseState: function () { return _this.responseState; },
             setParams: function (params) {
                 _this.requestOptions.params = params;
+                var requestState = _this.getRequestStateFromParams(_this.requestOptions.params);
+                if (Object.keys(requestState).length) {
+                    _this.requestState = requestState;
+                }
             }
         };
     };
