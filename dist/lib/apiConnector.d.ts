@@ -17,7 +17,10 @@ declare class APIConnector {
     static export(): {
         [x: number]: {
             call: (requestOptions: any, defaultRequestOptions?: {}) => void;
-            new: (requestOptions: any, defaultRequestOptions?: {}) => any;
+            new: (requestOptions: any, defaultRequestOptions?: {}) => {
+                helpers: any;
+                call: (requestOptions: any) => void;
+            };
         };
     };
 }

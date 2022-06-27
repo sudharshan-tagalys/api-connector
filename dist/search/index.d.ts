@@ -87,6 +87,7 @@ declare class Search extends APIConnector {
             variables: any[];
             banners: any[];
         };
+        setParams: (params: any) => void;
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpersToExpose(type?: string): any;

@@ -230,7 +230,10 @@ var Search = /** @class */ (function (_super) {
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
-            getResponseState: function () { return _this.responseState; }
+            getResponseState: function () { return _this.responseState; },
+            setParams: function (params) {
+                _this.requestOptions.params = params;
+            }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {

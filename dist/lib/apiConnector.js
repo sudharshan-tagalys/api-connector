@@ -123,7 +123,10 @@ var APIConnector = /** @class */ (function () {
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
                     var instance = new _this();
                     var helpers = instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
-                    return __assign(__assign({}, helpers), { call: function (requestOptions) { return instance.call(requestOptions); } });
+                    return {
+                        helpers: helpers,
+                        call: function (requestOptions) { return instance.call(requestOptions); }
+                    };
                 }
             },
             _a;
