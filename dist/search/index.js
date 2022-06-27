@@ -232,11 +232,11 @@ var Search = /** @class */ (function (_super) {
             getRequestState: function () { return _this.requestState; },
             getResponseState: function () { return _this.responseState; },
             setParams: function (params) {
-                _this.requestOptions.params = params;
-                var requestState = _this.getRequestStateFromParams(_this.requestOptions.params);
+                var requestState = _this.getRequestStateFromParams(params);
                 if (Object.keys(requestState).length) {
                     _this.requestState = requestState;
                 }
+                _this.requestOptions.params = _this.getParamsFromRequestState();
             }
         };
     };

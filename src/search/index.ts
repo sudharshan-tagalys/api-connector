@@ -235,11 +235,11 @@ class Search extends APIConnector {
       getRequestState: () => this.requestState,
       getResponseState: () => this.responseState,
       setParams: (params) => {
-        this.requestOptions.params = params;
-        const requestState : any = this.getRequestStateFromParams(this.requestOptions.params);
+        const requestState : any = this.getRequestStateFromParams(params);
         if(Object.keys(requestState).length){
           this.requestState = requestState
         }
+        this.requestOptions.params = this.getParamsFromRequestState();
       }
     }
   }
