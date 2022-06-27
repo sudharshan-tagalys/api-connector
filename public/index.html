@@ -136,24 +136,16 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
-          // console.log(responseHelpers.getAppliedFilters())
-          // appendToBody(response)
-          // console.log(responseHelpers.getAnalyticsData())
         },
       });
       requstHelpers.applyFilter('__categories', 'checkbox', ['117', '128', '130', '143'])
-      requstHelpers.applyFilter('material', 'checkbox', ['1045'])
-      requstHelpers.clearAllFilters()
-      requstHelpers.goToNextPage()
-      requstHelpers.applySortOption('trending')
+      // requstHelpers.applyFilter('material', 'checkbox', ['1045'])
       console.log(requstHelpers.getEncodedQueryString())
+
       setTimeout(()=>{
-        // requstHelpers.applyFilter('__categories', '143')
-        // console.log(requstHelpers.getRequestState())
         requstHelpers.clearFilter('__categories', ['117'])
-      }, 3000)
-      // requstHelpers.goToNextPage() 
-      // requstHelpers.applySortOption('trending')
+        console.log(requstHelpers.getEncodedQueryString())
+      }, 2000)
 
 
       document.querySelector('#next-btn').addEventListener('click', ()=>{
@@ -162,15 +154,6 @@
       document.querySelector('#prev-btn').addEventListener('click', ()=>{
         requstHelpers.goToPrevPage()
       })
-      // Tagalys.APIConnector.AddedToCartAlsoAddedToCart.call({
-      //   params: {
-      //     limit: 2,
-      //     productId: productId,
-      //   },
-      //   onSuccess: function (response, analyticsData = {}) {
-      //     appendToBody(response, analyticsData)
-      //   },
-      // });
     });
 
     function appendToBody(response, analyticsData = {}) {

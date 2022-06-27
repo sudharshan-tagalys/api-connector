@@ -82,8 +82,13 @@ var clearFilter = function (filterId, filterItemIds) {
         else {
             filterItemIds.forEach(function (filterItemId) {
                 var childFilterItemIds = _this.filterHelpers.getChildFilterItemIds(_this.responseState.filters, filterItemId);
-                console.log("CHILD", childFilterItemIds);
-                reqState.filters[filterId] = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
+                var updatedFilterItemIds = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds.includes(filterItemId); });
+                if (updatedFilterItemIds.length === 0) {
+                    delete reqState.filters[filterId];
+                }
+                else {
+                    reqState.filters[filterId] = updatedFilterItemIds;
+                }
             });
         }
         reqState.page = 1;
