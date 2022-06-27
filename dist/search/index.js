@@ -185,7 +185,6 @@ var Search = /** @class */ (function (_super) {
         var _this = this;
         var filterParamsForRequest = {};
         var _loop_1 = function (filterId, filterParams) {
-            console.log(filters);
             if (Array.isArray(filterParams)) {
                 var parentIdsToRemove_1 = [];
                 filterParams.forEach(function (appliedFilterItemId) {

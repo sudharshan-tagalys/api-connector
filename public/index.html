@@ -132,7 +132,8 @@
       })
       const requstHelpers = Tagalys.APIConnector.Search.new({
         params: {
-          query: 'diamond sweaters',
+          includeSortOptionInFilters: true,
+          query: 'skrts',
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {

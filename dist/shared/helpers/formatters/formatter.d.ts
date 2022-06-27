@@ -30,7 +30,12 @@ declare class Formatter {
         queries: any;
         products: any;
     };
-    search(response: any): {};
+    search(response: any): {
+        query: any;
+        total_pages: number;
+        page: any;
+        total: any;
+    };
     popularSearches(response: any, configuration: any): {
         queries: any;
     };
