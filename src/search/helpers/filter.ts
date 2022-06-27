@@ -1,7 +1,7 @@
 
 // ====== PUBLICLY EXPOSED HELPERS =======
 
-const getFilters = function(){
+const getFilters = function () {
   return this.responseState.filters
 }
 

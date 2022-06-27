@@ -103,14 +103,22 @@ class Formatter {
   }
 
   search(response) {
-    const formattedResponse = {}
+    const totalPages = Math.ceil(response.total / response.per_page)
+    const formattedResponse = {
+      query: response.query,
+      total_pages: totalPages,
+      page: response.page,
+      total: response.total
+    }
+    if (response.query_original) {
+      formattedResponse["query_original"] = response.query_original
+    }
+    if (response.query_mode) {
+      formattedResponse["query_mode"] = response.query_mode
+    }
     if(response.details){
       formattedResponse["products"] = this.formatDetails(response.details)
     }
-    const totalPages = Math.ceil(response.total / response.per_page)
-    formattedResponse["total_pages"] = totalPages
-    formattedResponse["page"] = response.page
-    formattedResponse['total'] = response.total
     if(response.filters){
       formattedResponse['filters'] = response.filters
     }
