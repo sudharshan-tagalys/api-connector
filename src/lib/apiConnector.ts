@@ -136,7 +136,7 @@ class APIConnector{
             ...requestOptions
           })
           return {
-            ...helpers,
+            helpers,
             call: (requestOptions) => instance.call(requestOptions)
           }
         }

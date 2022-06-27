@@ -233,7 +233,10 @@ class Search extends APIConnector {
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
-      getResponseState: () => this.responseState
+      getResponseState: () => this.responseState,
+      setParams: (params) => {
+        this.requestOptions.params = params;
+      }
     }
   }
 
