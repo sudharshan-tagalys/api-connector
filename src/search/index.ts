@@ -12,7 +12,7 @@ const DEFAULT_REQUEST_STATE =  {
   queryMode: "",
   filters: {},
   queryFilters: {},
-  request: [],
+  request: ['details', 'filters', 'sort_options'],
   page: 1,
   perPage: 16,
   sort: "",

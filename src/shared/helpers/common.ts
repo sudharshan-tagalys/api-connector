@@ -46,26 +46,22 @@ const getRequestParamsFromWindowLocation = () => {
 const getRequestParamsFromQueryString = (queryString) => {
   const parsedObjectFromQueryString = queryStringManager.parse(queryString)
   const { query, queryFilter, filter, page, sort } =  queryStringManager.getConfiguration()
-  let request = ['details']
   let params = {}
   if(parsedObjectFromQueryString[query]){
-    params['query'] = parsedObjectFromQueryString[query]
+    params['q'] = parsedObjectFromQueryString[query]
   }
   if(parsedObjectFromQueryString[queryFilter]){
-    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
+    params['qf'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
   }
   if(parsedObjectFromQueryString[filter]){
-    request.push('filters')
-    params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
+    params['f'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
   }
   if(parsedObjectFromQueryString[page]){
     params['page'] = parseInt(parsedObjectFromQueryString[page].toString())
   }
   if(parsedObjectFromQueryString[sort]){
-    request.push('sort_options')
     params['sort'] = parsedObjectFromQueryString[sort]
   }
-  params['request'] = request
   return params
 }
 
