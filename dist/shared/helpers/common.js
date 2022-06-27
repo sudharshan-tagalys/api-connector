@@ -39,13 +39,13 @@ var getRequestParamsFromQueryString = function (queryString) {
     var _a = queryStringManager_1.default.getConfiguration(), query = _a.query, queryFilter = _a.queryFilter, filter = _a.filter, page = _a.page, sort = _a.sort;
     var params = {};
     if (parsedObjectFromQueryString[query]) {
-        params['q'] = parsedObjectFromQueryString[query];
+        params['query'] = parsedObjectFromQueryString[query];
     }
     if (parsedObjectFromQueryString[queryFilter]) {
-        params['qf'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter]);
+        params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter]);
     }
     if (parsedObjectFromQueryString[filter]) {
-        params['f'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter]);
+        params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter]);
     }
     if (parsedObjectFromQueryString[page]) {
         params['page'] = parseInt(parsedObjectFromQueryString[page].toString());

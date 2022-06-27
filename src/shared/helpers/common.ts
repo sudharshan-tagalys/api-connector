@@ -48,13 +48,13 @@ const getRequestParamsFromQueryString = (queryString) => {
   const { query, queryFilter, filter, page, sort } =  queryStringManager.getConfiguration()
   let params = {}
   if(parsedObjectFromQueryString[query]){
-    params['q'] = parsedObjectFromQueryString[query]
+    params['query'] = parsedObjectFromQueryString[query]
   }
   if(parsedObjectFromQueryString[queryFilter]){
-    params['qf'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
+    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
   }
   if(parsedObjectFromQueryString[filter]){
-    params['f'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
+    params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
   }
   if(parsedObjectFromQueryString[page]){
     params['page'] = parseInt(parsedObjectFromQueryString[page].toString())
