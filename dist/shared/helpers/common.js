@@ -76,7 +76,9 @@ var getFiltersFromQueryString = function (filterQueryString) {
         var filterKey = filter[0];
         var filterValueString = filter[1];
         var appliedFilterValues = filterValueString.split(',');
-        filters[filterKey] = appliedFilterValues;
+        if (appliedFilterValues.length) {
+            filters[filterKey] = appliedFilterValues;
+        }
     });
     return filters;
 };

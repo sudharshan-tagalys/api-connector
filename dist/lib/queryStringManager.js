@@ -11,6 +11,13 @@ var QueryStringManager = /** @class */ (function () {
         return qs.stringify(params, { encode: false });
     };
     QueryStringManager.prototype.setConfiguration = function (configuration) {
+        if (configuration === void 0) { configuration = {
+            query: 'q',
+            queryFilter: 'qf',
+            filter: 'f',
+            page: 'page',
+            sort: 'sort'
+        }; }
         this.configuration = configuration;
     };
     QueryStringManager.prototype.getConfiguration = function () {

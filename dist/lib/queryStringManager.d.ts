@@ -3,7 +3,7 @@ declare class QueryStringManager {
     private configuration;
     parse(params: any): qs.ParsedQs;
     stringify(params: any): string;
-    setConfiguration(configuration: any): void;
+    setConfiguration(configuration?: any): void;
     getConfiguration(): any;
 }
 declare const _default: QueryStringManager;
