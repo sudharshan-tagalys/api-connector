@@ -11,7 +11,13 @@ class QueryStringManager{
     return qs.stringify(params, { encode: false })
   }
 
-  setConfiguration(configuration: any){
+  setConfiguration(configuration: any = {
+    query: 'q',
+    queryFilter: 'qf',
+    filter: 'f',
+    page: 'page',
+    sort: 'sort' 
+  }){
     this.configuration = configuration;
   }
 

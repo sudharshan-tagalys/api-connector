@@ -85,7 +85,9 @@ const getFiltersFromQueryString = (filterQueryString) => {
     const filterKey = filter[0]
     const filterValueString = filter[1]
     const appliedFilterValues = filterValueString.split(',')
-    filters[filterKey] = appliedFilterValues
+    if(appliedFilterValues.length){
+      filters[filterKey] = appliedFilterValues
+    }
   });
   return filters
 }
