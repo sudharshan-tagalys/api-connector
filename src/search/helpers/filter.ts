@@ -60,8 +60,12 @@ const clearFilter = function(filterId, filterItemIds = []){
     }else{
       filterItemIds.forEach((filterItemId)=>{
         const childFilterItemIds = this.filterHelpers.getChildFilterItemIds(this.responseState.filters, filterItemId)
-        console.log("CHILD", childFilterItemIds)
-        reqState.filters[filterId] = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
+        const updatedFilterItemIds = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
+        if(updatedFilterItemIds.length === 0){
+          delete reqState.filters[filterId]
+        }else{
+          reqState.filters[filterId] = updatedFilterItemIds 
+        }
       })
     }
     reqState.page = 1
