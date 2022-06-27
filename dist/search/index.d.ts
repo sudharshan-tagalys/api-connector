@@ -10,7 +10,7 @@ declare class Search extends APIConnector {
         queryMode: string;
         filters: {};
         queryFilters: {};
-        request: any[];
+        request: string[];
         page: number;
         perPage: number;
         sort: string;
@@ -52,7 +52,7 @@ declare class Search extends APIConnector {
         queryMode: string;
         filters: {};
         queryFilters: {};
-        request: any[];
+        request: string[];
         page: number;
         perPage: number;
         sort: string;
@@ -72,7 +72,7 @@ declare class Search extends APIConnector {
             queryMode: string;
             filters: {};
             queryFilters: {};
-            request: any[];
+            request: string[];
             page: number;
             perPage: number;
             sort: string;
