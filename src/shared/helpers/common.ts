@@ -54,7 +54,7 @@ const getRequestParamsFromQueryString = (queryString) => {
     params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
   }
   if(parsedObjectFromQueryString[filter]){
-    params['filter'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
+    params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
   }
   if(parsedObjectFromQueryString[page]){
     params['page'] = parseInt(parsedObjectFromQueryString[page].toString())
