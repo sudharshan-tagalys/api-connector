@@ -33,14 +33,8 @@ const getEncodedQueryString = ({
   if(page){
     params[pageReplacement] = page
   }
-  if(sort){
-    if(sort.field){
-      if(sort.direction){
-        params[sortReplacement] = `${sort.field}-${sort.direction}`
-      }else{
-        params[sortReplacement] = sort.field
-      }
-    }
+  if(sort.length){
+    params[sortReplacement] = sort
   }
   return  `?${queryStringManager.stringify(params)}`;
 }
@@ -72,9 +66,13 @@ const getRequestParamsFromQueryString = (queryString) => {
 }
 
 const getFilterQueryString = (filter) => {
-  return Object.keys(filter).map(function(key){
-    return `${key}-${filter[key]}`
-  }).join('~');
+  let filtersQueryStrings = []
+  Object.keys(filter).forEach(function(key){
+    if(filter[key].length){
+      filtersQueryStrings.push(`${key}-${filter[key].join(',')}`)
+    }
+  })
+  return filtersQueryStrings.join('~');
 }
 
 const getFiltersFromQueryString = (filterQueryString) => {
