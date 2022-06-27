@@ -24,15 +24,8 @@ var getEncodedQueryString = function (_a) {
     if (page) {
         params[pageReplacement] = page;
     }
-    if (sort) {
-        if (sort.field) {
-            if (sort.direction) {
-                params[sortReplacement] = "".concat(sort.field, "-").concat(sort.direction);
-            }
-            else {
-                params[sortReplacement] = sort.field;
-            }
-        }
+    if (sort.length) {
+        params[sortReplacement] = sort;
     }
     return "?".concat(queryStringManager_1.default.stringify(params));
 };
@@ -64,9 +57,13 @@ var getRequestParamsFromQueryString = function (queryString) {
 };
 exports.getRequestParamsFromQueryString = getRequestParamsFromQueryString;
 var getFilterQueryString = function (filter) {
-    return Object.keys(filter).map(function (key) {
-        return "".concat(key, "-").concat(filter[key]);
-    }).join('~');
+    var filtersQueryStrings = [];
+    Object.keys(filter).forEach(function (key) {
+        if (filter[key].length) {
+            filtersQueryStrings.push("".concat(key, "-").concat(filter[key].join(',')));
+        }
+    });
+    return filtersQueryStrings.join('~');
 };
 var getFiltersFromQueryString = function (filterQueryString) {
     var filtersFromQueryString = filterQueryString.split("~");

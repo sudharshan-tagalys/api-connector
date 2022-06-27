@@ -136,14 +136,17 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
-          console.log(responseHelpers.getAppliedFilters())
+          // console.log(responseHelpers.getAppliedFilters())
           // appendToBody(response)
           // console.log(responseHelpers.getAnalyticsData())
-          // console.log(requstHelpers.getEncodedQueryString())
         },
       });
-      requstHelpers.applyFilter('__categories', ['117', '128', '130', '143'])
-      requstHelpers.applyFilter('material', ['1045'])
+      requstHelpers.applyFilter('__categories', 'checkbox', ['117', '128', '130', '143'])
+      requstHelpers.applyFilter('material', 'checkbox', ['1045'])
+      requstHelpers.clearAllFilters()
+      requstHelpers.goToNextPage()
+      requstHelpers.applySortOption('trending')
+      console.log(requstHelpers.getEncodedQueryString())
       setTimeout(()=>{
         // requstHelpers.applyFilter('__categories', '143')
         // console.log(requstHelpers.getRequestState())
