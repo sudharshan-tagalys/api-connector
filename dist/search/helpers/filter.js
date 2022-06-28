@@ -67,7 +67,7 @@ var getAppliedFilterById = function (filterId) {
     return appliedFilter;
 };
 var isFilterApplied = function (filterId) {
-    var appliedFilter = getAppliedFilterById(filterId);
+    var appliedFilter = this.filterHelpers.getAppliedFilterById(filterId);
     if (appliedFilter)
         return true;
     return false;
