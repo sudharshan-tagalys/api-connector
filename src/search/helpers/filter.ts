@@ -48,7 +48,8 @@ const getAppliedFilterById = function(filterId){
 }
 
 const isFilterApplied = function(filterId){
-  const appliedFilter = this.filterHelpers.getAppliedFilterById(filterId)
+  const appliedFilters = this.filterHelpers.getAppliedFilters()
+  const appliedFilter = appliedFilters.find((filter)=>filter.filterId === filterId)
   if(appliedFilter) return true
   return false
 }
