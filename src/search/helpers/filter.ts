@@ -48,7 +48,7 @@ const getAppliedFilterById = function(filterId){
 }
 
 const isFilterApplied = function(filterId){
-  const appliedFilter = getAppliedFilterById(filterId)
+  const appliedFilter = this.filterHelpers.getAppliedFilterById(filterId)
   if(appliedFilter) return true
   return false
 }
