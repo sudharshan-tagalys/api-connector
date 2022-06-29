@@ -14,7 +14,7 @@ const getAppliedFilters = function(){
     if(filter.type === 'range'){
       if(this.requestState['filters']){
         const selectedRangeFilter = this.requestState['filters'][filter.id]
-        if(selectedRangeFilter){
+        if(selectedRangeFilter && filter.selected_min && filter.selected_max){
           return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max)
         }
       }

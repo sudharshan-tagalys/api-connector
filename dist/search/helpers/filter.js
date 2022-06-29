@@ -34,7 +34,7 @@ var getAppliedFilters = function () {
         if (filter.type === 'range') {
             if (_this.requestState['filters']) {
                 var selectedRangeFilter = _this.requestState['filters'][filter.id];
-                if (selectedRangeFilter) {
+                if (selectedRangeFilter && filter.selected_min && filter.selected_max) {
                     return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max);
                 }
             }
