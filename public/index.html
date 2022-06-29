@@ -137,16 +137,18 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
+          console.log(responseHelpers.getAppliedFilters())
         },
       });
       const requstHelpers = search.helpers
       search.call()
-      requstHelpers.applyFilter('price', 'range', {
-        selected_min: 14,
-        selected_max: 150
-      })
+      requstHelpers.applyFilter('"__categories"', 'checkbox', '50')
+      // requstHelpers.applyFilter('price', 'range', {
+      //   selected_min: 14,
+      //   selected_max: 150
+      // })
       setTimeout(()=>{
-        requstHelpers.clearFilter('price')
+        // requstHelpers.clearFilter('price')
       }, 2000)
 
       document.querySelector('#next-btn').addEventListener('click', ()=>{

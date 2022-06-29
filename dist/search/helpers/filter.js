@@ -28,8 +28,8 @@ var getAppliedFilters = function () {
     var _this = this;
     var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
     var appliedFilterItems = flattenedFilterItems.filter(function (filter) {
-        if (filter.type === 'checkbox') {
-            return filter.selected;
+        if (filter.hasOwnProperty('selected')) {
+            return (filter.selected);
         }
         if (filter.type === 'range') {
             if (_this.requestState['filters']) {
