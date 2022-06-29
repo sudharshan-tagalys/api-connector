@@ -9,7 +9,8 @@ const getEncodedQueryString = ({
   queryFilter = {}, 
   filter = {},
   page = null,
-  sort = null
+  sort = null,
+  except = []
  }) => {
   const { 
     query: queryReplacement,
@@ -36,6 +37,7 @@ const getEncodedQueryString = ({
   if(sort.length){
     params[sortReplacement] = sort
   }
+  except.forEach((paramToDelete) => delete params[paramToDelete])
   return  `?${queryStringManager.stringify(params)}`;
 }
 
