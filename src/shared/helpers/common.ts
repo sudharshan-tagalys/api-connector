@@ -37,8 +37,15 @@ const getEncodedQueryString = ({
   if(sort.length){
     params[sortReplacement] = sort
   }
-  except.forEach((paramToDelete) => delete params[paramToDelete])
+  except.forEach((paramToDelete) => {
+    delete params[getReplacementParam(paramToDelete)]
+  })
   return  `?${queryStringManager.stringify(params)}`;
+}
+
+const getReplacementParam = (param) => {
+  const replacementParams = queryStringManager.getConfiguration()
+  return replacementParams[param]
 }
 
 const getRequestParamsFromWindowLocation = () => {
