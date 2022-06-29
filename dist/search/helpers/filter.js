@@ -25,8 +25,21 @@ var getFilters = function () {
     return this.responseState.filters;
 };
 var getAppliedFilters = function () {
+    var _this = this;
     var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
-    var appliedFilterItems = flattenedFilterItems.filter(function (filter) { return filter.selected; });
+    var appliedFilterItems = flattenedFilterItems.filter(function (filter) {
+        if (filter.type === 'checkbox') {
+            return filter.selected;
+        }
+        if (filter.type === 'range') {
+            if (_this.requestState['filters']) {
+                var selectedRangeFilter = _this.requestState['filters'][filter.id];
+                if (selectedRangeFilter) {
+                    return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max);
+                }
+            }
+        }
+    });
     return appliedFilterItems;
 };
 var applyFilter = function (filterId, filterType, filterItemsToApply) {
