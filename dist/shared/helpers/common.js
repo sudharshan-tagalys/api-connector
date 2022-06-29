@@ -27,10 +27,16 @@ var getEncodedQueryString = function (_a) {
     if (sort.length) {
         params[sortReplacement] = sort;
     }
-    except.forEach(function (paramToDelete) { return delete params[paramToDelete]; });
+    except.forEach(function (paramToDelete) {
+        delete params[getReplacementParam(paramToDelete)];
+    });
     return "?".concat(queryStringManager_1.default.stringify(params));
 };
 exports.getEncodedQueryString = getEncodedQueryString;
+var getReplacementParam = function (param) {
+    var replacementParams = queryStringManager_1.default.getConfiguration();
+    return replacementParams[param];
+};
 var getRequestParamsFromWindowLocation = function () {
     return getRequestParamsFromQueryString(window.location.search.replace("?", ''));
 };

@@ -137,7 +137,7 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
-          console.log(responseHelpers.getEncodedQueryString(['p']), responseHelpers.getEncodedQueryString([]))
+          console.log(responseHelpers.getEncodedQueryString(['page']), responseHelpers.getEncodedQueryString([]))
         },
       });
       const requstHelpers = search.helpers
