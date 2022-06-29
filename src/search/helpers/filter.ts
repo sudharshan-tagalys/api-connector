@@ -61,7 +61,12 @@ const getAppliedFilterById = function(filterId){
 
 const isFilterApplied = function(filterId){
   const appliedFilters = this.filterHelpers.getAppliedFilters()
-  const appliedFilter = appliedFilters.find((filter)=>filter.filterId === filterId)
+  const appliedFilter = appliedFilters.find((filter)=>{
+    if(filter.type === 'range'){
+      return (filter.id === filterId)
+    }
+    return (filter.filterId === filterId)
+  })
   if(appliedFilter) return true
   return false
 }
