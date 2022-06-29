@@ -68,8 +68,10 @@ const getRequestParamsFromQueryString = (queryString) => {
 const getFilterQueryString = (filter) => {
   let filtersQueryStrings = []
   Object.keys(filter).forEach(function(key){
-    if(filter[key].length){
+    if(Array.isArray(filter[key]) && filter[key].length){
       filtersQueryStrings.push(`${key}-${filter[key].join(',')}`)
+    }else{
+      filtersQueryStrings.push(`${key}-${filter[key].selected_min}-${filter[key].selected_max}`)
     }
   })
   return filtersQueryStrings.join('~');
@@ -80,11 +82,19 @@ const getFiltersFromQueryString = (filterQueryString) => {
   let filters = {}
   filtersFromQueryString.forEach(filterFromQueryString => {
     const filter = filterFromQueryString.split('-')
+    const isRangeFilter = (filter.length === 3)
     const filterKey = filter[0]
-    const filterValueString = filter[1]
-    const appliedFilterValues = filterValueString.split(',')
-    if(appliedFilterValues.length){
-      filters[filterKey] = appliedFilterValues
+    if(isRangeFilter){
+      filters[filterKey] = {
+        selected_min: filter[1],
+        selected_max: filter[2]
+      }
+    }else{
+      const filterValueString = filter[1]
+      const appliedFilterValues = filterValueString.split(',')
+      if(appliedFilterValues.length){
+        filters[filterKey] = appliedFilterValues
+      }
     }
   });
   return filters
