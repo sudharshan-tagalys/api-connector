@@ -137,12 +137,14 @@
           request: ['details', 'filters', 'sort_options']
         },
         onSuccess: function (response, responseHelpers) {
-          console.log(responseHelpers.getAppliedFilters())
+          console.log(responseHelpers.getEncodedQueryString(['p']), responseHelpers.getEncodedQueryString([]))
         },
       });
       const requstHelpers = search.helpers
       search.call()
-      requstHelpers.applyFilter('"__categories"', 'checkbox', '50')
+      // requstHelpers.applyFilter('"__categories"', 'checkbox', '50')
+      requstHelpers.goToNextPage()
+      requstHelpers.goToNextPage()
       // requstHelpers.applyFilter('price', 'range', {
       //   selected_min: 14,
       //   selected_max: 150

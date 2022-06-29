@@ -62,9 +62,9 @@ declare class Search extends APIConnector {
     getFilterParams(filters: object): {};
     getSortString(): string;
     isRequested(requestItem: any): boolean;
-    getEncodedQueryString(): string;
+    getEncodedQueryString(except: any): string;
     commonHelpers(): {
-        getEncodedQueryString: any;
+        getEncodedQueryString: (except: any) => any;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getRequestState: () => {

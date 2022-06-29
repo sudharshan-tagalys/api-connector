@@ -213,19 +213,20 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.isRequested = function (requestItem) {
         return this.requestState.request.includes(requestItem);
     };
-    Search.prototype.getEncodedQueryString = function () {
+    Search.prototype.getEncodedQueryString = function (except) {
         return (0, common_1.getEncodedQueryString)({
             query: this.requestState.query,
             queryFilter: this.requestState.queryFilters,
             filter: this.requestState.filters,
             page: this.requestState.page,
-            sort: this.requestState.sort
+            sort: this.requestState.sort,
+            except: except
         });
     };
     Search.prototype.commonHelpers = function () {
         var _this = this;
         return {
-            getEncodedQueryString: this.getEncodedQueryString.bind(this),
+            getEncodedQueryString: function (except) { return _this.getEncodedQueryString.call(_this, except); },
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
