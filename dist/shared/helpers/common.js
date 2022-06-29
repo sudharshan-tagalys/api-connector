@@ -7,8 +7,8 @@ var getURLEncodedQueryString = function (baseUrl, params) {
 };
 exports.getURLEncodedQueryString = getURLEncodedQueryString;
 var getEncodedQueryString = function (_a) {
-    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilter, queryFilter = _c === void 0 ? {} : _c, _d = _a.filter, filter = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f;
-    var _g = queryStringManager_1.default.getConfiguration(), queryReplacement = _g.query, queryFilterReplacement = _g.queryFilter, filterReplacement = _g.filter, pageReplacement = _g.page, sortReplacement = _g.sort;
+    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilter, queryFilter = _c === void 0 ? {} : _c, _d = _a.filter, filter = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g;
+    var _h = queryStringManager_1.default.getConfiguration(), queryReplacement = _h.query, queryFilterReplacement = _h.queryFilter, filterReplacement = _h.filter, pageReplacement = _h.page, sortReplacement = _h.sort;
     var params = {};
     if (query.length) {
         params[queryReplacement] = query;
@@ -27,6 +27,7 @@ var getEncodedQueryString = function (_a) {
     if (sort.length) {
         params[sortReplacement] = sort;
     }
+    except.forEach(function (paramToDelete) { return delete params[paramToDelete]; });
     return "?".concat(queryStringManager_1.default.stringify(params));
 };
 exports.getEncodedQueryString = getEncodedQueryString;
