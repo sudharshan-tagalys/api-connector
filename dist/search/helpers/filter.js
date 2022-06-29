@@ -81,7 +81,12 @@ var getAppliedFilterById = function (filterId) {
 };
 var isFilterApplied = function (filterId) {
     var appliedFilters = this.filterHelpers.getAppliedFilters();
-    var appliedFilter = appliedFilters.find(function (filter) { return filter.filterId === filterId; });
+    var appliedFilter = appliedFilters.find(function (filter) {
+        if (filter.type === 'range') {
+            return (filter.id === filterId);
+        }
+        return (filter.filterId === filterId);
+    });
     if (appliedFilter)
         return true;
     return false;
