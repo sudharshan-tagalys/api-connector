@@ -59,8 +59,11 @@ exports.getRequestParamsFromQueryString = getRequestParamsFromQueryString;
 var getFilterQueryString = function (filter) {
     var filtersQueryStrings = [];
     Object.keys(filter).forEach(function (key) {
-        if (filter[key].length) {
+        if (Array.isArray(filter[key]) && filter[key].length) {
             filtersQueryStrings.push("".concat(key, "-").concat(filter[key].join(',')));
+        }
+        else {
+            filtersQueryStrings.push("".concat(key, "-").concat(filter[key].selected_min, "-").concat(filter[key].selected_max));
         }
     });
     return filtersQueryStrings.join('~');
@@ -70,11 +73,20 @@ var getFiltersFromQueryString = function (filterQueryString) {
     var filters = {};
     filtersFromQueryString.forEach(function (filterFromQueryString) {
         var filter = filterFromQueryString.split('-');
+        var isRangeFilter = (filter.length === 3);
         var filterKey = filter[0];
-        var filterValueString = filter[1];
-        var appliedFilterValues = filterValueString.split(',');
-        if (appliedFilterValues.length) {
-            filters[filterKey] = appliedFilterValues;
+        if (isRangeFilter) {
+            filters[filterKey] = {
+                selected_min: filter[1],
+                selected_max: filter[2]
+            };
+        }
+        else {
+            var filterValueString = filter[1];
+            var appliedFilterValues = filterValueString.split(',');
+            if (appliedFilterValues.length) {
+                filters[filterKey] = appliedFilterValues;
+            }
         }
     });
     return filters;
