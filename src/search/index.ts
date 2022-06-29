@@ -216,19 +216,20 @@ class Search extends APIConnector {
    return this.requestState.request.includes(requestItem)
   }
 
-  getEncodedQueryString(){
+  getEncodedQueryString(except){
     return getEncodedQueryString({
       query: this.requestState.query,
       queryFilter: this.requestState.queryFilters,
       filter: this.requestState.filters,
       page: this.requestState.page,
-      sort: this.requestState.sort
+      sort: this.requestState.sort,
+      except: except
     })
   }
 
   commonHelpers(){
     return {
-      getEncodedQueryString: this.getEncodedQueryString.bind(this),
+      getEncodedQueryString: (except) => this.getEncodedQueryString.call(this, except),
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
