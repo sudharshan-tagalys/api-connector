@@ -7,7 +7,19 @@ const getFilters = function () {
 
 const getAppliedFilters = function(){
   const flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
-  const appliedFilterItems = flattenedFilterItems.filter((filter)=>filter.selected)
+  const appliedFilterItems = flattenedFilterItems.filter((filter)=>{
+    if(filter.type === 'checkbox'){
+      return filter.selected
+    }
+    if(filter.type === 'range'){
+      if(this.requestState['filters']){
+        const selectedRangeFilter = this.requestState['filters'][filter.id]
+        if(selectedRangeFilter){
+          return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max)
+        }
+      }
+    }
+  })
   return appliedFilterItems
 }
 
