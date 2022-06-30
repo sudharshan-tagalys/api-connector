@@ -105,7 +105,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
         localStorage_1.default.setValue("tagalysPopularSearches", recentSearches, 3600000);
     };
     SearchSuggestions.defaultRequestOptions = function () {
-        return __assign(__assign({}, constants_1.DEFAULT_REQUEST_OPTIONS), { configuration: {
+        return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { configuration: {
                 queryString: {
                     query: "q",
                     queryFilter: "qf"

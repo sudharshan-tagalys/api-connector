@@ -1,4 +1,4 @@
-import { REQUEST_FORMAT } from "../shared/constants";
+import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
 import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
@@ -112,7 +112,9 @@ class APIConnector{
   }
 
   static defaultRequestOptions(){
-    return {}
+    return {
+      ...DEFAULT_REQUEST_CALLBACKS
+    }
   }
 
   new(requestOptions){

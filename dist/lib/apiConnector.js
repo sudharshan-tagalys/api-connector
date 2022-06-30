@@ -104,7 +104,7 @@ var APIConnector = /** @class */ (function () {
         return this.requestOptions.beforeAPICall(params);
     };
     APIConnector.defaultRequestOptions = function () {
-        return {};
+        return __assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS);
     };
     APIConnector.prototype.new = function (requestOptions) {
         return undefined;

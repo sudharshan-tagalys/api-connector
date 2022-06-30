@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.REQUEST_FORMAT = exports.DEFAULT_REQUEST_OPTIONS = exports.DEFAULT_CONFIGURATION = exports.SHOPIFY_PLATFORM = void 0;
+exports.REQUEST_FORMAT = exports.DEFAULT_REQUEST_CALLBACKS = exports.DEFAULT_CONFIGURATION = exports.SHOPIFY_PLATFORM = void 0;
 var SHOPIFY_PLATFORM = "shopify";
 exports.SHOPIFY_PLATFORM = SHOPIFY_PLATFORM;
 var DEFAULT_CONFIGURATION = {
@@ -17,7 +17,7 @@ var DEFAULT_CONFIGURATION = {
     }
 };
 exports.DEFAULT_CONFIGURATION = DEFAULT_CONFIGURATION;
-var DEFAULT_REQUEST_OPTIONS = {
+var DEFAULT_REQUEST_CALLBACKS = {
     onSuccess: function (response) {
         console.log("API response:", response);
     },
@@ -26,7 +26,7 @@ var DEFAULT_REQUEST_OPTIONS = {
         console.error("Failed API response:", response);
     }
 };
-exports.DEFAULT_REQUEST_OPTIONS = DEFAULT_REQUEST_OPTIONS;
+exports.DEFAULT_REQUEST_CALLBACKS = DEFAULT_REQUEST_CALLBACKS;
 var REQUEST_FORMAT = {
     FORM_DATA: "FormData",
     JSON: "JSON"

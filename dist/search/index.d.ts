@@ -29,11 +29,6 @@ declare class Search extends APIConnector {
     };
     constructor();
     static exporterName(): string;
-    static defaultRequestOptions(): {
-        onSuccess: (response: any) => void;
-        beforeAPICall: (params: any) => any;
-        onFailure: (response: any) => void;
-    };
     bindThisToHelpers(helpers: object): {};
     setResponseState(responseState: any): void;
     setRequestState(mutationCallback: any): void;

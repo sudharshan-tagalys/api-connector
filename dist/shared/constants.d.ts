@@ -10,7 +10,7 @@ declare const DEFAULT_CONFIGURATION: {
     track: boolean;
     analyticsStorageConsentProvided: () => boolean;
 };
-declare const DEFAULT_REQUEST_OPTIONS: {
+declare const DEFAULT_REQUEST_CALLBACKS: {
     onSuccess: (response: any) => void;
     beforeAPICall: (params: any) => any;
     onFailure: (response: any) => void;
@@ -19,4 +19,4 @@ declare const REQUEST_FORMAT: {
     FORM_DATA: string;
     JSON: string;
 };
-export { SHOPIFY_PLATFORM, DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT };
+export { SHOPIFY_PLATFORM, DEFAULT_CONFIGURATION, DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT };

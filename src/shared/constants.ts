@@ -14,7 +14,7 @@ const DEFAULT_CONFIGURATION = {
   }
 }
 
-const DEFAULT_REQUEST_OPTIONS = {
+const DEFAULT_REQUEST_CALLBACKS = {
   onSuccess: (response) => {
     console.log("API response:", response)
   },
@@ -32,6 +32,6 @@ const REQUEST_FORMAT = {
 export {
   SHOPIFY_PLATFORM,
   DEFAULT_CONFIGURATION,
-  DEFAULT_REQUEST_OPTIONS,
+  DEFAULT_REQUEST_CALLBACKS,
   REQUEST_FORMAT
 }

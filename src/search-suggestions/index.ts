@@ -1,5 +1,5 @@
 import APIConnector from "../lib/apiConnector"
-import { DEFAULT_REQUEST_OPTIONS, REQUEST_FORMAT } from "../shared/constants"
+import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
 import { getEncodedQueryString, getURLEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
@@ -79,7 +79,7 @@ class SearchSuggestions extends APIConnector {
 
   static defaultRequestOptions(){
     return {
-      ...DEFAULT_REQUEST_OPTIONS,
+      ...DEFAULT_REQUEST_CALLBACKS,
       configuration: {
         queryString: {
           query: "q",

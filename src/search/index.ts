@@ -4,7 +4,7 @@ import SearchHelpers from './helpers/search';
 import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
-import { DEFAULT_REQUEST_OPTIONS } from "../shared/constants";
+import { DEFAULT_REQUEST_CALLBACKS } from "../shared/constants";
 import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_STATE =  {
@@ -54,12 +54,6 @@ class Search extends APIConnector {
 
   static exporterName(){
     return 'Search'
-  }
-
-  static defaultRequestOptions(){
-    return {
-      ...DEFAULT_REQUEST_OPTIONS
-    }
   }
 
   bindThisToHelpers(helpers: object){

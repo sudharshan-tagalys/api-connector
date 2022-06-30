@@ -32,7 +32,6 @@ var search_1 = require("./helpers/search");
 var pagination_1 = require("./helpers/pagination");
 var sortOption_1 = require("./helpers/sortOption");
 var product_1 = require("./helpers/product");
-var constants_1 = require("../shared/constants");
 var common_1 = require("../shared/helpers/common");
 var DEFAULT_REQUEST_STATE = {
     query: "",
@@ -72,9 +71,6 @@ var Search = /** @class */ (function (_super) {
     }
     Search.exporterName = function () {
         return 'Search';
-    };
-    Search.defaultRequestOptions = function () {
-        return __assign({}, constants_1.DEFAULT_REQUEST_OPTIONS);
     };
     Search.prototype.bindThisToHelpers = function (helpers) {
         var _this = this;
