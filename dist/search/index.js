@@ -93,7 +93,7 @@ var Search = /** @class */ (function (_super) {
         if (this.requestOptions.onStateChange) {
             this.requestOptions.onStateChange(this.requestState);
         }
-        this.requestOptions.params = this.getParamsFromRequestState();
+        this.setRequestParamsFromRequestState();
         this.call(this.requestOptions);
     };
     Search.prototype.getRequestOptions = function () {
@@ -257,10 +257,14 @@ var Search = /** @class */ (function (_super) {
                     if (Object.keys(requestState).length) {
                         _this.requestState = requestState;
                     }
-                    _this.requestOptions.params = _this.getParamsFromRequestState();
+                    _this.setRequestParamsFromRequestState();
                 } });
         }
         return helpers;
+    };
+    Search.prototype.setRequestParamsFromRequestState = function () {
+        this.requestOptions.params = this.getParamsFromRequestState();
+        this.requestOptions._params = this.requestState;
     };
     Search.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;
@@ -268,7 +272,7 @@ var Search = /** @class */ (function (_super) {
         if (Object.keys(requestState).length) {
             this.requestState = requestState;
         }
-        this.requestOptions.params = this.getParamsFromRequestState();
+        this.setRequestParamsFromRequestState();
         return this.getHelpersToExpose('request');
     };
     return Search;

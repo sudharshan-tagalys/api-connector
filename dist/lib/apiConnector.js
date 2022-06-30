@@ -41,6 +41,9 @@ var APIConnector = /** @class */ (function () {
         this.requestOptions = requestOptions;
         this.setResponseFormatter();
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
+        if (this.requestOptions.hasOwnProperty('beforeAPICall')) {
+            this.requestOptions.beforeAPICall(this.requestOptions._params);
+        }
         api_2.default.call(method, path, {
             params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
             onSuccess: function (response) {

@@ -12,6 +12,7 @@ declare const DEFAULT_CONFIGURATION: {
 };
 declare const DEFAULT_REQUEST_OPTIONS: {
     onSuccess: (response: any) => void;
+    beforeAPICall: (params: any) => void;
     onFailure: (response: any) => void;
 };
 declare const REQUEST_FORMAT: {

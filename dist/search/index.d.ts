@@ -31,6 +31,7 @@ declare class Search extends APIConnector {
     static exporterName(): string;
     static defaultRequestOptions(): {
         onSuccess: (response: any) => void;
+        beforeAPICall: (params: any) => void;
         onFailure: (response: any) => void;
     };
     bindThisToHelpers(helpers: object): {};
@@ -98,6 +99,7 @@ declare class Search extends APIConnector {
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpersToExpose(type?: string): any;
+    setRequestParamsFromRequestState(): void;
     new(requestOptions: any): any;
 }
 export default Search;

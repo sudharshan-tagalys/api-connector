@@ -86,7 +86,7 @@ class Search extends APIConnector {
     if(this.requestOptions.onStateChange){
       this.requestOptions.onStateChange(this.requestState)
     }
-    this.requestOptions.params = this.getParamsFromRequestState()
+    this.setRequestParamsFromRequestState()
     this.call(this.requestOptions)
   }
 
@@ -270,11 +270,16 @@ class Search extends APIConnector {
           if(Object.keys(requestState).length){
             this.requestState = requestState
           }
-          this.requestOptions.params = this.getParamsFromRequestState();
+          this.setRequestParamsFromRequestState()
         }
       }
     }
     return helpers
+  }
+
+  setRequestParamsFromRequestState(){
+    this.requestOptions.params = this.getParamsFromRequestState();
+    this.requestOptions._params = this.requestState
   }
 
   new(requestOptions){
@@ -283,7 +288,7 @@ class Search extends APIConnector {
     if(Object.keys(requestState).length){
       this.requestState = requestState
     }
-    this.requestOptions.params = this.getParamsFromRequestState()
+    this.setRequestParamsFromRequestState()
     return this.getHelpersToExpose('request')
   }
 }

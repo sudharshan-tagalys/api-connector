@@ -18,6 +18,7 @@ const DEFAULT_REQUEST_OPTIONS = {
   onSuccess: (response) => {
     console.log("API response:", response)
   },
+  beforeAPICall: (params) => {},
   onFailure: (response) => {
     console.error("Failed API response:", response)
   }

@@ -21,6 +21,7 @@ var DEFAULT_REQUEST_OPTIONS = {
     onSuccess: function (response) {
         console.log("API response:", response);
     },
+    beforeAPICall: function (params) { },
     onFailure: function (response) {
         console.error("Failed API response:", response);
     }

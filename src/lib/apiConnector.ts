@@ -34,6 +34,9 @@ class APIConnector{
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
     };
+    if(this.requestOptions.hasOwnProperty('beforeAPICall')){
+      this.requestOptions.beforeAPICall(this.requestOptions._params)
+    }
     api.call(method, path, {
       params: this.formatRequestParams({
         ...params,
