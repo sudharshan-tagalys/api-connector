@@ -34,7 +34,7 @@ class APIConnector{
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
     };
-    params = this.beforeAPICall(this.requestOptions.params)
+    params = this.beforeAPICall(params)
     api.call(method, path, {
       params: this.formatRequestParams({
         ...params,
