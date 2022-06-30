@@ -42,7 +42,7 @@ declare class SearchSuggestions extends APIConnector {
             hierachySeperator: string;
         };
         onSuccess: (response: any) => void;
-        beforeAPICall: (params: any) => void;
+        beforeAPICall: (params: any) => any;
         onFailure: (response: any) => void;
     };
 }

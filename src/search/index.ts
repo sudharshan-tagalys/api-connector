@@ -157,6 +157,10 @@ class Search extends APIConnector {
   }
 
   getParamsFromRequestState(){
+    return this.getRequestParams(this.requestState)
+  }
+
+  getRequestParams(state){
     const {
       query,
       queryMode,
@@ -166,7 +170,7 @@ class Search extends APIConnector {
       request,
       page,
       perPage,
-    } = this.requestState;
+    } = state;
     let params: any = {}
     if(query){
       params['q'] = query
@@ -279,7 +283,11 @@ class Search extends APIConnector {
 
   setRequestParamsFromRequestState(){
     this.requestOptions.params = this.getParamsFromRequestState();
-    this.requestOptions._params = this.requestState
+  }
+
+  beforeAPICall(_: any) {
+    const updatedState = this.requestOptions.beforeAPICall(this.requestState)
+    return this.getRequestParams(updatedState)
   }
 
   new(requestOptions){

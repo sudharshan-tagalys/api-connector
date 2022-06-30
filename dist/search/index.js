@@ -156,7 +156,10 @@ var Search = /** @class */ (function (_super) {
         return __assign(__assign({}, DEFAULT_REQUEST_STATE), requestState);
     };
     Search.prototype.getParamsFromRequestState = function () {
-        var _a = this.requestState, query = _a.query, queryMode = _a.queryMode, queryFilters = _a.queryFilters, filters = _a.filters, cache = _a.cache, request = _a.request, page = _a.page, perPage = _a.perPage;
+        return this.getRequestParams(this.requestState);
+    };
+    Search.prototype.getRequestParams = function (state) {
+        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters, filters = state.filters, cache = state.cache, request = state.request, page = state.page, perPage = state.perPage;
         var params = {};
         if (query) {
             params['q'] = query;
@@ -264,7 +267,10 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = this.getParamsFromRequestState();
-        this.requestOptions._params = this.requestState;
+    };
+    Search.prototype.beforeAPICall = function (_) {
+        var updatedState = this.requestOptions.beforeAPICall(this.requestState);
+        return this.getRequestParams(updatedState);
     };
     Search.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;

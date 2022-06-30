@@ -11,6 +11,7 @@ declare class APIConnector {
     formatResponse(response: any): any;
     getRequestOptions(): {};
     isFailureResponse(response: any): boolean;
+    beforeAPICall(params: any): any;
     static defaultRequestOptions(): {};
     new(requestOptions: any): any;
     static exporterName(): void;

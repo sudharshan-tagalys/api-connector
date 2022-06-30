@@ -30,13 +30,11 @@ class APIConnector{
   call(requestOptions = this.requestOptions) {
     this.requestOptions = requestOptions;
     this.setResponseFormatter()
-    const { method, path, params, format } = {
+    let { method, path, params, format } = {
       ...DEFAULT_REQUEST_OPTIONS,
       ...this.getRequestOptions()
     };
-    if(this.requestOptions.hasOwnProperty('beforeAPICall')){
-      this.requestOptions.beforeAPICall(this.requestOptions._params)
-    }
+    params = this.beforeAPICall(this.requestOptions.params)
     api.call(method, path, {
       params: this.formatRequestParams({
         ...params,
@@ -107,6 +105,10 @@ class APIConnector{
 
   isFailureResponse(response): boolean{
     return false
+  }
+
+  beforeAPICall(params){
+    return this.requestOptions.beforeAPICall(params)
   }
 
   static defaultRequestOptions(){
