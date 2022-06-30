@@ -1,6 +1,6 @@
-const applySortOption = function (sortOptionId) {
+const applySortOption = function (sort) {
   this.setRequestState((reqState)=>{
-    reqState.sort = sortOptionId
+    reqState.sort = sort
     reqState.page = 1
     return reqState
   })
@@ -19,6 +19,8 @@ const getSortOptionById = function (sortOptionId) {
   const sortOptions = this.sortOptionHelpers.getSortOptions()
   return sortOptions.find((sortOption) => sortOption.id === sortOptionId)
 }
+
+// ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
   const { applySortOption } = this.sortOptionHelpers;

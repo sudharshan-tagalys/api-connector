@@ -5,18 +5,12 @@ const setQuery = function(query){
   })
 }
 
-const setQueryMode = function(queryMode){
-  this.setRequestState((reqState)=>{
-    reqState.queryMode = queryMode
-    return reqState
-  })
-}
+// ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
-  const { setQuery, setQueryMode } = this.searchHelpers
+  const { setQuery } = this.searchHelpers
   return {
-    setQuery,
-    setQueryMode
+    setQuery
   }
 }
 
@@ -26,7 +20,6 @@ const getResponseHelpers = function(){
 
 export default {
   setQuery,
-  setQueryMode,
   getRequestHelpers,
   getResponseHelpers
 }

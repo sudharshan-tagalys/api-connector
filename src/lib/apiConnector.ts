@@ -115,7 +115,7 @@ class APIConnector{
   }
 
   static exporterName(){
-    throw new Error("Should specify exporter name") 
+    throw new Error("Should specify exporter name")
   }
 
   static export(){

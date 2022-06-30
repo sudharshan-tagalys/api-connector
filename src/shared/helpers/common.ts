@@ -5,23 +5,24 @@ const getURLEncodedQueryString = (baseUrl, params) => {
 }
 
 const getEncodedQueryString = ({
-  query = '', 
-  queryFilter = {}, 
+  query = '',
+  queryFilter = {},
   filter = {},
   page = null,
   sort = null,
   except = []
  }) => {
-  const { 
+  const {
     query: queryReplacement,
     queryFilter: queryFilterReplacement,
     filter: filterReplacement,
     page: pageReplacement,
     sort: sortReplacement
    } = queryStringManager.getConfiguration()
+
   let params: any = {}
   if(query.length){
-    params[queryReplacement] = query 
+    params[queryReplacement] = query
   }
   const hasQueryFilters = (Object.keys(queryFilter).length !== 0)
   const hasFilters = (Object.keys(filter).length !== 0)

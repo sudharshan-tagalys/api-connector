@@ -6,6 +6,8 @@ const getTotalProductsCount = function(){
   return this.responseState.total
 }
 
+// ==== PUBLICLY EXPOSED HELPERS ====
+
 const getRequestHelpers = function(){
   return {}
 }
@@ -13,12 +15,12 @@ const getRequestHelpers = function(){
 const getResponseHelpers = function(){
   const { getProducts, getTotalProductsCount } = this.productHelpers
   return {
-    getProducts, 
+    getProducts,
     getTotalProductsCount
   }
 }
 
-export default { 
+export default {
   getProducts,
   getTotalProductsCount,
   getRequestHelpers,

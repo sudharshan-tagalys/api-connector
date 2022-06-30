@@ -15,26 +15,31 @@ const DEFAULT_REQUEST_STATE =  {
   request: ['details', 'filters', 'sort_options'],
   page: 1,
   perPage: 16,
-  sort: "",
+  sort: "trending",
   cache: true,
 }
 
 const DEFAULT_RESPONSE_STATE = {
-  filters: [],
-  sort_options: [],
-  page: null,
+  query: "",
   total_pages: null,
+  page: null,
+  total: null,
+  query_original: null,
+  query_mode: null,
   products: [],
-  variables: [],
-  banners: []
+  filters: [],
+  sort_options: []
 };
 
 class Search extends APIConnector {
+  // == HELPERS ==
   public filterHelpers;
   public paginationHelpers;
   public searchHelpers;
   public sortOptionHelpers;
   public productHelpers;
+
+  // == STATE ==
   public requestState = DEFAULT_REQUEST_STATE
   public responseState = DEFAULT_RESPONSE_STATE
 
@@ -45,6 +50,16 @@ class Search extends APIConnector {
     this.searchHelpers = this.bindThisToHelpers(SearchHelpers);
     this.sortOptionHelpers = this.bindThisToHelpers(SortOptionHelpers);
     this.productHelpers = this.bindThisToHelpers(ProductHelpers);
+  }
+
+  static exporterName(){
+    return 'Search'
+  }
+
+  static defaultRequestOptions(){
+    return {
+      ...DEFAULT_REQUEST_OPTIONS
+    }
   }
 
   bindThisToHelpers(helpers: object){
@@ -67,7 +82,6 @@ class Search extends APIConnector {
 
   setRequestState(mutationCallback){
     const newRequestState = mutationCallback(this.requestState);
-    console.log("NEW STATE", newRequestState)
     this.requestState = newRequestState;
     if(this.requestOptions.onStateChange){
       this.requestOptions.onStateChange(this.requestState)
@@ -81,10 +95,6 @@ class Search extends APIConnector {
       path: 'search',
       params: this.requestOptions.params,
     }
-  }
-
-  static exporterName(){
-    return 'Search'
   }
 
   extractAnalyticsData(response) {
@@ -135,8 +145,10 @@ class Search extends APIConnector {
       requestState["perPage"] = params.perPage
     }
     if(params.sort){
-      // const sort = params.sort.split("-")
       requestState['sort'] = params.sort
+    }
+    if(params.cache){
+      requestState['cache'] = params.cache
     }
     return {
       ...DEFAULT_REQUEST_STATE,
@@ -183,7 +195,6 @@ class Search extends APIConnector {
     if(this.getSortString().length){
       params['sort'] = this.getSortString()
     }
-    this.getFilterParams(filters)
     return params
   }
 
@@ -216,7 +227,7 @@ class Search extends APIConnector {
    return this.requestState.request.includes(requestItem)
   }
 
-  getEncodedQueryString(except){
+  getEncodedQueryString(except = []){
     return getEncodedQueryString({
       query: this.requestState.query,
       queryFilter: this.requestState.queryFilters,
@@ -229,18 +240,11 @@ class Search extends APIConnector {
 
   commonHelpers(){
     return {
-      getEncodedQueryString: (except) => this.getEncodedQueryString.call(this, except),
+      getEncodedQueryString: (except = []) => this.getEncodedQueryString.call(this, except),
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
-      getResponseState: () => this.responseState,
-      setParams: (params) => {
-        const requestState : any = this.getRequestStateFromParams(params);
-        if(Object.keys(requestState).length){
-          this.requestState = requestState
-        }
-        this.requestOptions.params = this.getParamsFromRequestState();
-      }
+      getResponseState: () => this.responseState
     }
   }
 
@@ -249,28 +253,25 @@ class Search extends APIConnector {
   }
 
   getHelpersToExpose(type = 'request'){
-    const functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers'
+    const functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers')
     let helpers = {
-      ...this.paginationHelpers[functionToCall](),
       ...this.searchHelpers[functionToCall](),
+      ...this.filterHelpers[functionToCall](),
+      ...this.sortOptionHelpers[functionToCall](),
+      ...this.productHelpers[functionToCall](),
+      ...this.paginationHelpers[functionToCall](),
       ...this.commonHelpers()
     }
-    if(this.isRequested('filters')){
+    if(type === 'request'){
       helpers = {
         ...helpers,
-        ...this.filterHelpers[functionToCall]()
-      }
-    }
-    if(this.isRequested('sort_options')){
-      helpers = {
-        ...helpers,
-        ...this.sortOptionHelpers[functionToCall]()
-      }
-    }
-    if(this.isRequested('details')){
-      helpers = {
-        ...helpers,
-        ...this.productHelpers[functionToCall]()
+        setParams: (params) => {
+          const requestState : any = this.getRequestStateFromParams(params);
+          if(Object.keys(requestState).length){
+            this.requestState = requestState
+          }
+          this.requestOptions.params = this.getParamsFromRequestState();
+        }
       }
     }
     return helpers
@@ -284,12 +285,6 @@ class Search extends APIConnector {
     }
     this.requestOptions.params = this.getParamsFromRequestState()
     return this.getHelpersToExpose('request')
-  }
-
-  static defaultRequestOptions(){
-    return {
-      ...DEFAULT_REQUEST_OPTIONS
-    }
   }
 }
 

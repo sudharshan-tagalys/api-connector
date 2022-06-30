@@ -1,6 +1,3 @@
-
-// ====== PUBLICLY EXPOSED HELPERS =======
-
 const getFilters = function () {
   return this.responseState.filters
 }
@@ -23,23 +20,23 @@ const getAppliedFilters = function(){
   return appliedFilterItems
 }
 
-const applyFilter = function(filterId, filterType, filterItemsToApply){
+const applyFilter = function(filterId, appliedFilter){
+  const filter = this.filterHelpers.getFilterById(filterId)
   this.setRequestState((reqState) => {
-    let filter = []
-    if(filterType === "range"){
-      filter = filterItemsToApply
+    let filterItems = []
+    if(filter.type === "range"){
+      filterItems = appliedFilter
     } else {
-      filter = (reqState.filters[filterId] || [])
-      if(Array.isArray(filterItemsToApply)){
-        // filter out the exisiting items
-        filter = filter.concat(filterItemsToApply)
+      filterItems = (reqState.filters[filterId] || [])
+      if(Array.isArray(appliedFilter)){
+        filterItems = filterItems.concat(appliedFilter)
       }else{
-        if(!filter.includes(filterItemsToApply)){
-          filter.push(filterItemsToApply)
+        if(!filterItems.includes(appliedFilter)){
+          filterItems.push(appliedFilter)
         }
       }
     }
-    reqState.filters[filterId] = filter;
+    reqState.filters[filterId] = filterItems;
     reqState.page = 1
     return reqState
   })
@@ -59,13 +56,16 @@ const getAppliedFilterById = function(filterId){
   return appliedFilter
 }
 
-const isFilterApplied = function(filterId){
+const isFilterApplied = function(id){
   const appliedFilters = this.filterHelpers.getAppliedFilters()
   const appliedFilter = appliedFilters.find((filter)=>{
     if(filter.type === 'range'){
-      return (filter.id === filterId)
+      return (filter.id === id)
     }
-    return (filter.filterId === filterId)
+    if(filter.filterId){
+      return (filter.filterId === id)
+    }
+    return (filter.id === id)
   })
   if(appliedFilter) return true
   return false
@@ -82,13 +82,52 @@ const clearFilter = function(filterId, filterItemIds = []){
         if(updatedFilterItemIds.length === 0){
           delete reqState.filters[filterId]
         }else{
-          reqState.filters[filterId] = updatedFilterItemIds 
+          reqState.filters[filterId] = updatedFilterItemIds
         }
       })
     }
     reqState.page = 1
     return reqState
   })
+}
+
+const clearAllFilters = function(){
+  this.setRequestState((reqState)=>{
+    reqState.filters = {}
+    reqState.page = 1
+    return reqState
+  })
+}
+
+// ==== UTILITY METHODS ====
+
+
+const flattenFilterItems = function(items){
+  let children = [];
+  const flattenItems = items.map(item => {
+    if (item.items && item.items.length) {
+      item.items = item.items.map((item)=>{
+        return {...item, filterId: this.filterHelpers.getFilterId(item.id) }
+      })
+     children = [...children, ...item.items];
+    }
+    return item;
+  });
+  return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
+}
+
+const getPath = function(object, search) {
+  if (object.id === search) return [object.id];
+  else if ((object.items) || Array.isArray(object)) {
+    let children = Array.isArray(object) ? object : object.items;
+    for (let child of children) {
+      let result = getPath(child, search);
+      if (result) {
+        if (object.id )result.unshift(object.id);
+        return result;
+      }
+    }
+  }
 }
 
 const getChildFilterItemIds = function(filterItems, filterItemId){
@@ -118,47 +157,10 @@ const getFilterId = function(filterItemId){
   return parentFilterItemIds[0]
 }
 
-const clearAllFilters = function(){
-  this.setRequestState((reqState)=>{
-    reqState.filters = {}
-    reqState.page = 1
-    return reqState
-  })
-}
-
-// ==== UTILITY METHODS ====
-
-
-const flattenFilterItems = function(items){
-  let children = [];
-  const flattenItems = items.map(item => {
-    if (item.items && item.items.length) {
-      item.items = item.items.map((item)=>{
-        return {...item, filterId: this.filterHelpers.getFilterId(item.id) }
-      })
-     children = [...children, ...item.items];
-    }
-    return item;
-  });
-  return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
-}
-
-function getPath(object, search) {
-  if (object.id === search) return [object.id];
-  else if ((object.items) || Array.isArray(object)) {
-    let children = Array.isArray(object) ? object : object.items;
-    for (let child of children) {
-      let result = getPath(child, search);
-      if (result) {
-        if (object.id )result.unshift(object.id);
-        return result;
-      }
-    }
-  }
-}
+// ==== PUBLICLY EXPOSED HELPERS ====
 
 const getResponseHelpers = function(){
-  const { 
+  const {
     getFilters,
     getAppliedFilters,
     getAppliedFilterById,

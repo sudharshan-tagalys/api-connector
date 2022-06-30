@@ -31,7 +31,7 @@ const goToNextPage = function () {
   })
 }
 
-const goToPrevPage = function(){
+const goToPreviousPage = function(){
   if (!this.paginationHelpers.hasPreviousPage()) {
     console.error("Min pages reached")
     return false
@@ -48,6 +48,8 @@ const goToPage = function (page) {
     return reqState
   })
 }
+
+// ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
   const { goToNextPage, goToPrevPage, goToPage } = this.paginationHelpers
@@ -70,7 +72,7 @@ const getResponseHelpers = function(){
 
 export default {
   goToNextPage,
-  goToPrevPage,
+  goToPreviousPage,
   getCurrentPage,
   getTotalPages,
   hasNextPage,

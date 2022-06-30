@@ -1,27 +1,26 @@
 import configuration from "./lib/configuration";
-import { DEFAULT_CONFIGURATION, DEFAULT_REQUEST_OPTIONS } from "./shared/constants";
-import similarProductsWidget from "./similar-products-widget";
-import smartWidget from "./smart-widget";
-import boughtAlsoBought from "./bought-also-bought"
-import viewedAlsoViewed from "./viewed-also-viewed"
-import addedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
-import searchSuggestions from "./search-suggestions"
+import { DEFAULT_CONFIGURATION } from "./shared/constants";
+import SimilarProductsWidget from "./similar-products-widget";
+import SmartWidget from "./smart-widget";
+import BoughtAlsoBought from "./bought-also-bought"
+import ViewedAlsoViewed from "./viewed-also-viewed"
+import AddedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
+import SearchSuggestions from "./search-suggestions"
 import Search from './search'
 import queryStringManager from "./lib/queryStringManager";
 
 export const APIConnector = {
   ...Search.export(),
-  ...similarProductsWidget.export(),
-  ...smartWidget.export(),
-  ...boughtAlsoBought.export(),
-  ...viewedAlsoViewed.export(),
-  ...addedToCartAlsoAddedToCart.export(),
-  ...searchSuggestions.export(),
+  ...SimilarProductsWidget.export(),
+  ...SmartWidget.export(),
+  ...BoughtAlsoBought.export(),
+  ...ViewedAlsoViewed.export(),
+  ...AddedToCartAlsoAddedToCart.export(),
+  ...SearchSuggestions.export(),
   setConfiguration: (config) => configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
-  test: () => console.log("TEST"),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config)
 }
 
