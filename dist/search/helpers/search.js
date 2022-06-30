@@ -6,17 +6,11 @@ var setQuery = function (query) {
         return reqState;
     });
 };
-var setQueryMode = function (queryMode) {
-    this.setRequestState(function (reqState) {
-        reqState.queryMode = queryMode;
-        return reqState;
-    });
-};
+// ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
-    var _a = this.searchHelpers, setQuery = _a.setQuery, setQueryMode = _a.setQueryMode;
+    var setQuery = this.searchHelpers.setQuery;
     return {
-        setQuery: setQuery,
-        setQueryMode: setQueryMode
+        setQuery: setQuery
     };
 };
 var getResponseHelpers = function () {
@@ -24,7 +18,6 @@ var getResponseHelpers = function () {
 };
 exports.default = {
     setQuery: setQuery,
-    setQueryMode: setQueryMode,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers
 };

@@ -1,6 +1,6 @@
 declare const _default: {
     goToNextPage: () => boolean;
-    goToPrevPage: () => boolean;
+    goToPreviousPage: () => boolean;
     getCurrentPage: () => any;
     getTotalPages: () => any;
     hasNextPage: () => boolean;

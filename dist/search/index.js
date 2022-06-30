@@ -42,22 +42,25 @@ var DEFAULT_REQUEST_STATE = {
     request: ['details', 'filters', 'sort_options'],
     page: 1,
     perPage: 16,
-    sort: "",
+    sort: "trending",
     cache: true,
 };
 var DEFAULT_RESPONSE_STATE = {
-    filters: [],
-    sort_options: [],
-    page: null,
+    query: "",
     total_pages: null,
+    page: null,
+    total: null,
+    query_original: null,
+    query_mode: null,
     products: [],
-    variables: [],
-    banners: []
+    filters: [],
+    sort_options: []
 };
 var Search = /** @class */ (function (_super) {
     __extends(Search, _super);
     function Search() {
         var _this = _super.call(this) || this;
+        // == STATE ==
         _this.requestState = DEFAULT_REQUEST_STATE;
         _this.responseState = DEFAULT_RESPONSE_STATE;
         _this.filterHelpers = _this.bindThisToHelpers(filter_1.default);
@@ -67,6 +70,12 @@ var Search = /** @class */ (function (_super) {
         _this.productHelpers = _this.bindThisToHelpers(product_1.default);
         return _this;
     }
+    Search.exporterName = function () {
+        return 'Search';
+    };
+    Search.defaultRequestOptions = function () {
+        return __assign({}, constants_1.DEFAULT_REQUEST_OPTIONS);
+    };
     Search.prototype.bindThisToHelpers = function (helpers) {
         var _this = this;
         return Object.entries(helpers).reduce(function (acc, _a) {
@@ -80,7 +89,6 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.setRequestState = function (mutationCallback) {
         var newRequestState = mutationCallback(this.requestState);
-        console.log("NEW STATE", newRequestState);
         this.requestState = newRequestState;
         if (this.requestOptions.onStateChange) {
             this.requestOptions.onStateChange(this.requestState);
@@ -93,9 +101,6 @@ var Search = /** @class */ (function (_super) {
             path: 'search',
             params: this.requestOptions.params,
         };
-    };
-    Search.exporterName = function () {
-        return 'Search';
     };
     Search.prototype.extractAnalyticsData = function (response) {
         var eventDetails = {
@@ -143,8 +148,10 @@ var Search = /** @class */ (function (_super) {
             requestState["perPage"] = params.perPage;
         }
         if (params.sort) {
-            // const sort = params.sort.split("-")
             requestState['sort'] = params.sort;
+        }
+        if (params.cache) {
+            requestState['cache'] = params.cache;
         }
         return __assign(__assign({}, DEFAULT_REQUEST_STATE), requestState);
     };
@@ -178,7 +185,6 @@ var Search = /** @class */ (function (_super) {
         if (this.getSortString().length) {
             params['sort'] = this.getSortString();
         }
-        this.getFilterParams(filters);
         return params;
     };
     Search.prototype.getFilterParams = function (filters) {
@@ -214,6 +220,7 @@ var Search = /** @class */ (function (_super) {
         return this.requestState.request.includes(requestItem);
     };
     Search.prototype.getEncodedQueryString = function (except) {
+        if (except === void 0) { except = []; }
         return (0, common_1.getEncodedQueryString)({
             query: this.requestState.query,
             queryFilter: this.requestState.queryFilters,
@@ -226,35 +233,32 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.commonHelpers = function () {
         var _this = this;
         return {
-            getEncodedQueryString: function (except) { return _this.getEncodedQueryString.call(_this, except); },
+            getEncodedQueryString: function (except) {
+                if (except === void 0) { except = []; }
+                return _this.getEncodedQueryString.call(_this, except);
+            },
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
-            getResponseState: function () { return _this.responseState; },
-            setParams: function (params) {
-                var requestState = _this.getRequestStateFromParams(params);
-                if (Object.keys(requestState).length) {
-                    _this.requestState = requestState;
-                }
-                _this.requestOptions.params = _this.getParamsFromRequestState();
-            }
+            getResponseState: function () { return _this.responseState; }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {
         this.setResponseState(formattedResponse);
     };
     Search.prototype.getHelpersToExpose = function (type) {
+        var _this = this;
         if (type === void 0) { type = 'request'; }
-        var functionToCall = type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers';
-        var helpers = __assign(__assign(__assign({}, this.paginationHelpers[functionToCall]()), this.searchHelpers[functionToCall]()), this.commonHelpers());
-        if (this.isRequested('filters')) {
-            helpers = __assign(__assign({}, helpers), this.filterHelpers[functionToCall]());
-        }
-        if (this.isRequested('sort_options')) {
-            helpers = __assign(__assign({}, helpers), this.sortOptionHelpers[functionToCall]());
-        }
-        if (this.isRequested('details')) {
-            helpers = __assign(__assign({}, helpers), this.productHelpers[functionToCall]());
+        var functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers');
+        var helpers = __assign(__assign(__assign(__assign(__assign(__assign({}, this.searchHelpers[functionToCall]()), this.filterHelpers[functionToCall]()), this.sortOptionHelpers[functionToCall]()), this.productHelpers[functionToCall]()), this.paginationHelpers[functionToCall]()), this.commonHelpers());
+        if (type === 'request') {
+            helpers = __assign(__assign({}, helpers), { setParams: function (params) {
+                    var requestState = _this.getRequestStateFromParams(params);
+                    if (Object.keys(requestState).length) {
+                        _this.requestState = requestState;
+                    }
+                    _this.requestOptions.params = _this.getParamsFromRequestState();
+                } });
         }
         return helpers;
     };
@@ -266,9 +270,6 @@ var Search = /** @class */ (function (_super) {
         }
         this.requestOptions.params = this.getParamsFromRequestState();
         return this.getHelpersToExpose('request');
-    };
-    Search.defaultRequestOptions = function () {
-        return __assign({}, constants_1.DEFAULT_REQUEST_OPTIONS);
     };
     return Search;
 }(apiConnector_1.default));

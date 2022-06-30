@@ -6,6 +6,7 @@ var getProducts = function () {
 var getTotalProductsCount = function () {
     return this.responseState.total;
 };
+// ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
     return {};
 };

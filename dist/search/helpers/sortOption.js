@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var applySortOption = function (sortOptionId) {
+var applySortOption = function (sort) {
     this.setRequestState(function (reqState) {
-        reqState.sort = sortOptionId;
+        reqState.sort = sort;
         reqState.page = 1;
         return reqState;
     });
@@ -18,6 +18,7 @@ var getSortOptionById = function (sortOptionId) {
     var sortOptions = this.sortOptionHelpers.getSortOptions();
     return sortOptions.find(function (sortOption) { return sortOption.id === sortOptionId; });
 };
+// ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
     var applySortOption = this.sortOptionHelpers.applySortOption;
     return {

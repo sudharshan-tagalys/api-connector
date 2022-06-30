@@ -29,7 +29,7 @@ var goToNextPage = function () {
         return reqState;
     });
 };
-var goToPrevPage = function () {
+var goToPreviousPage = function () {
     if (!this.paginationHelpers.hasPreviousPage()) {
         console.error("Min pages reached");
         return false;
@@ -45,6 +45,7 @@ var goToPage = function (page) {
         return reqState;
     });
 };
+// ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
     var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPrevPage = _a.goToPrevPage, goToPage = _a.goToPage;
     return {
@@ -64,7 +65,7 @@ var getResponseHelpers = function () {
 };
 exports.default = {
     goToNextPage: goToNextPage,
-    goToPrevPage: goToPrevPage,
+    goToPreviousPage: goToPreviousPage,
     getCurrentPage: getCurrentPage,
     getTotalPages: getTotalPages,
     hasNextPage: hasNextPage,

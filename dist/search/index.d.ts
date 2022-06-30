@@ -17,15 +17,22 @@ declare class Search extends APIConnector {
         cache: boolean;
     };
     responseState: {
+        query: string;
+        total_pages: any;
+        page: any;
+        total: any;
+        query_original: any;
+        query_mode: any;
+        products: any[];
         filters: any[];
         sort_options: any[];
-        page: any;
-        total_pages: any;
-        products: any[];
-        variables: any[];
-        banners: any[];
     };
     constructor();
+    static exporterName(): string;
+    static defaultRequestOptions(): {
+        onSuccess: (response: any) => void;
+        onFailure: (response: any) => void;
+    };
     bindThisToHelpers(helpers: object): {};
     setResponseState(responseState: any): void;
     setRequestState(mutationCallback: any): void;
@@ -33,7 +40,6 @@ declare class Search extends APIConnector {
         path: string;
         params: any;
     };
-    static exporterName(): string;
     extractAnalyticsData(response: any): {
         event_type: string;
         event_details: {
@@ -62,9 +68,9 @@ declare class Search extends APIConnector {
     getFilterParams(filters: object): {};
     getSortString(): string;
     isRequested(requestItem: any): boolean;
-    getEncodedQueryString(except: any): string;
+    getEncodedQueryString(except?: any[]): string;
     commonHelpers(): {
-        getEncodedQueryString: (except: any) => any;
+        getEncodedQueryString: (except?: any[]) => any;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getRequestState: () => {
@@ -79,22 +85,19 @@ declare class Search extends APIConnector {
             cache: boolean;
         };
         getResponseState: () => {
+            query: string;
+            total_pages: any;
+            page: any;
+            total: any;
+            query_original: any;
+            query_mode: any;
+            products: any[];
             filters: any[];
             sort_options: any[];
-            page: any;
-            total_pages: any;
-            products: any[];
-            variables: any[];
-            banners: any[];
         };
-        setParams: (params: any) => void;
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpersToExpose(type?: string): any;
     new(requestOptions: any): any;
-    static defaultRequestOptions(): {
-        onSuccess: (response: any) => void;
-        onFailure: (response: any) => void;
-    };
 }
 export default Search;

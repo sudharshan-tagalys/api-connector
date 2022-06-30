@@ -1,5 +1,4 @@
 "use strict";
-// ====== PUBLICLY EXPOSED HELPERS =======
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -42,25 +41,25 @@ var getAppliedFilters = function () {
     });
     return appliedFilterItems;
 };
-var applyFilter = function (filterId, filterType, filterItemsToApply) {
+var applyFilter = function (filterId, appliedFilter) {
+    var filter = this.filterHelpers.getFilterById(filterId);
     this.setRequestState(function (reqState) {
-        var filter = [];
-        if (filterType === "range") {
-            filter = filterItemsToApply;
+        var filterItems = [];
+        if (filter.type === "range") {
+            filterItems = appliedFilter;
         }
         else {
-            filter = (reqState.filters[filterId] || []);
-            if (Array.isArray(filterItemsToApply)) {
-                // filter out the exisiting items
-                filter = filter.concat(filterItemsToApply);
+            filterItems = (reqState.filters[filterId] || []);
+            if (Array.isArray(appliedFilter)) {
+                filterItems = filterItems.concat(appliedFilter);
             }
             else {
-                if (!filter.includes(filterItemsToApply)) {
-                    filter.push(filterItemsToApply);
+                if (!filterItems.includes(appliedFilter)) {
+                    filterItems.push(appliedFilter);
                 }
             }
         }
-        reqState.filters[filterId] = filter;
+        reqState.filters[filterId] = filterItems;
         reqState.page = 1;
         return reqState;
     });
@@ -79,13 +78,16 @@ var getAppliedFilterById = function (filterId) {
         return false;
     return appliedFilter;
 };
-var isFilterApplied = function (filterId) {
+var isFilterApplied = function (id) {
     var appliedFilters = this.filterHelpers.getAppliedFilters();
     var appliedFilter = appliedFilters.find(function (filter) {
         if (filter.type === 'range') {
-            return (filter.id === filterId);
+            return (filter.id === id);
         }
-        return (filter.filterId === filterId);
+        if (filter.filterId) {
+            return (filter.filterId === id);
+        }
+        return (filter.id === id);
     });
     if (appliedFilter)
         return true;
@@ -114,6 +116,44 @@ var clearFilter = function (filterId, filterItemIds) {
         return reqState;
     });
 };
+var clearAllFilters = function () {
+    this.setRequestState(function (reqState) {
+        reqState.filters = {};
+        reqState.page = 1;
+        return reqState;
+    });
+};
+// ==== UTILITY METHODS ====
+var flattenFilterItems = function (items) {
+    var _this = this;
+    var children = [];
+    var flattenItems = items.map(function (item) {
+        if (item.items && item.items.length) {
+            item.items = item.items.map(function (item) {
+                return __assign(__assign({}, item), { filterId: _this.filterHelpers.getFilterId(item.id) });
+            });
+            children = __spreadArray(__spreadArray([], children, true), item.items, true);
+        }
+        return item;
+    });
+    return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
+};
+var getPath = function (object, search) {
+    if (object.id === search)
+        return [object.id];
+    else if ((object.items) || Array.isArray(object)) {
+        var children = Array.isArray(object) ? object : object.items;
+        for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
+            var child = children_1[_i];
+            var result = getPath(child, search);
+            if (result) {
+                if (object.id)
+                    result.unshift(object.id);
+                return result;
+            }
+        }
+    }
+};
 var getChildFilterItemIds = function (filterItems, filterItemId) {
     var _this = this;
     var childFilterIds = [];
@@ -139,44 +179,7 @@ var getFilterId = function (filterItemId) {
     var parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterItemId);
     return parentFilterItemIds[0];
 };
-var clearAllFilters = function () {
-    this.setRequestState(function (reqState) {
-        reqState.filters = {};
-        reqState.page = 1;
-        return reqState;
-    });
-};
-// ==== UTILITY METHODS ====
-var flattenFilterItems = function (items) {
-    var _this = this;
-    var children = [];
-    var flattenItems = items.map(function (item) {
-        if (item.items && item.items.length) {
-            item.items = item.items.map(function (item) {
-                return __assign(__assign({}, item), { filterId: _this.filterHelpers.getFilterId(item.id) });
-            });
-            children = __spreadArray(__spreadArray([], children, true), item.items, true);
-        }
-        return item;
-    });
-    return flattenItems.concat(children.length ? this.filterHelpers.flattenFilterItems(children) : children);
-};
-function getPath(object, search) {
-    if (object.id === search)
-        return [object.id];
-    else if ((object.items) || Array.isArray(object)) {
-        var children = Array.isArray(object) ? object : object.items;
-        for (var _i = 0, children_1 = children; _i < children_1.length; _i++) {
-            var child = children_1[_i];
-            var result = getPath(child, search);
-            if (result) {
-                if (object.id)
-                    result.unshift(object.id);
-                return result;
-            }
-        }
-    }
-}
+// ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
     var _a = this.filterHelpers, getFilters = _a.getFilters, getAppliedFilters = _a.getAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied;
     return {

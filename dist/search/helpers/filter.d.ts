@@ -1,10 +1,10 @@
 declare const _default: {
     getFilters: () => any;
     getAppliedFilters: () => any;
-    applyFilter: (filterId: any, filterType: any, filterItemsToApply: any) => void;
+    applyFilter: (filterId: any, appliedFilter: any) => void;
     getFilterById: (filterId: any) => any;
     getAppliedFilterById: (filterId: any) => any;
-    isFilterApplied: (filterId: any) => boolean;
+    isFilterApplied: (id: any) => boolean;
     clearFilter: (filterId: any, filterItemIds?: any[]) => void;
     clearAllFilters: () => void;
     getRequestHelpers: () => {
