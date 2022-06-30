@@ -103,6 +103,7 @@ class Formatter {
   }
 
   search(response) {
+    if(response.error) return response
     const totalPages = Math.ceil(response.total / response.per_page)
     const formattedResponse = {
       query: response.query,

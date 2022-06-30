@@ -99,6 +99,8 @@ var Formatter = /** @class */ (function () {
         };
     };
     Formatter.prototype.search = function (response) {
+        if (response.error)
+            return response;
         var totalPages = Math.ceil(response.total / response.per_page);
         var formattedResponse = {
             query: response.query,
