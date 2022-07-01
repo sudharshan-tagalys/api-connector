@@ -6,6 +6,7 @@ import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
 import { DEFAULT_REQUEST_CALLBACKS } from "../shared/constants";
 import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
+import localStorage from "../lib/localStorage"
 
 const DEFAULT_REQUEST_STATE =  {
   query: "",

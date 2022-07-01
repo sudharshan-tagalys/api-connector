@@ -33,6 +33,7 @@ var pagination_1 = require("./helpers/pagination");
 var sortOption_1 = require("./helpers/sortOption");
 var product_1 = require("./helpers/product");
 var common_1 = require("../shared/helpers/common");
+var localStorage_1 = require("../lib/localStorage");
 var DEFAULT_REQUEST_STATE = {
     query: "",
     queryMode: "",
@@ -95,12 +96,12 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.addToRecentSearch = function () {
         var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
-        var recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] };
+        var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
         recentSearches.queries = recentSearches.queries.concat([{
                 displayString: requestParams.query,
                 queryString: (0, common_1.getEncodedQueryString)(requestParams)
             }]);
-        localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000);
+        localStorage_1.default.setValue("tagalysRecentSearches", recentSearches, 3600000);
     };
     Search.prototype.getRequestOptions = function () {
         return {
