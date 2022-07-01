@@ -43,10 +43,10 @@ declare class Search extends APIConnector {
             pl_details: {
                 q: any;
                 qm: any;
-                pl_products: any[];
-                pl_total: any;
             };
+            pl_products: any[];
             pl_page: any;
+            pl_total: any;
         };
     };
     formatResponse(response: any): any;

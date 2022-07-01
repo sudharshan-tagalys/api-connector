@@ -110,10 +110,10 @@ class Search extends APIConnector {
       pl_details: {
         q: response.query,
         qm: response.query_mode,
-        pl_products: [],
-        pl_total: response.total
       },
+      pl_products: [],
       pl_page: response.page,
+      pl_total: response.total
     }
     if(Object.keys(this.requestState.filters).length){
       eventDetails['pl_details']['f'] = this.getFilterParams(this.requestState.filters)
