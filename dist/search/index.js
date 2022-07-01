@@ -84,7 +84,7 @@ var Search = /** @class */ (function (_super) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
     Search.prototype.setRequestState = function (mutationCallback, callAPI) {
-        if (callAPI === void 0) { callAPI = false; }
+        if (callAPI === void 0) { callAPI = true; }
         var newRequestState = mutationCallback(this.requestState);
         this.requestState = newRequestState;
         if (this.requestOptions.onStateChange) {

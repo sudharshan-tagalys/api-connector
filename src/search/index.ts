@@ -74,7 +74,7 @@ class Search extends APIConnector {
     }
   }
 
-  setRequestState(mutationCallback, callAPI = false){
+  setRequestState(mutationCallback, callAPI = true){
     const newRequestState = mutationCallback(this.requestState);
     this.requestState = newRequestState;
     if(this.requestOptions.onStateChange){
