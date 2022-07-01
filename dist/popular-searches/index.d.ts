@@ -4,6 +4,7 @@ declare class PopularSearches extends APIConnector {
         path: string;
     };
     fetchPopularSearches(configuration: any): Promise<unknown>;
+    beforeAPICall(params: any): any;
     static exporterName(): string;
 }
 export default PopularSearches;

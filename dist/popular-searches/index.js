@@ -51,6 +51,10 @@ var PopularSearches = /** @class */ (function (_super) {
             }
         });
     };
+    PopularSearches.prototype.beforeAPICall = function (params) {
+        console.log(params);
+        return params;
+    };
     PopularSearches.exporterName = function () {
         return 'PopularSearches';
     };
