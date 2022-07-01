@@ -8,7 +8,7 @@ declare const _default: {
     goToPage: (page: any) => void;
     getRequestHelpers: () => {
         goToNextPage: any;
-        goToPrevPage: any;
+        goToPreviousPage: any;
         goToPage: any;
     };
     getResponseHelpers: () => {

@@ -47,10 +47,10 @@ var goToPage = function (page) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
-    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPrevPage = _a.goToPrevPage, goToPage = _a.goToPage;
+    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage;
     return {
         goToNextPage: goToNextPage,
-        goToPrevPage: goToPrevPage,
+        goToPreviousPage: goToPreviousPage,
         goToPage: goToPage
     };
 };

@@ -52,10 +52,10 @@ const goToPage = function (page) {
 // ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
-  const { goToNextPage, goToPrevPage, goToPage } = this.paginationHelpers
+  const { goToNextPage, goToPreviousPage, goToPage } = this.paginationHelpers
   return {
     goToNextPage,
-    goToPrevPage,
+    goToPreviousPage,
     goToPage
   }
 }
