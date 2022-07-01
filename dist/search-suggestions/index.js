@@ -90,7 +90,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
                 // move slice value to constant
                 resolve({
                     recentSearches: recentSearches.queries.slice(0, 5),
-                    popularSearches: popularSearches.queries
+                    popularSearches: popularSearches.queries.slice(0, 5)
                 });
             });
         });

@@ -1,5 +1,13 @@
 import * as qs from "qs";
 
+const DEFAULT_QUERY_STRING_CONFIGURATION = {
+  queryParameter: 'q',
+  queryFilterParameter: 'qf',
+  filterParameter: 'f',
+  pageParameter: 'page',
+  sortParameter: 'sort'
+}
+
 class QueryStringManager{
   private configuration;
 
@@ -11,14 +19,11 @@ class QueryStringManager{
     return qs.stringify(params, { encode: false })
   }
 
-  setConfiguration(configuration: any = {
-    queryParameter: 'q',
-    queryFilterParameter: 'qf',
-    filterParameter: 'f',
-    pageParameter: 'page',
-    sortParameter: 'sort'
-  }){
-    this.configuration = configuration;
+  setConfiguration(configuration: any = DEFAULT_QUERY_STRING_CONFIGURATION){
+    this.configuration = {
+      ...DEFAULT_QUERY_STRING_CONFIGURATION,
+      ...configuration
+    };
   }
 
   getConfiguration(){
