@@ -41,7 +41,8 @@ var getAppliedFilters = function () {
     });
     return appliedFilterItems;
 };
-var applyFilter = function (filterId, appliedFilter) {
+var setFilter = function (filterId, appliedFilter, callAPI) {
+    if (callAPI === void 0) { callAPI = false; }
     var filter = this.filterHelpers.getFilterById(filterId);
     this.setRequestState(function (reqState) {
         var filterItems = [];
@@ -62,7 +63,10 @@ var applyFilter = function (filterId, appliedFilter) {
         reqState.filters[filterId] = filterItems;
         reqState.page = 1;
         return reqState;
-    });
+    }, callAPI);
+};
+var applyFilter = function (filterId, appliedFilter) {
+    this.filterHelpers.setFilter(filterId, appliedFilter, true);
 };
 var getFilterById = function (filterId) {
     var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
@@ -191,9 +195,10 @@ var getResponseHelpers = function () {
     };
 };
 var getRequestHelpers = function () {
-    var _a = this.filterHelpers, applyFilter = _a.applyFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
+    var _a = this.filterHelpers, applyFilter = _a.applyFilter, setFilter = _a.setFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
     return {
         applyFilter: applyFilter,
+        setFilter: setFilter,
         clearFilter: clearFilter,
         clearAllFilters: clearAllFilters
     };
@@ -207,6 +212,7 @@ exports.default = {
     isFilterApplied: isFilterApplied,
     clearFilter: clearFilter,
     clearAllFilters: clearAllFilters,
+    setFilter: setFilter,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers,
     getParentFilterItemIds: getParentFilterItemIds,

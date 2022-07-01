@@ -7,8 +7,10 @@ declare const _default: {
     isFilterApplied: (id: any) => boolean;
     clearFilter: (filterId: any, filterItemIds?: any[]) => void;
     clearAllFilters: () => void;
+    setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
     getRequestHelpers: () => {
         applyFilter: any;
+        setFilter: any;
         clearFilter: any;
         clearAllFilters: any;
     };

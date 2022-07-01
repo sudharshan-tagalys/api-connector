@@ -83,14 +83,15 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.setResponseState = function (responseState) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
-    Search.prototype.setRequestState = function (mutationCallback) {
+    Search.prototype.setRequestState = function (mutationCallback, callAPI) {
+        if (callAPI === void 0) { callAPI = false; }
         var newRequestState = mutationCallback(this.requestState);
         this.requestState = newRequestState;
         if (this.requestOptions.onStateChange) {
             this.requestOptions.onStateChange(this.requestState);
         }
         this.setRequestParamsFromRequestState();
-        this.call(this.requestOptions);
+        callAPI && this.call(this.requestOptions);
     };
     Search.prototype.getRequestOptions = function () {
         return {

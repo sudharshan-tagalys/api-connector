@@ -8,7 +8,7 @@ var getURLEncodedQueryString = function (baseUrl, params) {
 exports.getURLEncodedQueryString = getURLEncodedQueryString;
 var getEncodedQueryString = function (_a) {
     var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilter, queryFilter = _c === void 0 ? {} : _c, _d = _a.filter, filter = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g;
-    var _h = queryStringManager_1.default.getConfiguration(), queryReplacement = _h.query, queryFilterReplacement = _h.queryFilter, filterReplacement = _h.filter, pageReplacement = _h.page, sortReplacement = _h.sort;
+    var _h = queryStringManager_1.default.getConfiguration(), queryReplacement = _h.queryParameter, queryFilterReplacement = _h.queryFilterParameter, filterReplacement = _h.filterParameter, pageReplacement = _h.pageParameter, sortReplacement = _h.sortParameter;
     var params = {};
     if (query.length) {
         params[queryReplacement] = query;
@@ -43,22 +43,22 @@ var getRequestParamsFromWindowLocation = function () {
 exports.getRequestParamsFromWindowLocation = getRequestParamsFromWindowLocation;
 var getRequestParamsFromQueryString = function (queryString) {
     var parsedObjectFromQueryString = queryStringManager_1.default.parse(queryString);
-    var _a = queryStringManager_1.default.getConfiguration(), query = _a.query, queryFilter = _a.queryFilter, filter = _a.filter, page = _a.page, sort = _a.sort;
+    var _a = queryStringManager_1.default.getConfiguration(), queryParameter = _a.queryParameter, queryFilterParameter = _a.queryFilterParameter, filterParameter = _a.filterParameter, pageParameter = _a.pageParameter, sortParameter = _a.sortParameter;
     var params = {};
-    if (parsedObjectFromQueryString[query]) {
-        params['query'] = parsedObjectFromQueryString[query];
+    if (parsedObjectFromQueryString[queryParameter]) {
+        params['query'] = parsedObjectFromQueryString[queryParameter];
     }
-    if (parsedObjectFromQueryString[queryFilter]) {
-        params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter]);
+    if (parsedObjectFromQueryString[queryFilterParameter]) {
+        params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter]);
     }
-    if (parsedObjectFromQueryString[filter]) {
-        params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter]);
+    if (parsedObjectFromQueryString[filterParameter]) {
+        params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter]);
     }
-    if (parsedObjectFromQueryString[page]) {
-        params['page'] = parseInt(parsedObjectFromQueryString[page].toString());
+    if (parsedObjectFromQueryString[pageParameter]) {
+        params['page'] = parseInt(parsedObjectFromQueryString[pageParameter].toString());
     }
-    if (parsedObjectFromQueryString[sort]) {
-        params['sort'] = parsedObjectFromQueryString[sort];
+    if (parsedObjectFromQueryString[sortParameter]) {
+        params['sort'] = parsedObjectFromQueryString[sortParameter];
     }
     return params;
 };

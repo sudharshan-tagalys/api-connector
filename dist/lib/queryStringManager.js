@@ -12,11 +12,11 @@ var QueryStringManager = /** @class */ (function () {
     };
     QueryStringManager.prototype.setConfiguration = function (configuration) {
         if (configuration === void 0) { configuration = {
-            query: 'q',
-            queryFilter: 'qf',
-            filter: 'f',
-            page: 'page',
-            sort: 'sort'
+            queryParameter: 'q',
+            queryFilterParameter: 'qf',
+            filterParameter: 'f',
+            pageParameter: 'page',
+            sortParameter: 'sort'
         }; }
         this.configuration = configuration;
     };
