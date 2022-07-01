@@ -83,7 +83,7 @@ class APIConnector{
       ...responseHelpers,
       ...analyticsHelpers
     });
-    if (configuration.canTrackAnalytics()) {
+    if (analyticsData && configuration.canTrackAnalytics()) {
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }
     if(!configuration.analyticsStorageConsentProvided()){

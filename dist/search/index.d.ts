@@ -36,16 +36,17 @@ declare class Search extends APIConnector {
         path: string;
         params: any;
     };
-    extractAnalyticsData(response: any): {
+    extractAnalyticsData(response: any): false | {
         event_type: string;
         event_details: {
             pl_type: string;
             pl_details: {
-                q: string;
-                qm: string;
-                f: {};
+                q: any;
+                qm: any;
+                pl_products: any[];
+                pl_total: any;
             };
-            pl_page: number;
+            pl_page: any;
         };
     };
     formatResponse(response: any): any;

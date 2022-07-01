@@ -16,7 +16,7 @@ const DEFAULT_REQUEST_STATE =  {
   request: ['details', 'filters', 'sort_options'],
   page: 1,
   perPage: 16,
-  sort: "trending"
+  sort: ""
 }
 
 const DEFAULT_RESPONSE_STATE = {
@@ -102,18 +102,24 @@ class Search extends APIConnector {
   }
 
   extractAnalyticsData(response) {
+    if(response.hasOwnProperty('error')){
+      return false
+    }
     let eventDetails = {
       pl_type: 'search',
       pl_details: {
-        q: this.requestState.query,
-        qm: this.requestState.queryMode,
-        f: this.requestState.filters
+        q: response.query,
+        qm: response.query_mode,
+        pl_products: [],
+        pl_total: response.total
       },
-      pl_page: this.requestState.page,
+      pl_page: response.page,
+    }
+    if(Object.keys(this.requestState.filters).length){
+      eventDetails['pl_details']['f'] = this.getFilterParams(this.requestState.filters)
     }
     if(response.details){
       eventDetails['pl_products'] = response["details"].map((product) => product.sku)
-      eventDetails['pl_total'] = response["details"].length
     }
     if(this.getSortString().length){
       eventDetails['pl_sort'] = this.getSortString()

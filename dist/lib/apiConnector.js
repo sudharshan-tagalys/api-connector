@@ -81,7 +81,7 @@ var APIConnector = /** @class */ (function () {
             getAnalyticsData: function () { return analyticsData; }
         };
         this.requestOptions.onSuccess(formattedResponse, __assign(__assign({}, responseHelpers), analyticsHelpers));
-        if (configuration_1.default.canTrackAnalytics()) {
+        if (analyticsData && configuration_1.default.canTrackAnalytics()) {
             analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
         }
         if (!configuration_1.default.analyticsStorageConsentProvided()) {
