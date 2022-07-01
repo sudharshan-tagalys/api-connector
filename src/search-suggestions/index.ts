@@ -2,8 +2,7 @@ import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
-import { getEncodedQueryString, getURLEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
-import queryStringManager from "../lib/queryStringManager"
+import { getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {

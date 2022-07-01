@@ -13,11 +13,11 @@ const getEncodedQueryString = ({
   except = []
  }) => {
   const {
-    query: queryReplacement,
-    queryFilter: queryFilterReplacement,
-    filter: filterReplacement,
-    page: pageReplacement,
-    sort: sortReplacement
+    queryParameter: queryReplacement,
+    queryFilterParameter: queryFilterReplacement,
+    filterParameter: filterReplacement,
+    pageParameter: pageReplacement,
+    sortParameter: sortReplacement
    } = queryStringManager.getConfiguration()
 
   let params: any = {}
@@ -55,22 +55,22 @@ const getRequestParamsFromWindowLocation = () => {
 
 const getRequestParamsFromQueryString = (queryString) => {
   const parsedObjectFromQueryString = queryStringManager.parse(queryString)
-  const { query, queryFilter, filter, page, sort } =  queryStringManager.getConfiguration()
+  const { queryParameter, queryFilterParameter, filterParameter, pageParameter, sortParameter } =  queryStringManager.getConfiguration()
   let params = {}
-  if(parsedObjectFromQueryString[query]){
-    params['query'] = parsedObjectFromQueryString[query]
+  if(parsedObjectFromQueryString[queryParameter]){
+    params['query'] = parsedObjectFromQueryString[queryParameter]
   }
-  if(parsedObjectFromQueryString[queryFilter]){
-    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilter])
+  if(parsedObjectFromQueryString[queryFilterParameter]){
+    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter])
   }
-  if(parsedObjectFromQueryString[filter]){
-    params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filter])
+  if(parsedObjectFromQueryString[filterParameter]){
+    params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter])
   }
-  if(parsedObjectFromQueryString[page]){
-    params['page'] = parseInt(parsedObjectFromQueryString[page].toString())
+  if(parsedObjectFromQueryString[pageParameter]){
+    params['page'] = parseInt(parsedObjectFromQueryString[pageParameter].toString())
   }
-  if(parsedObjectFromQueryString[sort]){
-    params['sort'] = parsedObjectFromQueryString[sort]
+  if(parsedObjectFromQueryString[sortParameter]){
+    params['sort'] = parsedObjectFromQueryString[sortParameter]
   }
   return params
 }

@@ -20,7 +20,7 @@ const getAppliedFilters = function(){
   return appliedFilterItems
 }
 
-const applyFilter = function(filterId, appliedFilter){
+const setFilter = function (filterId, appliedFilter, callAPI = false) {
   const filter = this.filterHelpers.getFilterById(filterId)
   this.setRequestState((reqState) => {
     let filterItems = []
@@ -39,7 +39,11 @@ const applyFilter = function(filterId, appliedFilter){
     reqState.filters[filterId] = filterItems;
     reqState.page = 1
     return reqState
-  })
+  }, callAPI)
+}
+
+const applyFilter = function(filterId, appliedFilter){
+  this.filterHelpers.setFilter(filterId, appliedFilter, true)
 }
 
 const getFilterById = function(filterId){
@@ -177,9 +181,10 @@ const getResponseHelpers = function(){
 }
 
 const getRequestHelpers = function(){
-  const { applyFilter, clearFilter, clearAllFilters } = this.filterHelpers
+  const { applyFilter, setFilter, clearFilter, clearAllFilters } = this.filterHelpers
   return {
     applyFilter,
+    setFilter,
     clearFilter,
     clearAllFilters
   }
@@ -194,6 +199,7 @@ export default {
   isFilterApplied,
   clearFilter,
   clearAllFilters,
+  setFilter,
   getRequestHelpers,
   getResponseHelpers,
   getParentFilterItemIds,

@@ -12,11 +12,11 @@ class QueryStringManager{
   }
 
   setConfiguration(configuration: any = {
-    query: 'q',
-    queryFilter: 'qf',
-    filter: 'f',
-    page: 'page',
-    sort: 'sort' 
+    queryParameter: 'q',
+    queryFilterParameter: 'qf',
+    filterParameter: 'f',
+    pageParameter: 'page',
+    sortParameter: 'sort'
   }){
     this.configuration = configuration;
   }

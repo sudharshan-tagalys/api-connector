@@ -142,14 +142,15 @@
       });
       const requstHelpers = search.helpers
       search.call()
-      // requstHelpers.applyFilter('"__categories"', 'checkbox', '50')
-      requstHelpers.goToNextPage()
-      requstHelpers.goToNextPage()
+      // requstHelpers.setFilter('"__categories"', '50')
+      // requstHelpers.goToNextPage()
+      // requstHelpers.goToNextPage()
       // requstHelpers.applyFilter('price', 'range', {
       //   selected_min: 14,
       //   selected_max: 150
       // })
       setTimeout(()=>{
+        search.call()
         // requstHelpers.clearFilter('price')
       }, 2000)
 
