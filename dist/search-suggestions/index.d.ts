@@ -20,6 +20,7 @@ declare class SearchSuggestions extends APIConnector {
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
+        getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     new(requestOptions: any): {
         setQuery: (query: any, callAPI?: boolean) => void;
@@ -28,6 +29,7 @@ declare class SearchSuggestions extends APIConnector {
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
+        getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     getPopularSearches(): Promise<unknown>;
     addRecentSearch(query: any): void;

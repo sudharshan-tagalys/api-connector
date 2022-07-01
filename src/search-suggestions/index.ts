@@ -2,7 +2,7 @@ import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
-import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
+import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, getURLEncodedQueryString } from '../shared/helpers/common'
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -40,7 +40,8 @@ class SearchSuggestions extends APIConnector {
       addRecentSearch: (query) => this.addRecentSearch(query),
       removeRecentSearch: (query) => this.removeRecentSearch(query),
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
-      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation()
+      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
+      getURLEncodedQueryString: (baseUrl, params) => getURLEncodedQueryString(baseUrl, params)
     }
   }
 

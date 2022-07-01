@@ -72,7 +72,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
             addRecentSearch: function (query) { return _this.addRecentSearch(query); },
             removeRecentSearch: function (query) { return _this.removeRecentSearch(query); },
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
-            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); }
+            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
+            getURLEncodedQueryString: function (baseUrl, params) { return (0, common_1.getURLEncodedQueryString)(baseUrl, params); }
         };
     };
     SearchSuggestions.prototype.new = function (requestOptions) {
