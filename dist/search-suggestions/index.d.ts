@@ -30,7 +30,7 @@ declare class SearchSuggestions extends APIConnector {
         getRequestParamsFromWindowLocation: () => {};
     };
     getPopularSearches(): Promise<unknown>;
-    addRecentSearch(displayString: string): void;
+    addRecentSearch(query: any): void;
     removeRecentSearch(displayString: string): void;
     static defaultRequestOptions(): {
         configuration: {

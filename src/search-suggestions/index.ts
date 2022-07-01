@@ -2,7 +2,7 @@ import APIConnector from "../lib/apiConnector"
 import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants"
 import localStorage from "../lib/localStorage"
 import PopularSearches from "../popular-searches"
-import { getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
+import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from '../shared/helpers/common'
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     return {
@@ -64,9 +64,9 @@ class SearchSuggestions extends APIConnector {
     })
   }
 
-  addRecentSearch(displayString: string) {
+  addRecentSearch(query) {
     const recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
-    recentSearches.queries = recentSearches.concat([displayString])
+    recentSearches.queries = recentSearches.concat([query])
     localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000)
   }
 

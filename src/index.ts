@@ -8,6 +8,7 @@ import AddedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
 import SearchSuggestions from "./search-suggestions"
 import Search from './search'
 import queryStringManager from "./lib/queryStringManager";
+import { getRequestParamsFromQueryString } from "./shared/helpers/common";
 
 export const APIConnector = {
   ...Search.export(),
@@ -21,7 +22,8 @@ export const APIConnector = {
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
-  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config)
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString)
 }
 
 window.addEventListener("load", () => {

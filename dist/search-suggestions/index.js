@@ -94,9 +94,9 @@ var SearchSuggestions = /** @class */ (function (_super) {
             });
         });
     };
-    SearchSuggestions.prototype.addRecentSearch = function (displayString) {
+    SearchSuggestions.prototype.addRecentSearch = function (query) {
         var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
-        recentSearches.queries = recentSearches.concat([displayString]);
+        recentSearches.queries = recentSearches.concat([query]);
         localStorage_1.default.setValue("tagalysRecentSearches", recentSearches, 3600000);
     };
     SearchSuggestions.prototype.removeRecentSearch = function (displayString) {

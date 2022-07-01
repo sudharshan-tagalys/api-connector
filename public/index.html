@@ -123,12 +123,12 @@
       // });
 
       Tagalys.APIConnector.setQueryStringConfiguration({
-        query: 'q',
-        filter: 'f',
-        queryFilter: 'qf',
-        page: 'p',
-        sort: 's',
-        queryMode: 'qm'
+        queryParameter: 'q',
+        filterParameter: 'f',
+        queryFilterParameter: 'qf',
+        pageParameter: 'p',
+        sortParameter: 's',
+        queryModeParameter: 'qm'
       })
       const search = Tagalys.APIConnector.Search.new({
         params: {
@@ -141,6 +141,9 @@
         },
       });
       const requstHelpers = search.helpers
+
+      var qs = Tagalys.APIConnector.getRequestParamsFromQueryString("q=shirt&f=sale_price-17-677&p=1&s=sale_price-desc")
+      console.log(qs)
       search.call()
       // requstHelpers.setFilter('"__categories"', '50')
       // requstHelpers.goToNextPage()
@@ -150,7 +153,6 @@
       //   selected_max: 150
       // })
       setTimeout(()=>{
-        search.call()
         // requstHelpers.clearFilter('price')
       }, 2000)
 
@@ -161,6 +163,8 @@
         requstHelpers.goToPrevPage()
       })
     });
+
+    
 
     function appendToBody(response, analyticsData = {}) {
       var productNames = []

@@ -242,7 +242,8 @@ class Search extends APIConnector {
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
-      getResponseState: () => this.responseState
+      getResponseState: () => this.responseState,
+      addToRecentSearch: () => this.addToRecentSearch()
     }
   }
 
@@ -258,7 +259,7 @@ class Search extends APIConnector {
       ...this.sortOptionHelpers[functionToCall](),
       ...this.productHelpers[functionToCall](),
       ...this.paginationHelpers[functionToCall](),
-      ...this.commonHelpers()
+      ...this.commonHelpers(),
     }
     if(type === 'request'){
       helpers = {

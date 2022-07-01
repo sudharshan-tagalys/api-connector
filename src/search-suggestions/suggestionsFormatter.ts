@@ -38,7 +38,7 @@ class SuggestionsFormatter {
           }
           formattedQuery.displayString = `${prefix} ${this.configuration.hierachySeperator} ${suffix}`
           formattedQuery.queryString = getEncodedQueryString({
-            query: formattedQuery.displayString, 
+            query: formattedQuery.displayString,
             queryFilter: qf
           })
         } else {

@@ -83,6 +83,15 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.setResponseState = function (responseState) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
+    Search.prototype.addToRecentSearch = function () {
+        var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
+        var recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] };
+        recentSearches.queries = recentSearches.concat([{
+                displayString: requestParams.query,
+                queryString: (0, common_1.getEncodedQueryString)(requestParams)
+            }]);
+        localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000);
+    };
     Search.prototype.setRequestState = function (mutationCallback, callAPI) {
         if (callAPI === void 0) { callAPI = true; }
         var newRequestState = mutationCallback(this.requestState);
@@ -240,7 +249,8 @@ var Search = /** @class */ (function (_super) {
             getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
-            getResponseState: function () { return _this.responseState; }
+            getResponseState: function () { return _this.responseState; },
+            addToRecentSearch: function () { return _this.addToRecentSearch(); }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {
