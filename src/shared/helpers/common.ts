@@ -35,7 +35,7 @@ const getEncodedQueryString = ({
   if(page){
     params[pageReplacement] = page
   }
-  if(sort.length){
+  if(sort && sort.length){
     params[sortReplacement] = sort
   }
   except.forEach((paramToDelete) => {
