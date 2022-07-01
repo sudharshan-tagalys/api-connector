@@ -42,8 +42,7 @@ var DEFAULT_REQUEST_STATE = {
     request: ['details', 'filters', 'sort_options'],
     page: 1,
     perPage: 16,
-    sort: "trending",
-    cache: true,
+    sort: "trending"
 };
 var DEFAULT_RESPONSE_STATE = {
     query: "",
@@ -157,16 +156,13 @@ var Search = /** @class */ (function (_super) {
         if (params.sort) {
             requestState['sort'] = params.sort;
         }
-        if (params.cache) {
-            requestState['cache'] = params.cache;
-        }
         return __assign(__assign({}, DEFAULT_REQUEST_STATE), requestState);
     };
     Search.prototype.getParamsFromRequestState = function () {
         return this.getRequestParams(this.requestState);
     };
     Search.prototype.getRequestParams = function (state) {
-        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters, filters = state.filters, cache = state.cache, request = state.request, page = state.page, perPage = state.perPage;
+        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters, filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
         var params = {};
         if (query) {
             params['q'] = query;
@@ -188,9 +184,6 @@ var Search = /** @class */ (function (_super) {
         }
         if (perPage) {
             params['per_page'] = perPage;
-        }
-        if (cache) {
-            params['cache'] = cache;
         }
         if (this.getSortString().length) {
             params['sort'] = this.getSortString();

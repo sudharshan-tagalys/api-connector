@@ -14,7 +14,6 @@ declare class Search extends APIConnector {
         page: number;
         perPage: number;
         sort: string;
-        cache: boolean;
     };
     responseState: {
         query: string;
@@ -59,7 +58,6 @@ declare class Search extends APIConnector {
         page: number;
         perPage: number;
         sort: string;
-        cache: boolean;
     };
     getParamsFromRequestState(): any;
     getRequestParams(state: any): any;
@@ -80,7 +78,6 @@ declare class Search extends APIConnector {
             page: number;
             perPage: number;
             sort: string;
-            cache: boolean;
         };
         getResponseState: () => {
             query: string;
