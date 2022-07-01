@@ -16,8 +16,7 @@ const DEFAULT_REQUEST_STATE =  {
   request: ['details', 'filters', 'sort_options'],
   page: 1,
   perPage: 16,
-  sort: "trending",
-  cache: true,
+  sort: "trending"
 }
 
 const DEFAULT_RESPONSE_STATE = {
@@ -152,9 +151,6 @@ class Search extends APIConnector {
     if(params.sort){
       requestState['sort'] = params.sort
     }
-    if(params.cache){
-      requestState['cache'] = params.cache
-    }
     return {
       ...DEFAULT_REQUEST_STATE,
       ...requestState
@@ -171,7 +167,6 @@ class Search extends APIConnector {
       queryMode,
       queryFilters,
       filters,
-      cache,
       request,
       page,
       perPage,
@@ -197,9 +192,6 @@ class Search extends APIConnector {
     }
     if(perPage){
       params['per_page'] = perPage
-    }
-    if(cache){
-      params['cache'] = cache
     }
     if(this.getSortString().length){
       params['sort'] = this.getSortString()
