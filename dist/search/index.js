@@ -96,7 +96,7 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.addToRecentSearch = function () {
         var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
         var recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] };
-        recentSearches.queries = recentSearches.concat([{
+        recentSearches.queries = recentSearches.queries.concat([{
                 displayString: requestParams.query,
                 queryString: (0, common_1.getEncodedQueryString)(requestParams)
             }]);

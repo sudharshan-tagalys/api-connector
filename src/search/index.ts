@@ -87,7 +87,7 @@ class Search extends APIConnector {
   addToRecentSearch() {
     const requestParams: any= getRequestParamsFromWindowLocation()
     const recentSearches: any = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
-    recentSearches.queries = recentSearches.concat([{
+    recentSearches.queries = recentSearches.queries.concat([{
       displayString: requestParams.query,
       queryString: getEncodedQueryString(requestParams)
     }])
