@@ -83,15 +83,6 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.setResponseState = function (responseState) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
-    Search.prototype.addToRecentSearch = function () {
-        var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
-        var recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] };
-        recentSearches.queries = recentSearches.concat([{
-                displayString: requestParams.query,
-                queryString: (0, common_1.getEncodedQueryString)(requestParams)
-            }]);
-        localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000);
-    };
     Search.prototype.setRequestState = function (mutationCallback, callAPI) {
         if (callAPI === void 0) { callAPI = true; }
         var newRequestState = mutationCallback(this.requestState);
@@ -101,6 +92,15 @@ var Search = /** @class */ (function (_super) {
         }
         this.setRequestParamsFromRequestState();
         callAPI && this.call(this.requestOptions);
+    };
+    Search.prototype.addToRecentSearch = function () {
+        var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
+        var recentSearches = localStorage.getItem("tagalysRecentSearches") || { queries: [] };
+        recentSearches.queries = recentSearches.concat([{
+                displayString: requestParams.query,
+                queryString: (0, common_1.getEncodedQueryString)(requestParams)
+            }]);
+        localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000);
     };
     Search.prototype.getRequestOptions = function () {
         return {
