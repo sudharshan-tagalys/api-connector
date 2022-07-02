@@ -137,8 +137,8 @@ class SearchSuggestions extends APIConnector {
     return {
       ...DEFAULT_REQUEST_CALLBACKS,
       configuration: {
-        categorySeperator: "▸",
-        hierachySeperator: "->",
+        categorySeparator: "▸",
+        hierarchySeparator: "->",
       },
     };
   }
