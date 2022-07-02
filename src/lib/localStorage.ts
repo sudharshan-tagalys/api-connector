@@ -16,7 +16,7 @@ class LocalStorage{
     window.localStorage.removeItem(key)
   }
   // accept 1-h/1-ms instead of raw ttl
-  setValue(key: string, value: string, ttl?: number) {
+  setValue(key: string, value: any, ttl?: number) {
     let valueToStore: any = {
       value: value,
     }

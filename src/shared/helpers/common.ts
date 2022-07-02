@@ -1,3 +1,4 @@
+import localStorage from '../../lib/localStorage';
 import queryStringManager from '../../lib/queryStringManager';
 
 const getURLEncodedQueryString = (baseUrl, params) => {
@@ -110,9 +111,60 @@ const getFiltersFromQueryString = (filterQueryString) => {
   return filters
 }
 
+const caseInsensitiveString = (string) => {
+  return string.toLowerCase().trim()
+}
+
+const getRecentSearches = () => {
+  const tagalysRecentSearches = localStorage.getItem('tagalysRecentSearches')
+  if (tagalysRecentSearches) {
+    tagalysRecentSearches.queries = tagalysRecentSearches.queries.filter((recentSearch)=>{
+      return (localStorage.getCurrentTime() >= recentSearch.expiry)
+    })
+    localStorage.setValue('tagalysRecentSearches', tagalysRecentSearches);
+    return tagalysRecentSearches
+  }
+  return {
+    queries: []
+  }
+}
+
+const addToRecentSearch = (queryString) => {
+  const requestParams: any= getRequestParamsFromQueryString(queryString)
+  removeRecentSearch(requestParams.query)
+  const recentSearches: any = getRecentSearches()
+  recentSearches.queries = recentSearches.queries.concat([{
+    displayString: requestParams.query,
+    queryString: getEncodedQueryString(requestParams),
+    expiry: (localStorage.getCurrentTime() + 3600000)
+  }])
+  localStorage.setValue("tagalysRecentSearches", recentSearches)
+}
+
+const removeRecentSearch = (displayString: string) => {
+  const recentSearches = getRecentSearches()
+  recentSearches.queries = recentSearches.queries.filter(recentSearch => caseInsensitiveString(recentSearch.displayString) !== caseInsensitiveString(displayString))
+  localStorage.setValue("tagalysRecentSearches", recentSearches)
+}
+
+const formatSearchItem = (searchItem) => {
+  let item = {
+    displayString: searchItem.displayString,
+    queryString: searchItem.displayString,
+  }
+  if(searchItem.hasOwnProperty('rawQuery')){
+    item['rawQuery'] = searchItem.rawQuery
+  }
+  return item
+}
+
 export {
   getURLEncodedQueryString,
   getEncodedQueryString,
   getRequestParamsFromQueryString,
-  getRequestParamsFromWindowLocation
+  getRequestParamsFromWindowLocation,
+  addToRecentSearch,
+  removeRecentSearch,
+  caseInsensitiveString,
+  formatSearchItem
 }

@@ -4,9 +4,7 @@ import SearchHelpers from './helpers/search';
 import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
-import { DEFAULT_REQUEST_CALLBACKS } from "../shared/constants";
-import { getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
-import localStorage from "../lib/localStorage"
+import { addToRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_STATE =  {
   query: "",
@@ -82,16 +80,6 @@ class Search extends APIConnector {
     }
     this.setRequestParamsFromRequestState()
     callAPI && this.call(this.requestOptions)
-  }
-
-  addToRecentSearch() {
-    const requestParams: any= getRequestParamsFromWindowLocation()
-    const recentSearches: any = localStorage.getItem("tagalysRecentSearches") || { queries: [] }
-    recentSearches.queries = recentSearches.queries.concat([{
-      displayString: requestParams.query,
-      queryString: getEncodedQueryString(requestParams)
-    }])
-    localStorage.setValue("tagalysRecentSearches", recentSearches, 3600000)
   }
 
   getRequestOptions() {
@@ -252,7 +240,7 @@ class Search extends APIConnector {
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
       getResponseState: () => this.responseState,
-      addToRecentSearch: () => this.addToRecentSearch()
+      addToRecentSearch: (queryString) => addToRecentSearch(queryString)
     }
   }
 
