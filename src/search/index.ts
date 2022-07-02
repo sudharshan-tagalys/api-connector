@@ -93,6 +93,9 @@ class Search extends APIConnector {
     if(response.hasOwnProperty('error')){
       return false
     }
+    if(response.hasOwnProperty('redirect_to_url')){
+      return false
+    }
     let eventDetails = {
       pl_type: 'search',
       pl_details: {

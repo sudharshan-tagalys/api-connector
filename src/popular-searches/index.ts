@@ -8,6 +8,10 @@ class PopularSearches extends APIConnector {
     }
   }
 
+  extractAnalyticsData(response) {
+    return false
+  }
+
   // rename to fetch
   // configuration to requestOptions
   fetchPopularSearches(configuration) {

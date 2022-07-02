@@ -33,7 +33,7 @@ class SearchSuggestions extends APIConnector {
   }
 
   extractAnalyticsData(response) {
-    return response;
+    return false;
   }
 
   formatResponse(response: any) {
