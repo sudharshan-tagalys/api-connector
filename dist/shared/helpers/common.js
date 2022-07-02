@@ -129,8 +129,7 @@ var getRecentSearches = function () {
         queries: []
     };
 };
-var addToRecentSearch = function (queryString) {
-    var requestParams = getRequestParamsFromQueryString(queryString);
+var addToRecentSearch = function (requestParams) {
     removeRecentSearch(requestParams.query);
     var recentSearches = getRecentSearches();
     recentSearches.queries = recentSearches.queries.concat([{

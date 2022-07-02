@@ -140,8 +140,7 @@ const getRecentSearches = () => {
   }
 }
 
-const addToRecentSearch = (queryString) => {
-  const requestParams: any= getRequestParamsFromQueryString(queryString)
+const addToRecentSearch = (requestParams) => {
   removeRecentSearch(requestParams.query)
   const recentSearches: any = getRecentSearches()
   recentSearches.queries = recentSearches.queries.concat([{
