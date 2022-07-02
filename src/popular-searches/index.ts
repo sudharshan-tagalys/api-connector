@@ -36,7 +36,6 @@ class PopularSearches extends APIConnector {
   }
 
   beforeAPICall(params){
-    console.log(params)
     return params
   }
 
