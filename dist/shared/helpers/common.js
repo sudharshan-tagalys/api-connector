@@ -107,7 +107,7 @@ var getRecentSearches = function () {
     var tagalysRecentSearches = localStorage_1.default.getItem('tagalysRecentSearches');
     if (tagalysRecentSearches) {
         tagalysRecentSearches.queries = tagalysRecentSearches.queries.filter(function (recentSearch) {
-            return (localStorage_1.default.getCurrentTime() >= recentSearch.expiry);
+            return (localStorage_1.default.getCurrentTime() <= recentSearch.expiry);
         });
         localStorage_1.default.setValue('tagalysRecentSearches', tagalysRecentSearches);
         return tagalysRecentSearches;

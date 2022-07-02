@@ -119,7 +119,7 @@ const getRecentSearches = () => {
   const tagalysRecentSearches = localStorage.getItem('tagalysRecentSearches')
   if (tagalysRecentSearches) {
     tagalysRecentSearches.queries = tagalysRecentSearches.queries.filter((recentSearch)=>{
-      return (localStorage.getCurrentTime() >= recentSearch.expiry)
+      return (localStorage.getCurrentTime() <= recentSearch.expiry)
     })
     localStorage.setValue('tagalysRecentSearches', tagalysRecentSearches);
     return tagalysRecentSearches
