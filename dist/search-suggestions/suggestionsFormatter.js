@@ -37,16 +37,16 @@ var SuggestionsFormatter = /** @class */ (function () {
             if (Array.isArray(queryObj.query)) {
                 if (queryObj.hasOwnProperty('in')) {
                     var prefix = queryObj.query[0];
-                    var suffix = queryObj.in.hierarchy.map(function (item) { return item.name; }).join(" ".concat(_this.configuration.hierachySeperator, " "));
+                    var suffix = queryObj.in.hierarchy.map(function (item) { return item.name; }).join(" ".concat(_this.configuration.hierarchySeparator, " "));
                     var qf = __assign(__assign({}, queryObj.filter), (_a = {}, _a["".concat(queryObj.in.tag_set.id)] = queryObj.in.hierarchy.map(function (item) { return item.id; }), _a));
-                    formattedQuery.displayString = "".concat(prefix, " ").concat(_this.configuration.hierachySeperator, " ").concat(suffix);
+                    formattedQuery.displayString = "".concat(prefix, " ").concat(_this.configuration.hierarchySeparator, " ").concat(suffix);
                     formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
                         query: formattedQuery.displayString,
                         queryFilters: qf
                     });
                 }
                 else {
-                    formattedQuery.displayString = queryObj.query.join(" ".concat(_this.configuration.categorySeperator, " "));
+                    formattedQuery.displayString = queryObj.query.join(" ".concat(_this.configuration.categorySeparator, " "));
                     formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
                         query: formattedQuery.displayString,
                         queryFilters: queryObj.filter

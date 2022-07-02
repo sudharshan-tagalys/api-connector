@@ -1,6 +1,6 @@
 interface Configuration {
-    categorySeperator: string;
-    hierachySeperator: string;
+    categorySeparator: string;
+    hierarchySeparator: string;
 }
 declare class SuggestionsFormatter {
     private configuration;
