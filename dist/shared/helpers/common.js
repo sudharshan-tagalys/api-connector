@@ -149,7 +149,7 @@ exports.removeRecentSearch = removeRecentSearch;
 var formatSearchItem = function (searchItem) {
     var item = {
         displayString: searchItem.displayString,
-        queryString: searchItem.displayString,
+        queryString: searchItem.queryString,
     };
     if (searchItem.hasOwnProperty('rawQuery')) {
         item['rawQuery'] = searchItem.rawQuery;

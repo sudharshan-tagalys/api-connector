@@ -160,7 +160,7 @@ const removeRecentSearch = (displayString: string) => {
 const formatSearchItem = (searchItem) => {
   let item = {
     displayString: searchItem.displayString,
-    queryString: searchItem.displayString,
+    queryString: searchItem.queryString,
   }
   if(searchItem.hasOwnProperty('rawQuery')){
     item['rawQuery'] = searchItem.rawQuery
