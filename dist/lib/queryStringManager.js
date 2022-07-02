@@ -21,6 +21,7 @@ var DEFAULT_QUERY_STRING_CONFIGURATION = {
 };
 var QueryStringManager = /** @class */ (function () {
     function QueryStringManager() {
+        this.configuration = DEFAULT_QUERY_STRING_CONFIGURATION;
     }
     QueryStringManager.prototype.parse = function (params) {
         return qs.parse(params);
@@ -29,7 +30,6 @@ var QueryStringManager = /** @class */ (function () {
         return qs.stringify(params, { encode: false });
     };
     QueryStringManager.prototype.setConfiguration = function (configuration) {
-        if (configuration === void 0) { configuration = DEFAULT_QUERY_STRING_CONFIGURATION; }
         this.configuration = __assign(__assign({}, DEFAULT_QUERY_STRING_CONFIGURATION), configuration);
     };
     QueryStringManager.prototype.getConfiguration = function () {

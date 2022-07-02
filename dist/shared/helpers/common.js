@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.addToRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.sortRecentSeaches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.addToRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
@@ -103,6 +103,19 @@ var caseInsensitiveString = function (string) {
     return string.toLowerCase().trim();
 };
 exports.caseInsensitiveString = caseInsensitiveString;
+var sortRecentSeaches = function (arr) {
+    arr.sort(function (a, b) {
+        var keyA = new Date(a.expiry), keyB = new Date(b.expiry);
+        // Compare the 2 dates
+        if (keyA < keyB)
+            return 1;
+        if (keyA > keyB)
+            return -1;
+        return 0;
+    });
+    return arr;
+};
+exports.sortRecentSeaches = sortRecentSeaches;
 var getRecentSearches = function () {
     var tagalysRecentSearches = localStorage_1.default.getItem('tagalysRecentSearches');
     if (tagalysRecentSearches) {

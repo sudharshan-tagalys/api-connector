@@ -108,7 +108,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
         var popularSearchesToDisplay = popularSearchesWithoutCommonSearches.map(function (searchItem) {
             return __assign(__assign({}, searchItem), { type: "popular" });
         });
-        return recentSearchesToDisplay
+        return (0, common_1.sortRecentSeaches)(recentSearchesToDisplay)
             .concat(popularSearchesToDisplay)
             .slice(0, MAX_SEARCHES_TO_DISPLAY);
     };
