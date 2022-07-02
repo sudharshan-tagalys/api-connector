@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.addToRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
     return "".concat(baseUrl).concat(getEncodedQueryString(params));
@@ -98,4 +99,50 @@ var getFiltersFromQueryString = function (filterQueryString) {
     });
     return filters;
 };
+var caseInsensitiveString = function (string) {
+    return string.toLowerCase().trim();
+};
+exports.caseInsensitiveString = caseInsensitiveString;
+var getRecentSearches = function () {
+    var tagalysRecentSearches = localStorage_1.default.getItem('tagalysRecentSearches');
+    if (tagalysRecentSearches) {
+        tagalysRecentSearches.queries = tagalysRecentSearches.queries.filter(function (recentSearch) {
+            return (localStorage_1.default.getCurrentTime() >= recentSearch.expiry);
+        });
+        localStorage_1.default.setValue('tagalysRecentSearches', tagalysRecentSearches);
+        return tagalysRecentSearches;
+    }
+    return {
+        queries: []
+    };
+};
+var addToRecentSearch = function (queryString) {
+    var requestParams = getRequestParamsFromQueryString(queryString);
+    removeRecentSearch(requestParams.query);
+    var recentSearches = getRecentSearches();
+    recentSearches.queries = recentSearches.queries.concat([{
+            displayString: requestParams.query,
+            queryString: getEncodedQueryString(requestParams),
+            expiry: (localStorage_1.default.getCurrentTime() + 3600000)
+        }]);
+    localStorage_1.default.setValue("tagalysRecentSearches", recentSearches);
+};
+exports.addToRecentSearch = addToRecentSearch;
+var removeRecentSearch = function (displayString) {
+    var recentSearches = getRecentSearches();
+    recentSearches.queries = recentSearches.queries.filter(function (recentSearch) { return caseInsensitiveString(recentSearch.displayString) !== caseInsensitiveString(displayString); });
+    localStorage_1.default.setValue("tagalysRecentSearches", recentSearches);
+};
+exports.removeRecentSearch = removeRecentSearch;
+var formatSearchItem = function (searchItem) {
+    var item = {
+        displayString: searchItem.displayString,
+        queryString: searchItem.displayString,
+    };
+    if (searchItem.hasOwnProperty('rawQuery')) {
+        item['rawQuery'] = searchItem.rawQuery;
+    }
+    return item;
+};
+exports.formatSearchItem = formatSearchItem;
 //# sourceMappingURL=common.js.map

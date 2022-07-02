@@ -31,7 +31,6 @@ declare class Search extends APIConnector {
     bindThisToHelpers(helpers: object): {};
     setResponseState(responseState: any): void;
     setRequestState(mutationCallback: any, callAPI?: boolean): void;
-    addToRecentSearch(): void;
     getRequestOptions(): {
         path: string;
         params: any;
@@ -91,7 +90,7 @@ declare class Search extends APIConnector {
             filters: any[];
             sort_options: any[];
         };
-        addToRecentSearch: () => void;
+        addToRecentSearch: (queryString: any) => void;
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpersToExpose(type?: string): any;

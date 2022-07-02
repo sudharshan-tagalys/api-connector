@@ -27,6 +27,9 @@ var PopularSearches = /** @class */ (function (_super) {
             path: "popular_searches"
         };
     };
+    PopularSearches.prototype.extractAnalyticsData = function (response) {
+        return false;
+    };
     // rename to fetch
     // configuration to requestOptions
     PopularSearches.prototype.fetchPopularSearches = function (configuration) {
@@ -52,7 +55,6 @@ var PopularSearches = /** @class */ (function (_super) {
         });
     };
     PopularSearches.prototype.beforeAPICall = function (params) {
-        console.log(params);
         return params;
     };
     PopularSearches.exporterName = function () {

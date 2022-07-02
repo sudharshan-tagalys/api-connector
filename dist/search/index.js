@@ -33,7 +33,6 @@ var pagination_1 = require("./helpers/pagination");
 var sortOption_1 = require("./helpers/sortOption");
 var product_1 = require("./helpers/product");
 var common_1 = require("../shared/helpers/common");
-var localStorage_1 = require("../lib/localStorage");
 var DEFAULT_REQUEST_STATE = {
     query: "",
     queryMode: "",
@@ -93,15 +92,6 @@ var Search = /** @class */ (function (_super) {
         this.setRequestParamsFromRequestState();
         callAPI && this.call(this.requestOptions);
     };
-    Search.prototype.addToRecentSearch = function () {
-        var requestParams = (0, common_1.getRequestParamsFromWindowLocation)();
-        var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || { queries: [] };
-        recentSearches.queries = recentSearches.queries.concat([{
-                displayString: requestParams.query,
-                queryString: (0, common_1.getEncodedQueryString)(requestParams)
-            }]);
-        localStorage_1.default.setValue("tagalysRecentSearches", recentSearches, 3600000);
-    };
     Search.prototype.getRequestOptions = function () {
         return {
             path: 'search',
@@ -110,6 +100,9 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.extractAnalyticsData = function (response) {
         if (response.hasOwnProperty('error')) {
+            return false;
+        }
+        if (response.hasOwnProperty('redirect_to_url')) {
             return false;
         }
         var eventDetails = {
@@ -250,7 +243,7 @@ var Search = /** @class */ (function (_super) {
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
             getResponseState: function () { return _this.responseState; },
-            addToRecentSearch: function () { return _this.addToRecentSearch(); }
+            addToRecentSearch: function (queryString) { return (0, common_1.addToRecentSearch)(queryString); }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {

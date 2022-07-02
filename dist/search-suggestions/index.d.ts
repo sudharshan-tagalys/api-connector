@@ -10,13 +10,13 @@ declare class SearchSuggestions extends APIConnector {
         };
     };
     static exporterName(): string;
-    extractAnalyticsData(response: any): any;
+    extractAnalyticsData(response: any): boolean;
     formatResponse(response: any): any;
     setQuery(query: any, callAPI?: boolean): void;
     getHelpersToExpose(): {
         setQuery: (query: any, callAPI?: boolean) => void;
         getPopularSearches: () => Promise<unknown>;
-        addRecentSearch: (query: any) => void;
+        addToRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
@@ -25,15 +25,14 @@ declare class SearchSuggestions extends APIConnector {
     new(requestOptions: any): {
         setQuery: (query: any, callAPI?: boolean) => void;
         getPopularSearches: () => Promise<unknown>;
-        addRecentSearch: (query: any) => void;
+        addToRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
+    getSearchesToDisplay(recentSearches: any, popularSearches: any): any;
     getPopularSearches(): Promise<unknown>;
-    addRecentSearch(query: any): void;
-    removeRecentSearch(displayString: string): void;
     static defaultRequestOptions(): {
         configuration: {
             queryString: {
