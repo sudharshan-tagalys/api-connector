@@ -35,10 +35,6 @@ declare class SearchSuggestions extends APIConnector {
     getPopularSearches(): Promise<unknown>;
     static defaultRequestOptions(): {
         configuration: {
-            queryString: {
-                query: string;
-                queryFilter: string;
-            };
             categorySeperator: string;
             hierachySeperator: string;
         };

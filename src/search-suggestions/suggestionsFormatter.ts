@@ -39,13 +39,13 @@ class SuggestionsFormatter {
           formattedQuery.displayString = `${prefix} ${this.configuration.hierachySeperator} ${suffix}`
           formattedQuery.queryString = getEncodedQueryString({
             query: formattedQuery.displayString,
-            queryFilter: qf
+            queryFilters: qf
           })
         } else {
           formattedQuery.displayString = queryObj.query.join(` ${this.configuration.categorySeperator} `)
           formattedQuery.queryString = getEncodedQueryString({
             query: formattedQuery.displayString,
-            queryFilter: queryObj.filter
+            queryFilters: queryObj.filter
           })
         }
       }

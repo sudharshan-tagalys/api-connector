@@ -231,8 +231,8 @@ class Search extends APIConnector {
   getEncodedQueryString(except = []){
     return getEncodedQueryString({
       query: this.requestState.query,
-      queryFilter: this.requestState.queryFilters,
-      filter: this.requestState.filters,
+      queryFilters: this.requestState.queryFilters,
+      filters: this.requestState.filters,
       page: this.requestState.page,
       sort: this.requestState.sort,
       except: except

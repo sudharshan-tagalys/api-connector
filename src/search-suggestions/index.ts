@@ -137,10 +137,6 @@ class SearchSuggestions extends APIConnector {
     return {
       ...DEFAULT_REQUEST_CALLBACKS,
       configuration: {
-        queryString: {
-          query: "q",
-          queryFilter: "qf",
-        },
         categorySeperator: "▸",
         hierachySeperator: "->",
       },

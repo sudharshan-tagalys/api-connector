@@ -1,7 +1,7 @@
 declare const getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-declare const getEncodedQueryString: ({ query, queryFilter, filter, page, sort, except }: {
+declare const getEncodedQueryString: ({ query, queryFilters, filter, page, sort, except }: {
     query?: string;
-    queryFilter?: {};
+    queryFilters?: {};
     filter?: {};
     page?: any;
     sort?: any;

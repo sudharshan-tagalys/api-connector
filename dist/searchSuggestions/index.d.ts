@@ -26,7 +26,7 @@ declare class SearchSuggestions extends APIConnector {
         configuration: {
             queryString: {
                 query: string;
-                queryFilter: string;
+                queryFilters: string;
             };
             categorySeperator: string;
             hierachySeperator: string;

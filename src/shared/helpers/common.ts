@@ -7,8 +7,8 @@ const getURLEncodedQueryString = (baseUrl, params) => {
 
 const getEncodedQueryString = ({
   query = '',
-  queryFilter = {},
-  filter = {},
+  queryFilters = {},
+  filters = {},
   page = null,
   sort = null,
   except = []
@@ -25,13 +25,13 @@ const getEncodedQueryString = ({
   if(query.length){
     params[queryReplacement] = query
   }
-  const hasQueryFilters = (Object.keys(queryFilter).length !== 0)
-  const hasFilters = (Object.keys(filter).length !== 0)
+  const hasQueryFilters = (Object.keys(queryFilters).length !== 0)
+  const hasFilters = (Object.keys(filters).length !== 0)
   if (hasQueryFilters) {
-    params[queryFilterReplacement] = getFilterQueryString(queryFilter)
+    params[queryFilterReplacement] = getFilterQueryString(queryFilters)
   }
   if(hasFilters){
-    params[filterReplacement] = getFilterQueryString(filter)
+    params[filterReplacement] = getFilterQueryString(filters)
   }
   if(page){
     params[pageReplacement] = page
@@ -62,7 +62,7 @@ const getRequestParamsFromQueryString = (queryString) => {
     params['query'] = parsedObjectFromQueryString[queryParameter]
   }
   if(parsedObjectFromQueryString[queryFilterParameter]){
-    params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter])
+    params['queryFilters'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter])
   }
   if(parsedObjectFromQueryString[filterParameter]){
     params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter])
@@ -76,13 +76,13 @@ const getRequestParamsFromQueryString = (queryString) => {
   return params
 }
 
-const getFilterQueryString = (filter) => {
+const getFilterQueryString = (filters) => {
   let filtersQueryStrings = []
-  Object.keys(filter).forEach(function(key){
-    if(Array.isArray(filter[key]) && filter[key].length){
-      filtersQueryStrings.push(`${key}-${filter[key].join(',')}`)
+  Object.keys(filters).forEach(function(key){
+    if(Array.isArray(filters[key]) && filters[key].length){
+      filtersQueryStrings.push(`${key}-${filters[key].join(',')}`)
     }else{
-      filtersQueryStrings.push(`${key}-${filter[key].selected_min}-${filter[key].selected_max}`)
+      filtersQueryStrings.push(`${key}-${filters[key].selected_min}-${filters[key].selected_max}`)
     }
   })
   return filtersQueryStrings.join('~');
