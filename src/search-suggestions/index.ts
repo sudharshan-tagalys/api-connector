@@ -23,6 +23,7 @@ class SearchSuggestions extends APIConnector {
       format: REQUEST_FORMAT.JSON,
       params: {
         q: this.requestOptions.params.query,
+        ...SearchSuggestions.defaultRequestOptions().params.request,
         products: this.requestOptions.params.request.products,
         queries: this.requestOptions.params.request.queries,
       },
@@ -44,15 +45,20 @@ class SearchSuggestions extends APIConnector {
     );
   }
 
-  setQuery(query, callAPI = true) {
+  updateQuery(query) {
     this.requestOptions.params.query = query;
-    callAPI && this.call(this.requestOptions);
+    this.call(this.requestOptions);
+  }
+
+  setQuery(query) {
+    this.requestOptions.params.query = query
   }
 
   getHelpersToExpose() {
     return {
-      setQuery: (query, callAPI = true) => this.setQuery(query, callAPI),
-      getPopularSearches: () => this.getPopularSearches(),
+      updateQuery: (query) => this.updateQuery(query),
+      setQuery: (query) => this.setQuery(query),
+      getPopularSearches: (callbackOptions = { }) => this.getPopularSearches(callbackOptions),
       addToRecentSearch: (query) => addToRecentSearch(query),
       removeRecentSearch: (query) => removeRecentSearch(query),
       getRequestParamsFromQueryString: (queryString) =>
@@ -108,14 +114,14 @@ class SearchSuggestions extends APIConnector {
       .slice(0, MAX_SEARCHES_TO_DISPLAY);
   }
 
-  getPopularSearches() {
+  getPopularSearches(callbackOptions: any = {}) {
     return new Promise((resolve, reject) => {
       const recentSearches = localStorage.getItem("tagalysRecentSearches") || {
         queries: [],
       };
       const popularSearches = new PopularSearches();
       popularSearches
-        .fetchPopularSearches(this.requestOptions.configuration)
+        .fetchPopularSearches(this.requestOptions.configuration, callbackOptions)
         .then((popularSearches: any) => {
           const searchesToDisplay = this.getSearchesToDisplay(
             recentSearches.queries,
@@ -136,6 +142,12 @@ class SearchSuggestions extends APIConnector {
   static defaultRequestOptions() {
     return {
       ...DEFAULT_REQUEST_CALLBACKS,
+      params: {
+        request: {
+          products: 10,
+          queries: 10,
+        },
+      },
       configuration: {
         categorySeparator: "▸",
         hierarchySeparator: "->",

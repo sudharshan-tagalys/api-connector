@@ -22,7 +22,7 @@ export const APIConnector = {
     ...DEFAULT_CONFIGURATION,
     ...config
   }),
-  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString)
 }
 

@@ -136,14 +136,17 @@ class APIConnector{
             ...requestOptions
           })
         },
-        new: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
+        new: (requestOptions = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
           const instance = new this()
           const helpers = instance.new({
             ...defaultRequestOptions,
             ...requestOptions
           })
           return {
-            helpers,
+            helpers: {
+              ...helpers,
+              call: () => instance.call(instance.requestOptions)
+            },
             call: (requestOptions) => instance.call(requestOptions)
           }
         }

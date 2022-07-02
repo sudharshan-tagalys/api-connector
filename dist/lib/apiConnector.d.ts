@@ -26,7 +26,7 @@ declare class APIConnector {
                 beforeAPICall: (params: any) => any;
                 onFailure: (response: any) => void;
             }) => void;
-            new: (requestOptions: any, defaultRequestOptions?: {
+            new: (requestOptions?: {}, defaultRequestOptions?: {
                 onSuccess: (response: any) => void;
                 beforeAPICall: (params: any) => any;
                 onFailure: (response: any) => void;

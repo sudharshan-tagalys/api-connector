@@ -4,18 +4,20 @@ declare class SearchSuggestions extends APIConnector {
         path: string;
         format: string;
         params: {
-            q: any;
             products: any;
             queries: any;
+            q: any;
         };
     };
     static exporterName(): string;
     extractAnalyticsData(response: any): boolean;
     formatResponse(response: any): any;
-    setQuery(query: any, callAPI?: boolean): void;
+    updateQuery(query: any): void;
+    setQuery(query: any): void;
     getHelpersToExpose(): {
-        setQuery: (query: any, callAPI?: boolean) => void;
-        getPopularSearches: () => Promise<unknown>;
+        updateQuery: (query: any) => void;
+        setQuery: (query: any) => void;
+        getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
         addToRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
@@ -23,8 +25,9 @@ declare class SearchSuggestions extends APIConnector {
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     new(requestOptions: any): {
-        setQuery: (query: any, callAPI?: boolean) => void;
-        getPopularSearches: () => Promise<unknown>;
+        updateQuery: (query: any) => void;
+        setQuery: (query: any) => void;
+        getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
         addToRecentSearch: (query: any) => void;
         removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
@@ -32,8 +35,14 @@ declare class SearchSuggestions extends APIConnector {
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     getSearchesToDisplay(recentSearches: any, popularSearches: any): any;
-    getPopularSearches(): Promise<unknown>;
+    getPopularSearches(callbackOptions?: any): Promise<unknown>;
     static defaultRequestOptions(): {
+        params: {
+            request: {
+                products: number;
+                queries: number;
+            };
+        };
         configuration: {
             categorySeparator: string;
             hierarchySeparator: string;

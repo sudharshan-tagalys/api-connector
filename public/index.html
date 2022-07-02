@@ -27,24 +27,15 @@
         analyticsStorageConsentProvided: function () {
           return true;
         },
-      });
-
-      var s = Tagalys.APIConnector.Search.new({
-        params: {
-          query: 'dress',
-          filters: { "__categories": ["3"] },
-          sort: "last_received-desc"
+      })
+      var searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+        onSuccess: function(response, helpers){
         }
       })
-      s.call()
-
-      var ss = Tagalys.APIConnector.SearchSuggestions.new()
-      // ss.helpers.addToRecentSearch('q=kut')
-      ss.helpers.addToRecentSearch('q=git')
-      ss.helpers.getPopularSearches().then((item)=>{
-        console.log(item)
-      })
-    })
+      // The following makes an API call and invokes onSuccess callback
+      searchSuggestions.helpers.setQuery("dress")
+      searchSuggestions.helpers.call()
+    });
 
   </script>
 </body>

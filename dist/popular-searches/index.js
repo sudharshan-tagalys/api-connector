@@ -32,12 +32,14 @@ var PopularSearches = /** @class */ (function (_super) {
     };
     // rename to fetch
     // configuration to requestOptions
-    PopularSearches.prototype.fetchPopularSearches = function (configuration) {
+    PopularSearches.prototype.fetchPopularSearches = function (configuration, callbackOptions) {
         var _this = this;
+        if (callbackOptions === void 0) { callbackOptions = {}; }
         // if popular searches exist in user's local storage, then merge it with recentSearches and return it
         return new Promise(function (resolve, reject) {
             var localPopularSearches = localStorage_1.default.getItem("tagalysPopularSearches") || { queries: [] };
             if (localPopularSearches.queries.length > 0) {
+                callbackOptions.onSuccess && callbackOptions.onSuccess(localPopularSearches.queries);
                 resolve(localPopularSearches);
             }
             else {
@@ -45,9 +47,11 @@ var PopularSearches = /** @class */ (function (_super) {
                     onSuccess: function (response) {
                         var popularSearchesFromResponse = _this.responseFormatter.popularSearches(response, configuration);
                         localStorage_1.default.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000);
+                        callbackOptions.onSuccess && callbackOptions.onSuccess(popularSearchesFromResponse.queries);
                         resolve(popularSearchesFromResponse);
                     },
                     onFailure: function (response) {
+                        callbackOptions.onSuccess && callbackOptions.onFailure(response);
                         reject(response);
                     }
                 });

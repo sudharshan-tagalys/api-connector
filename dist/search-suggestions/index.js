@@ -42,11 +42,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
         return {
             path: "ss",
             format: constants_1.REQUEST_FORMAT.JSON,
-            params: {
-                q: this.requestOptions.params.query,
-                products: this.requestOptions.params.request.products,
-                queries: this.requestOptions.params.request.queries,
-            },
+            params: __assign(__assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request), { products: this.requestOptions.params.request.products, queries: this.requestOptions.params.request.queries }),
         };
     };
     SearchSuggestions.exporterName = function () {
@@ -58,19 +54,22 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.prototype.formatResponse = function (response) {
         return this.responseFormatter.searchSuggestions(response, this.requestOptions.configuration);
     };
-    SearchSuggestions.prototype.setQuery = function (query, callAPI) {
-        if (callAPI === void 0) { callAPI = true; }
+    SearchSuggestions.prototype.updateQuery = function (query) {
         this.requestOptions.params.query = query;
-        callAPI && this.call(this.requestOptions);
+        this.call(this.requestOptions);
+    };
+    SearchSuggestions.prototype.setQuery = function (query) {
+        this.requestOptions.params.query = query;
     };
     SearchSuggestions.prototype.getHelpersToExpose = function () {
         var _this = this;
         return {
-            setQuery: function (query, callAPI) {
-                if (callAPI === void 0) { callAPI = true; }
-                return _this.setQuery(query, callAPI);
+            updateQuery: function (query) { return _this.updateQuery(query); },
+            setQuery: function (query) { return _this.setQuery(query); },
+            getPopularSearches: function (callbackOptions) {
+                if (callbackOptions === void 0) { callbackOptions = {}; }
+                return _this.getPopularSearches(callbackOptions);
             },
-            getPopularSearches: function () { return _this.getPopularSearches(); },
             addToRecentSearch: function (query) { return (0, common_1.addToRecentSearch)(query); },
             removeRecentSearch: function (query) { return (0, common_1.removeRecentSearch)(query); },
             getRequestParamsFromQueryString: function (queryString) {
@@ -112,15 +111,16 @@ var SearchSuggestions = /** @class */ (function (_super) {
             .concat(popularSearchesToDisplay)
             .slice(0, MAX_SEARCHES_TO_DISPLAY);
     };
-    SearchSuggestions.prototype.getPopularSearches = function () {
+    SearchSuggestions.prototype.getPopularSearches = function (callbackOptions) {
         var _this = this;
+        if (callbackOptions === void 0) { callbackOptions = {}; }
         return new Promise(function (resolve, reject) {
             var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || {
                 queries: [],
             };
             var popularSearches = new popular_searches_1.default();
             popularSearches
-                .fetchPopularSearches(_this.requestOptions.configuration)
+                .fetchPopularSearches(_this.requestOptions.configuration, callbackOptions)
                 .then(function (popularSearches) {
                 var searchesToDisplay = _this.getSearchesToDisplay(recentSearches.queries, popularSearches.queries);
                 resolve({
@@ -131,7 +131,12 @@ var SearchSuggestions = /** @class */ (function (_super) {
         });
     };
     SearchSuggestions.defaultRequestOptions = function () {
-        return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { configuration: {
+        return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { params: {
+                request: {
+                    products: 10,
+                    queries: 10,
+                },
+            }, configuration: {
                 categorySeparator: "▸",
                 hierarchySeparator: "->",
             } });
