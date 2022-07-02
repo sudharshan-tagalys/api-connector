@@ -146,6 +146,9 @@ var Search = /** @class */ (function (_super) {
         if (params.filters) {
             requestState['filters'] = params.filters;
         }
+        if (params.queryFilters) {
+            requestState['queryFilters'] = params.queryFilters;
+        }
         if (params.page) {
             requestState['page'] = params.page;
         }
