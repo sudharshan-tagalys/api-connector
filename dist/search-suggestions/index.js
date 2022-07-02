@@ -132,10 +132,6 @@ var SearchSuggestions = /** @class */ (function (_super) {
     };
     SearchSuggestions.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { configuration: {
-                queryString: {
-                    query: "q",
-                    queryFilter: "qf",
-                },
                 categorySeperator: "▸",
                 hierachySeperator: "->",
             } });

@@ -228,8 +228,8 @@ var Search = /** @class */ (function (_super) {
         if (except === void 0) { except = []; }
         return (0, common_1.getEncodedQueryString)({
             query: this.requestState.query,
-            queryFilter: this.requestState.queryFilters,
-            filter: this.requestState.filters,
+            queryFilters: this.requestState.queryFilters,
+            filters: this.requestState.filters,
             page: this.requestState.page,
             sort: this.requestState.sort,
             except: except

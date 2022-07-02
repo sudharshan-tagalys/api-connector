@@ -8,19 +8,19 @@ var getURLEncodedQueryString = function (baseUrl, params) {
 };
 exports.getURLEncodedQueryString = getURLEncodedQueryString;
 var getEncodedQueryString = function (_a) {
-    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilter, queryFilter = _c === void 0 ? {} : _c, _d = _a.filter, filter = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g;
+    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilters, queryFilters = _c === void 0 ? {} : _c, _d = _a.filters, filters = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g;
     var _h = queryStringManager_1.default.getConfiguration(), queryReplacement = _h.queryParameter, queryFilterReplacement = _h.queryFilterParameter, filterReplacement = _h.filterParameter, pageReplacement = _h.pageParameter, sortReplacement = _h.sortParameter;
     var params = {};
     if (query.length) {
         params[queryReplacement] = query;
     }
-    var hasQueryFilters = (Object.keys(queryFilter).length !== 0);
-    var hasFilters = (Object.keys(filter).length !== 0);
+    var hasQueryFilters = (Object.keys(queryFilters).length !== 0);
+    var hasFilters = (Object.keys(filters).length !== 0);
     if (hasQueryFilters) {
-        params[queryFilterReplacement] = getFilterQueryString(queryFilter);
+        params[queryFilterReplacement] = getFilterQueryString(queryFilters);
     }
     if (hasFilters) {
-        params[filterReplacement] = getFilterQueryString(filter);
+        params[filterReplacement] = getFilterQueryString(filters);
     }
     if (page) {
         params[pageReplacement] = page;
@@ -50,7 +50,7 @@ var getRequestParamsFromQueryString = function (queryString) {
         params['query'] = parsedObjectFromQueryString[queryParameter];
     }
     if (parsedObjectFromQueryString[queryFilterParameter]) {
-        params['queryFilter'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter]);
+        params['queryFilters'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter]);
     }
     if (parsedObjectFromQueryString[filterParameter]) {
         params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter]);
@@ -64,14 +64,14 @@ var getRequestParamsFromQueryString = function (queryString) {
     return params;
 };
 exports.getRequestParamsFromQueryString = getRequestParamsFromQueryString;
-var getFilterQueryString = function (filter) {
+var getFilterQueryString = function (filters) {
     var filtersQueryStrings = [];
-    Object.keys(filter).forEach(function (key) {
-        if (Array.isArray(filter[key]) && filter[key].length) {
-            filtersQueryStrings.push("".concat(key, "-").concat(filter[key].join(',')));
+    Object.keys(filters).forEach(function (key) {
+        if (Array.isArray(filters[key]) && filters[key].length) {
+            filtersQueryStrings.push("".concat(key, "-").concat(filters[key].join(',')));
         }
         else {
-            filtersQueryStrings.push("".concat(key, "-").concat(filter[key].selected_min, "-").concat(filter[key].selected_max));
+            filtersQueryStrings.push("".concat(key, "-").concat(filters[key].selected_min, "-").concat(filters[key].selected_max));
         }
     });
     return filtersQueryStrings.join('~');

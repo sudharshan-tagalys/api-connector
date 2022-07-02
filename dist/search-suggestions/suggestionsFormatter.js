@@ -42,14 +42,14 @@ var SuggestionsFormatter = /** @class */ (function () {
                     formattedQuery.displayString = "".concat(prefix, " ").concat(_this.configuration.hierachySeperator, " ").concat(suffix);
                     formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
                         query: formattedQuery.displayString,
-                        queryFilter: qf
+                        queryFilters: qf
                     });
                 }
                 else {
                     formattedQuery.displayString = queryObj.query.join(" ".concat(_this.configuration.categorySeperator, " "));
                     formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
                         query: formattedQuery.displayString,
-                        queryFilter: queryObj.filter
+                        queryFilters: queryObj.filter
                     });
                 }
             }
