@@ -115,6 +115,17 @@ const caseInsensitiveString = (string) => {
   return string.toLowerCase().trim()
 }
 
+const sortRecentSeaches =  (arr) => {
+  arr.sort(function(a, b) {
+    var keyA = new Date(a.expiry),
+      keyB = new Date(b.expiry);
+    // Compare the 2 dates
+    if (keyA < keyB) return 1;
+    if (keyA > keyB) return -1;
+    return 0;
+  });
+  return arr
+}
 const getRecentSearches = () => {
   const tagalysRecentSearches = localStorage.getItem('tagalysRecentSearches')
   if (tagalysRecentSearches) {
@@ -166,5 +177,6 @@ export {
   addToRecentSearch,
   removeRecentSearch,
   caseInsensitiveString,
-  formatSearchItem
+  formatSearchItem,
+  sortRecentSeaches
 }

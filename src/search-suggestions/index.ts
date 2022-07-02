@@ -9,7 +9,8 @@ import {
   addToRecentSearch,
   removeRecentSearch,
   caseInsensitiveString,
-  formatSearchItem
+  formatSearchItem,
+  sortRecentSeaches
 } from "../shared/helpers/common";
 
 const MAX_RECENT_SEARCHES_TO_DISPLAY = 5;
@@ -102,7 +103,7 @@ class SearchSuggestions extends APIConnector {
         };
       }
     );
-    return recentSearchesToDisplay
+    return sortRecentSeaches(recentSearchesToDisplay)
       .concat(popularSearchesToDisplay)
       .slice(0, MAX_SEARCHES_TO_DISPLAY);
   }

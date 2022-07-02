@@ -37,6 +37,13 @@
         }
       })
       s.call()
+
+      var ss = Tagalys.APIConnector.SearchSuggestions.new()
+      // ss.helpers.addToRecentSearch('q=kut')
+      ss.helpers.addToRecentSearch('q=git')
+      ss.helpers.getPopularSearches().then((item)=>{
+        console.log(item)
+      })
     })
 
   </script>

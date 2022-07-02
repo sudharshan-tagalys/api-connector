@@ -11,6 +11,10 @@ const DEFAULT_QUERY_STRING_CONFIGURATION = {
 class QueryStringManager{
   private configuration;
 
+  constructor(){
+    this.configuration = DEFAULT_QUERY_STRING_CONFIGURATION
+  }
+
   parse(params){
     return qs.parse(params)
   }
@@ -19,7 +23,7 @@ class QueryStringManager{
     return qs.stringify(params, { encode: false })
   }
 
-  setConfiguration(configuration: any = DEFAULT_QUERY_STRING_CONFIGURATION){
+  setConfiguration(configuration){
     this.configuration = {
       ...DEFAULT_QUERY_STRING_CONFIGURATION,
       ...configuration
