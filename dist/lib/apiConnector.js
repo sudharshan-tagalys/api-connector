@@ -66,8 +66,7 @@ var APIConnector = /** @class */ (function () {
         }
         return params;
     };
-    APIConnector.prototype.getHelpersToExpose = function (type) {
-        if (type === void 0) { type = 'request'; }
+    APIConnector.prototype.getHelpersToExpose = function (response) {
         return {};
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
@@ -76,11 +75,8 @@ var APIConnector = /** @class */ (function () {
         var analyticsData = this.extractAnalyticsData(response);
         var formattedResponse = this.formatResponse(response);
         this.internalSuccessCallback(response, formattedResponse);
-        var responseHelpers = this.getHelpersToExpose('response');
-        var analyticsHelpers = {
-            getAnalyticsData: function () { return analyticsData; }
-        };
-        this.requestOptions.onSuccess(formattedResponse, __assign(__assign({}, responseHelpers), analyticsHelpers));
+        var helpers = this.getHelpersToExpose(response);
+        this.requestOptions.onSuccess(formattedResponse, helpers);
         if (analyticsData && configuration_1.default.canTrackAnalytics()) {
             analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
         }

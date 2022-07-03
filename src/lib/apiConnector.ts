@@ -42,13 +42,13 @@ class APIConnector{
       }, format),
       onSuccess: (response) => {
         if (this.isFailureResponse(response)) {
-          this.requestOptions.onFailure(response)
+          this.requestOptions.onFailure(response, this.getHelpersToExpose(response))
         } else {
           this.onSuccessfulResponse(response)
         }
       },
       onFailure: (response) => {
-        this.requestOptions.onFailure(response)
+        this.requestOptions.onFailure(response, this.getHelpersToExpose(response))
       }
     });
   }
@@ -63,7 +63,7 @@ class APIConnector{
     return params
   }
 
-  getHelpersToExpose(type = 'request'){
+  getHelpersToExpose(response){
     return {}
   }
 
@@ -75,14 +75,8 @@ class APIConnector{
     const analyticsData = this.extractAnalyticsData(response);
     const formattedResponse = this.formatResponse(response)
     this.internalSuccessCallback(response, formattedResponse)
-    const responseHelpers = this.getHelpersToExpose('response')
-    const analyticsHelpers = {
-      getAnalyticsData: () => analyticsData
-    }
-    this.requestOptions.onSuccess(formattedResponse, {
-      ...responseHelpers,
-      ...analyticsHelpers
-    });
+    const helpers = this.getHelpersToExpose(response)
+    this.requestOptions.onSuccess(formattedResponse, helpers);
     if (analyticsData && configuration.canTrackAnalytics()) {
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }

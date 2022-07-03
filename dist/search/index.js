@@ -99,6 +99,9 @@ var Search = /** @class */ (function (_super) {
         };
     };
     Search.prototype.extractAnalyticsData = function (response) {
+        if (response === false) {
+            return {};
+        }
         if (response.hasOwnProperty('error')) {
             return false;
         }
@@ -252,9 +255,8 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {
         this.setResponseState(formattedResponse);
     };
-    Search.prototype.getHelpersToExpose = function (type) {
+    Search.prototype.getHelpers = function (type) {
         var _this = this;
-        if (type === void 0) { type = 'request'; }
         var functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers');
         var helpers = __assign(__assign(__assign(__assign(__assign(__assign({}, this.searchHelpers[functionToCall]()), this.filterHelpers[functionToCall]()), this.sortOptionHelpers[functionToCall]()), this.productHelpers[functionToCall]()), this.paginationHelpers[functionToCall]()), this.commonHelpers());
         if (type === 'request') {
@@ -267,6 +269,14 @@ var Search = /** @class */ (function (_super) {
                 } });
         }
         return helpers;
+    };
+    Search.prototype.getHelpersToExpose = function (response) {
+        var _this = this;
+        if (response === void 0) { response = false; }
+        return {
+            requestHelpers: this.getHelpers('request'),
+            responseHelpers: __assign(__assign({}, this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } })
+        };
     };
     Search.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = this.getParamsFromRequestState();
@@ -282,7 +292,7 @@ var Search = /** @class */ (function (_super) {
             this.requestState = requestState;
         }
         this.setRequestParamsFromRequestState();
-        return this.getHelpersToExpose('request');
+        return this.getHelpersToExpose();
     };
     return Search;
 }(apiConnector_1.default));

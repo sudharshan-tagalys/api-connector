@@ -90,6 +90,10 @@ class Search extends APIConnector {
   }
 
   extractAnalyticsData(response) {
+    if(response === false){
+      return {}
+    }
+
     if(response.hasOwnProperty('error')){
       return false
     }
@@ -254,7 +258,7 @@ class Search extends APIConnector {
     this.setResponseState(formattedResponse)
   }
 
-  getHelpersToExpose(type = 'request'){
+  getHelpers(type){
     const functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers')
     let helpers = {
       ...this.searchHelpers[functionToCall](),
@@ -279,6 +283,14 @@ class Search extends APIConnector {
     return helpers
   }
 
+  getHelpersToExpose(response = false){
+    return {
+      ...this.getHelpers('request'),
+      ...this.getHelpers('response'),
+      getAnalyticsData: () => this.extractAnalyticsData(response)
+    }
+  }
+
   setRequestParamsFromRequestState(){
     this.requestOptions.params = this.getParamsFromRequestState();
   }
@@ -295,7 +307,7 @@ class Search extends APIConnector {
       this.requestState = requestState
     }
     this.setRequestParamsFromRequestState()
-    return this.getHelpersToExpose('request')
+    return this.getHelpersToExpose()
   }
 }
 

@@ -1,5 +1,4 @@
 import Widget from "../lib/widget"
-import { AnalyticsData } from "../shared/types"
 class SmartWidget extends Widget {
 
   static exporterName(): string{
@@ -18,7 +17,7 @@ class SmartWidget extends Widget {
     return this.responseFormatter.smartWidgets(response)
   }
 
-  extractAnalyticsData(response) : AnalyticsData {
+  extractAnalyticsData(response) {
     let plDetails: any = {
       id: this.requestOptions.params.widgetId,
       title: response.name

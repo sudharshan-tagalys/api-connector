@@ -1,42 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="./bundle.js" async></script>
-</head>
-<body>
-  <!-- <input type="text" id="mock-search-input"/> -->
-  <button id="next-btn">NEXT</button>
-  <button id="prev-btn">PREV</button>
-  <div id="response"/>
-  <script>
-    document.addEventListener("tagalys:ready", function () {
-      Tagalys.APIConnector.setConfiguration({
-        serverUrl: "https://api-r3.tagalys.com",
-        platform: "shopify",
-        credentials: {
-          clientCode: "39D2E8D16FB8EC72",
-          apiKey: "1f53183fac482d47bc62b0284d5c33da",
-        },
-        currencyCode: "USD",
-        storeId: "1",
-        track: true,
-        analyticsStorageConsentProvided: function () {
-          return true;
-        },
-      })
-      var searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
-        onSuccess: function(response, helpers){
-        }
-      })
-      // The following makes an API call and invokes onSuccess callback
-      searchSuggestions.helpers.setQuery("dress")
-      searchSuggestions.helpers.call()
-    });
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="./bundle.js" async></script>
+  </head>
+  <body>
+    <!-- <input type="text" id="mock-search-input"/> -->
+    <button id="next-btn">NEXT</button>
+    <button id="prev-btn">PREV</button>
+    <div id="response" />
+    <script>
+      document.addEventListener("tagalys:ready", function () {
+        Tagalys.APIConnector.setConfiguration({
+          serverUrl: "https://api-r3.tagalys.com",
+          platform: "shopify",
+          credentials: {
+            clientCode: "39D2E8D16FB8EC72",
+            apiKey: "1f53183fac482d47bc62b0284d5c33da",
+          },
+          currencyCode: "USD",
+          storeId: "1",
+          track: true,
+          analyticsStorageConsentProvided: function () {
+            return true;
+          },
+        });
+        var searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+          onSuccess: function (response, helpers) {
+            console.log(response, helpers);
+          },
+        });
 
-  </script>
-</body>
+        searchSuggestions.helpers.setQuery("dress");
+        searchSuggestions.helpers.setQuery("shirt");
+
+        // The following makes an API request with "shirt" as query.
+        searchSuggestions.helpers.call();
+      });
+    </script>
+  </body>
 </html>

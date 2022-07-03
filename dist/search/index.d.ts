@@ -36,6 +36,9 @@ declare class Search extends APIConnector {
         params: any;
     };
     extractAnalyticsData(response: any): false | {
+        event_type?: undefined;
+        event_details?: undefined;
+    } | {
         event_type: string;
         event_details: {
             pl_type: string;
@@ -93,9 +96,16 @@ declare class Search extends APIConnector {
         addToRecentSearch: (queryString: any) => void;
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
-    getHelpersToExpose(type?: string): any;
+    getHelpers(type: any): any;
+    getHelpersToExpose(response?: boolean): {
+        requestHelpers: any;
+        responseHelpers: any;
+    };
     setRequestParamsFromRequestState(): void;
     beforeAPICall(_: any): any;
-    new(requestOptions: any): any;
+    new(requestOptions: any): {
+        requestHelpers: any;
+        responseHelpers: any;
+    };
 }
 export default Search;

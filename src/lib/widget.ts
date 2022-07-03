@@ -1,5 +1,4 @@
 import APIConnector from "../lib/apiConnector"
-import { AnalyticsData } from "../shared/types"
 import { WidgetParams } from "../shared/types"
 import { WidgetRequestOptions } from "../shared/types"
 
@@ -27,7 +26,17 @@ class Widget extends APIConnector {
     return ""
   }
 
-  extractAnalyticsData(response) : AnalyticsData {
+  getHelpersToExpose(response = false): {} {
+    return {
+      getAnalyticsData: () => this.extractAnalyticsData(response)
+    }
+  }
+
+  extractAnalyticsData(response) {
+    if(response === false){
+      return {}
+    }
+
     let plDetails: any = {}
     if (response.hasOwnProperty("sku")) {
       plDetails["product"] = response.sku

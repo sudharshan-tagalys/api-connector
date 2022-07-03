@@ -39,7 +39,20 @@ var Widget = /** @class */ (function (_super) {
     Widget.prototype.plType = function () {
         return "";
     };
+    Widget.prototype.getHelpersToExpose = function (response) {
+        var _this = this;
+        if (response === void 0) { response = false; }
+        return {
+            requestHelpers: {},
+            responseHelpers: {
+                getAnalyticsData: function () { return _this.extractAnalyticsData(response); }
+            }
+        };
+    };
     Widget.prototype.extractAnalyticsData = function (response) {
+        if (response === false) {
+            return {};
+        }
         var plDetails = {};
         if (response.hasOwnProperty("sku")) {
             plDetails["product"] = response.sku;

@@ -1,5 +1,4 @@
 import APIConnector from "../lib/apiConnector";
-import { AnalyticsData } from "../shared/types";
 import { WidgetParams } from "../shared/types";
 import { WidgetRequestOptions } from "../shared/types";
 declare class Widget extends APIConnector {
@@ -7,6 +6,18 @@ declare class Widget extends APIConnector {
     getParams(): WidgetParams;
     path(): string;
     plType(): string;
-    extractAnalyticsData(response: any): AnalyticsData;
+    getHelpersToExpose(response?: boolean): {};
+    extractAnalyticsData(response: any): {
+        event_type?: undefined;
+        event_details?: undefined;
+    } | {
+        event_type: string;
+        event_details: {
+            pl_type: string;
+            pl_details: any;
+            pl_products: any;
+            pl_total: any;
+        };
+    };
 }
 export default Widget;

@@ -61,8 +61,9 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.prototype.setQuery = function (query) {
         this.requestOptions.params.query = query;
     };
-    SearchSuggestions.prototype.getHelpersToExpose = function () {
+    SearchSuggestions.prototype.getHelpersToExpose = function (response) {
         var _this = this;
+        if (response === void 0) { response = false; }
         return {
             updateQuery: function (query) { return _this.updateQuery(query); },
             setQuery: function (query) { return _this.setQuery(query); },
