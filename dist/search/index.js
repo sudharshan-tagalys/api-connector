@@ -273,10 +273,7 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.getHelpersToExpose = function (response) {
         var _this = this;
         if (response === void 0) { response = false; }
-        return {
-            requestHelpers: this.getHelpers('request'),
-            responseHelpers: __assign(__assign({}, this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } })
-        };
+        return __assign(__assign(__assign({}, this.getHelpers('request')), this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } });
     };
     Search.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = this.getParamsFromRequestState();

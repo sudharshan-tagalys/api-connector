@@ -14,7 +14,7 @@ declare class SearchSuggestions extends APIConnector {
     formatResponse(response: any): any;
     updateQuery(query: any): void;
     setQuery(query: any): void;
-    getHelpersToExpose(response?: boolean): {
+    getHelpersToExpose(): {
         updateQuery: (query: any) => void;
         setQuery: (query: any) => void;
         getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;

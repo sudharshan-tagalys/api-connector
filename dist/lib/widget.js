@@ -43,10 +43,7 @@ var Widget = /** @class */ (function (_super) {
         var _this = this;
         if (response === void 0) { response = false; }
         return {
-            requestHelpers: {},
-            responseHelpers: {
-                getAnalyticsData: function () { return _this.extractAnalyticsData(response); }
-            }
+            getAnalyticsData: function () { return _this.extractAnalyticsData(response); }
         };
     };
     Widget.prototype.extractAnalyticsData = function (response) {

@@ -46,14 +46,14 @@ var APIConnector = /** @class */ (function () {
             params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
             onSuccess: function (response) {
                 if (_this.isFailureResponse(response)) {
-                    _this.requestOptions.onFailure(response);
+                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
                 }
                 else {
                     _this.onSuccessfulResponse(response);
                 }
             },
             onFailure: function (response) {
-                _this.requestOptions.onFailure(response);
+                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
             }
         });
     };
