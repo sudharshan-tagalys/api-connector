@@ -11,7 +11,8 @@ import {
   caseInsensitiveString,
   formatSearchItem,
   sortRecentSeaches,
-  getRecentSearches
+  getRecentSearches,
+  getEncodedQueryString
 } from "../shared/helpers/common";
 import debounce from "../lib/debounce";
 
@@ -71,6 +72,8 @@ class SearchSuggestions extends APIConnector {
       getRecentAndPopularSearches: (maxRecentSearches, maxTotalSearches, callbackOptions = {}) => {
         return this.getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions)
       },
+      getEncodedQueryString: (queryParams) => getEncodedQueryString(queryParams),
+      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       setQuery: (query) => this.setQuery(query),
       ...queryStringHelpers
     };
