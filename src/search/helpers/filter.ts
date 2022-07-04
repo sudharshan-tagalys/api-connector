@@ -58,7 +58,9 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
     } else {
       filterItems = (reqState.filters[filterId] || [])
       if(Array.isArray(appliedFilter)){
-        filterItems = filterItems.concat(appliedFilter)
+        const updatedFilterItems = filterItems.concat(appliedFilter)
+        const uniqueFilterItems = updatedFilterItems.filter((filterItem, index, arrayInstance) => arrayInstance.indexOf(filterItem) === index);
+        filterItems = uniqueFilterItems;
       }else{
         if(!filterItems.includes(appliedFilter)){
           filterItems.push(appliedFilter)

@@ -6,27 +6,6 @@ import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
 import { recordRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
-const DEFAULT_REQUEST_STATE =  {
-  query: "",
-  queryMode: "",
-  filters: {},
-  queryFilters: {},
-  request: ['details', 'filters', 'sort_options'],
-  page: 1,
-  perPage: 16,
-  sort: ""
-}
-
-const DEFAULT_RESPONSE_STATE = {
-  query: "",
-  total_pages: null,
-  page: null,
-  total: null,
-  query_mode: null,
-  products: [],
-  filters: [],
-  sort_options: []
-};
 
 class Search extends APIConnector {
   // == HELPERS ==
@@ -36,9 +15,35 @@ class Search extends APIConnector {
   public sortOptionHelpers;
   public productHelpers;
 
+  getDefaultRequestState = () => {
+    return {
+      query: "",
+      queryMode: "",
+      filters: {},
+      queryFilters: {},
+      request: ['details', 'filters', 'sort_options'],
+      page: 1,
+      perPage: 16,
+      sort: ""
+    }
+  }
+
+  getDefaultResponseState = () => {
+    return {
+      query: "",
+      total_pages: null,
+      page: null,
+      total: null,
+      query_mode: null,
+      products: [],
+      filters: [],
+      sort_options: []
+    }
+  };
+
   // == STATE ==
-  public requestState = DEFAULT_REQUEST_STATE
-  public responseState = DEFAULT_RESPONSE_STATE
+  public requestState = this.getDefaultRequestState()
+  public responseState = this.getDefaultResponseState()
 
   constructor(){
     super()
@@ -155,7 +160,7 @@ class Search extends APIConnector {
       requestState['sort'] = params.sort
     }
     return {
-      ...DEFAULT_REQUEST_STATE,
+      ...this.getDefaultRequestState(),
       ...requestState
     }
   }
@@ -302,7 +307,7 @@ class Search extends APIConnector {
 
   new(requestOptions){
     this.requestOptions = requestOptions
-    let requestState : any = DEFAULT_REQUEST_STATE
+    let requestState : any = this.getDefaultRequestState()
     if(this.requestOptions.hasOwnProperty('params')){
       requestState = this.getRequestStateFromParams(this.requestOptions.params);
     }else{

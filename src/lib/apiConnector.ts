@@ -169,8 +169,7 @@ class APIConnector{
             helpers: {
               ...helpers,
               call: () => instance.call(instance.requestOptions)
-            },
-            call: (requestOptions) => instance.call(requestOptions)
+            }
           }
         }
       }
