@@ -6,7 +6,11 @@ const setQuery = function(query){
 }
 
 const isValidQuery = function () {
-  return (!this.searchHelpers.isPartialResults() && !this.searchHelpers.isRedirected())
+  return !(
+    this.searchHelpers.isPartialResults() ||
+    this.searchHelpers.isRedirected() ||
+    this.searchHelpers.isSpellingCorrectedQuery()
+  )
 }
 
 const isSpellingCorrectedQuery = function () {
