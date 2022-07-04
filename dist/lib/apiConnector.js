@@ -29,6 +29,8 @@ var DEFAULT_REQUEST_OPTIONS = {
 };
 var APIConnector = /** @class */ (function () {
     function APIConnector() {
+        this.currentRequestNumber = 0;
+        this.completedRequestNumber = 0;
     }
     APIConnector.prototype.setResponseFormatter = function () {
         if (!this.responseFormatter) {
@@ -38,6 +40,8 @@ var APIConnector = /** @class */ (function () {
     APIConnector.prototype.call = function (requestOptions) {
         var _this = this;
         if (requestOptions === void 0) { requestOptions = this.requestOptions; }
+        var currentRequest = this.currentRequestNumber += 1;
+        this.updateRequestNumber(currentRequest);
         this.requestOptions = requestOptions;
         this.setResponseFormatter();
         var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
@@ -45,6 +49,10 @@ var APIConnector = /** @class */ (function () {
         api_2.default.call(method, path, {
             params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
             onSuccess: function (response) {
+                if (_this.oldRequest(currentRequest)) {
+                    return;
+                }
+                _this.markRequestComplete(currentRequest);
                 if (_this.isFailureResponse(response)) {
                     _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
                 }
@@ -53,6 +61,10 @@ var APIConnector = /** @class */ (function () {
                 }
             },
             onFailure: function (response) {
+                if (_this.oldRequest(currentRequest)) {
+                    return;
+                }
+                _this.markRequestComplete(currentRequest);
                 _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
             }
         });
@@ -107,6 +119,17 @@ var APIConnector = /** @class */ (function () {
     };
     APIConnector.exporterName = function () {
         throw new Error("Should specify exporter name");
+    };
+    APIConnector.prototype.updateRequestNumber = function (requestNumber) {
+        this.currentRequestNumber = requestNumber;
+        return requestNumber;
+    };
+    APIConnector.prototype.markRequestComplete = function (requestNumber) {
+        this.completedRequestNumber = requestNumber;
+        return requestNumber;
+    };
+    APIConnector.prototype.oldRequest = function (requestNumber) {
+        return (requestNumber < this.completedRequestNumber);
     };
     APIConnector.export = function () {
         var _a;

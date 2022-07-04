@@ -15,7 +15,7 @@ declare class SearchSuggestions extends APIConnector {
     updateQuery(query: any): void;
     setQuery(query: any): void;
     getHelpersToExpose(): {
-        updateQuery: (query: any) => void;
+        updateQuery: (...args: any[]) => void;
         setQuery: (query: any) => void;
         getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
         addToRecentSearch: (query: any) => void;
@@ -25,7 +25,7 @@ declare class SearchSuggestions extends APIConnector {
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
     };
     new(requestOptions: any): {
-        updateQuery: (query: any) => void;
+        updateQuery: (...args: any[]) => void;
         setQuery: (query: any) => void;
         getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
         addToRecentSearch: (query: any) => void;

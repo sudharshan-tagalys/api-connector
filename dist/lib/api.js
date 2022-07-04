@@ -26,6 +26,7 @@ var API = /** @class */ (function () {
             }
         };
         xhr.send(requestOptions.params);
+        return xhr;
     };
     API.prototype.url = function (path) {
         return "".concat(configuration_1.default.getServerUrl(), "/v1/").concat(path);

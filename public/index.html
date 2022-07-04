@@ -11,6 +11,7 @@
     <!-- <input type="text" id="mock-search-input"/> -->
     <button id="next-btn">NEXT</button>
     <button id="prev-btn">PREV</button>
+    <input id="search-input" placeholder="Search" name="search" />
     <div id="response" />
     <script>
       document.addEventListener("tagalys:ready", function () {
@@ -28,17 +29,35 @@
             return true;
           },
         });
-        var searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+        // Initialise the connector with the configuration options
+        window.searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+          params: {
+            request: {
+              products: 10, // number of suggested products to request
+              queries: 10, // number of suggested search queries to request
+            },
+          },
           onSuccess: function (response, helpers) {
-            console.log(response, helpers);
+            // Called after a successful API call
+            // Use response to render the results - described below
+          },
+          onFailure: function (response, helpers) {
+            // Called after a failed API call
           },
         });
 
-        searchSuggestions.helpers.setQuery("dress");
-        searchSuggestions.helpers.setQuery("shirt");
+        // setTimeout(() => {
+        //   window.searchSuggestions.helpers.call()
+        // }, 2000);
 
-        // The following makes an API request with "shirt" as query.
-        searchSuggestions.helpers.call();
+        document
+          .getElementById("search-input")
+          .addEventListener("input", updateSearchSuggestions);
+
+        function updateSearchSuggestions(e) {
+          window.searchSuggestions.helpers.updateQuery("skirt");
+          // makes an API request and triggers the onSuccess callback with the response
+        }
       });
     </script>
   </body>

@@ -1,5 +1,7 @@
 declare class APIConnector {
     requestOptions: any;
+    currentRequestNumber: any;
+    completedRequestNumber: any;
     responseFormatter: any;
     setResponseFormatter(): void;
     call(requestOptions?: any): void;
@@ -19,6 +21,9 @@ declare class APIConnector {
     };
     new(requestOptions: any): any;
     static exporterName(): void;
+    updateRequestNumber(requestNumber: any): any;
+    markRequestComplete(requestNumber: any): any;
+    oldRequest(requestNumber: any): boolean;
     static export(): {
         [x: number]: {
             call: (requestOptions: any, defaultRequestOptions?: {

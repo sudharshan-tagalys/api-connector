@@ -31,6 +31,7 @@ var constants_1 = require("../shared/constants");
 var localStorage_1 = require("../lib/localStorage");
 var popular_searches_1 = require("../popular-searches");
 var common_1 = require("../shared/helpers/common");
+var debounce_1 = require("../lib/debounce");
 var MAX_RECENT_SEARCHES_TO_DISPLAY = 5;
 var MAX_SEARCHES_TO_DISPLAY = 10;
 var SearchSuggestions = /** @class */ (function (_super) {
@@ -64,7 +65,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.prototype.getHelpersToExpose = function () {
         var _this = this;
         return {
-            updateQuery: function (query) { return _this.updateQuery(query); },
+            updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }),
             setQuery: function (query) { return _this.setQuery(query); },
             getPopularSearches: function (callbackOptions) {
                 if (callbackOptions === void 0) { callbackOptions = {}; }
