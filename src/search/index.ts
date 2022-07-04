@@ -22,7 +22,6 @@ const DEFAULT_RESPONSE_STATE = {
   total_pages: null,
   page: null,
   total: null,
-  query_original: null,
   query_mode: null,
   products: [],
   filters: [],
