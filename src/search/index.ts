@@ -302,9 +302,17 @@ class Search extends APIConnector {
 
   new(requestOptions){
     this.requestOptions = requestOptions
-    const requestState : any = this.getRequestStateFromParams(this.requestOptions.params);
+    let requestState : any = DEFAULT_REQUEST_STATE
+    if(this.requestOptions.hasOwnProperty('params')){
+      requestState = this.getRequestStateFromParams(this.requestOptions.params);
+    }else{
+      const params = getRequestParamsFromWindowLocation()
+      requestState = this.getRequestStateFromParams(params)
+    }
     if(Object.keys(requestState).length){
       this.requestState = requestState
+    }else{
+      console.error("Something went wrong in the request state")
     }
     this.setRequestParamsFromRequestState()
     return this.getHelpersToExpose()
