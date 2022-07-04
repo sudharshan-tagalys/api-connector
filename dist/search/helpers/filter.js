@@ -50,7 +50,7 @@ var getAppliedFilterItems = function (items) {
     });
 };
 var getAppliedFilters = function () {
-    var filters = this.responseState.filters;
+    var filters = __assign({}, this.responseState.filters);
     var appliedFilters = [];
     filters.map(function (filter) {
         if (filter.items) {
