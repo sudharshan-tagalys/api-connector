@@ -32,8 +32,6 @@ var localStorage_1 = require("../lib/localStorage");
 var popular_searches_1 = require("../popular-searches");
 var common_1 = require("../shared/helpers/common");
 var debounce_1 = require("../lib/debounce");
-var MAX_RECENT_SEARCHES_TO_DISPLAY = 5;
-var MAX_SEARCHES_TO_DISPLAY = 10;
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
@@ -64,15 +62,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
     };
     SearchSuggestions.prototype.getHelpersToExpose = function () {
         var _this = this;
-        return {
-            updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }),
-            setQuery: function (query) { return _this.setQuery(query); },
-            getPopularSearches: function (callbackOptions) {
-                if (callbackOptions === void 0) { callbackOptions = {}; }
-                return _this.getPopularSearches(callbackOptions);
-            },
-            addToRecentSearch: function (query) { return (0, common_1.addToRecentSearch)(query); },
-            removeRecentSearch: function (query) { return (0, common_1.removeRecentSearch)(query); },
+        var queryStringHelpers = {
             getRequestParamsFromQueryString: function (queryString) {
                 return (0, common_1.getRequestParamsFromQueryString)(queryString);
             },
@@ -83,12 +73,16 @@ var SearchSuggestions = /** @class */ (function (_super) {
                 return (0, common_1.getURLEncodedQueryString)(baseUrl, params);
             },
         };
+        return __assign({ updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }), recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }, removeRecentSearch: function (queryString) { return (0, common_1.removeRecentSearch)(queryString); }, getRecentSearches: function (limit) { return _this.getRecentSearches(limit); }, getPopularSearches: function (limit) { return _this.getPopularSearches(limit); }, getRecentAndPopularSearches: function (maxRecentSearches, maxTotalSearches, callbackOptions) {
+                if (callbackOptions === void 0) { callbackOptions = {}; }
+                return _this.getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions);
+            }, setQuery: function (query) { return _this.setQuery(query); } }, queryStringHelpers);
     };
     SearchSuggestions.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;
         return this.getHelpersToExpose();
     };
-    SearchSuggestions.prototype.getSearchesToDisplay = function (recentSearches, popularSearches) {
+    SearchSuggestions.prototype.getSearchesToDisplay = function (recentSearches, popularSearches, maxRecentSearches, maxTotalSearches) {
         var popularSearchesDisplayStrings = popularSearches.map(function (popularSearch) {
             return (0, common_1.caseInsensitiveString)(popularSearch.displayString);
         });
@@ -101,7 +95,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
             return !commonSearches.includes((0, common_1.caseInsensitiveString)(query.displayString));
         });
         var recentSearchesToDisplay = recentSearches
-            .slice(0, MAX_RECENT_SEARCHES_TO_DISPLAY)
+            .slice(0, maxRecentSearches)
             .map(function (searchItem) {
             return __assign(__assign({}, searchItem), { type: "recent" });
         });
@@ -110,9 +104,9 @@ var SearchSuggestions = /** @class */ (function (_super) {
         });
         return (0, common_1.sortRecentSeaches)(recentSearchesToDisplay)
             .concat(popularSearchesToDisplay)
-            .slice(0, MAX_SEARCHES_TO_DISPLAY);
+            .slice(0, maxTotalSearches);
     };
-    SearchSuggestions.prototype.getPopularSearches = function (callbackOptions) {
+    SearchSuggestions.prototype.getRecentAndPopularSearches = function (maxRecentSearches, maxTotalSearches, callbackOptions) {
         var _this = this;
         if (callbackOptions === void 0) { callbackOptions = {}; }
         return new Promise(function (resolve, reject) {
@@ -123,13 +117,29 @@ var SearchSuggestions = /** @class */ (function (_super) {
             popularSearches
                 .fetchPopularSearches(_this.requestOptions.configuration, callbackOptions)
                 .then(function (popularSearches) {
-                var searchesToDisplay = _this.getSearchesToDisplay(recentSearches.queries, popularSearches.queries);
+                var searchesToDisplay = _this.getSearchesToDisplay(recentSearches.queries, popularSearches.queries, maxRecentSearches, maxTotalSearches);
                 resolve({
                     recentSearches: searchesToDisplay.filter(function (searchItem) { return searchItem.type === "recent"; }).map(common_1.formatSearchItem),
                     popularSearches: searchesToDisplay.filter(function (searchItem) { return searchItem.type === "popular"; }).map(common_1.formatSearchItem),
                 });
             });
         });
+    };
+    SearchSuggestions.prototype.getPopularSearches = function (limit) {
+        var _this = this;
+        return new Promise(function (resolve, _) {
+            var popularSearches = new popular_searches_1.default();
+            popularSearches
+                .fetchPopularSearches(_this.requestOptions.configuration)
+                .then(function (popularSearches) {
+                resolve(popularSearches.queries.slice(0, limit));
+            });
+        });
+    };
+    SearchSuggestions.prototype.getRecentSearches = function (limit) {
+        var recentSearches = (0, common_1.getRecentSearches)();
+        var sortedRecentSearches = (0, common_1.sortRecentSeaches)(recentSearches.queries);
+        return sortedRecentSearches.slice(0, limit);
     };
     SearchSuggestions.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { params: {

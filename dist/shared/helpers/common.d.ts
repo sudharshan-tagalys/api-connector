@@ -11,10 +11,11 @@ declare const getRequestParamsFromWindowLocation: () => {};
 declare const getRequestParamsFromQueryString: (queryString: any) => {};
 declare const caseInsensitiveString: (string: any) => any;
 declare const sortRecentSeaches: (arr: any) => any;
-declare const addToRecentSearch: (requestParams: any) => void;
-declare const removeRecentSearch: (displayString: string) => void;
+declare const getRecentSearches: () => any;
+declare const recordRecentSearch: (queryString: string) => void;
+declare const removeRecentSearch: (queryString: string) => void;
 declare const formatSearchItem: (searchItem: any) => {
     displayString: any;
     queryString: any;
 };
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, addToRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, sortRecentSeaches };
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches };

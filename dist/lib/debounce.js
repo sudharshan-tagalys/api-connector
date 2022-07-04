@@ -8,7 +8,6 @@ var debounce = function (func) {
             args[_i] = arguments[_i];
         }
         var debounceDuration = (args[1] || 500);
-        console.log(debounceDuration);
         var later = function () {
             clearTimeout(timeout);
             func.apply(void 0, args);

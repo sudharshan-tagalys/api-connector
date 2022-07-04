@@ -93,7 +93,7 @@ declare class Search extends APIConnector {
             filters: any[];
             sort_options: any[];
         };
-        addToRecentSearch: (queryString: any) => void;
+        recordRecentSearch: (queryString: any) => void;
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpers(type: any): any;

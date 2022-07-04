@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sortRecentSeaches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.addToRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
@@ -129,20 +129,30 @@ var getRecentSearches = function () {
         queries: []
     };
 };
-var addToRecentSearch = function (requestParams) {
-    removeRecentSearch(requestParams.query);
+exports.getRecentSearches = getRecentSearches;
+var recordRecentSearch = function (queryString) {
+    var requestParams = getRequestParamsFromQueryString(queryString.replace("?", ""));
+    removeRecentSearch(queryString);
     var recentSearches = getRecentSearches();
     recentSearches.queries = recentSearches.queries.concat([{
             displayString: requestParams.query,
-            queryString: getEncodedQueryString(requestParams),
+            queryString: getEncodedQueryString({
+                query: requestParams.query,
+                queryFilters: requestParams.queryFilters
+            }),
             expiry: (localStorage_1.default.getCurrentTime() + 3600000)
         }]);
     localStorage_1.default.setValue("tagalysRecentSearches", recentSearches);
 };
-exports.addToRecentSearch = addToRecentSearch;
-var removeRecentSearch = function (displayString) {
+exports.recordRecentSearch = recordRecentSearch;
+var removeRecentSearch = function (queryString) {
+    var requestParams = getRequestParamsFromQueryString(queryString.replace("?", ""));
+    var requiredQueryString = getEncodedQueryString({
+        query: requestParams.query,
+        queryFilters: requestParams.queryFilters
+    });
     var recentSearches = getRecentSearches();
-    recentSearches.queries = recentSearches.queries.filter(function (recentSearch) { return caseInsensitiveString(recentSearch.displayString) !== caseInsensitiveString(displayString); });
+    recentSearches.queries = recentSearches.queries.filter(function (recentSearch) { return caseInsensitiveString(recentSearch.queryString) !== caseInsensitiveString(requiredQueryString); });
     localStorage_1.default.setValue("tagalysRecentSearches", recentSearches);
 };
 exports.removeRecentSearch = removeRecentSearch;

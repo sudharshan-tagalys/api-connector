@@ -15,27 +15,33 @@ declare class SearchSuggestions extends APIConnector {
     updateQuery(query: any): void;
     setQuery(query: any): void;
     getHelpersToExpose(): {
-        updateQuery: (...args: any[]) => void;
-        setQuery: (query: any) => void;
-        getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
-        addToRecentSearch: (query: any) => void;
-        removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
+        updateQuery: (...args: any[]) => void;
+        recordRecentSearch: (queryString: any) => void;
+        removeRecentSearch: (queryString: any) => void;
+        getRecentSearches: (limit: any) => any;
+        getPopularSearches: (limit: any) => Promise<unknown>;
+        getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
+        setQuery: (query: any) => void;
     };
     new(requestOptions: any): {
-        updateQuery: (...args: any[]) => void;
-        setQuery: (query: any) => void;
-        getPopularSearches: (callbackOptions?: {}) => Promise<unknown>;
-        addToRecentSearch: (query: any) => void;
-        removeRecentSearch: (query: any) => void;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
+        updateQuery: (...args: any[]) => void;
+        recordRecentSearch: (queryString: any) => void;
+        removeRecentSearch: (queryString: any) => void;
+        getRecentSearches: (limit: any) => any;
+        getPopularSearches: (limit: any) => Promise<unknown>;
+        getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
+        setQuery: (query: any) => void;
     };
-    getSearchesToDisplay(recentSearches: any, popularSearches: any): any;
-    getPopularSearches(callbackOptions?: any): Promise<unknown>;
+    getSearchesToDisplay(recentSearches: any, popularSearches: any, maxRecentSearches: any, maxTotalSearches: any): any;
+    getRecentAndPopularSearches(maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: any): Promise<unknown>;
+    getPopularSearches(limit: any): Promise<unknown>;
+    getRecentSearches(limit: any): any;
     static defaultRequestOptions(): {
         params: {
             request: {

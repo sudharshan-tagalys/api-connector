@@ -249,7 +249,7 @@ var Search = /** @class */ (function (_super) {
             getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
             getRequestState: function () { return _this.requestState; },
             getResponseState: function () { return _this.responseState; },
-            addToRecentSearch: function (queryString) { return (0, common_1.addToRecentSearch)(queryString); }
+            recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }
         };
     };
     Search.prototype.internalSuccessCallback = function (_, formattedResponse) {
