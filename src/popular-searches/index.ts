@@ -25,7 +25,9 @@ class PopularSearches extends APIConnector {
         this.call({
           onSuccess: (response) => {
             const popularSearchesFromResponse = this.responseFormatter.popularSearches(response, configuration)
-            localStorage.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000)
+            if(popularSearchesFromResponse.queries.length  > 0){
+              localStorage.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000)
+            }
             callbackOptions.onSuccess && callbackOptions.onSuccess(popularSearchesFromResponse.queries)
             resolve(popularSearchesFromResponse)
           },
