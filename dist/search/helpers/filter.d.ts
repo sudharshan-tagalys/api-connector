@@ -1,6 +1,6 @@
 declare const _default: {
     getFilters: () => any;
-    getAppliedFilters: () => any;
+    getFlattenedAppliedFilters: () => any;
     applyFilter: (filterId: any, appliedFilter: any) => void;
     getFilterById: (filterId: any) => any;
     getAppliedFilterById: (filterId: any) => any;
@@ -17,7 +17,7 @@ declare const _default: {
     getResponseHelpers: () => {
         getFilters: any;
         getAppliedFilterById: any;
-        getAppliedFilters: any;
+        getFlattenedAppliedFilters: any;
         getFilterById: any;
         isFilterApplied: any;
     };
@@ -25,5 +25,6 @@ declare const _default: {
     getFilterId: (filterItemId: any) => any;
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
+    getAppliedFilters: (filters: any) => any[];
 };
 export default _default;

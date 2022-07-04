@@ -2,7 +2,7 @@ const getFilters = function () {
   return this.responseState.filters
 }
 
-const getAppliedFilters = function(){
+const getFlattenedAppliedFilters = function(){
   const flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
   const appliedFilterItems = flattenedFilterItems.filter((filter)=>{
     if(filter.hasOwnProperty('selected')){
@@ -19,6 +19,29 @@ const getAppliedFilters = function(){
   })
   return appliedFilterItems
 }
+
+const getAppliedFilterItems = (items) =>
+items.filter((item) => {
+  console.log(item);
+  if (item.items) item.items = getAppliedFilterItems(item.items);
+  return item.selected;
+});
+
+const getAppliedFilters = (filters) => {
+  let appliedFilters = [];
+  filters.map((filter) => {
+    if (filter.items) {
+      const appliedFilterItems = getAppliedFilterItems(filter.items);
+      if (appliedFilterItems.length) {
+        appliedFilters.push({
+          ...filter,
+          items: appliedFilterItems,
+        });
+      }
+    }
+  });
+  return appliedFilters;
+};
 
 const setFilter = function (filterId, appliedFilter, callAPI = false) {
   const filter = this.filterHelpers.getFilterById(filterId)
@@ -54,14 +77,14 @@ const getFilterById = function(filterId){
 }
 
 const getAppliedFilterById = function(filterId){
-  const appliedFilters = this.filterHelpers.getAppliedFilters()
+  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilters()
   const appliedFilter = appliedFilters.find((filter)=>filter.id === filterId)
   if(!appliedFilter) return false
   return appliedFilter
 }
 
 const isFilterApplied = function(id){
-  const appliedFilters = this.filterHelpers.getAppliedFilters()
+  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilters()
   const appliedFilter = appliedFilters.find((filter)=>{
     if(filter.type === 'range'){
       return (filter.id === id)
@@ -166,7 +189,7 @@ const getFilterId = function(filterItemId){
 const getResponseHelpers = function(){
   const {
     getFilters,
-    getAppliedFilters,
+    getFlattenedAppliedFilters,
     getAppliedFilterById,
     getFilterById,
     isFilterApplied
@@ -174,7 +197,7 @@ const getResponseHelpers = function(){
   return {
     getFilters,
     getAppliedFilterById,
-    getAppliedFilters,
+    getFlattenedAppliedFilters,
     getFilterById,
     isFilterApplied
   }
@@ -192,7 +215,7 @@ const getRequestHelpers = function(){
 
 export default {
   getFilters,
-  getAppliedFilters,
+  getFlattenedAppliedFilters,
   applyFilter,
   getFilterById,
   getAppliedFilterById,
@@ -205,5 +228,6 @@ export default {
   getParentFilterItemIds,
   getFilterId,
   flattenFilterItems,
-  getChildFilterItemIds
+  getChildFilterItemIds,
+  getAppliedFilters
 };

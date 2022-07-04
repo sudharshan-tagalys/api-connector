@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var getFilters = function () {
     return this.responseState.filters;
 };
-var getAppliedFilters = function () {
+var getFlattenedAppliedFilters = function () {
     var _this = this;
     var flattenedFilterItems = this.filterHelpers.flattenFilterItems(this.responseState.filters);
     var appliedFilterItems = flattenedFilterItems.filter(function (filter) {
@@ -40,6 +40,26 @@ var getAppliedFilters = function () {
         }
     });
     return appliedFilterItems;
+};
+var getAppliedFilterItems = function (items) {
+    return items.filter(function (item) {
+        console.log(item);
+        if (item.items)
+            item.items = getAppliedFilterItems(item.items);
+        return item.selected;
+    });
+};
+var getAppliedFilters = function (filters) {
+    var appliedFilters = [];
+    filters.map(function (filter) {
+        if (filter.items) {
+            var appliedFilterItems = getAppliedFilterItems(filter.items);
+            if (appliedFilterItems.length) {
+                appliedFilters.push(__assign(__assign({}, filter), { items: appliedFilterItems }));
+            }
+        }
+    });
+    return appliedFilters;
 };
 var setFilter = function (filterId, appliedFilter, callAPI) {
     if (callAPI === void 0) { callAPI = false; }
@@ -76,14 +96,14 @@ var getFilterById = function (filterId) {
     return filter;
 };
 var getAppliedFilterById = function (filterId) {
-    var appliedFilters = this.filterHelpers.getAppliedFilters();
+    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilters();
     var appliedFilter = appliedFilters.find(function (filter) { return filter.id === filterId; });
     if (!appliedFilter)
         return false;
     return appliedFilter;
 };
 var isFilterApplied = function (id) {
-    var appliedFilters = this.filterHelpers.getAppliedFilters();
+    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilters();
     var appliedFilter = appliedFilters.find(function (filter) {
         if (filter.type === 'range') {
             return (filter.id === id);
@@ -185,11 +205,11 @@ var getFilterId = function (filterItemId) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getAppliedFilters = _a.getAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied;
     return {
         getFilters: getFilters,
         getAppliedFilterById: getAppliedFilterById,
-        getAppliedFilters: getAppliedFilters,
+        getFlattenedAppliedFilters: getFlattenedAppliedFilters,
         getFilterById: getFilterById,
         isFilterApplied: isFilterApplied
     };
@@ -205,7 +225,7 @@ var getRequestHelpers = function () {
 };
 exports.default = {
     getFilters: getFilters,
-    getAppliedFilters: getAppliedFilters,
+    getFlattenedAppliedFilters: getFlattenedAppliedFilters,
     applyFilter: applyFilter,
     getFilterById: getFilterById,
     getAppliedFilterById: getAppliedFilterById,
@@ -218,6 +238,7 @@ exports.default = {
     getParentFilterItemIds: getParentFilterItemIds,
     getFilterId: getFilterId,
     flattenFilterItems: flattenFilterItems,
-    getChildFilterItemIds: getChildFilterItemIds
+    getChildFilterItemIds: getChildFilterItemIds,
+    getAppliedFilters: getAppliedFilters
 };
 //# sourceMappingURL=filter.js.map
