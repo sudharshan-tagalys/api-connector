@@ -31,7 +31,7 @@ var getEncodedQueryString = function (_a) {
     except.forEach(function (paramToDelete) {
         delete params[getReplacementParam(paramToDelete)];
     });
-    return "?".concat(queryStringManager_1.default.stringify(params));
+    return "".concat(queryStringManager_1.default.stringify(params));
 };
 exports.getEncodedQueryString = getEncodedQueryString;
 var getReplacementParam = function (param) {

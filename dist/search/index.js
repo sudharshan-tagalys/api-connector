@@ -33,34 +33,37 @@ var pagination_1 = require("./helpers/pagination");
 var sortOption_1 = require("./helpers/sortOption");
 var product_1 = require("./helpers/product");
 var common_1 = require("../shared/helpers/common");
-var DEFAULT_REQUEST_STATE = {
-    query: "",
-    queryMode: "",
-    filters: {},
-    queryFilters: {},
-    request: ['details', 'filters', 'sort_options'],
-    page: 1,
-    perPage: 16,
-    sort: ""
-};
-var DEFAULT_RESPONSE_STATE = {
-    query: "",
-    total_pages: null,
-    page: null,
-    total: null,
-    query_original: null,
-    query_mode: null,
-    products: [],
-    filters: [],
-    sort_options: []
-};
 var Search = /** @class */ (function (_super) {
     __extends(Search, _super);
     function Search() {
         var _this = _super.call(this) || this;
+        _this.getDefaultRequestState = function () {
+            return {
+                query: "",
+                queryMode: "",
+                filters: {},
+                queryFilters: {},
+                request: ['details', 'filters', 'sort_options'],
+                page: 1,
+                perPage: 16,
+                sort: ""
+            };
+        };
+        _this.getDefaultResponseState = function () {
+            return {
+                query: "",
+                total_pages: null,
+                page: null,
+                total: null,
+                query_mode: null,
+                products: [],
+                filters: [],
+                sort_options: []
+            };
+        };
         // == STATE ==
-        _this.requestState = DEFAULT_REQUEST_STATE;
-        _this.responseState = DEFAULT_RESPONSE_STATE;
+        _this.requestState = _this.getDefaultRequestState();
+        _this.responseState = _this.getDefaultResponseState();
         _this.filterHelpers = _this.bindThisToHelpers(filter_1.default);
         _this.paginationHelpers = _this.bindThisToHelpers(pagination_1.default);
         _this.searchHelpers = _this.bindThisToHelpers(search_1.default);
@@ -161,7 +164,7 @@ var Search = /** @class */ (function (_super) {
         if (params.sort) {
             requestState['sort'] = params.sort;
         }
-        return __assign(__assign({}, DEFAULT_REQUEST_STATE), requestState);
+        return __assign(__assign({}, this.getDefaultRequestState()), requestState);
     };
     Search.prototype.getParamsFromRequestState = function () {
         return this.getRequestParams(this.requestState);
@@ -285,9 +288,19 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;
-        var requestState = this.getRequestStateFromParams(this.requestOptions.params);
+        var requestState = this.getDefaultRequestState();
+        if (this.requestOptions.hasOwnProperty('params')) {
+            requestState = this.getRequestStateFromParams(this.requestOptions.params);
+        }
+        else {
+            var params = (0, common_1.getRequestParamsFromWindowLocation)();
+            requestState = this.getRequestStateFromParams(params);
+        }
         if (Object.keys(requestState).length) {
             this.requestState = requestState;
+        }
+        else {
+            console.error("Something went wrong in the request state");
         }
         this.setRequestParamsFromRequestState();
         return this.getHelpersToExpose();

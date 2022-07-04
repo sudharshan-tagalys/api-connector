@@ -76,7 +76,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
         return __assign({ updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }), recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }, removeRecentSearch: function (queryString) { return (0, common_1.removeRecentSearch)(queryString); }, getRecentSearches: function (limit) { return _this.getRecentSearches(limit); }, getPopularSearches: function (limit) { return _this.getPopularSearches(limit); }, getRecentAndPopularSearches: function (maxRecentSearches, maxTotalSearches, callbackOptions) {
                 if (callbackOptions === void 0) { callbackOptions = {}; }
                 return _this.getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions);
-            }, setQuery: function (query) { return _this.setQuery(query); } }, queryStringHelpers);
+            }, getEncodedQueryString: function (queryParams) { return (0, common_1.getEncodedQueryString)(queryParams); }, getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); }, setQuery: function (query) { return _this.setQuery(query); } }, queryStringHelpers);
     };
     SearchSuggestions.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;

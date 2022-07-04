@@ -37,7 +37,6 @@ declare class APIConnector {
                 onFailure: (response: any) => void;
             }) => {
                 helpers: any;
-                call: (requestOptions: any) => void;
             };
         };
     };

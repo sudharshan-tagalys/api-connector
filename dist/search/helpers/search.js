@@ -7,7 +7,9 @@ var setQuery = function (query) {
     });
 };
 var isValidQuery = function () {
-    return (!this.searchHelpers.isPartialResults() && !this.searchHelpers.isRedirected());
+    return !(this.searchHelpers.isPartialResults() ||
+        this.searchHelpers.isRedirected() ||
+        this.searchHelpers.isSpellingCorrectedQuery());
 };
 var isSpellingCorrectedQuery = function () {
     return this.responseState.hasOwnProperty("query_original");

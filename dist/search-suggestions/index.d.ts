@@ -24,6 +24,7 @@ declare class SearchSuggestions extends APIConnector {
         getRecentSearches: (limit: any) => any;
         getPopularSearches: (limit: any) => Promise<unknown>;
         getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
+        getEncodedQueryString: (queryParams: any) => string;
         setQuery: (query: any) => void;
     };
     new(requestOptions: any): {
@@ -36,6 +37,7 @@ declare class SearchSuggestions extends APIConnector {
         getRecentSearches: (limit: any) => any;
         getPopularSearches: (limit: any) => Promise<unknown>;
         getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
+        getEncodedQueryString: (queryParams: any) => string;
         setQuery: (query: any) => void;
     };
     getSearchesToDisplay(recentSearches: any, popularSearches: any, maxRecentSearches: any, maxTotalSearches: any): any;

@@ -5,6 +5,26 @@ declare class Search extends APIConnector {
     searchHelpers: any;
     sortOptionHelpers: any;
     productHelpers: any;
+    getDefaultRequestState: () => {
+        query: string;
+        queryMode: string;
+        filters: {};
+        queryFilters: {};
+        request: string[];
+        page: number;
+        perPage: number;
+        sort: string;
+    };
+    getDefaultResponseState: () => {
+        query: string;
+        total_pages: any;
+        page: any;
+        total: any;
+        query_mode: any;
+        products: any[];
+        filters: any[];
+        sort_options: any[];
+    };
     requestState: {
         query: string;
         queryMode: string;
@@ -20,7 +40,6 @@ declare class Search extends APIConnector {
         total_pages: any;
         page: any;
         total: any;
-        query_original: any;
         query_mode: any;
         products: any[];
         filters: any[];
@@ -97,7 +116,6 @@ declare class Search extends APIConnector {
             total_pages: any;
             page: any;
             total: any;
-            query_original: any;
             query_mode: any;
             products: any[];
             filters: any[];

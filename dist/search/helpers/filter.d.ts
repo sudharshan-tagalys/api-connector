@@ -3,8 +3,8 @@ declare const _default: {
     getFlattenedAppliedFilters: () => any;
     applyFilter: (filterId: any, appliedFilter: any) => void;
     getFilterById: (filterId: any) => any;
-    getAppliedFilterById: (filterId: any) => any;
-    isFilterApplied: (id: any) => boolean;
+    getFilterItemById: (filterItemId: any) => any;
+    isFilterItemApplied: (id: any) => boolean;
     clearFilter: (filterId: any, filterItemIds?: any[]) => void;
     clearAllFilters: () => void;
     setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
@@ -17,10 +17,10 @@ declare const _default: {
     getResponseHelpers: () => {
         getFilters: any;
         getAppliedFilters: any;
-        getAppliedFilterById: any;
         getFlattenedAppliedFilters: any;
         getFilterById: any;
-        isFilterApplied: any;
+        getFilterItemById: any;
+        isFilterItemApplied: any;
     };
     getParentFilterItemIds: (filterItemId: any) => any;
     getFilterId: (filterItemId: any) => any;
