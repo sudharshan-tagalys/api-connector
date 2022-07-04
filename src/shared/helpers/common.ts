@@ -55,7 +55,7 @@ const getRequestParamsFromWindowLocation = () => {
 }
 
 const getRequestParamsFromQueryString = (queryString) => {
-  const parsedObjectFromQueryString = queryStringManager.parse(queryString)
+  const parsedObjectFromQueryString = queryStringManager.parse(queryString.replace("?", ''))
   const { queryParameter, queryFilterParameter, filterParameter, pageParameter, sortParameter } =  queryStringManager.getConfiguration()
   let params = {}
   if(parsedObjectFromQueryString[queryParameter]){
