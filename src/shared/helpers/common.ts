@@ -42,7 +42,7 @@ const getEncodedQueryString = ({
   except.forEach((paramToDelete) => {
     delete params[getReplacementParam(paramToDelete)]
   })
-  return  `?${queryStringManager.stringify(params)}`;
+  return  `${queryStringManager.stringify(params)}`;
 }
 
 const getReplacementParam = (param) => {
