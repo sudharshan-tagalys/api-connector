@@ -205,9 +205,10 @@ var getFilterId = function (filterItemId) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getAppliedFilterById = _a.getAppliedFilterById, getFilterById = _a.getFilterById, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters;
     return {
         getFilters: getFilters,
+        getAppliedFilters: getAppliedFilters,
         getAppliedFilterById: getAppliedFilterById,
         getFlattenedAppliedFilters: getFlattenedAppliedFilters,
         getFilterById: getFilterById,

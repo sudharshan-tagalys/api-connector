@@ -16,6 +16,7 @@ declare const _default: {
     };
     getResponseHelpers: () => {
         getFilters: any;
+        getAppliedFilters: any;
         getAppliedFilterById: any;
         getFlattenedAppliedFilters: any;
         getFilterById: any;

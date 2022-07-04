@@ -192,10 +192,12 @@ const getResponseHelpers = function(){
     getFlattenedAppliedFilters,
     getAppliedFilterById,
     getFilterById,
-    isFilterApplied
+    isFilterApplied,
+    getAppliedFilters
   } = this.filterHelpers
   return {
     getFilters,
+    getAppliedFilters,
     getAppliedFilterById,
     getFlattenedAppliedFilters,
     getFilterById,
