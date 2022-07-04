@@ -2,6 +2,7 @@ import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
 import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
+import debounce from "./debounce";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
@@ -19,6 +20,8 @@ const DEFAULT_REQUEST_OPTIONS = {
 
 class APIConnector{
   public requestOptions: any;
+  public currentRequestNumber: any = 0;
+  public completedRequestNumber: any = 0;
   public responseFormatter: any;
 
   setResponseFormatter(){
@@ -28,6 +31,9 @@ class APIConnector{
   }
 
   call(requestOptions = this.requestOptions) {
+    const currentRequest = this.currentRequestNumber += 1;
+    this.updateRequestNumber(currentRequest)
+
     this.requestOptions = requestOptions;
     this.setResponseFormatter()
     let { method, path, params, format } = {
@@ -35,12 +41,17 @@ class APIConnector{
       ...this.getRequestOptions()
     };
     params = this.beforeAPICall(params)
+
     api.call(method, path, {
       params: this.formatRequestParams({
         ...params,
         identification: configuration.getApiIdentification()
       }, format),
       onSuccess: (response) => {
+        if(this.oldRequest(currentRequest)){
+          return
+        }
+        this.markRequestComplete(currentRequest)
         if (this.isFailureResponse(response)) {
           this.requestOptions.onFailure(response, this.getHelpersToExpose(response))
         } else {
@@ -48,6 +59,10 @@ class APIConnector{
         }
       },
       onFailure: (response) => {
+        if(this.oldRequest(currentRequest)){
+          return
+        }
+        this.markRequestComplete(currentRequest)
         this.requestOptions.onFailure(response, this.getHelpersToExpose(response))
       }
     });
@@ -117,6 +132,20 @@ class APIConnector{
 
   static exporterName(){
     throw new Error("Should specify exporter name")
+  }
+
+  updateRequestNumber(requestNumber){
+    this.currentRequestNumber = requestNumber
+    return requestNumber
+  }
+
+  markRequestComplete(requestNumber){
+    this.completedRequestNumber = requestNumber
+    return requestNumber
+  }
+
+  oldRequest(requestNumber){
+    return (requestNumber < this.completedRequestNumber)
   }
 
   static export(){

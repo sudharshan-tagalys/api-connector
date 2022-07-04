@@ -21,6 +21,7 @@ class API{
       }
     }
     xhr.send(requestOptions.params);
+    return xhr
   }
 
   url(path): string{

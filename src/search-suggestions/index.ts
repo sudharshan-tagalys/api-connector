@@ -12,6 +12,7 @@ import {
   formatSearchItem,
   sortRecentSeaches
 } from "../shared/helpers/common";
+import debounce from "../lib/debounce";
 
 const MAX_RECENT_SEARCHES_TO_DISPLAY = 5;
 const MAX_SEARCHES_TO_DISPLAY = 10;
@@ -56,7 +57,7 @@ class SearchSuggestions extends APIConnector {
 
   getHelpersToExpose() {
     return {
-      updateQuery: (query) => this.updateQuery(query),
+      updateQuery: debounce((query)=>this.updateQuery(query)),
       setQuery: (query) => this.setQuery(query),
       getPopularSearches: (callbackOptions = { }) => this.getPopularSearches(callbackOptions),
       addToRecentSearch: (query) => addToRecentSearch(query),
