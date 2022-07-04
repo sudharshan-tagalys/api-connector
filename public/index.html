@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Search and search suggestions</title>
     <script src="./bundle.js" async></script>
     <input id="search-input" placeholder="Search" name="search" />
   </head>
@@ -26,10 +26,9 @@
           },
         });
       }
-      document.addEventListener("tagalys:ready", function () {
-        // Initialise the connector with the configuration options
-        setConfiguration();
-        window.searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+
+      function initializeSearchSuggestions() {
+        return Tagalys.APIConnector.SearchSuggestions.new({
           params: {
             request: {
               products: 10, // number of suggested products to request
@@ -37,6 +36,7 @@
             },
           },
           onSuccess: function (response, helpers) {
+            console.log("response for search suggestions", response);
             // Called after a successful API call
             // Use response to render the results - described below
           },
@@ -44,15 +44,113 @@
             // Called after a failed API call
           },
         });
+      }
 
-        // helpers
-        window.searchSuggestions.helpers
-          .getPopularSearches(10)
-          .then(function (response) {
-            console.log("response for popular searches", response);
-          });
-        console.log(window.searchSuggestions.helpers.getRequestParamsFromQueryString("?q=red"))
+      function intializeSearchResults(params) {
+        return Tagalys.APIConnector.SearchResults.new({
+          params: params,
+          onSuccess: function (response, helpers) {
+            // Called after a successful API call
+            // Use response to render the results - described below
+            console.log("response for search results", response);
+            if (helpers.isValidQuery()) {
+              console.log("valid query")
+              logResponse(helpers);
+            }
+            if (helpers.isSpellingCorrectedQuery()) {
+              console.log(
+                "No products found for " +
+                  helpers.getOriginalQuery() +
+                  ", showing results for " +
+                  helpers.getQuery() +
+                  " instead."
+              );
+              logResponse(helpers);
+            }
+            if (helpers.isPartialResults()) {
+              console.log(
+                "No products exactly match " +
+                  helpers.getQuery() +
+                  ", showing results that partially match instead."
+              );
+              logResponse(helpers);
+            }
+            if (helpers.isRedirected()) {
+              console.log("Redirecting to", helpers.getRedirectURL());
+              // you can use the getRedirectURL and redirect like below example
+              // window.location.href = helpers.getRedirectURL()
+            }
+          },
+          onFailure: function (response, helpers) {
+            // Called after a failed API call
+          },
+        });
+      }
+
+      document.addEventListener("tagalys:ready", function () {
+        // Initialise the connector with the configuration options
+        setConfiguration();
+        window.searchSuggestions = initializeSearchSuggestions();
+
+        // get popular searches
+        window.searchSuggestions.helpers.getPopularSearches(10).then(function (response) {
+          console.log("response for popular searches", response);
+        });
+
+        // setting up the event handlers for search input
+        document.getElementById("search-input").addEventListener("input", updateSearchSuggestions);
+
+        // setting up the event listener for search results
+        document.getElementById("search-input").addEventListener("keydown", function (event) {
+          // listening for enter
+          if (event.keyCode === 13) {
+            // get the encoded query string and append to the URL
+            var queryString = window.searchSuggestions.helpers.getEncodedQueryString({
+              query: event.target.value,
+            });
+            updateHistory(queryString)
+
+            // get the parameters from the window location
+            var params = window.searchSuggestions.helpers.getRequestParamsFromQueryString(window.location.search);
+            window.searchResults = intializeSearchResults(params);
+
+            // finally call the API
+            window.searchResults.helpers.call();
+          }
+        });
       });
+
+      function updateHistory(queryString){
+        var pageUrl = "?" + queryString;
+        window.history.pushState("", "", pageUrl);
+      }
+
+      function updateSearchSuggestions(e) {
+        // makes an API request and triggers the onSuccess callback with the response
+        window.searchSuggestions.helpers.updateQuery(e.target.value);
+      }
+
+      function applyFilter(filterId, value) {
+        window.searchResults.helpers.applyFilter(filterId, value);
+      }
+
+      function applySortOption(sortOptionId) {
+        window.searchResults.helpers.applySortOption(sortOptionId);
+      }
+
+      function goToPage2() {
+        window.searchResults.helpers.goToPage(2);
+      }
+
+      function logResponse(helpers) {
+        console.log("extracted details from helpers", {
+          products: helpers.getProducts(),
+          filters: helpers.getFilters(),
+          applied_filters: helpers.getAppliedFilters(),
+          sort_options: helpers.getSortOptions(),
+          total_pages: helpers.getTotalPages()
+        })
+      }
     </script>
   </body>
 </html>
