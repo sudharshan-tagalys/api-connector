@@ -28,9 +28,9 @@ items.filter((item) => {
 });
 
 const getAppliedFilters = function (){
-  const filters = [...this.responseState.filters]
+  const responseState = deepClone(this.responseState)
   let appliedFilters = [];
-  filters.map((filter) => {
+  responseState.filters.map((filter) => {
     if (filter.items) {
       const appliedFilterItems = getAppliedFilterItems(filter.items);
       if (appliedFilterItems.length) {
@@ -215,6 +215,9 @@ const getRequestHelpers = function(){
     clearAllFilters
   }
 }
+
+const deepClone = (data) => JSON.parse(JSON.stringify(data))
+
 
 export default {
   getFilters,

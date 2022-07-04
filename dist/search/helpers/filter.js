@@ -50,9 +50,9 @@ var getAppliedFilterItems = function (items) {
     });
 };
 var getAppliedFilters = function () {
-    var filters = __spreadArray([], this.responseState.filters, true);
+    var responseState = deepClone(this.responseState);
     var appliedFilters = [];
-    filters.map(function (filter) {
+    responseState.filters.map(function (filter) {
         if (filter.items) {
             var appliedFilterItems = getAppliedFilterItems(filter.items);
             if (appliedFilterItems.length) {
@@ -225,6 +225,7 @@ var getRequestHelpers = function () {
         clearAllFilters: clearAllFilters
     };
 };
+var deepClone = function (data) { return JSON.parse(JSON.stringify(data)); };
 exports.default = {
     getFilters: getFilters,
     getFlattenedAppliedFilters: getFlattenedAppliedFilters,
