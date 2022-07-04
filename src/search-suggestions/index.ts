@@ -6,16 +6,14 @@ import {
   getRequestParamsFromQueryString,
   getRequestParamsFromWindowLocation,
   getURLEncodedQueryString,
-  addToRecentSearch,
+  recordRecentSearch,
   removeRecentSearch,
   caseInsensitiveString,
   formatSearchItem,
-  sortRecentSeaches
+  sortRecentSeaches,
+  getRecentSearches
 } from "../shared/helpers/common";
 import debounce from "../lib/debounce";
-
-const MAX_RECENT_SEARCHES_TO_DISPLAY = 5;
-const MAX_SEARCHES_TO_DISPLAY = 10;
 
 class SearchSuggestions extends APIConnector {
   getRequestOptions() {
@@ -56,18 +54,25 @@ class SearchSuggestions extends APIConnector {
   }
 
   getHelpersToExpose() {
-    return {
-      updateQuery: debounce((query)=>this.updateQuery(query)),
-      setQuery: (query) => this.setQuery(query),
-      getPopularSearches: (callbackOptions = { }) => this.getPopularSearches(callbackOptions),
-      addToRecentSearch: (query) => addToRecentSearch(query),
-      removeRecentSearch: (query) => removeRecentSearch(query),
+    const queryStringHelpers = {
       getRequestParamsFromQueryString: (queryString) =>
         getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () =>
         getRequestParamsFromWindowLocation(),
       getURLEncodedQueryString: (baseUrl, params) =>
         getURLEncodedQueryString(baseUrl, params),
+    }
+    return {
+      updateQuery: debounce((query) => this.updateQuery(query)),
+      recordRecentSearch: (queryString) => recordRecentSearch(queryString),
+      removeRecentSearch: (queryString) => removeRecentSearch(queryString),
+      getRecentSearches: (limit) => this.getRecentSearches(limit),
+      getPopularSearches: (limit) => this.getPopularSearches(limit),
+      getRecentAndPopularSearches: (maxRecentSearches, maxTotalSearches, callbackOptions = {}) => {
+        return this.getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions)
+      },
+      setQuery: (query) => this.setQuery(query),
+      ...queryStringHelpers
     };
   }
 
@@ -76,7 +81,7 @@ class SearchSuggestions extends APIConnector {
     return this.getHelpersToExpose();
   }
 
-  getSearchesToDisplay(recentSearches, popularSearches) {
+  getSearchesToDisplay(recentSearches, popularSearches, maxRecentSearches, maxTotalSearches) {
     const popularSearchesDisplayStrings = popularSearches.map((popularSearch) =>
       caseInsensitiveString(popularSearch.displayString)
     );
@@ -95,7 +100,7 @@ class SearchSuggestions extends APIConnector {
     );
 
     const recentSearchesToDisplay = recentSearches
-      .slice(0, MAX_RECENT_SEARCHES_TO_DISPLAY)
+      .slice(0, maxRecentSearches)
       .map((searchItem) => {
         return {
           ...searchItem,
@@ -112,10 +117,10 @@ class SearchSuggestions extends APIConnector {
     );
     return sortRecentSeaches(recentSearchesToDisplay)
       .concat(popularSearchesToDisplay)
-      .slice(0, MAX_SEARCHES_TO_DISPLAY);
+      .slice(0, maxTotalSearches);
   }
 
-  getPopularSearches(callbackOptions: any = {}) {
+  getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions: any = {}) {
     return new Promise((resolve, reject) => {
       const recentSearches = localStorage.getItem("tagalysRecentSearches") || {
         queries: [],
@@ -126,7 +131,9 @@ class SearchSuggestions extends APIConnector {
         .then((popularSearches: any) => {
           const searchesToDisplay = this.getSearchesToDisplay(
             recentSearches.queries,
-            popularSearches.queries
+            popularSearches.queries,
+            maxRecentSearches,
+            maxTotalSearches
           );
           resolve({
             recentSearches: searchesToDisplay.filter(
@@ -138,6 +145,23 @@ class SearchSuggestions extends APIConnector {
           });
         });
     });
+  }
+
+  getPopularSearches(limit) {
+    return new Promise((resolve, _) => {
+      const popularSearches = new PopularSearches();
+      popularSearches
+        .fetchPopularSearches(this.requestOptions.configuration)
+        .then((popularSearches: any) => {
+          resolve(popularSearches.queries.slice(0, limit))
+        });
+    });
+  }
+
+  getRecentSearches(limit){
+    const recentSearches = getRecentSearches()
+    const sortedRecentSearches = sortRecentSeaches(recentSearches.queries)
+    return sortedRecentSearches.slice(0, limit)
   }
 
   static defaultRequestOptions() {

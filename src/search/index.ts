@@ -4,7 +4,7 @@ import SearchHelpers from './helpers/search';
 import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
-import { addToRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
+import { recordRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_STATE =  {
   query: "",
@@ -250,7 +250,7 @@ class Search extends APIConnector {
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
       getResponseState: () => this.responseState,
-      addToRecentSearch: (queryString) => addToRecentSearch(queryString)
+      recordRecentSearch: (queryString) => recordRecentSearch(queryString)
     }
   }
 

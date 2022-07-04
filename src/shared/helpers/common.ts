@@ -140,20 +140,29 @@ const getRecentSearches = () => {
   }
 }
 
-const addToRecentSearch = (requestParams) => {
-  removeRecentSearch(requestParams.query)
+const recordRecentSearch = (queryString: string) => {
+  const requestParams: any = getRequestParamsFromQueryString(queryString.replace("?", ""))
+  removeRecentSearch(queryString)
   const recentSearches: any = getRecentSearches()
   recentSearches.queries = recentSearches.queries.concat([{
     displayString: requestParams.query,
-    queryString: getEncodedQueryString(requestParams),
+    queryString: getEncodedQueryString({
+      query: requestParams.query,
+      queryFilters: requestParams.queryFilters
+    }),
     expiry: (localStorage.getCurrentTime() + 3600000)
   }])
   localStorage.setValue("tagalysRecentSearches", recentSearches)
 }
 
-const removeRecentSearch = (displayString: string) => {
+const removeRecentSearch = (queryString: string) => {
+  const requestParams: any = getRequestParamsFromQueryString(queryString.replace("?", ""))
+  const requiredQueryString = getEncodedQueryString({
+    query: requestParams.query,
+    queryFilters: requestParams.queryFilters
+  })
   const recentSearches = getRecentSearches()
-  recentSearches.queries = recentSearches.queries.filter(recentSearch => caseInsensitiveString(recentSearch.displayString) !== caseInsensitiveString(displayString))
+  recentSearches.queries = recentSearches.queries.filter(recentSearch => caseInsensitiveString(recentSearch.queryString) !== caseInsensitiveString(requiredQueryString))
   localStorage.setValue("tagalysRecentSearches", recentSearches)
 }
 
@@ -173,9 +182,10 @@ export {
   getEncodedQueryString,
   getRequestParamsFromQueryString,
   getRequestParamsFromWindowLocation,
-  addToRecentSearch,
+  recordRecentSearch,
   removeRecentSearch,
   caseInsensitiveString,
   formatSearchItem,
+  getRecentSearches,
   sortRecentSeaches
 }
