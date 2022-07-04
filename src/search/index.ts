@@ -51,7 +51,7 @@ class Search extends APIConnector {
   }
 
   static exporterName(){
-    return 'Search'
+    return 'SearchResults'
   }
 
   bindThisToHelpers(helpers: object){

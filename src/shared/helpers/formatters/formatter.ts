@@ -104,7 +104,7 @@ class Formatter {
 
   search(response) {
     if (response.error) return response
-    if (response.redirect_to_url) return response
+    if (response.redirect_to_url) return { redirect_to_url:  response.redirect_to_url}
     const totalPages = Math.ceil(response.total / response.per_page)
     const formattedResponse = {
       query: response.query,
