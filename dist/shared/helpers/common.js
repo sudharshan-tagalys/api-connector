@@ -43,7 +43,7 @@ var getRequestParamsFromWindowLocation = function () {
 };
 exports.getRequestParamsFromWindowLocation = getRequestParamsFromWindowLocation;
 var getRequestParamsFromQueryString = function (queryString) {
-    var parsedObjectFromQueryString = queryStringManager_1.default.parse(queryString);
+    var parsedObjectFromQueryString = queryStringManager_1.default.parse(queryString.replace("?", ''));
     var _a = queryStringManager_1.default.getConfiguration(), queryParameter = _a.queryParameter, queryFilterParameter = _a.queryFilterParameter, filterParameter = _a.filterParameter, pageParameter = _a.pageParameter, sortParameter = _a.sortParameter;
     var params = {};
     if (parsedObjectFromQueryString[queryParameter]) {

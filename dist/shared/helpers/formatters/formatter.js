@@ -102,7 +102,7 @@ var Formatter = /** @class */ (function () {
         if (response.error)
             return response;
         if (response.redirect_to_url)
-            return response;
+            return { redirect_to_url: response.redirect_to_url };
         var totalPages = Math.ceil(response.total / response.per_page);
         var formattedResponse = {
             query: response.query,

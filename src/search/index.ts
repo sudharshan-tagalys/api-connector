@@ -249,6 +249,7 @@ class Search extends APIConnector {
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
+      getRequestParams: () => this.requestState,
       getResponseState: () => this.responseState,
       recordRecentSearch: (queryString) => recordRecentSearch(queryString)
     }

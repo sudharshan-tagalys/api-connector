@@ -82,6 +82,16 @@ declare class Search extends APIConnector {
             perPage: number;
             sort: string;
         };
+        getRequestParams: () => {
+            query: string;
+            queryMode: string;
+            filters: {};
+            queryFilters: {};
+            request: string[];
+            page: number;
+            perPage: number;
+            sort: string;
+        };
         getResponseState: () => {
             query: string;
             total_pages: any;
