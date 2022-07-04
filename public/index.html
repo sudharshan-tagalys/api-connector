@@ -14,7 +14,8 @@
     <input id="search-input" placeholder="Search" name="search" />
     <div id="response" />
     <script>
-      document.addEventListener("tagalys:ready", function () {
+
+      function setConfiguration(){
         Tagalys.APIConnector.setConfiguration({
           serverUrl: "https://api-r3.tagalys.com",
           platform: "shopify",
@@ -29,8 +30,11 @@
             return true;
           },
         });
+      }
+
+      function initSearchSuggestions(){
         // Initialise the connector with the configuration options
-        window.searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
+        var searchSuggestions = Tagalys.APIConnector.SearchSuggestions.new({
           params: {
             request: {
               products: 10, // number of suggested products to request
@@ -40,24 +44,30 @@
           onSuccess: function (response, helpers) {
             // Called after a successful API call
             // Use response to render the results - described below
+            console.log(response, helpers)
           },
           onFailure: function (response, helpers) {
             // Called after a failed API call
           },
         });
+        return searchSuggestions
+      }
 
-        // setTimeout(() => {
-        //   window.searchSuggestions.helpers.call()
-        // }, 2000);
+      document.addEventListener("tagalys:ready", function () {
+        setConfiguration()
+        window.searchSuggestions = initSearchSuggestions()
 
-        document
-          .getElementById("search-input")
-          .addEventListener("input", updateSearchSuggestions);
-
-        function updateSearchSuggestions(e) {
-          window.searchSuggestions.helpers.updateQuery("skirt");
-          // makes an API request and triggers the onSuccess callback with the response
-        }
+        // HELPERS
+        // window.searchSuggestions.helpers.updateQuery("dress");
+        window.searchSuggestions.helpers.removeRecentSearch('?q=green')
+        window.searchSuggestions.helpers.getPopularSearches(15).then((popularSearches)=>{
+          console.log(popularSearches)
+        })
+        window.searchSuggestions.helpers.getRecentAndPopularSearches(5, 10).then((response)=>{
+          console.log(response)
+        })
+        window.searchSuggestions.helpers.setQuery("white")
+        window.searchSuggestions.helpers.call()
       });
     </script>
   </body>
