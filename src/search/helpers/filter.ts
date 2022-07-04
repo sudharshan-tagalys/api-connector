@@ -27,7 +27,8 @@ items.filter((item) => {
   return item.selected;
 });
 
-const getAppliedFilters = (filters) => {
+const getAppliedFilters = function (){
+  const filters = this.responseState.filters
   let appliedFilters = [];
   filters.map((filter) => {
     if (filter.items) {
