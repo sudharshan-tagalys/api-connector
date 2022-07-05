@@ -24,6 +24,12 @@ var SmartWidget = /** @class */ (function (_super) {
     SmartWidget.exporterName = function () {
         return 'SmartWidget';
     };
+    SmartWidget.prototype.getParams = function () {
+        return {
+            request: ["result", "details"],
+            per_page: this.requestOptions.params.limit || 16,
+        };
+    };
     SmartWidget.prototype.path = function () {
         return "custom_widgets/".concat(this.requestOptions.params.widgetId);
     };

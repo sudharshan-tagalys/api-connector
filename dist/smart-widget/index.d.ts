@@ -1,6 +1,10 @@
 import Widget from "../lib/widget";
 declare class SmartWidget extends Widget {
     static exporterName(): string;
+    getParams(): {
+        request: string[];
+        per_page: any;
+    };
     path(): string;
     plType(): string;
     formatResponse(response: any): any;

@@ -244,7 +244,8 @@ var Search = /** @class */ (function (_super) {
     Search.prototype.commonHelpers = function () {
         var _this = this;
         return {
-            getEncodedQueryString: function (except) {
+            getEncodedQueryString: function (requestParameters) { return (0, common_1.getEncodedQueryString)(requestParameters); },
+            getEncodedQueryStringFromRequestState: function (except) {
                 if (except === void 0) { except = []; }
                 return _this.getEncodedQueryString.call(_this, except);
             },

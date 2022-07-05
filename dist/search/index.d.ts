@@ -88,7 +88,8 @@ declare class Search extends APIConnector {
     isRequested(requestItem: any): boolean;
     getEncodedQueryString(except?: any[]): string;
     commonHelpers(): {
-        getEncodedQueryString: (except?: any[]) => any;
+        getEncodedQueryString: (requestParameters: any) => string;
+        getEncodedQueryStringFromRequestState: (except?: any[]) => any;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getRequestState: () => {
