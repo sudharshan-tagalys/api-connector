@@ -149,7 +149,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
                 },
             }, configuration: {
                 categorySeparator: "▸",
-                hierarchySeparator: "->",
+                hierarchySeparator: "➜",
             } });
     };
     return SearchSuggestions;

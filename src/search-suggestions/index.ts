@@ -178,7 +178,7 @@ class SearchSuggestions extends APIConnector {
       },
       configuration: {
         categorySeparator: "▸",
-        hierarchySeparator: "->",
+        hierarchySeparator: "➜",
       },
     };
   }
