@@ -4,7 +4,7 @@ exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
-    return "".concat(baseUrl).concat(getEncodedQueryString(params));
+    return "".concat(baseUrl, "?").concat(getEncodedQueryString(params));
 };
 exports.getURLEncodedQueryString = getURLEncodedQueryString;
 var getEncodedQueryString = function (_a) {

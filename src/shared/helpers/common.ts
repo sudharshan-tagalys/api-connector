@@ -2,7 +2,7 @@ import localStorage from '../../lib/localStorage';
 import queryStringManager from '../../lib/queryStringManager';
 
 const getURLEncodedQueryString = (baseUrl, params) => {
-  return `${baseUrl}${getEncodedQueryString(params)}`
+  return `${baseUrl}?${getEncodedQueryString(params)}`
 }
 
 const getEncodedQueryString = ({
