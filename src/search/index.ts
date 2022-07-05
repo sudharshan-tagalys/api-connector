@@ -249,7 +249,8 @@ class Search extends APIConnector {
 
   commonHelpers(){
     return {
-      getEncodedQueryString: (except = []) => this.getEncodedQueryString.call(this, except),
+      getEncodedQueryString: (requestParameters) => getEncodedQueryString(requestParameters),
+      getEncodedQueryStringFromRequestState: (except = []) => this.getEncodedQueryString.call(this, except),
       getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,

@@ -5,6 +5,13 @@ class SmartWidget extends Widget {
     return 'SmartWidget'
   }
 
+  getParams(){
+    return {
+      request: ["result", "details"],
+      per_page: this.requestOptions.params.limit || 16,
+    }
+  }
+
   path(): string{
     return `custom_widgets/${this.requestOptions.params.widgetId}`
   }
