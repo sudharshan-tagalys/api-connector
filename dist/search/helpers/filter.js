@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var getFilters = function () {
     return this.responseState.filters;
 };
-var getFlattenedAppliedFilters = function () {
+var getFlattenedAppliedFilterItems = function () {
     var _this = this;
     var responseState = deepClone(this.responseState);
     var flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
@@ -108,7 +108,7 @@ var getFilterItemById = function (filterItemId) {
     return this.filterHelpers.getFilterById(filterItemId);
 };
 var isFilterItemApplied = function (id) {
-    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilters();
+    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems();
     var appliedFilter = appliedFilters.find(function (filter) {
         if (filter.type === 'range') {
             return (filter.id === id);
@@ -215,12 +215,12 @@ var getFilterId = function (filterItemId) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterItemApplied = _a.isFilterItemApplied, getAppliedFilters = _a.getAppliedFilters;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilterItems = _a.getFlattenedAppliedFilterItems, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterItemApplied = _a.isFilterItemApplied, getAppliedFilters = _a.getAppliedFilters, getFilterId = _a.getFilterId;
     return {
         getFilters: getFilters,
         getAppliedFilters: getAppliedFilters,
         getFilterId: getFilterId,
-        getFlattenedAppliedFilters: getFlattenedAppliedFilters,
+        getFlattenedAppliedFilterItems: getFlattenedAppliedFilterItems,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
         isFilterItemApplied: isFilterItemApplied
@@ -238,7 +238,7 @@ var getRequestHelpers = function () {
 var deepClone = function (data) { return JSON.parse(JSON.stringify(data)); };
 exports.default = {
     getFilters: getFilters,
-    getFlattenedAppliedFilters: getFlattenedAppliedFilters,
+    getFlattenedAppliedFilterItems: getFlattenedAppliedFilterItems,
     applyFilter: applyFilter,
     getFilterById: getFilterById,
     getFilterItemById: getFilterItemById,

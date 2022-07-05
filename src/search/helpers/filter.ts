@@ -2,7 +2,7 @@ const getFilters = function () {
   return this.responseState.filters
 }
 
-const getFlattenedAppliedFilters = function(){
+const getFlattenedAppliedFilterItems = function(){
   const responseState = deepClone(this.responseState)
   const flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
   const appliedFilterItems = flattenedFilterItems.filter((filter)=>{
@@ -90,7 +90,7 @@ const getFilterItemById = function(filterItemId){
 }
 
 const isFilterItemApplied = function(id){
-  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilters()
+  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems()
   const appliedFilter = appliedFilters.find((filter)=>{
     if(filter.type === 'range'){
       return (filter.id === id)
@@ -200,17 +200,18 @@ const getFilterId = function(filterItemId){
 const getResponseHelpers = function(){
   const {
     getFilters,
-    getFlattenedAppliedFilters,
+    getFlattenedAppliedFilterItems,
     getFilterById,
     getFilterItemById,
     isFilterItemApplied,
     getAppliedFilters,
+    getFilterId
   } = this.filterHelpers
   return {
     getFilters,
     getAppliedFilters,
     getFilterId,
-    getFlattenedAppliedFilters,
+    getFlattenedAppliedFilterItems,
     getFilterById,
     getFilterItemById,
     isFilterItemApplied
@@ -232,7 +233,7 @@ const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
 export default {
   getFilters,
-  getFlattenedAppliedFilters,
+  getFlattenedAppliedFilterItems,
   applyFilter,
   getFilterById,
   getFilterItemById,
