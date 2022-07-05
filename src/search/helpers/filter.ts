@@ -209,6 +209,7 @@ const getResponseHelpers = function(){
   return {
     getFilters,
     getAppliedFilters,
+    getFilterId,
     getFlattenedAppliedFilters,
     getFilterById,
     getFilterItemById,

@@ -219,6 +219,7 @@ var getResponseHelpers = function () {
     return {
         getFilters: getFilters,
         getAppliedFilters: getAppliedFilters,
+        getFilterId: getFilterId,
         getFlattenedAppliedFilters: getFlattenedAppliedFilters,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
