@@ -122,6 +122,22 @@ var isFilterItemApplied = function (id) {
         return true;
     return false;
 };
+var isFilterApplied = function (id) {
+    var _this = this;
+    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems();
+    var appliedFilter = appliedFilters.find(function (filter) {
+        var filterId = _this.filterHelpers.getFilterId(filter.id);
+        if (filter.type === 'range') {
+            return (filter.id === id);
+        }
+        if (filterId) {
+            return (filterId === id);
+        }
+    });
+    if (appliedFilter)
+        return true;
+    return false;
+};
 var clearFilter = function (filterId, filterItemIds) {
     var _this = this;
     if (filterItemIds === void 0) { filterItemIds = []; }
@@ -215,7 +231,7 @@ var getFilterId = function (filterItemId) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilterItems = _a.getFlattenedAppliedFilterItems, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterItemApplied = _a.isFilterItemApplied, getAppliedFilters = _a.getAppliedFilters, getFilterId = _a.getFilterId;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilterItems = _a.getFlattenedAppliedFilterItems, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterItemApplied = _a.isFilterItemApplied, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters, getFilterId = _a.getFilterId;
     return {
         getFilters: getFilters,
         getAppliedFilters: getAppliedFilters,
@@ -223,7 +239,8 @@ var getResponseHelpers = function () {
         getFlattenedAppliedFilterItems: getFlattenedAppliedFilterItems,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
-        isFilterItemApplied: isFilterItemApplied
+        isFilterItemApplied: isFilterItemApplied,
+        isFilterApplied: isFilterApplied
     };
 };
 var getRequestHelpers = function () {
@@ -252,6 +269,7 @@ exports.default = {
     getFilterId: getFilterId,
     flattenFilterItems: flattenFilterItems,
     getChildFilterItemIds: getChildFilterItemIds,
-    getAppliedFilters: getAppliedFilters
+    getAppliedFilters: getAppliedFilters,
+    isFilterApplied: isFilterApplied
 };
 //# sourceMappingURL=filter.js.map

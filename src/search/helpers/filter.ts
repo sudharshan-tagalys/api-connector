@@ -104,6 +104,21 @@ const isFilterItemApplied = function(id){
   return false
 }
 
+const isFilterApplied = function(id){
+  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems()
+  const appliedFilter = appliedFilters.find((filter)=>{
+    const filterId = this.filterHelpers.getFilterId(filter.id)
+    if(filter.type === 'range'){
+      return (filter.id === id)
+    }
+    if(filterId){
+      return (filterId === id)
+    }
+  })
+  if(appliedFilter) return true
+  return false
+}
+
 const clearFilter = function(filterId, filterItemIds = []){
   const responseState = deepClone(this.responseState)
   this.setRequestState((reqState)=>{
@@ -204,6 +219,7 @@ const getResponseHelpers = function(){
     getFilterById,
     getFilterItemById,
     isFilterItemApplied,
+    isFilterApplied,
     getAppliedFilters,
     getFilterId
   } = this.filterHelpers
@@ -214,7 +230,8 @@ const getResponseHelpers = function(){
     getFlattenedAppliedFilterItems,
     getFilterById,
     getFilterItemById,
-    isFilterItemApplied
+    isFilterItemApplied,
+    isFilterApplied
   }
 }
 
@@ -247,5 +264,6 @@ export default {
   getFilterId,
   flattenFilterItems,
   getChildFilterItemIds,
-  getAppliedFilters
+  getAppliedFilters,
+  isFilterApplied
 };

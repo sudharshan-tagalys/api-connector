@@ -22,11 +22,13 @@ declare const _default: {
         getFilterById: any;
         getFilterItemById: any;
         isFilterItemApplied: any;
+        isFilterApplied: any;
     };
     getParentFilterItemIds: (filterItemId: any) => any;
     getFilterId: (filterItemId: any) => any;
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
     getAppliedFilters: () => any[];
+    isFilterApplied: (id: any) => boolean;
 };
 export default _default;
