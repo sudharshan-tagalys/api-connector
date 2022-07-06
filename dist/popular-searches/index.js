@@ -46,9 +46,7 @@ var PopularSearches = /** @class */ (function (_super) {
                 _this.call({
                     onSuccess: function (response) {
                         var popularSearchesFromResponse = _this.responseFormatter.popularSearches(response, configuration);
-                        if (popularSearchesFromResponse.queries.length > 0) {
-                            localStorage_1.default.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000);
-                        }
+                        localStorage_1.default.setValue('tagalysPopularSearches', popularSearchesFromResponse, 3600000);
                         callbackOptions.onSuccess && callbackOptions.onSuccess(popularSearchesFromResponse.queries);
                         resolve(popularSearchesFromResponse);
                     },
