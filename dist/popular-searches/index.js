@@ -37,8 +37,8 @@ var PopularSearches = /** @class */ (function (_super) {
         if (callbackOptions === void 0) { callbackOptions = {}; }
         // if popular searches exist in user's local storage, then merge it with recentSearches and return it
         return new Promise(function (resolve, reject) {
-            var localPopularSearches = localStorage_1.default.getItem("tagalysPopularSearches") || { queries: [] };
-            if (localPopularSearches.queries.length > 0) {
+            var localPopularSearches = localStorage_1.default.getItem("tagalysPopularSearches");
+            if (localPopularSearches) {
                 callbackOptions.onSuccess && callbackOptions.onSuccess(localPopularSearches.queries);
                 resolve(localPopularSearches);
             }
