@@ -17,8 +17,8 @@ class PopularSearches extends APIConnector {
   fetchPopularSearches(configuration, callbackOptions: any = {}) {
     // if popular searches exist in user's local storage, then merge it with recentSearches and return it
     return new Promise((resolve, reject) => {
-      const localPopularSearches = localStorage.getItem("tagalysPopularSearches") || { queries: [] }
-      if (localPopularSearches.queries.length > 0) {
+      const localPopularSearches = localStorage.getItem("tagalysPopularSearches")
+      if (localPopularSearches) {
         callbackOptions.onSuccess && callbackOptions.onSuccess(localPopularSearches.queries)
         resolve(localPopularSearches)
       } else {
