@@ -84,17 +84,18 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
         };
     };
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
-        var variantCompareAtPrices = detail.variants.map(function (variant) { return variant.compare_at_price; });
-        var variantPrices = detail.variants.map(function (variant) { return variant.price; });
-        return {
+        var additionalPlatformFields = {
             handle: detail.link.split("/products/")[1],
             compare_at_price_min: detail.price,
             price_min: detail.sale_price,
             options: detail.options,
-            compare_at_price_varies: variantCompareAtPrices.filter(unique).length > 1,
-            price_varies: variantPrices.filter(unique).length > 1,
-            // has_only_default_variant: hasOnlyDefaultVariant(detail)
         };
+        if (detail.hasOwnProperty('variants')) {
+            additionalPlatformFields['price_varies'] = detail.variants.map(function (variant) { return variant.price; });
+            additionalPlatformFields['compare_at_price_varies'] = detail.variants.map(function (variant) { return variant.compare_at_price; });
+            // has_only_default_variant: hasOnlyDefaultVariant(detail)
+        }
+        return additionalPlatformFields;
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {
         return ['sku'];
