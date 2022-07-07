@@ -200,6 +200,7 @@ var Search = /** @class */ (function (_super) {
     };
     Search.prototype.getFilterParams = function (filters) {
         var _this = this;
+        return filters;
         var filterParamsForRequest = {};
         var _loop_1 = function (filterId, filterParams) {
             if (Array.isArray(filterParams)) {
@@ -270,7 +271,7 @@ var Search = /** @class */ (function (_super) {
                     if (Object.keys(requestState).length) {
                         _this.requestState = requestState;
                     }
-                    _this.requestOptions.params = params;
+                    _this.setRequestParamsFromRequestState();
                 } });
         }
         return helpers;

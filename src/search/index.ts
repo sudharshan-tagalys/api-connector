@@ -208,6 +208,7 @@ class Search extends APIConnector {
   }
 
   getFilterParams(filters: object){
+    return filters
     let filterParamsForRequest = {}
     for (const [filterId, filterParams] of Object.entries(filters)) {
       if(Array.isArray(filterParams)){
@@ -282,7 +283,7 @@ class Search extends APIConnector {
           if(Object.keys(requestState).length){
             this.requestState = requestState
           }
-          this.requestOptions.params = params
+          this.setRequestParamsFromRequestState()
         }
       }
     }
