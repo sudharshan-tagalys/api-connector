@@ -240,7 +240,7 @@ class Search extends APIConnector {
     return getEncodedQueryString({
       query: this.requestState.query,
       queryFilters: this.requestState.queryFilters,
-      filters: this.requestState.filters,
+      filters: this.getFilterParams(this.requestState.filters),
       page: this.requestState.page,
       sort: this.requestState.sort,
       except: except
@@ -282,7 +282,7 @@ class Search extends APIConnector {
           if(Object.keys(requestState).length){
             this.requestState = requestState
           }
-          this.setRequestParamsFromRequestState()
+          this.requestOptions.params = params
         }
       }
     }

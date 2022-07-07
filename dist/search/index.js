@@ -235,7 +235,7 @@ var Search = /** @class */ (function (_super) {
         return (0, common_1.getEncodedQueryString)({
             query: this.requestState.query,
             queryFilters: this.requestState.queryFilters,
-            filters: this.requestState.filters,
+            filters: this.getFilterParams(this.requestState.filters),
             page: this.requestState.page,
             sort: this.requestState.sort,
             except: except
@@ -270,7 +270,7 @@ var Search = /** @class */ (function (_super) {
                     if (Object.keys(requestState).length) {
                         _this.requestState = requestState;
                     }
-                    _this.setRequestParamsFromRequestState();
+                    _this.requestOptions.params = params;
                 } });
         }
         return helpers;
