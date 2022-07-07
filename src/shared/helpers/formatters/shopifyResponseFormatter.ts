@@ -68,17 +68,18 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   additionalPlatformFields(detail){
-    const variantCompareAtPrices = detail.variants.map(variant => variant.compare_at_price)
-    const variantPrices = detail.variants.map(variant => variant.price)
-    return {
+    let additionalPlatformFields = {
       handle: detail.link.split("/products/")[1],
       compare_at_price_min: detail.price,
       price_min: detail.sale_price,
       options: detail.options,
-      compare_at_price_varies: variantCompareAtPrices.filter(unique).length > 1,
-      price_varies: variantPrices.filter(unique).length > 1,
+    }
+    if(detail.hasOwnProperty('variants')){
+      additionalPlatformFields['price_varies'] = detail.variants.map(variant => variant.price)
+      additionalPlatformFields['compare_at_price_varies'] = detail.variants.map(variant => variant.compare_at_price)
       // has_only_default_variant: hasOnlyDefaultVariant(detail)
     }
+    return additionalPlatformFields
   }
 
   fieldsToIgnore(){
