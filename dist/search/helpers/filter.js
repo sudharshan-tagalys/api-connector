@@ -228,6 +228,7 @@ var getRequestHelpers = function () {
     var _a = this.filterHelpers, applyFilter = _a.applyFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
     return {
         applyFilter: applyFilter,
+        setFilter: setFilter,
         clearFilter: clearFilter,
         clearAllFilters: clearAllFilters
     };
@@ -255,6 +256,7 @@ exports.default = {
     getChildFilterItemIds: getChildFilterItemIds,
     getAppliedFilters: getAppliedFilters,
     isFilterApplied: isFilterApplied,
+    setFilter: setFilter,
     getParentFilterItemIds: getParentFilterItemIds
 };
 //# sourceMappingURL=filter.js.map

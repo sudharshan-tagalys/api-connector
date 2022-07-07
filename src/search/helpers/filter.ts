@@ -218,6 +218,7 @@ const getRequestHelpers = function(){
   const { applyFilter, clearFilter, clearAllFilters } = this.filterHelpers
   return {
     applyFilter,
+    setFilter,
     clearFilter,
     clearAllFilters
   }
@@ -250,5 +251,6 @@ export default {
   getChildFilterItemIds,
   getAppliedFilters,
   isFilterApplied,
+  setFilter,
   getParentFilterItemIds
 };
