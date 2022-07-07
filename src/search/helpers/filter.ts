@@ -64,7 +64,7 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
   this.setRequestState((reqState) => {
     let filterItems = []
     if(filter.type === "range"){
-      filterItems = appliedFilter
+      reqState.filters[filterId] = appliedFilter
     } else {
       filterItems = (reqState.filters[filterId] || [])
       if(Array.isArray(appliedFilter)){
