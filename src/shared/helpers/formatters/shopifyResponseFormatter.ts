@@ -77,7 +77,7 @@ class ShopifyResponseFormatter extends Formatter {
       options: detail.options,
       compare_at_price_varies: variantCompareAtPrices.filter(unique).length > 1,
       price_varies: variantPrices.filter(unique).length > 1,
-      has_only_default_variant: hasOnlyDefaultVariant(detail)
+      // has_only_default_variant: hasOnlyDefaultVariant(detail)
     }
   }
 

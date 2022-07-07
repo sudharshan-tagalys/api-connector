@@ -27,7 +27,6 @@ declare class ShopifyResponseFormatter extends Formatter {
         options: any;
         compare_at_price_varies: boolean;
         price_varies: boolean;
-        has_only_default_variant: boolean;
     };
     fieldsToIgnore(): string[];
 }
