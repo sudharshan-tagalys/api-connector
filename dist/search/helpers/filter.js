@@ -102,7 +102,6 @@ var setFilter = function (filterId, appliedFilter, callAPI) {
             var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
             parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds);
         });
-        reqState.filtersSelectionPreferences[filterId] = filterItems;
         reqState.filters[filterId] = filterItems.filter(function (appliedFilterItemId) { return !parentIdsToRemove.includes(appliedFilterItemId); });
         reqState.page = 1;
         return reqState;

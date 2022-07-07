@@ -82,7 +82,6 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
       const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
       parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
     })
-    reqState.filtersSelectionPreferences[filterId] = filterItems
     reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     reqState.page = 1
     return reqState
