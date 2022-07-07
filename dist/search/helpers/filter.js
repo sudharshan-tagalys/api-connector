@@ -96,13 +96,13 @@ var setFilter = function (filterId, appliedFilter, callAPI) {
                     filterItems.push(appliedFilter);
                 }
             }
+            var parentIdsToRemove_1 = [];
+            filterItems.forEach(function (appliedFilterItemId) {
+                var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
+                parentIdsToRemove_1 = parentIdsToRemove_1.concat(parentFilterItemIds);
+            });
+            reqState.filters[filterId] = filterItems.filter(function (appliedFilterItemId) { return !parentIdsToRemove_1.includes(appliedFilterItemId); });
         }
-        var parentIdsToRemove = [];
-        filterItems.forEach(function (appliedFilterItemId) {
-            var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
-            parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds);
-        });
-        reqState.filters[filterId] = filterItems.filter(function (appliedFilterItemId) { return !parentIdsToRemove.includes(appliedFilterItemId); });
         reqState.page = 1;
         return reqState;
     }, callAPI);
