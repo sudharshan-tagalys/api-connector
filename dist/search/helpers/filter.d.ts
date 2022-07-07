@@ -21,7 +21,6 @@ declare const _default: {
         getFilterItemById: any;
         isFilterApplied: any;
     };
-    getParentFilterItemIds: (filterId: any, filterItemId: any) => any;
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
     getAppliedFilters: () => any[];

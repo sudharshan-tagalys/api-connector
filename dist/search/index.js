@@ -122,7 +122,7 @@ var Search = /** @class */ (function (_super) {
             pl_total: response.total
         };
         if (Object.keys(this.requestState.filters).length) {
-            eventDetails['pl_details']['f'] = this.getFilterParams(this.requestState.filters);
+            eventDetails['pl_details']['f'] = this.requestState.filters;
         }
         if (response.details) {
             eventDetails['pl_products'] = response["details"].map(function (product) { return product.sku; });
@@ -182,7 +182,7 @@ var Search = /** @class */ (function (_super) {
             params['qf'] = queryFilters;
         }
         if (filters) {
-            params['f'] = this.getFilterParams(filters);
+            params['f'] = filters;
         }
         if (request) {
             params['request'] = request;
@@ -197,29 +197,6 @@ var Search = /** @class */ (function (_super) {
             params['sort'] = this.getSortString();
         }
         return params;
-    };
-    Search.prototype.getFilterParams = function (filters) {
-        var _this = this;
-        return filters;
-        var filterParamsForRequest = {};
-        var _loop_1 = function (filterId, filterParams) {
-            if (Array.isArray(filterParams)) {
-                var parentIdsToRemove_1 = [];
-                filterParams.forEach(function (appliedFilterItemId) {
-                    var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
-                    parentIdsToRemove_1 = parentIdsToRemove_1.concat(parentFilterItemIds);
-                });
-                filterParamsForRequest[filterId] = filterParams.filter(function (appliedFilterItemId) { return !parentIdsToRemove_1.includes(appliedFilterItemId); });
-            }
-            else {
-                filterParamsForRequest[filterId] = filterParams;
-            }
-        };
-        for (var _i = 0, _a = Object.entries(filters); _i < _a.length; _i++) {
-            var _b = _a[_i], filterId = _b[0], filterParams = _b[1];
-            _loop_1(filterId, filterParams);
-        }
-        return filterParamsForRequest;
     };
     Search.prototype.getSortString = function () {
         var sort = this.requestState.sort;
@@ -236,7 +213,7 @@ var Search = /** @class */ (function (_super) {
         return (0, common_1.getEncodedQueryString)({
             query: this.requestState.query,
             queryFilters: this.requestState.queryFilters,
-            filters: this.getFilterParams(this.requestState.filters),
+            filters: this.requestState.filters,
             page: this.requestState.page,
             sort: this.requestState.sort,
             except: except

@@ -115,7 +115,7 @@ class Search extends APIConnector {
       pl_total: response.total
     }
     if(Object.keys(this.requestState.filters).length){
-      eventDetails['pl_details']['f'] = this.getFilterParams(this.requestState.filters)
+      eventDetails['pl_details']['f'] = this.requestState.filters
     }
     if(response.details){
       eventDetails['pl_products'] = response["details"].map((product) => product.sku)

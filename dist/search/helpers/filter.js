@@ -206,14 +206,6 @@ var getChildFilterItemIds = function (filterItems, filterItemId) {
     });
     return childFilterIds;
 };
-var getParentFilterItemIds = function (filterId, filterItemId) {
-    var filter = this.filterHelpers.getFilterById(filterId);
-    var path = getPath(filter.items, filterItemId);
-    if (path) {
-        return path.filter(function (p) { return p !== filterItemId; });
-    }
-    return [];
-};
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
     var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters;
@@ -247,7 +239,6 @@ exports.default = {
     setFilter: setFilter,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers,
-    getParentFilterItemIds: getParentFilterItemIds,
     flattenFilterItems: flattenFilterItems,
     getChildFilterItemIds: getChildFilterItemIds,
     getAppliedFilters: getAppliedFilters,
