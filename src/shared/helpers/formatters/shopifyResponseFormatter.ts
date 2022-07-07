@@ -5,14 +5,6 @@ const unique = (value, index, self) => {
   return self.indexOf(value) === index
 }
 
-// has_only_default_variant
-// compare_at_price_varies
-// price_varies
-// price_min
-// compare_at_price_min
-// options
-// -- options_with_values
-
 class ShopifyResponseFormatter extends Formatter {
   platformFieldTranslations(){
     return {
@@ -23,8 +15,6 @@ class ShopifyResponseFormatter extends Formatter {
         }
       },
       name: 'title',
-      price: 'compare_at_price',
-      sale_price: 'price',
       introduced_at: 'published_at',
       shopify_tags: (data) => {
         if(Array.isArray(data.shopify_tags)){
@@ -57,27 +47,32 @@ class ShopifyResponseFormatter extends Formatter {
 
   additionalPlatformFields(detail){
     let additionalPlatformFields = {
-      handle: detail.link.split("/products/")[1],
-      compare_at_price_min: detail.price,
-      price_min: detail.sale_price,
-      options: detail.options,
+      handle: detail.link.split("/products/")[1]
     }
-    if(detail.hasOwnProperty('options') && detail.hasOwnProperty('variants')){
-      const variantCompareAtPrices =  detail.variants.map(variant => variant.compare_at_price)
-      const variantPrices = detail.variants.map(variant => variant.price)
+    if(detail.hasOwnProperty('variants')){
+      const variantCompareAtPrices =  detail.variants.filter((variant)=>variant.compare_at_price !== null).map(variant => variant.compare_at_price)
+      const variantPrices = detail.variants.filter((variant)=>variant.price !== null).map(variant => variant.price)
       additionalPlatformFields['price_varies'] = variantPrices.filter(unique).length > 1
       additionalPlatformFields['compare_at_price_varies'] = variantCompareAtPrices.filter(unique).length > 1
       additionalPlatformFields['options_with_values'] = detail.options
-      additionalPlatformFields['options_with_values'] = detail.options.map((option)=>{
-        return {
-          name: option.name,
-          position: option.position,
-          values: option.values
-        }
-      })
-      const options = detail.options.map((option)=>option.name)
-      additionalPlatformFields['options'] = options
-      additionalPlatformFields['has_only_default_variant'] = this.hasOnlyDefaultVariant(options, detail.variants)
+      additionalPlatformFields['price'] = detail.sale_price
+      additionalPlatformFields['compare_at_price'] = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
+      additionalPlatformFields['price_min'] = variantPrices.length > 0 ? Math.min(...variantPrices) : 0
+      additionalPlatformFields['price_max'] = variantPrices.length > 0 ? Math.max(...variantPrices) : 0
+      additionalPlatformFields['compare_at_price_min'] = variantCompareAtPrices.length > 0 ?  Math.min(...variantCompareAtPrices) : 0
+      additionalPlatformFields['compare_at_price_max'] = variantCompareAtPrices.length > 0 ? Math.max(...variantCompareAtPrices) : 0
+      if(detail.hasOwnProperty('options')){
+        const options = detail.options.map((option)=>option.name)
+        additionalPlatformFields['options'] = options
+        additionalPlatformFields['options_with_values'] = detail.options.map((option)=>{
+          return {
+            name: option.name,
+            position: option.position,
+            values: option.values
+          }
+        })
+        additionalPlatformFields['has_only_default_variant'] = this.hasOnlyDefaultVariant(options, detail.variants)
+      }
     }
     return additionalPlatformFields
   }
@@ -96,7 +91,7 @@ class ShopifyResponseFormatter extends Formatter {
   }
 
   fieldsToIgnore(){
-    return ['sku']
+    return ['sku', 'options', 'compare_at_price', 'price']
   }
 }
 
