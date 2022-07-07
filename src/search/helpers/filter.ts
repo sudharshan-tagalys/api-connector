@@ -76,13 +76,13 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
           filterItems.push(appliedFilter)
         }
       }
+      let parentIdsToRemove = []
+      filterItems.forEach((appliedFilterItemId)=>{
+        const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
+        parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
+      })
+      reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     }
-    let parentIdsToRemove = []
-    filterItems.forEach((appliedFilterItemId)=>{
-      const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
-      parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
-    })
-    reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     reqState.page = 1
     return reqState
   }, callAPI)
