@@ -22,8 +22,21 @@ var added_to_cart_also_added_to_cart_1 = require("./added-to-cart-also-added-to-
 var search_suggestions_1 = require("./search-suggestions");
 var search_1 = require("./search");
 var queryStringManager_1 = require("./lib/queryStringManager");
+var shopifyAnalyticsTracker_1 = require("./lib/shopifyAnalyticsTracker");
 var common_1 = require("./shared/helpers/common");
-exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), search_suggestions_1.default.export()), { setConfiguration: function (config) { return configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config)); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); } });
+var cookie_1 = require("./lib/cookie");
+var analyticsTracker_1 = require("./lib/analyticsTracker");
+exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), search_suggestions_1.default.export()), { setConfiguration: function (config) {
+        configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
+        var canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided());
+        if (config.platform === 'Shopify' && canTrackAnalytics) {
+            var shopifyAnalyticsTracker = new shopifyAnalyticsTracker_1.default();
+            shopifyAnalyticsTracker.track();
+        }
+        else {
+            cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
+        }
+    }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); } });
 window.addEventListener("load", function () {
     var event = new Event("tagalys:ready");
     document.dispatchEvent(event);

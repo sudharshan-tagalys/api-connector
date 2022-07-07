@@ -19,25 +19,6 @@ var formatter_1 = require("./formatter");
 var unique = function (value, index, self) {
     return self.indexOf(value) === index;
 };
-// has_only_default_variant
-// compare_at_price_varies
-// price_varies
-// price_min
-// compare_at_price_min
-// options
-// -- options_with_values
-var hasOnlyDefaultVariant = function (detail) {
-    if (detail.options.length > 1) {
-        return false;
-    }
-    if (detail.variants.length > 1) {
-        return false;
-    }
-    if (detail.options[0] === 'Title' && detail.variants[0].option1 === 'Default Title' && detail.variants[0].option2 === null && detail.variants[0].option3 === null) {
-        return true;
-    }
-    return false;
-};
 var ShopifyResponseFormatter = /** @class */ (function (_super) {
     __extends(ShopifyResponseFormatter, _super);
     function ShopifyResponseFormatter() {
@@ -52,8 +33,6 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
                 };
             },
             name: 'title',
-            price: 'compare_at_price',
-            sale_price: 'price',
             introduced_at: 'published_at',
             shopify_tags: function (data) {
                 if (Array.isArray(data.shopify_tags)) {
@@ -85,20 +64,49 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
     };
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
         var additionalPlatformFields = {
-            handle: detail.link.split("/products/")[1],
-            compare_at_price_min: detail.price,
-            price_min: detail.sale_price,
-            options: detail.options,
+            handle: detail.link.split("/products/")[1]
         };
         if (detail.hasOwnProperty('variants')) {
-            additionalPlatformFields['price_varies'] = detail.variants.map(function (variant) { return variant.price; });
-            additionalPlatformFields['compare_at_price_varies'] = detail.variants.map(function (variant) { return variant.compare_at_price; });
-            // has_only_default_variant: hasOnlyDefaultVariant(detail)
+            var variantCompareAtPrices = detail.variants.filter(function (variant) { return variant.compare_at_price !== null; }).map(function (variant) { return variant.compare_at_price; });
+            var variantPrices = detail.variants.filter(function (variant) { return variant.price !== null; }).map(function (variant) { return variant.price; });
+            additionalPlatformFields['price_varies'] = variantPrices.filter(unique).length > 1;
+            additionalPlatformFields['compare_at_price_varies'] = variantCompareAtPrices.filter(unique).length > 1;
+            additionalPlatformFields['options_with_values'] = detail.options;
+            additionalPlatformFields['price'] = detail.sale_price;
+            additionalPlatformFields['compare_at_price'] = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
+            additionalPlatformFields['price_min'] = variantPrices.length > 0 ? Math.min.apply(Math, variantPrices) : 0;
+            additionalPlatformFields['price_max'] = variantPrices.length > 0 ? Math.max.apply(Math, variantPrices) : 0;
+            additionalPlatformFields['compare_at_price_min'] = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : 0;
+            additionalPlatformFields['compare_at_price_max'] = variantCompareAtPrices.length > 0 ? Math.max.apply(Math, variantCompareAtPrices) : 0;
+            if (detail.hasOwnProperty('options')) {
+                var options = detail.options.map(function (option) { return option.name; });
+                additionalPlatformFields['options'] = options;
+                additionalPlatformFields['options_with_values'] = detail.options.map(function (option) {
+                    return {
+                        name: option.name,
+                        position: option.position,
+                        values: option.values
+                    };
+                });
+                additionalPlatformFields['has_only_default_variant'] = this.hasOnlyDefaultVariant(options, detail.variants);
+            }
         }
         return additionalPlatformFields;
     };
+    ShopifyResponseFormatter.prototype.hasOnlyDefaultVariant = function (options, variants) {
+        if (options.length > 1) {
+            return false;
+        }
+        if (variants.length > 1) {
+            return false;
+        }
+        if (options[0] === 'Title' && variants[0].option1 === 'Default Title' && variants[0].option2 === null && variants[0].option3 === null) {
+            return true;
+        }
+        return false;
+    };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {
-        return ['sku'];
+        return ['sku', 'options', 'compare_at_price', 'price'];
     };
     return ShopifyResponseFormatter;
 }(formatter_1.default));

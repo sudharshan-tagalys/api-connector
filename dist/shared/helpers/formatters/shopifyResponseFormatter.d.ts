@@ -6,8 +6,6 @@ declare class ShopifyResponseFormatter extends Formatter {
             value: number;
         };
         name: string;
-        price: string;
-        sale_price: string;
         introduced_at: string;
         shopify_tags: (data: any) => {
             key: string;
@@ -22,10 +20,8 @@ declare class ShopifyResponseFormatter extends Formatter {
     };
     additionalPlatformFields(detail: any): {
         handle: any;
-        compare_at_price_min: any;
-        price_min: any;
-        options: any;
     };
+    hasOnlyDefaultVariant(options: any, variants: any): boolean;
     fieldsToIgnore(): string[];
 }
 export default ShopifyResponseFormatter;

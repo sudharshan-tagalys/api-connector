@@ -2,6 +2,9 @@ export declare const COOKIES: {
     TA_DEVICE: string;
     TA_VISIT: string;
     TA_LAST_PA_TIME: string;
+    TA_CART: string;
+    CART: string;
+    TA_LAST_ORDER_ID: string;
 };
 declare class AnalyticsTracker {
     private lastEventTimestamp;

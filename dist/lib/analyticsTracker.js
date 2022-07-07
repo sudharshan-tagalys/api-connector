@@ -18,7 +18,10 @@ var cookie_1 = require("./cookie");
 exports.COOKIES = {
     TA_DEVICE: "__ta_device",
     TA_VISIT: "__ta_visit",
-    TA_LAST_PA_TIME: "__ta_last_pa_time"
+    TA_LAST_PA_TIME: "__ta_last_pa_time",
+    TA_CART: '__ta_cart',
+    CART: 'cart',
+    TA_LAST_ORDER_ID: '__ta_last_order_id'
 };
 var TRACKER_VERSION = 3;
 var AnalyticsTracker = /** @class */ (function () {
