@@ -2,23 +2,33 @@ const getFilters = function () {
   return this.responseState.filters
 }
 
-const getFlattenedAppliedFilterItems = function(){
+const getFlattenedAppliedFilters = function(){
   const responseState = deepClone(this.responseState)
-  const flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
-  const appliedFilterItems = flattenedFilterItems.filter((filter)=>{
-    if(filter.hasOwnProperty('selected')){
-      return (filter.selected)
-    }
+  let appliedFilters = []
+  responseState.filters.map((filter)=>{
     if(filter.type === 'range'){
       if(this.requestState['filters']){
         const selectedRangeFilter = this.requestState['filters'][filter.id]
         if(selectedRangeFilter && filter.selected_min && filter.selected_max){
-          return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max)
+          appliedFilters.push(filter)
         }
+      }
+    }else{
+      const flattenedFilterItems = this.filterHelpers.flattenFilterItems(filter.items);
+      const selectedFilterItems = flattenedFilterItems.filter((filter)=>{
+        if(filter.hasOwnProperty('selected')){
+          return (filter.selected)
+        }
+      })
+      if(selectedFilterItems.length > 0){
+        appliedFilters.push({
+          ...filter,
+          items: selectedFilterItems
+        })
       }
     }
   })
-  return appliedFilterItems
+  return appliedFilters
 }
 
 const getAppliedFilterItems = (items) =>
@@ -79,48 +89,28 @@ const applyFilter = function(filterId, appliedFilter){
 
 const getFilterById = function(filterId){
   const responseState = deepClone(this.responseState)
-  const flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
-  const filter = flattenedFilterItems.find((filter)=>filter.id === filterId)
+  const filter = responseState.filters.find((filter)=>filter.id === filterId)
   if(!filter) return false
   return filter
 }
 
-const getFilterItemById = function(filterItemId){
-  return this.filterHelpers.getFilterById(filterItemId)
+const getFilterItemById = function(filterId, filterItemId){
+  const filter = this.filterHelpers.getFilterById(filterId);
+  const filterItems = flattenFilterItems(filter.items)
+  const filterItem = filterItems.find((filterItem)=>filterItem.id === filterItemId)
+  if(!filterItem) return false
+  return filterItem
 }
 
-const isFilterItemApplied = function(id){
-  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems()
-  const appliedFilter = appliedFilters.find((filter)=>{
-    if(filter.type === 'range'){
-      return (filter.id === id)
-    }
-    if(filter.filterId){
-      return (filter.filterId === id)
-    }
-    return (filter.id === id)
-  })
-  if(appliedFilter) return true
-  return false
-}
-
-const isFilterApplied = function(id){
-  const appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems()
-  const appliedFilter = appliedFilters.find((filter)=>{
-    const filterId = this.filterHelpers.getFilterId(filter.id)
-    if(filter.type === 'range'){
-      return (filter.id === id)
-    }
-    if(filterId){
-      return (filterId === id)
-    }
-  })
+const isFilterApplied = function(filterId){
+  const filter = this.filterHelpers.getFilterById(filterId)
+  const appliedFilters =  this.filterHelpers.getFlattenedAppliedFilters()
+  const appliedFilter = appliedFilters.find((filter)=>filter.id === filterId)
   if(appliedFilter) return true
   return false
 }
 
 const clearFilter = function(filterId, filterItemIds = []){
-  const responseState = deepClone(this.responseState)
   this.setRequestState((reqState)=>{
     if(Array.isArray(filterItemIds)){
       if(filterItemIds.length === 0){
@@ -128,7 +118,8 @@ const clearFilter = function(filterId, filterItemIds = []){
       }else{
         filterItemIds.forEach((filterItemId)=>{
           if(reqState.filters[filterId]){
-            const childFilterItemIds = this.filterHelpers.getChildFilterItemIds(responseState.filters, filterItemId)
+            const filter = this.filterHelpers.getFilterById(filterId)
+            const childFilterItemIds = this.filterHelpers.getChildFilterItemIds(filter.items, filterItemId)
             const updatedFilterItemIds = reqState.filters[filterId].filter((filterItemId)=>!childFilterItemIds.includes(filterItemId))
             if(updatedFilterItemIds.length === 0){
               delete reqState.filters[filterId]
@@ -196,41 +187,33 @@ const getChildFilterItemIds = function(filterItems, filterItemId){
   return childFilterIds
 }
 
-const getParentFilterItemIds = function(filterItemId){
-  const responseState = deepClone(this.responseState)
-  const path = getPath(responseState.filters, filterItemId)
+const getParentFilterItemIds = function(filterId, filterItemId){
+  const filter = this.filterHelpers.getFilterById(filterId)
+  const path = getPath(filter.items, filterItemId)
   if(path){
     return path.filter((p)=>p!==filterItemId)
   }
   return []
 }
 
-const getFilterId = function(filterItemId){
-  const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterItemId)
-  return parentFilterItemIds[0]
-}
 
 // ==== PUBLICLY EXPOSED HELPERS ====
 
 const getResponseHelpers = function(){
   const {
     getFilters,
-    getFlattenedAppliedFilterItems,
+    getFlattenedAppliedFilters,
     getFilterById,
     getFilterItemById,
-    isFilterItemApplied,
     isFilterApplied,
     getAppliedFilters,
-    getFilterId
   } = this.filterHelpers
   return {
     getFilters,
     getAppliedFilters,
-    getFilterId,
-    getFlattenedAppliedFilterItems,
+    getFlattenedAppliedFilters,
     getFilterById,
     getFilterItemById,
-    isFilterItemApplied,
     isFilterApplied
   }
 }
@@ -250,18 +233,16 @@ const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
 export default {
   getFilters,
-  getFlattenedAppliedFilterItems,
+  getFlattenedAppliedFilters,
   applyFilter,
   getFilterById,
   getFilterItemById,
-  isFilterItemApplied,
   clearFilter,
   clearAllFilters,
   setFilter,
   getRequestHelpers,
   getResponseHelpers,
   getParentFilterItemIds,
-  getFilterId,
   flattenFilterItems,
   getChildFilterItemIds,
   getAppliedFilters,

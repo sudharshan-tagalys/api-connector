@@ -213,7 +213,7 @@ class Search extends APIConnector {
       if(Array.isArray(filterParams)){
         let parentIdsToRemove = []
         filterParams.forEach((appliedFilterItemId)=>{
-          const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(appliedFilterItemId)
+          const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
           parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
         })
         filterParamsForRequest[filterId] = filterParams.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
