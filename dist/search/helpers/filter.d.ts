@@ -1,10 +1,9 @@
 declare const _default: {
     getFilters: () => any;
-    getFlattenedAppliedFilterItems: () => any;
+    getFlattenedAppliedFilters: () => any[];
     applyFilter: (filterId: any, appliedFilter: any) => void;
     getFilterById: (filterId: any) => any;
-    getFilterItemById: (filterItemId: any) => any;
-    isFilterItemApplied: (id: any) => boolean;
+    getFilterItemById: (filterId: any, filterItemId: any) => any;
     clearFilter: (filterId: any, filterItemIds?: any[]) => void;
     clearAllFilters: () => void;
     setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
@@ -17,18 +16,15 @@ declare const _default: {
     getResponseHelpers: () => {
         getFilters: any;
         getAppliedFilters: any;
-        getFilterId: any;
-        getFlattenedAppliedFilterItems: any;
+        getFlattenedAppliedFilters: any;
         getFilterById: any;
         getFilterItemById: any;
-        isFilterItemApplied: any;
         isFilterApplied: any;
     };
-    getParentFilterItemIds: (filterItemId: any) => any;
-    getFilterId: (filterItemId: any) => any;
+    getParentFilterItemIds: (filterId: any, filterItemId: any) => any;
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
     getAppliedFilters: () => any[];
-    isFilterApplied: (id: any) => boolean;
+    isFilterApplied: (filterId: any) => boolean;
 };
 export default _default;

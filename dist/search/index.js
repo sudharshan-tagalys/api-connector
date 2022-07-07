@@ -205,7 +205,7 @@ var Search = /** @class */ (function (_super) {
             if (Array.isArray(filterParams)) {
                 var parentIdsToRemove_1 = [];
                 filterParams.forEach(function (appliedFilterItemId) {
-                    var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(appliedFilterItemId);
+                    var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
                     parentIdsToRemove_1 = parentIdsToRemove_1.concat(parentFilterItemIds);
                 });
                 filterParamsForRequest[filterId] = filterParams.filter(function (appliedFilterItemId) { return !parentIdsToRemove_1.includes(appliedFilterItemId); });

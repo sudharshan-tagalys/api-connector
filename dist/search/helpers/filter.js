@@ -23,24 +23,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var getFilters = function () {
     return this.responseState.filters;
 };
-var getFlattenedAppliedFilterItems = function () {
+var getFlattenedAppliedFilters = function () {
     var _this = this;
     var responseState = deepClone(this.responseState);
-    var flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
-    var appliedFilterItems = flattenedFilterItems.filter(function (filter) {
-        if (filter.hasOwnProperty('selected')) {
-            return (filter.selected);
-        }
+    var appliedFilters = [];
+    responseState.filters.map(function (filter) {
         if (filter.type === 'range') {
             if (_this.requestState['filters']) {
                 var selectedRangeFilter = _this.requestState['filters'][filter.id];
                 if (selectedRangeFilter && filter.selected_min && filter.selected_max) {
-                    return (selectedRangeFilter.selected_min !== filter.min || selectedRangeFilter.selected_max !== filter.max);
+                    appliedFilters.push(filter);
                 }
             }
         }
+        else {
+            var flattenedFilterItems = _this.filterHelpers.flattenFilterItems(filter.items);
+            var selectedFilterItems = flattenedFilterItems.filter(function (filter) {
+                if (filter.hasOwnProperty('selected')) {
+                    return (filter.selected);
+                }
+            });
+            if (selectedFilterItems.length > 0) {
+                appliedFilters.push(__assign(__assign({}, filter), { items: selectedFilterItems }));
+            }
+        }
     });
-    return appliedFilterItems;
+    return appliedFilters;
 };
 var getAppliedFilterItems = function (items) {
     return items.filter(function (item) {
@@ -98,42 +106,23 @@ var applyFilter = function (filterId, appliedFilter) {
 };
 var getFilterById = function (filterId) {
     var responseState = deepClone(this.responseState);
-    var flattenedFilterItems = this.filterHelpers.flattenFilterItems(responseState.filters);
-    var filter = flattenedFilterItems.find(function (filter) { return filter.id === filterId; });
+    var filter = responseState.filters.find(function (filter) { return filter.id === filterId; });
     if (!filter)
         return false;
     return filter;
 };
-var getFilterItemById = function (filterItemId) {
-    return this.filterHelpers.getFilterById(filterItemId);
+var getFilterItemById = function (filterId, filterItemId) {
+    var filter = this.filterHelpers.getFilterById(filterId);
+    var filterItems = flattenFilterItems(filter.items);
+    var filterItem = filterItems.find(function (filterItem) { return filterItem.id === filterItemId; });
+    if (!filterItem)
+        return false;
+    return filterItem;
 };
-var isFilterItemApplied = function (id) {
-    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems();
-    var appliedFilter = appliedFilters.find(function (filter) {
-        if (filter.type === 'range') {
-            return (filter.id === id);
-        }
-        if (filter.filterId) {
-            return (filter.filterId === id);
-        }
-        return (filter.id === id);
-    });
-    if (appliedFilter)
-        return true;
-    return false;
-};
-var isFilterApplied = function (id) {
-    var _this = this;
-    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilterItems();
-    var appliedFilter = appliedFilters.find(function (filter) {
-        var filterId = _this.filterHelpers.getFilterId(filter.id);
-        if (filter.type === 'range') {
-            return (filter.id === id);
-        }
-        if (filterId) {
-            return (filterId === id);
-        }
-    });
+var isFilterApplied = function (filterId) {
+    var filter = this.filterHelpers.getFilterById(filterId);
+    var appliedFilters = this.filterHelpers.getFlattenedAppliedFilters();
+    var appliedFilter = appliedFilters.find(function (filter) { return filter.id === filterId; });
     if (appliedFilter)
         return true;
     return false;
@@ -141,7 +130,6 @@ var isFilterApplied = function (id) {
 var clearFilter = function (filterId, filterItemIds) {
     var _this = this;
     if (filterItemIds === void 0) { filterItemIds = []; }
-    var responseState = deepClone(this.responseState);
     this.setRequestState(function (reqState) {
         if (Array.isArray(filterItemIds)) {
             if (filterItemIds.length === 0) {
@@ -150,7 +138,8 @@ var clearFilter = function (filterId, filterItemIds) {
             else {
                 filterItemIds.forEach(function (filterItemId) {
                     if (reqState.filters[filterId]) {
-                        var childFilterItemIds_1 = _this.filterHelpers.getChildFilterItemIds(responseState.filters, filterItemId);
+                        var filter = _this.filterHelpers.getFilterById(filterId);
+                        var childFilterItemIds_1 = _this.filterHelpers.getChildFilterItemIds(filter.items, filterItemId);
                         var updatedFilterItemIds = reqState.filters[filterId].filter(function (filterItemId) { return !childFilterItemIds_1.includes(filterItemId); });
                         if (updatedFilterItemIds.length === 0) {
                             delete reqState.filters[filterId];
@@ -217,29 +206,23 @@ var getChildFilterItemIds = function (filterItems, filterItemId) {
     });
     return childFilterIds;
 };
-var getParentFilterItemIds = function (filterItemId) {
-    var responseState = deepClone(this.responseState);
-    var path = getPath(responseState.filters, filterItemId);
+var getParentFilterItemIds = function (filterId, filterItemId) {
+    var filter = this.filterHelpers.getFilterById(filterId);
+    var path = getPath(filter.items, filterItemId);
     if (path) {
         return path.filter(function (p) { return p !== filterItemId; });
     }
     return [];
 };
-var getFilterId = function (filterItemId) {
-    var parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterItemId);
-    return parentFilterItemIds[0];
-};
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilterItems = _a.getFlattenedAppliedFilterItems, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterItemApplied = _a.isFilterItemApplied, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters, getFilterId = _a.getFilterId;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters;
     return {
         getFilters: getFilters,
         getAppliedFilters: getAppliedFilters,
-        getFilterId: getFilterId,
-        getFlattenedAppliedFilterItems: getFlattenedAppliedFilterItems,
+        getFlattenedAppliedFilters: getFlattenedAppliedFilters,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
-        isFilterItemApplied: isFilterItemApplied,
         isFilterApplied: isFilterApplied
     };
 };
@@ -255,18 +238,16 @@ var getRequestHelpers = function () {
 var deepClone = function (data) { return JSON.parse(JSON.stringify(data)); };
 exports.default = {
     getFilters: getFilters,
-    getFlattenedAppliedFilterItems: getFlattenedAppliedFilterItems,
+    getFlattenedAppliedFilters: getFlattenedAppliedFilters,
     applyFilter: applyFilter,
     getFilterById: getFilterById,
     getFilterItemById: getFilterItemById,
-    isFilterItemApplied: isFilterItemApplied,
     clearFilter: clearFilter,
     clearAllFilters: clearAllFilters,
     setFilter: setFilter,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers,
     getParentFilterItemIds: getParentFilterItemIds,
-    getFilterId: getFilterId,
     flattenFilterItems: flattenFilterItems,
     getChildFilterItemIds: getChildFilterItemIds,
     getAppliedFilters: getAppliedFilters,
