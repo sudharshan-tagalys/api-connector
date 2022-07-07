@@ -190,7 +190,7 @@ class Search extends APIConnector {
       params['qf'] = queryFilters
     }
     if(filters){
-      params['f'] = this.getFilterParams(filters)
+      params['f'] = filters
     }
     if(request){
       params['request'] = request
@@ -205,24 +205,6 @@ class Search extends APIConnector {
       params['sort'] = this.getSortString()
     }
     return params
-  }
-
-  getFilterParams(filters: object){
-    return filters
-    let filterParamsForRequest = {}
-    for (const [filterId, filterParams] of Object.entries(filters)) {
-      if(Array.isArray(filterParams)){
-        let parentIdsToRemove = []
-        filterParams.forEach((appliedFilterItemId)=>{
-          const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
-          parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
-        })
-        filterParamsForRequest[filterId] = filterParams.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
-      }else{
-        filterParamsForRequest[filterId] = filterParams
-      }
-    }
-    return filterParamsForRequest
   }
 
   getSortString(){
@@ -241,7 +223,7 @@ class Search extends APIConnector {
     return getEncodedQueryString({
       query: this.requestState.query,
       queryFilters: this.requestState.queryFilters,
-      filters: this.getFilterParams(this.requestState.filters),
+      filters: this.requestState.filters,
       page: this.requestState.page,
       sort: this.requestState.sort,
       except: except

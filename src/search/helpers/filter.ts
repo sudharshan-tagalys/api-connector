@@ -187,15 +187,6 @@ const getChildFilterItemIds = function(filterItems, filterItemId){
   return childFilterIds
 }
 
-const getParentFilterItemIds = function(filterId, filterItemId){
-  const filter = this.filterHelpers.getFilterById(filterId)
-  const path = getPath(filter.items, filterItemId)
-  if(path){
-    return path.filter((p)=>p!==filterItemId)
-  }
-  return []
-}
-
 
 // ==== PUBLICLY EXPOSED HELPERS ====
 
@@ -242,7 +233,6 @@ export default {
   setFilter,
   getRequestHelpers,
   getResponseHelpers,
-  getParentFilterItemIds,
   flattenFilterItems,
   getChildFilterItemIds,
   getAppliedFilters,
