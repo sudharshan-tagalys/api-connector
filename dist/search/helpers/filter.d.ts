@@ -6,10 +6,8 @@ declare const _default: {
     getFilterItemById: (filterId: any, filterItemId: any) => any;
     clearFilter: (filterId: any, filterItemIds?: any[]) => void;
     clearAllFilters: () => void;
-    setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
     getRequestHelpers: () => {
         applyFilter: any;
-        setFilter: any;
         clearFilter: any;
         clearAllFilters: any;
     };
@@ -25,5 +23,6 @@ declare const _default: {
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
     getAppliedFilters: () => any[];
     isFilterApplied: (filterId: any) => boolean;
+    getParentFilterItemIds: (filterId: any, filterItemId: any) => any;
 };
 export default _default;

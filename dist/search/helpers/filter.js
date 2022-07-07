@@ -76,6 +76,7 @@ var getAppliedFilters = function () {
     return appliedFilters;
 };
 var setFilter = function (filterId, appliedFilter, callAPI) {
+    var _this = this;
     if (callAPI === void 0) { callAPI = false; }
     var filter = this.filterHelpers.getFilterById(filterId);
     this.setRequestState(function (reqState) {
@@ -96,7 +97,13 @@ var setFilter = function (filterId, appliedFilter, callAPI) {
                 }
             }
         }
-        reqState.filters[filterId] = filterItems;
+        var parentIdsToRemove = [];
+        filterItems.forEach(function (appliedFilterItemId) {
+            var parentFilterItemIds = _this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId);
+            parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds);
+        });
+        reqState.filtersSelectionPreferences[filterId] = filterItems;
+        reqState.filters[filterId] = filterItems.filter(function (appliedFilterItemId) { return !parentIdsToRemove.includes(appliedFilterItemId); });
         reqState.page = 1;
         return reqState;
     }, callAPI);
@@ -120,7 +127,6 @@ var getFilterItemById = function (filterId, filterItemId) {
     return filterItem;
 };
 var isFilterApplied = function (filterId) {
-    var filter = this.filterHelpers.getFilterById(filterId);
     var appliedFilters = this.filterHelpers.getFlattenedAppliedFilters();
     var appliedFilter = appliedFilters.find(function (filter) { return filter.id === filterId; });
     if (appliedFilter)
@@ -219,13 +225,20 @@ var getResponseHelpers = function () {
     };
 };
 var getRequestHelpers = function () {
-    var _a = this.filterHelpers, applyFilter = _a.applyFilter, setFilter = _a.setFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
+    var _a = this.filterHelpers, applyFilter = _a.applyFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
     return {
         applyFilter: applyFilter,
-        setFilter: setFilter,
         clearFilter: clearFilter,
         clearAllFilters: clearAllFilters
     };
+};
+var getParentFilterItemIds = function (filterId, filterItemId) {
+    var filter = this.filterHelpers.getFilterById(filterId);
+    var path = getPath(filter.items, filterItemId);
+    if (path) {
+        return path.filter(function (p) { return p !== filterItemId; });
+    }
+    return [];
 };
 var deepClone = function (data) { return JSON.parse(JSON.stringify(data)); };
 exports.default = {
@@ -236,12 +249,12 @@ exports.default = {
     getFilterItemById: getFilterItemById,
     clearFilter: clearFilter,
     clearAllFilters: clearAllFilters,
-    setFilter: setFilter,
     getRequestHelpers: getRequestHelpers,
     getResponseHelpers: getResponseHelpers,
     flattenFilterItems: flattenFilterItems,
     getChildFilterItemIds: getChildFilterItemIds,
     getAppliedFilters: getAppliedFilters,
-    isFilterApplied: isFilterApplied
+    isFilterApplied: isFilterApplied,
+    getParentFilterItemIds: getParentFilterItemIds
 };
 //# sourceMappingURL=filter.js.map
