@@ -77,7 +77,13 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
         }
       }
     }
-    reqState.filters[filterId] = filterItems;
+    let parentIdsToRemove = []
+    filterItems.forEach((appliedFilterItemId)=>{
+      const parentFilterItemIds = this.filterHelpers.getParentFilterItemIds(filterId, appliedFilterItemId)
+      parentIdsToRemove = parentIdsToRemove.concat(parentFilterItemIds)
+    })
+    reqState.filtersSelectionPreferences[filterId] = filterItems
+    reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     reqState.page = 1
     return reqState
   }, callAPI)
@@ -103,7 +109,6 @@ const getFilterItemById = function(filterId, filterItemId){
 }
 
 const isFilterApplied = function(filterId){
-  const filter = this.filterHelpers.getFilterById(filterId)
   const appliedFilters =  this.filterHelpers.getFlattenedAppliedFilters()
   const appliedFilter = appliedFilters.find((filter)=>filter.id === filterId)
   if(appliedFilter) return true
@@ -210,14 +215,23 @@ const getResponseHelpers = function(){
 }
 
 const getRequestHelpers = function(){
-  const { applyFilter, setFilter, clearFilter, clearAllFilters } = this.filterHelpers
+  const { applyFilter, clearFilter, clearAllFilters } = this.filterHelpers
   return {
     applyFilter,
-    setFilter,
     clearFilter,
     clearAllFilters
   }
 }
+
+const getParentFilterItemIds = function(filterId, filterItemId){
+  const filter = this.filterHelpers.getFilterById(filterId)
+  const path = getPath(filter.items, filterItemId)
+  if(path){
+    return path.filter((p)=>p!==filterItemId)
+  }
+  return []
+}
+
 
 const deepClone = (data) => JSON.parse(JSON.stringify(data))
 
@@ -230,11 +244,11 @@ export default {
   getFilterItemById,
   clearFilter,
   clearAllFilters,
-  setFilter,
   getRequestHelpers,
   getResponseHelpers,
   flattenFilterItems,
   getChildFilterItemIds,
   getAppliedFilters,
-  isFilterApplied
+  isFilterApplied,
+  getParentFilterItemIds
 };
