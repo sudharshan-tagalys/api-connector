@@ -12,19 +12,19 @@
     <script>
       function setConfiguration() {
         Tagalys.APIConnector.setConfiguration({
-          serverUrl: "https://api-r3.tagalys.com",
-          platform: "shopify",
-          credentials: {
-            clientCode: "6119967E8C2B413D",
-            apiKey: "ff654cd68baeb780791ced65de6d6556",
-          },
-          currencyCode: "AUD",
-          storeId: "27140194376",
-          track: true,
-          analyticsStorageConsentProvided: function () {
-            return true;
-          },
-        });
+      serverUrl: "https://stage2-api.tagalys.com",
+      platform: "shopify",
+      credentials: {
+        clientCode: "DDFDB76CEE9FBD3F",
+        apiKey: "58e7df246ffadf5554a68534cf37f81a",
+      },
+      currencyCode: "AFN",
+      storeId: "10001",
+      track: true,
+      analyticsStorageConsentProvided: function () {
+        return true;
+      },
+    });
       }
 
       function initializeSearchSuggestions() {
