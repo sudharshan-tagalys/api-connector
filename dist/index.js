@@ -25,19 +25,7 @@ var queryStringManager_1 = require("./lib/queryStringManager");
 var shopifyAnalyticsTracker_1 = require("./lib/shopifyAnalyticsTracker");
 var cookie_1 = require("./lib/cookie");
 var analyticsTracker_1 = require("./lib/analyticsTracker");
-exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), search_suggestions_1.default.export()), { setConfiguration: function (config) {
-        configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
-        if (config.platform.toLowerCase() === 'shopify') {
-            var canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided());
-            if (canTrackAnalytics) {
-                var shopifyAnalyticsTracker = new shopifyAnalyticsTracker_1.default();
-                shopifyAnalyticsTracker.track();
-            }
-            else {
-                cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
-            }
-        }
-    }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); } });
+exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), search_suggestions_1.default.export()), { setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); } });
 var setConfiguration = function (config) {
     configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
     if (config.platform.toLowerCase() === 'shopify') {

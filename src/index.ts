@@ -9,7 +9,6 @@ import SearchSuggestions from "./search-suggestions"
 import Search from './search'
 import queryStringManager from "./lib/queryStringManager";
 import ShopifyAnalyticsTracker from './lib/shopifyAnalyticsTracker'
-import { getRequestParamsFromQueryString } from "./shared/helpers/common";
 import cookie from "./lib/cookie";
 import { COOKIES } from "./lib/analyticsTracker";
 
@@ -21,21 +20,6 @@ export const APIConnector = {
   ...ViewedAlsoViewed.export(),
   ...AddedToCartAlsoAddedToCart.export(),
   ...SearchSuggestions.export(),
-  setConfiguration: (config) => {
-    configuration.setConfiguration({
-      ...DEFAULT_CONFIGURATION,
-      ...config
-    })
-    if(config.platform.toLowerCase() === 'shopify'){
-      const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
-      if(canTrackAnalytics){
-        const shopifyAnalyticsTracker = new ShopifyAnalyticsTracker()
-        shopifyAnalyticsTracker.track()
-      }else{
-        cookie.batchDelete(Object.values(COOKIES))
-      }
-    }
-  },
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
 }
 
