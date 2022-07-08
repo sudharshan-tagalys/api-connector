@@ -14,6 +14,17 @@ class ShopifyAnalyticsTracker {
     return false
   }
 
+  getCheckoutObject(){
+    if(this.getShopifyObject()){
+      const shopifyObject = this.getShopifyObject()
+      if(shopifyObject.checkout){
+        return shopifyObject.checkout
+      }
+      return false
+    }
+    return false
+  }
+
   getPageMetaData(){
     const meta : any = this.window().meta
     if (typeof meta !== "undefined") {
@@ -73,10 +84,38 @@ class ShopifyAnalyticsTracker {
     }
   }
 
+  trackOrderIfExist(){
+    if (this.getCheckoutObject()) {
+      const checkout = this.getCheckoutObject()
+      var checkoutTime: any = new Date(checkout.created_at);
+      const currentDateTime: any = new Date()
+      var hoursSinceOrderCreation = (currentDateTime - checkoutTime) / 3600000;
+      if (hoursSinceOrderCreation < (24 * 30)) {
+        // checkout started within last 30 days
+        var lastTrackedOrderId = cookie.get(COOKIES.TA_LAST_ORDER_ID);
+        var orderId = (checkout.order_id + '');
+        if (lastTrackedOrderId != orderId) {
+          cookie.set(COOKIES.TA_LAST_ORDER_ID, orderId, 24 * 60 * 60 * 1000);
+          for (var i = 0; i < checkout.line_items.length; i++) {
+            var thisOrderEventData = {
+              action: 'buy',
+              sku: (checkout.line_items[i].product_id + ''),
+              quantity: checkout.line_items[i].quantity,
+              order_id: orderId
+            }
+            this.logTrack("product_action", thisOrderEventData)
+            analyticsTracker.trackEvent('product_action', thisOrderEventData);
+          }
+        }
+      }
+    }
+  }
+
   track(){
     this.trackProductIfExist()
     this.trackCollectionIfExist()
     this.trackCartTokenIfExist()
+    this.trackOrderIfExist()
   }
 }
 
