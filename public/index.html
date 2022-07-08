@@ -11,20 +11,24 @@
   <body>
     <script>
       function setConfiguration() {
-        Tagalys.APIConnector.setConfiguration({
-      serverUrl: "https://stage2-api.tagalys.com",
-      platform: "shopify",
-      credentials: {
-        clientCode: "DDFDB76CEE9FBD3F",
-        apiKey: "58e7df246ffadf5554a68534cf37f81a",
-      },
-      currencyCode: "AFN",
-      storeId: "10001",
-      track: true,
-      analyticsStorageConsentProvided: function () {
-        return true;
-      },
-    });
+        Tagalys.setConfiguration({
+          api: {
+            serverUrl: "https://stage2-api.tagalys.com",
+            credentials: {
+              clientCode: "DDFDB76CEE9FBD3F",
+              apiKey: "58e7df246ffadf5554a68534cf37f81a",
+            },
+            storeId: "10001",
+          },
+          currency: {
+            code: 'AFN'
+          },
+          platform: 'shopify',
+          track: true,
+          analyticsStorageConsentProvided: function () {
+            return true;
+          },
+        });
       }
 
       function initializeSearchSuggestions() {
@@ -54,7 +58,7 @@
             // Use response to render the results - described below
             console.log("response for search results", response);
             if (helpers.isValidQuery()) {
-              console.log("valid query")
+              console.log("valid query");
               logResponse(helpers);
             }
             if (helpers.isSpellingCorrectedQuery()) {
@@ -93,34 +97,44 @@
         window.searchSuggestions = initializeSearchSuggestions();
 
         // get popular searches
-        window.searchSuggestions.helpers.getPopularSearches(10).then(function (response) {
-          console.log("response for popular searches", response);
-        });
+        window.searchSuggestions.helpers
+          .getPopularSearches(10)
+          .then(function (response) {
+            console.log("response for popular searches", response);
+          });
 
         // setting up the event handlers for search input
-        document.getElementById("search-input").addEventListener("input", updateSearchSuggestions);
+        document
+          .getElementById("search-input")
+          .addEventListener("input", updateSearchSuggestions);
 
         // setting up the event listener for search results
-        document.getElementById("search-input").addEventListener("keydown", function (event) {
-          // listening for enter
-          if (event.keyCode === 13) {
-            // get the encoded query string and append to the URL
-            var queryString = window.searchSuggestions.helpers.getEncodedQueryString({
-              query: event.target.value,
-            });
-            updateHistory(queryString)
+        document
+          .getElementById("search-input")
+          .addEventListener("keydown", function (event) {
+            // listening for enter
+            if (event.keyCode === 13) {
+              // get the encoded query string and append to the URL
+              var queryString =
+                window.searchSuggestions.helpers.getEncodedQueryString({
+                  query: event.target.value,
+                });
+              updateHistory(queryString);
 
-            // get the parameters from the window location
-            var params = window.searchSuggestions.helpers.getRequestParamsFromQueryString(window.location.search);
-            window.searchResults = intializeSearchResults(params);
+              // get the parameters from the window location
+              var params =
+                window.searchSuggestions.helpers.getRequestParamsFromQueryString(
+                  window.location.search
+                );
+              window.searchResults = intializeSearchResults(params);
 
-            // finally call the API
-            window.searchResults.helpers.call();
-          }
-        });
+              // finally call the API
+              window.searchResults.helpers.call();
+            }
+          });
       });
 
-      function updateHistory(queryString){
+      function updateHistory(queryString) {
         var pageUrl = "?" + queryString;
         window.history.pushState("", "", pageUrl);
       }
@@ -148,8 +162,8 @@
           filters: helpers.getFilters(),
           applied_filters: helpers.getAppliedFilters(),
           sort_options: helpers.getSortOptions(),
-          total_pages: helpers.getTotalPages()
-        })
+          total_pages: helpers.getTotalPages(),
+        });
       }
     </script>
   </body>
