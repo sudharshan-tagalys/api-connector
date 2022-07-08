@@ -26,12 +26,14 @@ export const APIConnector = {
       ...DEFAULT_CONFIGURATION,
       ...config
     })
-    const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
-    if(config.platform === 'Shopify' && canTrackAnalytics){
-      const shopifyAnalyticsTracker = new ShopifyAnalyticsTracker()
-      shopifyAnalyticsTracker.track()
-    }else{
-      cookie.batchDelete(Object.values(COOKIES))
+    if(config.platform.toLowerCase() === 'shopify'){
+      const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
+      if(canTrackAnalytics){
+        const shopifyAnalyticsTracker = new ShopifyAnalyticsTracker()
+        shopifyAnalyticsTracker.track()
+      }else{
+        cookie.batchDelete(Object.values(COOKIES))
+      }
     }
   },
 setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
