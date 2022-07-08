@@ -15,14 +15,13 @@ declare const _default: {
     getResponseHelpers: () => {
         getFilters: any;
         getAppliedFilters: any;
-        getFlattenedAppliedFilters: any;
         getFilterById: any;
         getFilterItemById: any;
         isFilterApplied: any;
     };
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
-    getAppliedFilters: () => any[];
+    getAppliedFilters: (flatten?: boolean) => any;
     isFilterApplied: (filterId: any) => boolean;
     setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
     getParentFilterItemIds: (filterId: any, filterItemId: any) => any;

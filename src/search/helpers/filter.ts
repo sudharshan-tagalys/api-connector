@@ -37,7 +37,10 @@ items.filter((item) => {
   return item.selected;
 });
 
-const getAppliedFilters = function (){
+const getAppliedFilters = function (flatten = false) {
+  if (flatten === true) {
+    return this.filterHelpers.getFlattenedAppliedFilters()
+  }
   const responseState = deepClone(this.responseState)
   let appliedFilters = [];
   responseState.filters.map((filter) => {
@@ -197,7 +200,6 @@ const getChildFilterItemIds = function(filterItems, filterItemId){
 const getResponseHelpers = function(){
   const {
     getFilters,
-    getFlattenedAppliedFilters,
     getFilterById,
     getFilterItemById,
     isFilterApplied,
@@ -206,7 +208,6 @@ const getResponseHelpers = function(){
   return {
     getFilters,
     getAppliedFilters,
-    getFlattenedAppliedFilters,
     getFilterById,
     getFilterItemById,
     isFilterApplied

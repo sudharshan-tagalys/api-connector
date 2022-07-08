@@ -57,7 +57,11 @@ var getAppliedFilterItems = function (items) {
         return item.selected;
     });
 };
-var getAppliedFilters = function () {
+var getAppliedFilters = function (flatten) {
+    if (flatten === void 0) { flatten = false; }
+    if (flatten === true) {
+        return this.filterHelpers.getFlattenedAppliedFilters();
+    }
     var responseState = deepClone(this.responseState);
     var appliedFilters = [];
     responseState.filters.map(function (filter) {
@@ -213,11 +217,10 @@ var getChildFilterItemIds = function (filterItems, filterItemId) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getResponseHelpers = function () {
-    var _a = this.filterHelpers, getFilters = _a.getFilters, getFlattenedAppliedFilters = _a.getFlattenedAppliedFilters, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters;
+    var _a = this.filterHelpers, getFilters = _a.getFilters, getFilterById = _a.getFilterById, getFilterItemById = _a.getFilterItemById, isFilterApplied = _a.isFilterApplied, getAppliedFilters = _a.getAppliedFilters;
     return {
         getFilters: getFilters,
         getAppliedFilters: getAppliedFilters,
-        getFlattenedAppliedFilters: getFlattenedAppliedFilters,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
         isFilterApplied: isFilterApplied
