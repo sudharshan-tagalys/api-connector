@@ -67,7 +67,7 @@ class ShopifyAnalyticsTracker {
         // not tracked
         const dataToTrack = { cart_token: cartToken }
         this.logTrack("analytics/cart_token/track", dataToTrack)
-        analyticsTracker.trackEvent('analytics/cart_token/track', dataToTrack);
+        analyticsTracker.track('analytics/cart_token/track', dataToTrack);
         cookie.set(COOKIES.TA_CART, cartToken, 8640000);
       }
     }

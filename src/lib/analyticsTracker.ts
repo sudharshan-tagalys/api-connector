@@ -24,11 +24,11 @@ class AnalyticsTracker{
 
   trackEvent(eventType, details) {
     this.track("analytics/events/track", {
-      eventType,
-      details
+      event_type: eventType,
+      details: details
     })
   }
-  track(endpoint, { eventType, details }, trackerVersion = TRACKER_VERSION) {
+  track(endpoint, trackData, trackerVersion = TRACKER_VERSION) {
     if (cookie.isEnabled()) {
       cookie.batchUpdate([{
         name: COOKIES.TA_DEVICE,
@@ -47,8 +47,7 @@ class AnalyticsTracker{
       this.lastEventTimestamp = Date.now();
 
       const params = {
-        event_type: eventType,
-        details: details,
+        ...trackData,
         rapid_event_sequence: this.analyticsRapidEventSequence,
         tracker_version: trackerVersion,
         device_info: {},
@@ -60,7 +59,7 @@ class AnalyticsTracker{
       api.call('POST', endpoint, {
         params: JSON.stringify(params),
         onSuccess: function (response) {
-          if (eventType && eventType == 'product_action' && response.hasOwnProperty('timestamp')) {
+          if (trackData.event_type && trackData.event_type == 'product_action' && response.hasOwnProperty('timestamp')) {
             const lastProductActionTime = response.timestamp.split('T')[1].substring(0,6)
             cookie.set(COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
           }
