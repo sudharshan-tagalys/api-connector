@@ -36,8 +36,27 @@ export const APIConnector = {
       }
     }
   },
-setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString)
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+}
+
+const setConfiguration = (config) => {
+  configuration.setConfiguration({
+    ...DEFAULT_CONFIGURATION,
+    ...config
+  })
+  if(config.platform.toLowerCase() === 'shopify'){
+    const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
+    if(canTrackAnalytics){
+      const shopifyAnalyticsTracker = new ShopifyAnalyticsTracker()
+      shopifyAnalyticsTracker.track()
+    }else{
+      cookie.batchDelete(Object.values(COOKIES))
+    }
+  }
+}
+
+export {
+  setConfiguration
 }
 
 window.addEventListener("load", () => {

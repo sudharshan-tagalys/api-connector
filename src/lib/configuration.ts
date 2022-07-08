@@ -1,34 +1,48 @@
 import { APIConfiguration } from "../shared/types";
 
 class Configuration{
-  private configuration: APIConfiguration;
+  private configuration;
   setConfiguration(configuration) {
     this.validateConfiguration(configuration);
     this.configuration = {
-      identification: {
-        client_code: configuration.credentials.clientCode,
-        api_key: configuration.credentials.apiKey,
-        store_id: configuration.storeId,
-        currency: configuration.currencyCode,
-        api_client: configuration.apiClient,
+      api: {
+        serverUrl: configuration.api.serverUrl,
+        credentials: {
+          clientCode: configuration.api.credentials.clientCode,
+          apiKey: configuration.api.credentials.apiKey,
+        },
+        storeId: configuration.api.storeId,
       },
       platform: configuration.platform,
-      serverUrl: configuration.serverUrl,
+      currency: {
+        code: configuration.currency.code
+      },
+      apiClient: configuration.apiClient,
       track: configuration.track,
-      analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided,
+      analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided
     }
   }
 
   validateConfiguration(configuration) {
-    ["serverUrl", "credentials", "storeId", "currencyCode"].forEach((configProperty) => {
-      if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
+    if(!configuration.hasOwnProperty('api')){
+      throw new Error(this.getConstructedErrorLabel('api'))
+    }
+    ["serverUrl", "credentials", "storeId"].forEach((configProperty) => {
+      if (!configuration.api.hasOwnProperty(configProperty) || typeof configuration.api[configProperty] === "undefined") {
         throw new Error(this.getConstructedErrorLabel(configProperty))
       }
     })
     const credentialProperties = ["clientCode", "apiKey"]
     credentialProperties.forEach((credentialsProperty) => {
-      if (!configuration.credentials.hasOwnProperty(credentialsProperty)) {
+      if (!configuration.api.credentials.hasOwnProperty(credentialsProperty)) {
         throw new Error(this.getConstructedErrorLabel(credentialsProperty))
+      }
+    })
+
+    const otherProperties = ['currency', 'platform']
+    otherProperties.forEach((configProperty) => {
+      if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
+        throw new Error(this.getConstructedErrorLabel(configProperty))
       }
     })
   }
@@ -42,11 +56,22 @@ class Configuration{
   }
 
   getServerUrl() {
-    return this.configuration.serverUrl;
+    return this.configuration.api.serverUrl;
   }
 
   getApiIdentification() {
-    return this.configuration.identification;
+    return {
+      client_code: this.configuration.api.credentials.clientCode,
+      api_key: this.configuration.api.credentials.apiKey,
+      store_id: this.configuration.api.storeId,
+      currency: this.configuration.currency.code,
+      api_client: {
+        vendor: this.configuration.apiClient.vendor,
+        language: this.configuration.apiClient.language,
+        version: this.configuration.apiClient.version,
+        release: this.configuration.apiClient.release
+      }
+    }
   }
 
   getPlatform() {
