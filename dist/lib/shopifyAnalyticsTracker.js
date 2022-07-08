@@ -65,7 +65,7 @@ var ShopifyAnalyticsTracker = /** @class */ (function () {
                 // not tracked
                 var dataToTrack = { cart_token: cartToken };
                 this.logTrack("analytics/cart_token/track", dataToTrack);
-                analyticsTracker_1.default.trackEvent('analytics/cart_token/track', dataToTrack);
+                analyticsTracker_1.default.track('analytics/cart_token/track', dataToTrack);
                 cookie_1.default.set(analyticsTracker_1.COOKIES.TA_CART, cartToken, 8640000);
             }
         }
