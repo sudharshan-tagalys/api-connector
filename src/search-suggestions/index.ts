@@ -16,7 +16,18 @@ import {
 } from "../shared/helpers/common";
 import debounce from "../lib/debounce";
 
+
+
 class SearchSuggestions extends APIConnector {
+  getDefaultResponseState = () => {
+    return {
+      products: [],
+      queries: []
+    }
+  };
+
+  public responseState = this.getDefaultResponseState()
+
   getRequestOptions() {
     return {
       path: `ss`,
@@ -62,8 +73,8 @@ class SearchSuggestions extends APIConnector {
         getRequestParamsFromWindowLocation(),
       getURLEncodedQueryString: (baseUrl, params) =>
         getURLEncodedQueryString(baseUrl, params),
-      getProducts: () => formattedResponse ? formattedResponse.products : undefined,
-      getTextSuggestions: () => formattedResponse ? formattedResponse.queries : undefined,
+      getProducts: () => this.responseState.products,
+      getTextSuggestions: () => this.responseState.queries
     }
     return {
       updateQuery: debounce((query) => this.updateQuery(query)),
@@ -167,6 +178,14 @@ class SearchSuggestions extends APIConnector {
     const recentSearches = getRecentSearches()
     const sortedRecentSearches = sortRecentSeaches(recentSearches.queries)
     return sortedRecentSearches.slice(0, limit)
+  }
+
+  internalSuccessCallback(_, formattedResponse){
+    this.setResponseState(formattedResponse)
+  }
+
+  setResponseState(state){
+    this.responseState = state
   }
 
   static defaultRequestOptions() {
