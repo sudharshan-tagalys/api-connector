@@ -6,7 +6,7 @@ declare class Widget extends APIConnector {
     getParams(): WidgetParams;
     path(): string;
     plType(): string;
-    getHelpersToExpose(response?: boolean): {};
+    getHelpersToExpose(response: any, formattedResponse: any): {};
     extractAnalyticsData(response: any): {
         event_type?: undefined;
         event_details?: undefined;

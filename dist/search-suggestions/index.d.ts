@@ -14,10 +14,12 @@ declare class SearchSuggestions extends APIConnector {
     formatResponse(response: any): any;
     updateQuery(query: any): void;
     setQuery(query: any): void;
-    getHelpersToExpose(): {
+    getHelpersToExpose(response: any, formattedResponse: any): {
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
+        getProducts: () => any;
+        getTextSuggestions: () => any;
         updateQuery: (...args: any[]) => void;
         recordRecentSearch: (queryString: any) => void;
         removeRecentSearch: (queryString: any) => void;
@@ -31,6 +33,8 @@ declare class SearchSuggestions extends APIConnector {
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
+        getProducts: () => any;
+        getTextSuggestions: () => any;
         updateQuery: (...args: any[]) => void;
         recordRecentSearch: (queryString: any) => void;
         removeRecentSearch: (queryString: any) => void;

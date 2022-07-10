@@ -39,11 +39,11 @@ var Widget = /** @class */ (function (_super) {
     Widget.prototype.plType = function () {
         return "";
     };
-    Widget.prototype.getHelpersToExpose = function (response) {
+    Widget.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
-        if (response === void 0) { response = false; }
         return {
-            getAnalyticsData: function () { return _this.extractAnalyticsData(response); }
+            getAnalyticsData: function () { return _this.extractAnalyticsData(response); },
+            getProducts: function () { return formattedResponse ? formattedResponse.products : undefined; }
         };
     };
     Widget.prototype.extractAnalyticsData = function (response) {

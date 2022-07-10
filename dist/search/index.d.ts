@@ -125,7 +125,7 @@ declare class Search extends APIConnector {
     };
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpers(type: any): any;
-    getHelpersToExpose(response?: boolean): any;
+    getHelpersToExpose(response: any, formattedResponse: any): any;
     setRequestParamsFromRequestState(): void;
     beforeAPICall(_: any): any;
     new(requestOptions: any): any;

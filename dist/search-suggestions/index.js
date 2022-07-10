@@ -60,7 +60,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.prototype.setQuery = function (query) {
         this.requestOptions.params.query = query;
     };
-    SearchSuggestions.prototype.getHelpersToExpose = function () {
+    SearchSuggestions.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
         var queryStringHelpers = {
             getRequestParamsFromQueryString: function (queryString) {
@@ -72,6 +72,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
             getURLEncodedQueryString: function (baseUrl, params) {
                 return (0, common_1.getURLEncodedQueryString)(baseUrl, params);
             },
+            getProducts: function () { return formattedResponse ? formattedResponse.products : undefined; },
+            getTextSuggestions: function () { return formattedResponse ? formattedResponse.queries : undefined; },
         };
         return __assign({ updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }), recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }, removeRecentSearch: function (queryString) { return (0, common_1.removeRecentSearch)(queryString); }, getRecentSearches: function (limit) { return _this.getRecentSearches(limit); }, getPopularSearches: function (limit) { return _this.getPopularSearches(limit); }, getRecentAndPopularSearches: function (maxRecentSearches, maxTotalSearches, callbackOptions) {
                 if (callbackOptions === void 0) { callbackOptions = {}; }
@@ -80,7 +82,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
     };
     SearchSuggestions.prototype.new = function (requestOptions) {
         this.requestOptions = requestOptions;
-        return this.getHelpersToExpose();
+        return this.getHelpersToExpose(false, false);
     };
     SearchSuggestions.prototype.getSearchesToDisplay = function (recentSearches, popularSearches, maxRecentSearches, maxTotalSearches) {
         var popularSearchesDisplayStrings = popularSearches.map(function (popularSearch) {

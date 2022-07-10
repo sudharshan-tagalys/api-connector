@@ -54,7 +54,7 @@ var APIConnector = /** @class */ (function () {
                 }
                 _this.markRequestComplete(currentRequest);
                 if (_this.isFailureResponse(response)) {
-                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
+                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response, _this.getFormattedResponse(response)));
                 }
                 else {
                     _this.onSuccessfulResponse(response);
@@ -65,7 +65,7 @@ var APIConnector = /** @class */ (function () {
                     return;
                 }
                 _this.markRequestComplete(currentRequest);
-                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response));
+                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response, _this.getFormattedResponse(response)));
             }
         });
     };
@@ -78,16 +78,19 @@ var APIConnector = /** @class */ (function () {
         }
         return params;
     };
-    APIConnector.prototype.getHelpersToExpose = function (response) {
+    APIConnector.prototype.getHelpersToExpose = function (response, formattedResponse) {
         return {};
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
+    };
+    APIConnector.prototype.getFormattedResponse = function (response) {
+        return this.formatResponse(response);
     };
     APIConnector.prototype.onSuccessfulResponse = function (response) {
         var analyticsData = this.extractAnalyticsData(response);
         var formattedResponse = this.formatResponse(response);
         this.internalSuccessCallback(response, formattedResponse);
-        var helpers = this.getHelpersToExpose(response);
+        var helpers = this.getHelpersToExpose(response, formattedResponse);
         this.requestOptions.onSuccess(formattedResponse, helpers);
         if (analyticsData && configuration_1.default.canTrackAnalytics()) {
             analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);

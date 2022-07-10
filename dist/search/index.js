@@ -253,9 +253,8 @@ var Search = /** @class */ (function (_super) {
         }
         return helpers;
     };
-    Search.prototype.getHelpersToExpose = function (response) {
+    Search.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
-        if (response === void 0) { response = false; }
         return __assign(__assign(__assign({}, this.getHelpers('request')), this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } });
     };
     Search.prototype.setRequestParamsFromRequestState = function () {
@@ -282,7 +281,7 @@ var Search = /** @class */ (function (_super) {
             console.error("Something went wrong in the request state");
         }
         this.setRequestParamsFromRequestState();
-        return this.getHelpersToExpose();
+        return this.getHelpersToExpose(false, false);
     };
     return Search;
 }(apiConnector_1.default));
