@@ -54,7 +54,7 @@ class SearchSuggestions extends APIConnector {
     this.requestOptions.params.query = query
   }
 
-  getHelpersToExpose() {
+  getHelpersToExpose(response, formattedResponse) {
     const queryStringHelpers = {
       getRequestParamsFromQueryString: (queryString) =>
         getRequestParamsFromQueryString(queryString),
@@ -62,6 +62,8 @@ class SearchSuggestions extends APIConnector {
         getRequestParamsFromWindowLocation(),
       getURLEncodedQueryString: (baseUrl, params) =>
         getURLEncodedQueryString(baseUrl, params),
+      getProducts: () => formattedResponse ? formattedResponse.products : undefined,
+      getTextSuggestions: () => formattedResponse ? formattedResponse.queries : undefined,
     }
     return {
       updateQuery: debounce((query) => this.updateQuery(query)),
@@ -81,7 +83,7 @@ class SearchSuggestions extends APIConnector {
 
   new(requestOptions) {
     this.requestOptions = requestOptions;
-    return this.getHelpersToExpose();
+    return this.getHelpersToExpose(false, false);
   }
 
   getSearchesToDisplay(recentSearches, popularSearches, maxRecentSearches, maxTotalSearches) {

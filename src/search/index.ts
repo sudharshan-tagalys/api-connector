@@ -272,7 +272,7 @@ class Search extends APIConnector {
     return helpers
   }
 
-  getHelpersToExpose(response = false){
+  getHelpersToExpose(response, formattedResponse){
     return {
       ...this.getHelpers('request'),
       ...this.getHelpers('response'),
@@ -304,7 +304,7 @@ class Search extends APIConnector {
       console.error("Something went wrong in the request state")
     }
     this.setRequestParamsFromRequestState()
-    return this.getHelpersToExpose()
+    return this.getHelpersToExpose(false, false)
   }
 }
 

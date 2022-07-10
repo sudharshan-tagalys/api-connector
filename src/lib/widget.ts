@@ -26,9 +26,10 @@ class Widget extends APIConnector {
     return ""
   }
 
-  getHelpersToExpose(response = false): {} {
+  getHelpersToExpose(response, formattedResponse): {} {
     return {
-      getAnalyticsData: () => this.extractAnalyticsData(response)
+      getAnalyticsData: () => this.extractAnalyticsData(response),
+      getProducts: () => formattedResponse ? formattedResponse.products : undefined
     }
   }
 
