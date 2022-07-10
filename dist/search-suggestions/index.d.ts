@@ -1,5 +1,13 @@
 import APIConnector from "../lib/apiConnector";
 declare class SearchSuggestions extends APIConnector {
+    getDefaultResponseState: () => {
+        products: any[];
+        queries: any[];
+    };
+    responseState: {
+        products: any[];
+        queries: any[];
+    };
     getRequestOptions(): {
         path: string;
         format: string;
@@ -18,8 +26,8 @@ declare class SearchSuggestions extends APIConnector {
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-        getProducts: () => any;
-        getTextSuggestions: () => any;
+        getProducts: () => any[];
+        getTextSuggestions: () => any[];
         updateQuery: (...args: any[]) => void;
         recordRecentSearch: (queryString: any) => void;
         removeRecentSearch: (queryString: any) => void;
@@ -33,8 +41,8 @@ declare class SearchSuggestions extends APIConnector {
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-        getProducts: () => any;
-        getTextSuggestions: () => any;
+        getProducts: () => any[];
+        getTextSuggestions: () => any[];
         updateQuery: (...args: any[]) => void;
         recordRecentSearch: (queryString: any) => void;
         removeRecentSearch: (queryString: any) => void;
@@ -48,6 +56,8 @@ declare class SearchSuggestions extends APIConnector {
     getRecentAndPopularSearches(maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: any): Promise<unknown>;
     getPopularSearches(limit: any): Promise<unknown>;
     getRecentSearches(limit: any): any;
+    internalSuccessCallback(_: any, formattedResponse: any): void;
+    setResponseState(state: any): void;
     static defaultRequestOptions(): {
         params: {
             request: {

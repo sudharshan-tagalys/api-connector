@@ -35,7 +35,15 @@ var debounce_1 = require("../lib/debounce");
 var SearchSuggestions = /** @class */ (function (_super) {
     __extends(SearchSuggestions, _super);
     function SearchSuggestions() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.getDefaultResponseState = function () {
+            return {
+                products: [],
+                queries: []
+            };
+        };
+        _this.responseState = _this.getDefaultResponseState();
+        return _this;
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
         return {
@@ -72,8 +80,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
             getURLEncodedQueryString: function (baseUrl, params) {
                 return (0, common_1.getURLEncodedQueryString)(baseUrl, params);
             },
-            getProducts: function () { return formattedResponse ? formattedResponse.products : undefined; },
-            getTextSuggestions: function () { return formattedResponse ? formattedResponse.queries : undefined; },
+            getProducts: function () { return _this.responseState.products; },
+            getTextSuggestions: function () { return _this.responseState.queries; }
         };
         return __assign({ updateQuery: (0, debounce_1.default)(function (query) { return _this.updateQuery(query); }), recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }, removeRecentSearch: function (queryString) { return (0, common_1.removeRecentSearch)(queryString); }, getRecentSearches: function (limit) { return _this.getRecentSearches(limit); }, getPopularSearches: function (limit) { return _this.getPopularSearches(limit); }, getRecentAndPopularSearches: function (maxRecentSearches, maxTotalSearches, callbackOptions) {
                 if (callbackOptions === void 0) { callbackOptions = {}; }
@@ -142,6 +150,12 @@ var SearchSuggestions = /** @class */ (function (_super) {
         var recentSearches = (0, common_1.getRecentSearches)();
         var sortedRecentSearches = (0, common_1.sortRecentSeaches)(recentSearches.queries);
         return sortedRecentSearches.slice(0, limit);
+    };
+    SearchSuggestions.prototype.internalSuccessCallback = function (_, formattedResponse) {
+        this.setResponseState(formattedResponse);
+    };
+    SearchSuggestions.prototype.setResponseState = function (state) {
+        this.responseState = state;
     };
     SearchSuggestions.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { params: {
