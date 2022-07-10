@@ -1,4 +1,8 @@
-const getProducts = function(){
+const hasNoSearchResults = function() {
+  return (this.productHelpers.getTotalProductsCount() === 0 || this.responseState.hasOwnProperty("error"))
+}
+
+const getProducts = function() {
   return this.responseState.products
 }
 
@@ -13,9 +17,10 @@ const getRequestHelpers = function(){
 }
 
 const getResponseHelpers = function(){
-  const { getProducts, getTotalProductsCount } = this.productHelpers
+  const { getProducts, getTotalProductsCount, hasNoSearchResults } = this.productHelpers
   return {
     getProducts,
+    hasNoSearchResults,
     getTotalProductsCount
   }
 }
@@ -24,5 +29,6 @@ export default {
   getProducts,
   getTotalProductsCount,
   getRequestHelpers,
-  getResponseHelpers
+  getResponseHelpers,
+  hasNoSearchResults,
 }
