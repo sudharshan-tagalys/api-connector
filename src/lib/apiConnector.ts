@@ -53,7 +53,7 @@ class APIConnector{
         }
         this.markRequestComplete(currentRequest)
         if (this.isFailureResponse(response)) {
-          this.requestOptions.onFailure(response, this.getHelpersToExpose(response, this.getFormattedResponse(response)))
+          this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
         } else {
           this.onSuccessfulResponse(response)
         }
@@ -63,7 +63,7 @@ class APIConnector{
           return
         }
         this.markRequestComplete(currentRequest)
-        this.requestOptions.onFailure(response, this.getHelpersToExpose(response, this.getFormattedResponse(response)))
+        this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
       }
     });
   }

@@ -54,7 +54,7 @@ var APIConnector = /** @class */ (function () {
                 }
                 _this.markRequestComplete(currentRequest);
                 if (_this.isFailureResponse(response)) {
-                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response, _this.getFormattedResponse(response)));
+                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
                 }
                 else {
                     _this.onSuccessfulResponse(response);
@@ -65,7 +65,7 @@ var APIConnector = /** @class */ (function () {
                     return;
                 }
                 _this.markRequestComplete(currentRequest);
-                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(response, _this.getFormattedResponse(response)));
+                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
             }
         });
     };
