@@ -43,7 +43,7 @@ var Widget = /** @class */ (function (_super) {
         var _this = this;
         return {
             getAnalyticsData: function () { return _this.extractAnalyticsData(response); },
-            getProducts: function () { return formattedResponse ? formattedResponse.products : undefined; }
+            getProducts: function () { return formattedResponse ? formattedResponse.products : []; }
         };
     };
     Widget.prototype.extractAnalyticsData = function (response) {
