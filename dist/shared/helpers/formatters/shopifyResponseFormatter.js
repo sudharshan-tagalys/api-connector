@@ -59,7 +59,8 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
                 };
             },
             images: 'images',
-            variants: 'variants'
+            variants: 'variants',
+            available: 'available'
         };
     };
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {

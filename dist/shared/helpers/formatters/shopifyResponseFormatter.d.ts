@@ -17,6 +17,7 @@ declare class ShopifyResponseFormatter extends Formatter {
         };
         images: string;
         variants: string;
+        available: string;
     };
     additionalPlatformFields(detail: any): {
         handle: any;
