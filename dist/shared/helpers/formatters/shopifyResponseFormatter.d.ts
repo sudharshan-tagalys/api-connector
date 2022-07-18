@@ -15,7 +15,10 @@ declare class ShopifyResponseFormatter extends Formatter {
             key: string;
             value: any;
         };
-        images: string;
+        images: (data: any) => {
+            key: string;
+            value: any;
+        };
         variants: string;
         available: string;
         metafields: string;

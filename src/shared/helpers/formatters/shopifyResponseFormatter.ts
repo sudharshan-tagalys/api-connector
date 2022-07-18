@@ -40,7 +40,14 @@ class ShopifyResponseFormatter extends Formatter {
           value: data._vendor
         }
       },
-      images: 'images',
+      images: (data) => {
+        // slice before sorting is a non destructive way (sort is a destructive array utility)
+        const sortedImages = data.slice().sort((img1,img2) => img1.position - img2.position)
+        return {
+          key: "images",
+          value: sortedImages
+        }
+      },
       variants: 'variants',
       available: 'available',
       metafields: 'metafields'

@@ -58,7 +58,14 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
                     value: data._vendor
                 };
             },
-            images: 'images',
+            images: function (data) {
+                // slice before sorting is a non destructive way (sort is a destructive array utility)
+                var sortedImages = data.slice().sort(function (img1, img2) { return img1.position - img2.position; });
+                return {
+                    key: "images",
+                    value: sortedImages
+                };
+            },
             variants: 'variants',
             available: 'available',
             metafields: 'metafields'
