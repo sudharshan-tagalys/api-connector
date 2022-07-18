@@ -60,7 +60,7 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             },
             images: function (data) {
                 // slice before sorting is a non destructive way (sort is a destructive array utility)
-                var sortedImages = data.slice().sort(function (img1, img2) { return img1.position - img2.position; });
+                var sortedImages = data.images.slice().sort(function (img1, img2) { return img1.position - img2.position; });
                 return {
                     key: "images",
                     value: sortedImages
