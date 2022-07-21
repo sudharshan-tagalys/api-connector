@@ -1,18 +1,23 @@
-import SearchHelpers from './helpers/search';
-import { recordRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
+import {
+  getEncodedQueryString,
+  getRequestParamsFromQueryString,
+  getRequestParamsFromWindowLocation
+} from "../shared/helpers/common";
 import Base from "../lib/plp-base"
 
-class Search extends Base {
+class ProductListingPage extends Base {
   // == HELPERS ==
-  public searchHelpers;
-
   getDefaultRequestState = () => {
     return {
-      query: "",
-      queryMode: "",
+      product_listing_page_id: "",
       filters: {},
-      queryFilters: {},
-      request: ['details', 'filters', 'sort_options'],
+      request: [
+        'details',
+        'filters',
+        'sort_options',
+        'variables',
+        'banners'
+      ],
       page: 1,
       perPage: 16,
       sort: ""
@@ -21,29 +26,27 @@ class Search extends Base {
 
   getDefaultResponseState = () => {
     return {
-      query: "",
+      name: "",
       total_pages: null,
       page: null,
       total: null,
-      query_mode: null,
       products: [],
       filters: [],
-      sort_options: []
+      sort_options: [],
+      // TODO: do we need to consider banners and variables?
+      banners: [],
+      variants: [],
     }
   };
 
-  constructor(){
-    super()
-    this.searchHelpers = this.bindThisToHelpers(SearchHelpers);
-  }
-
   static exporterName(){
-    return 'SearchResults'
+    return 'ProductListingPage'
   }
 
   getRequestOptions() {
+    console.log(this.requestOptions.params)
     return {
-      path: 'search',
+      path: `mpages/${this.requestOptions.params.product_listing_page_id}`,
       params: this.requestOptions.params,
     }
   }
@@ -51,13 +54,6 @@ class Search extends Base {
   extractAnalyticsData(response) {
     if(response === false){
       return {}
-    }
-
-    if(response.hasOwnProperty('error')){
-      return false
-    }
-    if(response.hasOwnProperty('redirect_to_url')){
-      return false
     }
     let eventDetails = {
       pl_type: 'search',
@@ -85,17 +81,17 @@ class Search extends Base {
   }
 
   formatResponse(response: any) {
-    return this.responseFormatter.search(response)
+    return this.responseFormatter.productListingPage(response)
   }
 
+  setRequestParamsFromRequestState(){
+    this.requestOptions.params = {
+      ...this.getParamsFromRequestState(),
+      product_listing_page_id: this.requestOptions.params.product_listing_page_id
+    }
+  }
   getRequestStateFromParams(params){
     let requestState = {}
-    if(params.query){
-      requestState['query'] = params.query
-    }
-    if(params.queryMode){
-      requestState['queryMode'] = params.queryMode
-    }
     if(params.request){
       requestState['request'] = params.request
     }
@@ -122,24 +118,12 @@ class Search extends Base {
 
   getRequestParams(state){
     const {
-      query,
-      queryMode,
-      queryFilters,
       filters,
       request,
       page,
       perPage,
     } = state;
     let params: any = {}
-    if(query){
-      params['q'] = query
-    }
-    if(queryMode){
-      params['qm'] = queryMode
-    }
-    if(queryFilters){
-      params['qf'] = queryFilters
-    }
     if(filters){
       params['f'] = filters
     }
@@ -160,8 +144,6 @@ class Search extends Base {
 
   getEncodedQueryString(except = []){
     return getEncodedQueryString({
-      query: this.requestState.query,
-      queryFilters: this.requestState.queryFilters,
       filters: this.requestState.filters,
       page: this.requestState.page,
       sort: this.requestState.sort,
@@ -178,19 +160,9 @@ class Search extends Base {
       getRequestState: () => this.requestState,
       getRequestParams: () => this.requestState,
       getResponseState: () => this.responseState,
-      recordRecentSearch: (queryString) => recordRecentSearch(queryString)
-    }
-  }
-
-  getHelpers(type){
-    const functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers')
-    const baseHelpers = super.getHelpers(type)
-    return {
-      ...baseHelpers,
-      ...this.searchHelpers[functionToCall](),
     }
   }
 
 }
 
-export default Search
+export default ProductListingPage

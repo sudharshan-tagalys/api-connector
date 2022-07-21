@@ -94,6 +94,10 @@ class Formatter {
     }
   }
 
+  productListingPage(response) {
+    return this.search(response)
+  }
+
   searchSuggestions(response, configuration) {
     const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
@@ -107,10 +111,12 @@ class Formatter {
     if (response.redirect_to_url) return { redirect_to_url:  response.redirect_to_url}
     const totalPages = Math.ceil(response.total / response.per_page)
     const formattedResponse = {
-      query: response.query,
       total_pages: totalPages,
       page: response.page,
       total: response.total
+    }
+    if (response.query) {
+      formattedResponse["query"] = response.query
     }
     if (response.query_original) {
       formattedResponse["query_original"] = response.query_original

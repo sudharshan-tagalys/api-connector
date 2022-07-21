@@ -1,5 +1,4 @@
 import Formatter from './formatter';
-import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatter"
 
 const unique = (value, index, self) => {
   return self.indexOf(value) === index

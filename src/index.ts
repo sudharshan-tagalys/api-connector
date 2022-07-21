@@ -7,6 +7,7 @@ import ViewedAlsoViewed from "./viewed-also-viewed"
 import AddedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
 import SearchSuggestions from "./search-suggestions"
 import Search from './search'
+import ProductListingPage from "./product-lisiting-page"
 import queryStringManager from "./lib/queryStringManager";
 import ShopifyAnalyticsTracker from './lib/shopifyAnalyticsTracker'
 import cookie from "./lib/cookie";
@@ -20,6 +21,7 @@ export const APIConnector = {
   ...ViewedAlsoViewed.export(),
   ...AddedToCartAlsoAddedToCart.export(),
   ...SearchSuggestions.export(),
+  ...ProductListingPage.export(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
 }
 
