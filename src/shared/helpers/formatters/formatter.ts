@@ -112,12 +112,7 @@ class Formatter {
   search(response) {
     if (response.error) return response
     if (response.redirect_to_url) return { redirect_to_url:  response.redirect_to_url}
-    const totalPages = Math.ceil(response.total / response.per_page)
-    const formattedResponse = {
-      total_pages: totalPages,
-      page: response.page,
-      total: response.total
-    }
+    const formattedResponse = {}
     if (response.query) {
       formattedResponse["query"] = response.query
     }
@@ -134,7 +129,12 @@ class Formatter {
   }
 
   getBasePlpResponse(response) {
-    let basePlpResponse = {}
+    const totalPages = Math.ceil(response.total / response.per_page)
+    let basePlpResponse = {
+      total_pages: totalPages,
+      page: response.page,
+      total: response.total
+    }
     if(response.details){
       basePlpResponse["products"] = this.formatDetails(response.details)
     }
