@@ -1,33 +1,30 @@
 import Base from "../lib/plp-base";
-declare class Search extends Base {
-    searchHelpers: any;
+declare class ProductListingPage extends Base {
     getDefaultRequestState: () => {
-        query: string;
-        queryMode: string;
+        product_listing_page_id: string;
         filters: {};
-        queryFilters: {};
         request: string[];
         page: number;
         perPage: number;
         sort: string;
     };
     getDefaultResponseState: () => {
-        query: string;
+        name: string;
         total_pages: any;
         page: any;
         total: any;
-        query_mode: any;
         products: any[];
         filters: any[];
         sort_options: any[];
+        banners: any[];
+        variants: any[];
     };
-    constructor();
     static exporterName(): string;
     getRequestOptions(): {
         path: string;
         params: any;
     };
-    extractAnalyticsData(response: any): false | {
+    extractAnalyticsData(response: any): {
         event_type?: undefined;
         event_details?: undefined;
     } | {
@@ -44,11 +41,10 @@ declare class Search extends Base {
         };
     };
     formatResponse(response: any): any;
+    setRequestParamsFromRequestState(): void;
     getRequestStateFromParams(params: any): {
-        query: string;
-        queryMode: string;
+        product_listing_page_id: string;
         filters: {};
-        queryFilters: {};
         request: string[];
         page: number;
         perPage: number;
@@ -64,8 +60,6 @@ declare class Search extends Base {
         getRequestState: () => any;
         getRequestParams: () => any;
         getResponseState: () => any;
-        recordRecentSearch: (queryString: any) => void;
     };
-    getHelpers(type: any): any;
 }
-export default Search;
+export default ProductListingPage;

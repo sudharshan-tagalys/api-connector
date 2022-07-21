@@ -23,7 +23,7 @@
           currency: {
             code: 'AFN'
           },
-          platform: 'shopify',
+          platform: 'magento',
           track: true,
           analyticsStorageConsentProvided: function () {
             return true;
@@ -94,44 +94,16 @@
       document.addEventListener("tagalys:ready", function () {
         // Initialise the connector with the configuration options
         setConfiguration();
-        window.searchSuggestions = initializeSearchSuggestions();
-
-        // get popular searches
-        window.searchSuggestions.helpers
-          .getPopularSearches(10)
-          .then(function (response) {
-            console.log("response for popular searches", response);
-          });
-
-        // setting up the event handlers for search input
-        document
-          .getElementById("search-input")
-          .addEventListener("input", updateSearchSuggestions);
-
-        // setting up the event listener for search results
-        document
-          .getElementById("search-input")
-          .addEventListener("keydown", function (event) {
-            // listening for enter
-            if (event.keyCode === 13) {
-              // get the encoded query string and append to the URL
-              var queryString =
-                window.searchSuggestions.helpers.getEncodedQueryString({
-                  query: event.target.value,
-                });
-              updateHistory(queryString);
-
-              // get the parameters from the window location
-              var params =
-                window.searchSuggestions.helpers.getRequestParamsFromQueryString(
-                  window.location.search
-                );
-              window.searchResults = intializeSearchResults(params);
-
-              // finally call the API
-              window.searchResults.helpers.call();
-            }
-          });
+        var plp = Tagalys.APIConnector.ProductListingPage.new({
+          params: {
+            product_listing_page_id: "test-page-2",
+          },
+          onSuccess: function (response, helpers) {
+            console.log("response for category test-page-2", response);
+          }
+        })
+        plp.helpers.call()
+        window.plp = plp;
       });
 
       function updateHistory(queryString) {
@@ -149,7 +121,7 @@
       }
 
       function applySortOption(sortOptionId) {
-        window.searchResults.helpers.applySortOption(sortOptionId);
+        window.plp.helpers.applySortOption(sortOptionId);
       }
 
       function goToPage2() {

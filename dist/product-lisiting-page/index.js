@@ -26,20 +26,24 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var search_1 = require("./helpers/search");
 var common_1 = require("../shared/helpers/common");
 var plp_base_1 = require("../lib/plp-base");
-var Search = /** @class */ (function (_super) {
-    __extends(Search, _super);
-    function Search() {
-        var _this = _super.call(this) || this;
+var ProductListingPage = /** @class */ (function (_super) {
+    __extends(ProductListingPage, _super);
+    function ProductListingPage() {
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        // == HELPERS ==
         _this.getDefaultRequestState = function () {
             return {
-                query: "",
-                queryMode: "",
+                product_listing_page_id: "",
                 filters: {},
-                queryFilters: {},
-                request: ['details', 'filters', 'sort_options'],
+                request: [
+                    'details',
+                    'filters',
+                    'sort_options',
+                    'variables',
+                    'banners'
+                ],
                 page: 1,
                 perPage: 16,
                 sort: ""
@@ -47,37 +51,33 @@ var Search = /** @class */ (function (_super) {
         };
         _this.getDefaultResponseState = function () {
             return {
-                query: "",
+                name: "",
                 total_pages: null,
                 page: null,
                 total: null,
-                query_mode: null,
                 products: [],
                 filters: [],
-                sort_options: []
+                sort_options: [],
+                // TODO: do we need to consider banners and variables?
+                banners: [],
+                variants: [],
             };
         };
-        _this.searchHelpers = _this.bindThisToHelpers(search_1.default);
         return _this;
     }
-    Search.exporterName = function () {
-        return 'SearchResults';
+    ProductListingPage.exporterName = function () {
+        return 'ProductListingPage';
     };
-    Search.prototype.getRequestOptions = function () {
+    ProductListingPage.prototype.getRequestOptions = function () {
+        console.log(this.requestOptions.params);
         return {
-            path: 'search',
+            path: "mpages/".concat(this.requestOptions.params.product_listing_page_id),
             params: this.requestOptions.params,
         };
     };
-    Search.prototype.extractAnalyticsData = function (response) {
+    ProductListingPage.prototype.extractAnalyticsData = function (response) {
         if (response === false) {
             return {};
-        }
-        if (response.hasOwnProperty('error')) {
-            return false;
-        }
-        if (response.hasOwnProperty('redirect_to_url')) {
-            return false;
         }
         var eventDetails = {
             pl_type: 'search',
@@ -103,17 +103,14 @@ var Search = /** @class */ (function (_super) {
             event_details: eventDetails
         };
     };
-    Search.prototype.formatResponse = function (response) {
-        return this.responseFormatter.search(response);
+    ProductListingPage.prototype.formatResponse = function (response) {
+        return this.responseFormatter.productListingPage(response);
     };
-    Search.prototype.getRequestStateFromParams = function (params) {
+    ProductListingPage.prototype.setRequestParamsFromRequestState = function () {
+        this.requestOptions.params = __assign(__assign({}, this.getParamsFromRequestState()), { product_listing_page_id: this.requestOptions.params.product_listing_page_id });
+    };
+    ProductListingPage.prototype.getRequestStateFromParams = function (params) {
         var requestState = {};
-        if (params.query) {
-            requestState['query'] = params.query;
-        }
-        if (params.queryMode) {
-            requestState['queryMode'] = params.queryMode;
-        }
         if (params.request) {
             requestState['request'] = params.request;
         }
@@ -134,18 +131,9 @@ var Search = /** @class */ (function (_super) {
         }
         return __assign(__assign({}, this.getDefaultRequestState()), requestState);
     };
-    Search.prototype.getRequestParams = function (state) {
-        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters, filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
+    ProductListingPage.prototype.getRequestParams = function (state) {
+        var filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
         var params = {};
-        if (query) {
-            params['q'] = query;
-        }
-        if (queryMode) {
-            params['qm'] = queryMode;
-        }
-        if (queryFilters) {
-            params['qf'] = queryFilters;
-        }
         if (filters) {
             params['f'] = filters;
         }
@@ -163,18 +151,16 @@ var Search = /** @class */ (function (_super) {
         }
         return params;
     };
-    Search.prototype.getEncodedQueryString = function (except) {
+    ProductListingPage.prototype.getEncodedQueryString = function (except) {
         if (except === void 0) { except = []; }
         return (0, common_1.getEncodedQueryString)({
-            query: this.requestState.query,
-            queryFilters: this.requestState.queryFilters,
             filters: this.requestState.filters,
             page: this.requestState.page,
             sort: this.requestState.sort,
             except: except
         });
     };
-    Search.prototype.commonHelpers = function () {
+    ProductListingPage.prototype.commonHelpers = function () {
         var _this = this;
         return {
             getEncodedQueryString: function (requestParameters) { return (0, common_1.getEncodedQueryString)(requestParameters); },
@@ -187,15 +173,9 @@ var Search = /** @class */ (function (_super) {
             getRequestState: function () { return _this.requestState; },
             getRequestParams: function () { return _this.requestState; },
             getResponseState: function () { return _this.responseState; },
-            recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }
         };
     };
-    Search.prototype.getHelpers = function (type) {
-        var functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers');
-        var baseHelpers = _super.prototype.getHelpers.call(this, type);
-        return __assign(__assign({}, baseHelpers), this.searchHelpers[functionToCall]());
-    };
-    return Search;
+    return ProductListingPage;
 }(plp_base_1.default));
-exports.default = Search;
+exports.default = ProductListingPage;
 //# sourceMappingURL=index.js.map

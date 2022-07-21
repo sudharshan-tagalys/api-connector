@@ -26,6 +26,7 @@ declare class Formatter {
         widget_name: any;
         products: any;
     };
+    productListingPage(response: any): any;
     searchSuggestions(response: any, configuration: any): {
         queries: any;
         products: any;

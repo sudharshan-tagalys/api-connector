@@ -91,6 +91,9 @@ var Formatter = /** @class */ (function () {
             products: this.formatDetails(response.details)
         };
     };
+    Formatter.prototype.productListingPage = function (response) {
+        return this.search(response);
+    };
     Formatter.prototype.searchSuggestions = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
         return {
@@ -105,11 +108,13 @@ var Formatter = /** @class */ (function () {
             return { redirect_to_url: response.redirect_to_url };
         var totalPages = Math.ceil(response.total / response.per_page);
         var formattedResponse = {
-            query: response.query,
             total_pages: totalPages,
             page: response.page,
             total: response.total
         };
+        if (response.query) {
+            formattedResponse["query"] = response.query;
+        }
         if (response.query_original) {
             formattedResponse["query_original"] = response.query_original;
         }
