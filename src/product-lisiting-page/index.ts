@@ -12,6 +12,7 @@ class ProductListingPage extends Base {
       product_listing_page_id: "",
       filters: {},
       request: [
+        'total',
         'results',
         'details',
         'filters',
