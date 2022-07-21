@@ -95,7 +95,10 @@ class Formatter {
   }
 
   productListingPage(response) {
-    return this.search(response)
+    return {
+      name: response.name,
+      ...this.getBasePlpResponse(response)
+    }
   }
 
   searchSuggestions(response, configuration) {
@@ -124,11 +127,19 @@ class Formatter {
     if (response.query_mode) {
       formattedResponse["query_mode"] = response.query_mode
     }
+    return {
+      ...formattedResponse,
+      ...this.getBasePlpResponse(response)
+    }
+  }
+
+  getBasePlpResponse(response) {
+    let basePlpResponse = {}
     if(response.details){
-      formattedResponse["products"] = this.formatDetails(response.details)
+      basePlpResponse["products"] = this.formatDetails(response.details)
     }
     if(response.filters){
-      formattedResponse['filters'] = response.filters
+      basePlpResponse['filters'] = response.filters
     }
     if (response.sort_options) {
       let sortOptions = []
@@ -145,9 +156,9 @@ class Formatter {
           sortOptions.push(sortOption)
         }
       })
-      formattedResponse["sort_options"] = sortOptions
+      basePlpResponse["sort_options"] = sortOptions
     }
-    return formattedResponse
+    return basePlpResponse
   }
 
   popularSearches(response, configuration) {
