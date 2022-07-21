@@ -27,6 +27,9 @@ declare class Formatter {
         products: any;
     };
     productListingPage(response: any): {
+        total_pages: number;
+        page: any;
+        total: any;
         name: any;
     };
     searchSuggestions(response: any, configuration: any): {
@@ -34,7 +37,11 @@ declare class Formatter {
         products: any;
     };
     search(response: any): any;
-    getBasePlpResponse(response: any): {};
+    getBasePlpResponse(response: any): {
+        total_pages: number;
+        page: any;
+        total: any;
+    };
     popularSearches(response: any, configuration: any): {
         queries: any;
     };

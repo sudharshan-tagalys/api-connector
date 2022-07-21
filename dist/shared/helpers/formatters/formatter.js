@@ -106,12 +106,7 @@ var Formatter = /** @class */ (function () {
             return response;
         if (response.redirect_to_url)
             return { redirect_to_url: response.redirect_to_url };
-        var totalPages = Math.ceil(response.total / response.per_page);
-        var formattedResponse = {
-            total_pages: totalPages,
-            page: response.page,
-            total: response.total
-        };
+        var formattedResponse = {};
         if (response.query) {
             formattedResponse["query"] = response.query;
         }
@@ -124,7 +119,12 @@ var Formatter = /** @class */ (function () {
         return __assign(__assign({}, formattedResponse), this.getBasePlpResponse(response));
     };
     Formatter.prototype.getBasePlpResponse = function (response) {
-        var basePlpResponse = {};
+        var totalPages = Math.ceil(response.total / response.per_page);
+        var basePlpResponse = {
+            total_pages: totalPages,
+            page: response.page,
+            total: response.total
+        };
         if (response.details) {
             basePlpResponse["products"] = this.formatDetails(response.details);
         }
