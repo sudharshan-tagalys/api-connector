@@ -38,6 +38,7 @@ var ProductListingPage = /** @class */ (function (_super) {
                 product_listing_page_id: "",
                 filters: {},
                 request: [
+                    'results',
                     'details',
                     'filters',
                     'sort_options',
