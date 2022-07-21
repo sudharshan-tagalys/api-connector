@@ -26,12 +26,15 @@ declare class Formatter {
         widget_name: any;
         products: any;
     };
-    productListingPage(response: any): any;
+    productListingPage(response: any): {
+        name: any;
+    };
     searchSuggestions(response: any, configuration: any): {
         queries: any;
         products: any;
     };
     search(response: any): any;
+    getBasePlpResponse(response: any): {};
     popularSearches(response: any, configuration: any): {
         queries: any;
     };

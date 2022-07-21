@@ -92,7 +92,7 @@ var Formatter = /** @class */ (function () {
         };
     };
     Formatter.prototype.productListingPage = function (response) {
-        return this.search(response);
+        return __assign({ name: response.name }, this.getBasePlpResponse(response));
     };
     Formatter.prototype.searchSuggestions = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
@@ -121,11 +121,15 @@ var Formatter = /** @class */ (function () {
         if (response.query_mode) {
             formattedResponse["query_mode"] = response.query_mode;
         }
+        return __assign(__assign({}, formattedResponse), this.getBasePlpResponse(response));
+    };
+    Formatter.prototype.getBasePlpResponse = function (response) {
+        var basePlpResponse = {};
         if (response.details) {
-            formattedResponse["products"] = this.formatDetails(response.details);
+            basePlpResponse["products"] = this.formatDetails(response.details);
         }
         if (response.filters) {
-            formattedResponse['filters'] = response.filters;
+            basePlpResponse['filters'] = response.filters;
         }
         if (response.sort_options) {
             var sortOptions_1 = [];
@@ -143,9 +147,9 @@ var Formatter = /** @class */ (function () {
                     sortOptions_1.push(sortOption);
                 }
             });
-            formattedResponse["sort_options"] = sortOptions_1;
+            basePlpResponse["sort_options"] = sortOptions_1;
         }
-        return formattedResponse;
+        return basePlpResponse;
     };
     Formatter.prototype.popularSearches = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
