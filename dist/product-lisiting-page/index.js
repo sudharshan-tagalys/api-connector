@@ -73,7 +73,7 @@ var ProductListingPage = /** @class */ (function (_super) {
     ProductListingPage.prototype.getRequestOptions = function () {
         console.log(this.requestOptions.params);
         return {
-            path: "mpages/".concat(this.requestOptions.params.product_listing_page_id),
+            path: "mpages/_platform/".concat(this.requestOptions.params.product_listing_page_id),
             params: this.requestOptions.params,
         };
     };
@@ -82,10 +82,10 @@ var ProductListingPage = /** @class */ (function (_super) {
             return {};
         }
         var eventDetails = {
-            pl_type: 'search',
+            pl_type: 'mpage-platform',
             pl_details: {
-                q: response.query,
-                qm: response.query_mode,
+                url: this.requestOptions.params.product_listing_page_id,
+                title: response.name
             },
             pl_products: [],
             pl_page: response.page,

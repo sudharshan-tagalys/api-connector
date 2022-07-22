@@ -32,8 +32,8 @@ declare class ProductListingPage extends Base {
         event_details: {
             pl_type: string;
             pl_details: {
-                q: any;
-                qm: any;
+                url: any;
+                title: any;
             };
             pl_products: any[];
             pl_page: any;
