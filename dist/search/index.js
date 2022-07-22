@@ -148,9 +148,12 @@ var Search = /** @class */ (function (_super) {
         return __assign(__assign({}, _super.prototype.commonHelpers.call(this)), { recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); } });
     };
     Search.prototype.getHelpers = function (type) {
+        var _this = this;
         var functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers');
         var baseHelpers = _super.prototype.getHelpers.call(this, type);
-        return __assign(__assign({}, baseHelpers), this.searchHelpers[functionToCall]());
+        return __assign(__assign(__assign({}, baseHelpers), this.searchHelpers[functionToCall]()), { hasNoSearchResults: function () {
+                return (_this.productHelpers.getTotalProductsCount() === 0 || _this.responseState.hasOwnProperty("error"));
+            } });
     };
     return Search;
 }(plp_base_1.default));

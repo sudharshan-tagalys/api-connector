@@ -70,7 +70,6 @@ var ProductListingPage = /** @class */ (function (_super) {
         return 'ProductListingPage';
     };
     ProductListingPage.prototype.getRequestOptions = function () {
-        console.log(this.requestOptions.params);
         return {
             path: "mpages/_platform/".concat(this.requestOptions.params.product_listing_page_id),
             params: this.requestOptions.params,
@@ -109,6 +108,12 @@ var ProductListingPage = /** @class */ (function (_super) {
     };
     ProductListingPage.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = __assign(__assign({}, this.getParamsFromRequestState()), { product_listing_page_id: this.requestOptions.params.product_listing_page_id });
+    };
+    ProductListingPage.prototype.getHelpers = function (type) {
+        var _this = this;
+        return __assign(__assign({}, _super.prototype.getHelpers.call(this, type)), { hasNoProducts: function () {
+                return _this.productHelpers.getTotalProductsCount() === 0;
+            } });
     };
     return ProductListingPage;
 }(plp_base_1.default));

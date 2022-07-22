@@ -42,5 +42,6 @@ declare class ProductListingPage extends Base {
     };
     formatResponse(response: any): any;
     setRequestParamsFromRequestState(): void;
+    getHelpers(type: any): any;
 }
 export default ProductListingPage;
