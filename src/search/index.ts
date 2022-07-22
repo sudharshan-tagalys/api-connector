@@ -152,6 +152,9 @@ class Search extends Base {
     return {
       ...baseHelpers,
       ...this.searchHelpers[functionToCall](),
+      hasNoSearchResults: ()=>{
+        return (this.productHelpers.getTotalProductsCount() === 0 || this.responseState.hasOwnProperty("error"))
+      }
     }
   }
 

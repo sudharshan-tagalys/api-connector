@@ -41,7 +41,6 @@ class ProductListingPage extends Base {
   }
 
   getRequestOptions() {
-    console.log(this.requestOptions.params)
     return {
       path: `mpages/_platform/${this.requestOptions.params.product_listing_page_id}`,
       params: this.requestOptions.params,
@@ -85,6 +84,15 @@ class ProductListingPage extends Base {
     this.requestOptions.params = {
       ...this.getParamsFromRequestState(),
       product_listing_page_id: this.requestOptions.params.product_listing_page_id
+    }
+  }
+
+  getHelpers(type) {
+    return {
+      ...super.getHelpers(type),
+      hasNoProducts: () => {
+        return this.productHelpers.getTotalProductsCount() === 0
+      }
     }
   }
 
