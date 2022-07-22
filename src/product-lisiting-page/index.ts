@@ -48,7 +48,7 @@ class ProductListingPage extends Base {
   getRequestOptions() {
     console.log(this.requestOptions.params)
     return {
-      path: `mpages/${this.requestOptions.params.product_listing_page_id}`,
+      path: `mpages/_platform/${this.requestOptions.params.product_listing_page_id}`,
       params: this.requestOptions.params,
     }
   }
@@ -58,10 +58,10 @@ class ProductListingPage extends Base {
       return {}
     }
     let eventDetails = {
-      pl_type: 'search',
+      pl_type: 'mpage-platform',
       pl_details: {
-        q: response.query,
-        qm: response.query_mode,
+        url: this.requestOptions.params.product_listing_page_id,
+        title: response.name
       },
       pl_products: [],
       pl_page: response.page,
