@@ -15,6 +15,7 @@ var Configuration = /** @class */ (function () {
                 storeId: configuration.api.storeId,
             },
             platform: configuration.platform,
+            platformVariables: configuration.platformVariables,
             currency: {
                 code: configuration.currency.code
             },
@@ -77,6 +78,14 @@ var Configuration = /** @class */ (function () {
     };
     Configuration.prototype.canTrackAnalytics = function () {
         return (this.configuration.track && this.configuration.analyticsStorageConsentProvided());
+    };
+    Configuration.prototype.getPlatformVariable = function (key) {
+        if (!this.configuration.platformVariables.hasOwnProperty(key))
+            return false;
+        return this.configuration.platformVariables[key];
+    };
+    Configuration.prototype.getPlatformVariables = function () {
+        return this.configuration.platformVariables;
     };
     return Configuration;
 }());

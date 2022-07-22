@@ -20,6 +20,8 @@ declare class Configuration {
     getPlatform(): any;
     analyticsStorageConsentProvided(): any;
     canTrackAnalytics(): any;
+    getPlatformVariable(key: any): any;
+    getPlatformVariables(): any;
 }
 declare const _default: Configuration;
 export default _default;

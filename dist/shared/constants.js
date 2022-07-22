@@ -5,6 +5,7 @@ var SHOPIFY_PLATFORM = "shopify";
 exports.SHOPIFY_PLATFORM = SHOPIFY_PLATFORM;
 var DEFAULT_CONFIGURATION = {
     platform: "custom",
+    platformVariables: {},
     apiClient: {
         vendor: "tagalys-api-connector",
         language: "js",

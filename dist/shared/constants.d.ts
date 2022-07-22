@@ -1,6 +1,7 @@
 declare const SHOPIFY_PLATFORM = "shopify";
 declare const DEFAULT_CONFIGURATION: {
     platform: string;
+    platformVariables: {};
     apiClient: {
         vendor: string;
         language: string;
