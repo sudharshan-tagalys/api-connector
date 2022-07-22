@@ -14,6 +14,7 @@ class Configuration{
         storeId: configuration.api.storeId,
       },
       platform: configuration.platform,
+      platformVariables: configuration.platformVariables,
       currency: {
         code: configuration.currency.code
       },
@@ -86,5 +87,13 @@ class Configuration{
     return (this.configuration.track && this.configuration.analyticsStorageConsentProvided())
   }
 
+  getPlatformVariable(key) {
+    if (!this.configuration.platformVariables.hasOwnProperty(key)) return false
+    return this.configuration.platformVariables[key]
+  }
+
+  getPlatformVariables() {
+    return this.configuration.platformVariables
+  }
 }
 export default new Configuration();

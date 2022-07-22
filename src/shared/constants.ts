@@ -2,6 +2,7 @@ const SHOPIFY_PLATFORM = "shopify"
 
 const DEFAULT_CONFIGURATION = {
   platform: "custom",
+  platformVariables: {},
   apiClient: {
     vendor: "tagalys-api-connector",
     language: "js",
