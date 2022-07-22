@@ -26,7 +26,6 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = require("../shared/helpers/common");
 var plp_base_1 = require("../lib/plp-base");
 var ProductListingPage = /** @class */ (function (_super) {
     __extends(ProductListingPage, _super);
@@ -110,72 +109,6 @@ var ProductListingPage = /** @class */ (function (_super) {
     };
     ProductListingPage.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = __assign(__assign({}, this.getParamsFromRequestState()), { product_listing_page_id: this.requestOptions.params.product_listing_page_id });
-    };
-    ProductListingPage.prototype.getRequestStateFromParams = function (params) {
-        var requestState = {};
-        if (params.request) {
-            requestState['request'] = params.request;
-        }
-        if (params.filters) {
-            requestState['filters'] = params.filters;
-        }
-        if (params.queryFilters) {
-            requestState['queryFilters'] = params.queryFilters;
-        }
-        if (params.page) {
-            requestState['page'] = params.page;
-        }
-        if (params.perPage) {
-            requestState["perPage"] = params.perPage;
-        }
-        if (params.sort) {
-            requestState['sort'] = params.sort;
-        }
-        return __assign(__assign({}, this.getDefaultRequestState()), requestState);
-    };
-    ProductListingPage.prototype.getRequestParams = function (state) {
-        var filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
-        var params = {};
-        if (filters) {
-            params['f'] = filters;
-        }
-        if (request) {
-            params['request'] = request;
-        }
-        if (page) {
-            params['page'] = page;
-        }
-        if (perPage) {
-            params['per_page'] = perPage;
-        }
-        if (this.getSortString().length) {
-            params['sort'] = this.getSortString();
-        }
-        return params;
-    };
-    ProductListingPage.prototype.getEncodedQueryString = function (except) {
-        if (except === void 0) { except = []; }
-        return (0, common_1.getEncodedQueryString)({
-            filters: this.requestState.filters,
-            page: this.requestState.page,
-            sort: this.requestState.sort,
-            except: except
-        });
-    };
-    ProductListingPage.prototype.commonHelpers = function () {
-        var _this = this;
-        return {
-            getEncodedQueryString: function (requestParameters) { return (0, common_1.getEncodedQueryString)(requestParameters); },
-            getEncodedQueryStringFromRequestState: function (except) {
-                if (except === void 0) { except = []; }
-                return _this.getEncodedQueryString.call(_this, except);
-            },
-            getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
-            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
-            getRequestState: function () { return _this.requestState; },
-            getRequestParams: function () { return _this.requestState; },
-            getResponseState: function () { return _this.responseState; },
-        };
     };
     return ProductListingPage;
 }(plp_base_1.default));

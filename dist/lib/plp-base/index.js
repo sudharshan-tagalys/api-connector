@@ -130,14 +130,71 @@ var Base = /** @class */ (function (_super) {
         // this.setRequestParamsFromRequestState()
         return this.getHelpersToExpose(false, false);
     };
+    Base.prototype.getEncodedQueryString = function (except) {
+        if (except === void 0) { except = []; }
+        return (0, common_1.getEncodedQueryString)({
+            filters: this.requestState.filters,
+            page: this.requestState.page,
+            sort: this.requestState.sort,
+            except: except
+        });
+    };
     Base.prototype.getRequestStateFromParams = function (params) {
-        return {};
+        var requestState = {};
+        if (params.request) {
+            requestState['request'] = params.request;
+        }
+        if (params.filters) {
+            requestState['filters'] = params.filters;
+        }
+        if (params.queryFilters) {
+            requestState['queryFilters'] = params.queryFilters;
+        }
+        if (params.page) {
+            requestState['page'] = params.page;
+        }
+        if (params.perPage) {
+            requestState["perPage"] = params.perPage;
+        }
+        if (params.sort) {
+            requestState['sort'] = params.sort;
+        }
+        return __assign(__assign({}, this.getDefaultRequestState()), requestState);
     };
     Base.prototype.getRequestParams = function (state) {
-        return {};
+        var filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
+        var params = {};
+        if (filters) {
+            params['f'] = filters;
+        }
+        if (request) {
+            params['request'] = request;
+        }
+        if (page) {
+            params['page'] = page;
+        }
+        if (perPage) {
+            params['per_page'] = perPage;
+        }
+        if (this.getSortString().length) {
+            params['sort'] = this.getSortString();
+        }
+        return params;
     };
     Base.prototype.commonHelpers = function () {
-        return {};
+        var _this = this;
+        return {
+            getEncodedQueryString: function (requestParameters) { return (0, common_1.getEncodedQueryString)(requestParameters); },
+            getEncodedQueryStringFromRequestState: function (except) {
+                if (except === void 0) { except = []; }
+                return _this.getEncodedQueryString.call(_this, except);
+            },
+            getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
+            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
+            getRequestState: function () { return _this.requestState; },
+            getRequestParams: function () { return _this.requestState; },
+            getResponseState: function () { return _this.responseState; },
+        };
     };
     return Base;
 }(apiConnector_1.default));

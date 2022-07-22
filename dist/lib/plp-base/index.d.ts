@@ -20,8 +20,17 @@ declare class Base extends APIConnector {
     setRequestParamsFromRequestState(): void;
     beforeAPICall(_: any): any;
     new(requestOptions: any): any;
+    getEncodedQueryString(except?: any[]): string;
     getRequestStateFromParams(params: any): any;
     getRequestParams(state: any): any;
-    commonHelpers(): any;
+    commonHelpers(): {
+        getEncodedQueryString: (requestParameters: any) => string;
+        getEncodedQueryStringFromRequestState: (except?: any[]) => any;
+        getRequestParamsFromQueryString: (queryString: any) => {};
+        getRequestParamsFromWindowLocation: () => {};
+        getRequestState: () => any;
+        getRequestParams: () => any;
+        getResponseState: () => any;
+    };
 }
 export default Base;

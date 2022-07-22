@@ -44,19 +44,11 @@ declare class Search extends Base {
         };
     };
     formatResponse(response: any): any;
-    getRequestStateFromParams(params: any): {
-        query: string;
-        queryMode: string;
-        filters: {};
-        queryFilters: {};
-        request: string[];
-        page: number;
-        perPage: number;
-        sort: string;
-    };
+    getRequestStateFromParams(params: any): any;
     getRequestParams(state: any): any;
     getEncodedQueryString(except?: any[]): string;
     commonHelpers(): {
+        recordRecentSearch: (queryString: any) => void;
         getEncodedQueryString: (requestParameters: any) => string;
         getEncodedQueryStringFromRequestState: (except?: any[]) => any;
         getRequestParamsFromQueryString: (queryString: any) => {};
@@ -64,7 +56,6 @@ declare class Search extends Base {
         getRequestState: () => any;
         getRequestParams: () => any;
         getResponseState: () => any;
-        recordRecentSearch: (queryString: any) => void;
     };
     getHelpers(type: any): any;
 }

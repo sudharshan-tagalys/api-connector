@@ -114,28 +114,13 @@ var Search = /** @class */ (function (_super) {
         if (params.queryMode) {
             requestState['queryMode'] = params.queryMode;
         }
-        if (params.request) {
-            requestState['request'] = params.request;
-        }
-        if (params.filters) {
-            requestState['filters'] = params.filters;
-        }
         if (params.queryFilters) {
             requestState['queryFilters'] = params.queryFilters;
         }
-        if (params.page) {
-            requestState['page'] = params.page;
-        }
-        if (params.perPage) {
-            requestState["perPage"] = params.perPage;
-        }
-        if (params.sort) {
-            requestState['sort'] = params.sort;
-        }
-        return __assign(__assign({}, this.getDefaultRequestState()), requestState);
+        return __assign(__assign(__assign({}, this.getDefaultRequestState()), _super.prototype.getRequestStateFromParams.call(this, params)), requestState);
     };
     Search.prototype.getRequestParams = function (state) {
-        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters, filters = state.filters, request = state.request, page = state.page, perPage = state.perPage;
+        var query = state.query, queryMode = state.queryMode, queryFilters = state.queryFilters;
         var params = {};
         if (query) {
             params['q'] = query;
@@ -146,22 +131,7 @@ var Search = /** @class */ (function (_super) {
         if (queryFilters) {
             params['qf'] = queryFilters;
         }
-        if (filters) {
-            params['f'] = filters;
-        }
-        if (request) {
-            params['request'] = request;
-        }
-        if (page) {
-            params['page'] = page;
-        }
-        if (perPage) {
-            params['per_page'] = perPage;
-        }
-        if (this.getSortString().length) {
-            params['sort'] = this.getSortString();
-        }
-        return params;
+        return __assign(__assign({}, params), _super.prototype.getRequestParams.call(this, state));
     };
     Search.prototype.getEncodedQueryString = function (except) {
         if (except === void 0) { except = []; }
@@ -175,20 +145,7 @@ var Search = /** @class */ (function (_super) {
         });
     };
     Search.prototype.commonHelpers = function () {
-        var _this = this;
-        return {
-            getEncodedQueryString: function (requestParameters) { return (0, common_1.getEncodedQueryString)(requestParameters); },
-            getEncodedQueryStringFromRequestState: function (except) {
-                if (except === void 0) { except = []; }
-                return _this.getEncodedQueryString.call(_this, except);
-            },
-            getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
-            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
-            getRequestState: function () { return _this.requestState; },
-            getRequestParams: function () { return _this.requestState; },
-            getResponseState: function () { return _this.responseState; },
-            recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); }
-        };
+        return __assign(__assign({}, _super.prototype.commonHelpers.call(this)), { recordRecentSearch: function (queryString) { return (0, common_1.recordRecentSearch)(queryString); } });
     };
     Search.prototype.getHelpers = function (type) {
         var functionToCall = (type === 'request' ? 'getRequestHelpers' : 'getResponseHelpers');

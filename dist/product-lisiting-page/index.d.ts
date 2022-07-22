@@ -42,24 +42,5 @@ declare class ProductListingPage extends Base {
     };
     formatResponse(response: any): any;
     setRequestParamsFromRequestState(): void;
-    getRequestStateFromParams(params: any): {
-        product_listing_page_id: string;
-        filters: {};
-        request: string[];
-        page: number;
-        perPage: number;
-        sort: string;
-    };
-    getRequestParams(state: any): any;
-    getEncodedQueryString(except?: any[]): string;
-    commonHelpers(): {
-        getEncodedQueryString: (requestParameters: any) => string;
-        getEncodedQueryStringFromRequestState: (except?: any[]) => any;
-        getRequestParamsFromQueryString: (queryString: any) => {};
-        getRequestParamsFromWindowLocation: () => {};
-        getRequestState: () => any;
-        getRequestParams: () => any;
-        getResponseState: () => any;
-    };
 }
 export default ProductListingPage;
