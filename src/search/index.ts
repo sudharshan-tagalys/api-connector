@@ -1,5 +1,5 @@
 import SearchHelpers from './helpers/search';
-import { recordRecentSearch, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation } from "../shared/helpers/common";
+import { recordRecentSearch, getEncodedQueryString } from "../shared/helpers/common";
 import Base from "../lib/plp-base"
 
 class Search extends Base {
@@ -96,26 +96,12 @@ class Search extends Base {
     if(params.queryMode){
       requestState['queryMode'] = params.queryMode
     }
-    if(params.request){
-      requestState['request'] = params.request
-    }
-    if(params.filters){
-      requestState['filters'] = params.filters
-    }
     if(params.queryFilters){
       requestState['queryFilters'] = params.queryFilters
     }
-    if(params.page){
-      requestState['page'] = params.page
-    }
-    if (params.perPage) {
-      requestState["perPage"] = params.perPage
-    }
-    if(params.sort){
-      requestState['sort'] = params.sort
-    }
     return {
       ...this.getDefaultRequestState(),
+      ...super.getRequestStateFromParams(params),
       ...requestState
     }
   }
@@ -125,10 +111,6 @@ class Search extends Base {
       query,
       queryMode,
       queryFilters,
-      filters,
-      request,
-      page,
-      perPage,
     } = state;
     let params: any = {}
     if(query){
@@ -140,22 +122,10 @@ class Search extends Base {
     if(queryFilters){
       params['qf'] = queryFilters
     }
-    if(filters){
-      params['f'] = filters
+    return {
+      ...params,
+      ...super.getRequestParams(state)
     }
-    if(request){
-      params['request'] = request
-    }
-    if(page){
-      params['page'] = page
-    }
-    if(perPage){
-      params['per_page'] = perPage
-    }
-    if(this.getSortString().length){
-      params['sort'] = this.getSortString()
-    }
-    return params
   }
 
   getEncodedQueryString(except = []){
@@ -171,13 +141,7 @@ class Search extends Base {
 
   commonHelpers(){
     return {
-      getEncodedQueryString: (requestParameters) => getEncodedQueryString(requestParameters),
-      getEncodedQueryStringFromRequestState: (except = []) => this.getEncodedQueryString.call(this, except),
-      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
-      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
-      getRequestState: () => this.requestState,
-      getRequestParams: () => this.requestState,
-      getResponseState: () => this.responseState,
+      ...super.commonHelpers(),
       recordRecentSearch: (queryString) => recordRecentSearch(queryString)
     }
   }

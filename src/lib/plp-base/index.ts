@@ -4,6 +4,8 @@ import PaginationHelpers from './helpers/pagination'
 import SortOptionHelpers from './helpers/sortOption'
 import ProductHelpers from './helpers/product'
 import {
+  getEncodedQueryString,
+  getRequestParamsFromQueryString,
   getRequestParamsFromWindowLocation
 } from "../../shared/helpers/common";
 
@@ -135,15 +137,76 @@ class Base extends APIConnector {
     return this.getHelpersToExpose(false, false)
   }
 
-  getRequestStateFromParams(params): any {
-    return {}
-  }
-  getRequestParams(state): any {
-    return {}
+  getEncodedQueryString(except = []){
+    return getEncodedQueryString({
+      filters: this.requestState.filters,
+      page: this.requestState.page,
+      sort: this.requestState.sort,
+      except: except
+    })
   }
 
-  commonHelpers(): any {
-    return {}
+  getRequestStateFromParams(params){
+    let requestState = {}
+    if(params.request){
+      requestState['request'] = params.request
+    }
+    if(params.filters){
+      requestState['filters'] = params.filters
+    }
+    if(params.queryFilters){
+      requestState['queryFilters'] = params.queryFilters
+    }
+    if(params.page){
+      requestState['page'] = params.page
+    }
+    if (params.perPage) {
+      requestState["perPage"] = params.perPage
+    }
+    if(params.sort){
+      requestState['sort'] = params.sort
+    }
+    return {
+      ...this.getDefaultRequestState(),
+      ...requestState
+    }
+  }
+  getRequestParams(state){
+    const {
+      filters,
+      request,
+      page,
+      perPage,
+    } = state;
+    let params: any = {}
+    if(filters){
+      params['f'] = filters
+    }
+    if(request){
+      params['request'] = request
+    }
+    if(page){
+      params['page'] = page
+    }
+    if(perPage){
+      params['per_page'] = perPage
+    }
+    if(this.getSortString().length){
+      params['sort'] = this.getSortString()
+    }
+    return params
+  }
+
+  commonHelpers(){
+    return {
+      getEncodedQueryString: (requestParameters) => getEncodedQueryString(requestParameters),
+      getEncodedQueryStringFromRequestState: (except = []) => this.getEncodedQueryString.call(this, except),
+      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
+      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
+      getRequestState: () => this.requestState,
+      getRequestParams: () => this.requestState,
+      getResponseState: () => this.responseState,
+    }
   }
 }
 
