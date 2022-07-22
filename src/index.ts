@@ -22,9 +22,9 @@ export const APIConnector = {
   ...AddedToCartAlsoAddedToCart.export(),
   ...SearchSuggestions.export(),
   ...ProductListingPage.export(),
-  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
   getPlatformVariables: () => configuration.getPlatformVariables(),
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
 }
 
 const setConfiguration = (config) => {
@@ -44,7 +44,7 @@ const setConfiguration = (config) => {
 }
 
 export {
-  setConfiguration
+  setConfiguration,
 }
 
 window.addEventListener("load", () => {
