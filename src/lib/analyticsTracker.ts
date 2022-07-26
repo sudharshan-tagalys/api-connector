@@ -29,42 +29,46 @@ class AnalyticsTracker{
     })
   }
   track(endpoint, trackData, trackerVersion = TRACKER_VERSION) {
-    if (cookie.isEnabled()) {
-      cookie.batchUpdate([{
-        name: COOKIES.TA_DEVICE,
-        expiryTime: 63072000000
-      },{
-        name: COOKIES.TA_VISIT,
-        expiryTime: 1800000
-      }])
+    if (configuration.canTrackAnalytics()) {
+      if (cookie.isEnabled()) {
+        cookie.batchUpdate([{
+          name: COOKIES.TA_DEVICE,
+          expiryTime: 63072000000
+        },{
+          name: COOKIES.TA_VISIT,
+          expiryTime: 1800000
+        }])
 
-      const user = {
-        device_id: cookie.get(COOKIES.TA_DEVICE),
-        visit_id: cookie.get(COOKIES.TA_VISIT)
-      }
-
-      this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence()
-      this.lastEventTimestamp = Date.now();
-
-      const params = {
-        ...trackData,
-        rapid_event_sequence: this.analyticsRapidEventSequence,
-        tracker_version: trackerVersion,
-        device_info: {},
-        identification: {
-          ...configuration.getApiIdentification(),
-          user
+        const user = {
+          device_id: cookie.get(COOKIES.TA_DEVICE),
+          visit_id: cookie.get(COOKIES.TA_VISIT)
         }
-      }
-      api.call('POST', endpoint, {
-        params: JSON.stringify(params),
-        onSuccess: function (response) {
-          if (trackData.event_type && trackData.event_type == 'product_action' && response.hasOwnProperty('timestamp')) {
-            const lastProductActionTime = response.timestamp.split('T')[1].substring(0,6)
-            cookie.set(COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
+
+        this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence()
+        this.lastEventTimestamp = Date.now();
+
+        const params = {
+          ...trackData,
+          rapid_event_sequence: this.analyticsRapidEventSequence,
+          tracker_version: trackerVersion,
+          device_info: {},
+          identification: {
+            ...configuration.getApiIdentification(),
+            user
           }
         }
-      })
+        api.call('POST', endpoint, {
+          params: JSON.stringify(params),
+          onSuccess: function (response) {
+            if (trackData.event_type && trackData.event_type == 'product_action' && response.hasOwnProperty('timestamp')) {
+              const lastProductActionTime = response.timestamp.split('T')[1].substring(0,6)
+              cookie.set(COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
+            }
+          }
+        })
+      }
+    } else {
+      cookie.batchDelete(Object.values(COOKIES))
     }
   }
 

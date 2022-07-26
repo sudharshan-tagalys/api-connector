@@ -73,6 +73,12 @@ class Formatter {
     }
   }
 
+  personalizedRecommendations(response) {
+    return {
+      products: this.formatDetails(response.details)
+    }
+  }
+
   viewedAlsoViewed(response) {
     return {
       products: this.formatDetails(response.details)

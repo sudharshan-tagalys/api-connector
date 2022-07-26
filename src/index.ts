@@ -10,8 +10,9 @@ import Search from './search'
 import ProductListingPage from "./product-lisiting-page"
 import queryStringManager from "./lib/queryStringManager";
 import ShopifyAnalyticsTracker from './lib/shopifyAnalyticsTracker'
+import PersonalizedRecommendations from "./personalized-recommendations"
 import cookie from "./lib/cookie";
-import { COOKIES } from "./lib/analyticsTracker";
+import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
 
 export const APIConnector = {
   ...Search.export(),
@@ -20,8 +21,10 @@ export const APIConnector = {
   ...BoughtAlsoBought.export(),
   ...ViewedAlsoViewed.export(),
   ...AddedToCartAlsoAddedToCart.export(),
+  ...PersonalizedRecommendations.export(),
   ...SearchSuggestions.export(),
   ...ProductListingPage.export(),
+  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
