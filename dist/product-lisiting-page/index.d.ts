@@ -41,7 +41,8 @@ declare class ProductListingPage extends Base {
         };
     };
     formatResponse(response: any): any;
-    setRequestParamsFromRequestState(): void;
+    getRequestParams(state: any): any;
+    getRequestStateFromParams(params: any): any;
     getHelpers(type: any): any;
 }
 export default ProductListingPage;

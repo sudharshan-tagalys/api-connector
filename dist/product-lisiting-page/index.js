@@ -106,8 +106,19 @@ var ProductListingPage = /** @class */ (function (_super) {
     ProductListingPage.prototype.formatResponse = function (response) {
         return this.responseFormatter.productListingPage(response);
     };
-    ProductListingPage.prototype.setRequestParamsFromRequestState = function () {
-        this.requestOptions.params = __assign(__assign({}, this.getParamsFromRequestState()), { product_listing_page_id: this.requestOptions.params.product_listing_page_id });
+    ProductListingPage.prototype.getRequestParams = function (state) {
+        var params = __assign({}, _super.prototype.getRequestParams.call(this, state));
+        if (state.product_listing_page_id) {
+            params['product_listing_page_id'] = state.product_listing_page_id;
+        }
+        return params;
+    };
+    ProductListingPage.prototype.getRequestStateFromParams = function (params) {
+        var state = __assign({}, _super.prototype.getRequestStateFromParams.call(this, params));
+        if (params.product_listing_page_id) {
+            state['product_listing_page_id'] = params.product_listing_page_id;
+        }
+        return state;
     };
     ProductListingPage.prototype.getHelpers = function (type) {
         var _this = this;
