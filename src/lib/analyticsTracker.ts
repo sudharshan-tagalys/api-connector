@@ -5,6 +5,7 @@ import cookie from "./cookie"
 export const COOKIES = {
   TA_DEVICE: "__ta_device",
   TA_VISIT: "__ta_visit",
+  TA_USER_ID: "__ta_user_id",
   TA_LAST_PA_TIME : "__ta_last_pa_time",
   TA_CART: '__ta_cart',
   CART: 'cart',
@@ -39,9 +40,13 @@ class AnalyticsTracker{
           expiryTime: 1800000
         }])
 
-        const user = {
+        let user = {
           device_id: cookie.get(COOKIES.TA_DEVICE),
           visit_id: cookie.get(COOKIES.TA_VISIT)
+        }
+
+        if (cookie.get(COOKIES.TA_USER_ID)) {
+          // add user_id to user object for analytics tracking
         }
 
         this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence()
