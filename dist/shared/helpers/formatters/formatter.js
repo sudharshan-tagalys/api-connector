@@ -74,6 +74,11 @@ var Formatter = /** @class */ (function () {
             products: this.formatDetails(response.details)
         };
     };
+    Formatter.prototype.personalizedRecommendations = function (response) {
+        return {
+            products: this.formatDetails(response.details)
+        };
+    };
     Formatter.prototype.viewedAlsoViewed = function (response) {
         return {
             products: this.formatDetails(response.details)

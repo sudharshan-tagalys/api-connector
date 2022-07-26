@@ -37,30 +37,35 @@ var AnalyticsTracker = /** @class */ (function () {
     };
     AnalyticsTracker.prototype.track = function (endpoint, trackData, trackerVersion) {
         if (trackerVersion === void 0) { trackerVersion = TRACKER_VERSION; }
-        if (cookie_1.default.isEnabled()) {
-            cookie_1.default.batchUpdate([{
-                    name: exports.COOKIES.TA_DEVICE,
-                    expiryTime: 63072000000
-                }, {
-                    name: exports.COOKIES.TA_VISIT,
-                    expiryTime: 1800000
-                }]);
-            var user = {
-                device_id: cookie_1.default.get(exports.COOKIES.TA_DEVICE),
-                visit_id: cookie_1.default.get(exports.COOKIES.TA_VISIT)
-            };
-            this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence();
-            this.lastEventTimestamp = Date.now();
-            var params = __assign(__assign({}, trackData), { rapid_event_sequence: this.analyticsRapidEventSequence, tracker_version: trackerVersion, device_info: {}, identification: __assign(__assign({}, configuration_1.default.getApiIdentification()), { user: user }) });
-            api_1.default.call('POST', endpoint, {
-                params: JSON.stringify(params),
-                onSuccess: function (response) {
-                    if (trackData.event_type && trackData.event_type == 'product_action' && response.hasOwnProperty('timestamp')) {
-                        var lastProductActionTime = response.timestamp.split('T')[1].substring(0, 6);
-                        cookie_1.default.set(exports.COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
+        if (configuration_1.default.canTrackAnalytics()) {
+            if (cookie_1.default.isEnabled()) {
+                cookie_1.default.batchUpdate([{
+                        name: exports.COOKIES.TA_DEVICE,
+                        expiryTime: 63072000000
+                    }, {
+                        name: exports.COOKIES.TA_VISIT,
+                        expiryTime: 1800000
+                    }]);
+                var user = {
+                    device_id: cookie_1.default.get(exports.COOKIES.TA_DEVICE),
+                    visit_id: cookie_1.default.get(exports.COOKIES.TA_VISIT)
+                };
+                this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence();
+                this.lastEventTimestamp = Date.now();
+                var params = __assign(__assign({}, trackData), { rapid_event_sequence: this.analyticsRapidEventSequence, tracker_version: trackerVersion, device_info: {}, identification: __assign(__assign({}, configuration_1.default.getApiIdentification()), { user: user }) });
+                api_1.default.call('POST', endpoint, {
+                    params: JSON.stringify(params),
+                    onSuccess: function (response) {
+                        if (trackData.event_type && trackData.event_type == 'product_action' && response.hasOwnProperty('timestamp')) {
+                            var lastProductActionTime = response.timestamp.split('T')[1].substring(0, 6);
+                            cookie_1.default.set(exports.COOKIES.TA_LAST_PA_TIME, lastProductActionTime, 1200000);
+                        }
                     }
-                }
-            });
+                });
+            }
+        }
+        else {
+            cookie_1.default.batchDelete(Object.values(exports.COOKIES));
         }
     };
     AnalyticsTracker.prototype.getAnalyticsRapidEventSequence = function () {

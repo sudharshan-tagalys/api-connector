@@ -24,9 +24,10 @@ var search_1 = require("./search");
 var product_lisiting_page_1 = require("./product-lisiting-page");
 var queryStringManager_1 = require("./lib/queryStringManager");
 var shopifyAnalyticsTracker_1 = require("./lib/shopifyAnalyticsTracker");
+var personalized_recommendations_1 = require("./personalized-recommendations");
 var cookie_1 = require("./lib/cookie");
 var analyticsTracker_1 = require("./lib/analyticsTracker");
-exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), search_suggestions_1.default.export()), product_lisiting_page_1.default.export()), { getPlatformVariable: function (variableKey) { return configuration_1.default.getPlatformVariable(variableKey); }, getPlatformVariables: function () { return configuration_1.default.getPlatformVariables(); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); } });
+exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), personalized_recommendations_1.default.export()), search_suggestions_1.default.export()), product_lisiting_page_1.default.export()), { trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); }, getPlatformVariable: function (variableKey) { return configuration_1.default.getPlatformVariable(variableKey); }, getPlatformVariables: function () { return configuration_1.default.getPlatformVariables(); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); } });
 var setConfiguration = function (config) {
     configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
     if (config.platform.toLowerCase() === 'shopify') {

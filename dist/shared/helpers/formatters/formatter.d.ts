@@ -15,6 +15,9 @@ declare class Formatter {
     boughtAlsoBought(response: any): {
         products: any;
     };
+    personalizedRecommendations(response: any): {
+        products: any;
+    };
     viewedAlsoViewed(response: any): {
         products: any;
     };

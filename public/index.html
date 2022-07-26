@@ -13,12 +13,12 @@
       function setConfiguration() {
         Tagalys.setConfiguration({
           api: {
-            serverUrl: "https://stage2-api.tagalys.com",
+            serverUrl: "https://api-r3.tagalys.com",
             credentials: {
-              clientCode: "DDFDB76CEE9FBD3F",
-              apiKey: "58e7df246ffadf5554a68534cf37f81a",
+              clientCode: "DE90531E2EF8E3A4",
+              apiKey: "3f50d223db19945fe89e26e3303e3efd",
             },
-            storeId: "10001",
+            storeId: "1",
           },
           currency: {
             code: 'AFN'
@@ -94,49 +94,16 @@
       document.addEventListener("tagalys:ready", function () {
         // Initialise the connector with the configuration options
         setConfiguration();
-        var plp = Tagalys.APIConnector.ProductListingPage.new({
+        Tagalys.APIConnector.PersonalizedRecommendations.call({
           params: {
-            product_listing_page_id: "test-page-2",
+            limit: 2,
           },
           onSuccess: function (response, helpers) {
-            console.log("response for category test-page-2", response);
+            console.log(response)
           }
         })
-        plp.helpers.call()
-        window.plp = plp;
       });
 
-      function updateHistory(queryString) {
-        var pageUrl = "?" + queryString;
-        window.history.pushState("", "", pageUrl);
-      }
-
-      function updateSearchSuggestions(e) {
-        // makes an API request and triggers the onSuccess callback with the response
-        window.searchSuggestions.helpers.updateQuery(e.target.value);
-      }
-
-      function applyFilter(filterId, value) {
-        window.plp.helpers.applyFilter(filterId, value);
-      }
-
-      function applySortOption(sortOptionId) {
-        window.plp.helpers.applySortOption(sortOptionId);
-      }
-
-      function goToPage2() {
-        window.searchResults.helpers.goToPage(2);
-      }
-
-      function logResponse(helpers) {
-        console.log("extracted details from helpers", {
-          products: helpers.getProducts(),
-          filters: helpers.getFilters(),
-          applied_filters: helpers.getAppliedFilters(),
-          sort_options: helpers.getSortOptions(),
-          total_pages: helpers.getTotalPages(),
-        });
-      }
     </script>
   </body>
 </html>
