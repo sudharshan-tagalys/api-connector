@@ -80,11 +80,24 @@ class ProductListingPage extends Base {
     return this.responseFormatter.productListingPage(response)
   }
 
-  setRequestParamsFromRequestState(){
-    this.requestOptions.params = {
-      ...this.getParamsFromRequestState(),
-      product_listing_page_id: this.requestOptions.params.product_listing_page_id
+  getRequestParams(state){
+    let params = {
+      ...super.getRequestParams(state)
     }
+    if(state.product_listing_page_id){
+      params['product_listing_page_id'] = state.product_listing_page_id
+    }
+    return params
+  }
+
+  getRequestStateFromParams(params){
+    let state = {
+      ...super.getRequestStateFromParams(params),
+    }
+    if(params.product_listing_page_id){
+      state['product_listing_page_id'] = params.product_listing_page_id
+    }
+    return state
   }
 
   getHelpers(type) {
