@@ -24,7 +24,7 @@ var Cookie = /** @class */ (function () {
     };
     Cookie.prototype.update = function (_a) {
         var name = _a.name, _b = _a.value, value = _b === void 0 ? "" : _b, expiryTime = _a.expiryTime;
-        var cookieValue = this.get(value);
+        var cookieValue = this.get(name);
         if (cookieValue === "") {
             cookieValue = randomId(32);
         }
