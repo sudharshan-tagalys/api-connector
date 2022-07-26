@@ -20,7 +20,7 @@ class Cookie{
   }
 
   update({ name, value = "", expiryTime }) {
-    let cookieValue = this.get(value)
+    let cookieValue = this.get(name)
     if (cookieValue === "") {
       cookieValue = randomId(32)
     }
