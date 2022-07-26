@@ -1,6 +1,7 @@
 export declare const COOKIES: {
     TA_DEVICE: string;
     TA_VISIT: string;
+    TA_USER_ID: string;
     TA_LAST_PA_TIME: string;
     TA_CART: string;
     CART: string;

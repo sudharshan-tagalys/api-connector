@@ -94,14 +94,24 @@
       document.addEventListener("tagalys:ready", function () {
         // Initialise the connector with the configuration options
         setConfiguration();
-        Tagalys.APIConnector.PersonalizedRecommendations.call({
+        // Tagalys.APIConnector.PersonalizedRecommendations.call({
+        //   params: {
+        //     limit: 2,
+        //   },
+        //   onSuccess: function (response, helpers) {
+        //     console.log(response)
+        //   }
+        // })
+
+        var plp = Tagalys.APIConnector.ProductListingPage.new({
           params: {
-            limit: 2,
+            product_listing_page_id: "5"
           },
           onSuccess: function (response, helpers) {
             console.log(response)
           }
         })
+        plp.helpers.call()
       });
 
     </script>

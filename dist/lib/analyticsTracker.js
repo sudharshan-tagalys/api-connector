@@ -18,6 +18,7 @@ var cookie_1 = require("./cookie");
 exports.COOKIES = {
     TA_DEVICE: "__ta_device",
     TA_VISIT: "__ta_visit",
+    TA_USER_ID: "__ta_user_id",
     TA_LAST_PA_TIME: "__ta_last_pa_time",
     TA_CART: '__ta_cart',
     CART: 'cart',
@@ -50,6 +51,9 @@ var AnalyticsTracker = /** @class */ (function () {
                     device_id: cookie_1.default.get(exports.COOKIES.TA_DEVICE),
                     visit_id: cookie_1.default.get(exports.COOKIES.TA_VISIT)
                 };
+                if (cookie_1.default.get(exports.COOKIES.TA_USER_ID)) {
+                    // add user_id to user object for analytics tracking
+                }
                 this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence();
                 this.lastEventTimestamp = Date.now();
                 var params = __assign(__assign({}, trackData), { rapid_event_sequence: this.analyticsRapidEventSequence, tracker_version: trackerVersion, device_info: {}, identification: __assign(__assign({}, configuration_1.default.getApiIdentification()), { user: user }) });
