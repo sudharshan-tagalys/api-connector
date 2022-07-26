@@ -26,7 +26,11 @@ export const APIConnector = {
   ...ProductListingPage.export(),
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
-  cookie,
+  cookie: {
+    get: (cname) => cookie.get(cname),
+    set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
+    delete: (cname) => cookie.delete(cname)
+  },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
 }
