@@ -55,7 +55,5 @@ export {
   setConfiguration,
 }
 
-window.addEventListener("load", () => {
-  const event = new Event("tagalys:ready")
-  document.dispatchEvent(event)
-})
+const event = new Event("tagalys:ready")
+document.dispatchEvent(event)
