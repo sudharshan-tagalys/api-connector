@@ -85,6 +85,7 @@ class ShopifyAnalyticsTracker {
   }
 
   trackOrderIfExist(){
+    debugger
     if (this.getCheckoutObject()) {
       const checkout = this.getCheckoutObject()
       var checkoutTime: any = new Date(checkout.created_at);
