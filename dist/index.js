@@ -46,8 +46,6 @@ var setConfiguration = function (config) {
     }
 };
 exports.setConfiguration = setConfiguration;
-window.addEventListener("load", function () {
-    var event = new Event("tagalys:ready");
-    document.dispatchEvent(event);
-});
+var event = new Event("tagalys:ready");
+document.dispatchEvent(event);
 //# sourceMappingURL=index.js.map
