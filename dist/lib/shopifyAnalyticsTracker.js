@@ -35,7 +35,7 @@ var ShopifyAnalyticsTracker = /** @class */ (function () {
         return false;
     };
     ShopifyAnalyticsTracker.prototype.logTrack = function (event, data) {
-        console.log("TRACKING event: " + event, data);
+        // console.log("TRACKING event: " + event, data)
     };
     ShopifyAnalyticsTracker.prototype.trackProductIfExist = function () {
         if (this.getPageMetaData()) {
@@ -81,7 +81,6 @@ var ShopifyAnalyticsTracker = /** @class */ (function () {
         }
     };
     ShopifyAnalyticsTracker.prototype.trackOrderIfExist = function () {
-        debugger;
         if (this.getCheckoutObject()) {
             var checkout = this.getCheckoutObject();
             var checkoutTime = new Date(checkout.created_at);
