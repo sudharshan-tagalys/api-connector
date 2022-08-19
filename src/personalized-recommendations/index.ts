@@ -17,7 +17,7 @@ class PersonalizedRecommendations extends APIConnector {
       path: "recommendations/personalized",
       params: {
         per_page: this.getLimit(),
-        zero_state: "bestsellers", //
+        zero_state: this.getZeroStateParams(), //
         request: ["results", "details"],
         user: {
           // user_id: "", //
@@ -32,6 +32,13 @@ class PersonalizedRecommendations extends APIConnector {
       return this.requestOptions.params.limit
     }
     return 16
+  }
+
+  getZeroStateParams(){
+    if (this.requestOptions.hasOwnProperty("params") && this.requestOptions.params.hasOwnProperty("zero_state")) {
+      return this.requestOptions.params.zero_state
+    }
+    return 'bestsellers'
   }
 
   getHelpersToExpose(response, formattedResponse): {} {
