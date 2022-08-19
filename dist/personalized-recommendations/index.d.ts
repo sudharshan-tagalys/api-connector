@@ -6,7 +6,7 @@ declare class PersonalizedRecommendations extends APIConnector {
         path: string;
         params: {
             per_page: any;
-            zero_state: string;
+            zero_state: any;
             request: string[];
             user: {
                 device_id: string;
@@ -14,6 +14,7 @@ declare class PersonalizedRecommendations extends APIConnector {
         };
     };
     getLimit(): any;
+    getZeroStateParams(): any;
     getHelpersToExpose(response: any, formattedResponse: any): {};
     extractAnalyticsData(response: any): {
         event_type?: undefined;

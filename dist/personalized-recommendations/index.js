@@ -34,7 +34,7 @@ var PersonalizedRecommendations = /** @class */ (function (_super) {
             path: "recommendations/personalized",
             params: {
                 per_page: this.getLimit(),
-                zero_state: "bestsellers",
+                zero_state: this.getZeroStateParams(),
                 request: ["results", "details"],
                 user: {
                     // user_id: "", //
@@ -48,6 +48,12 @@ var PersonalizedRecommendations = /** @class */ (function (_super) {
             return this.requestOptions.params.limit;
         }
         return 16;
+    };
+    PersonalizedRecommendations.prototype.getZeroStateParams = function () {
+        if (this.requestOptions.hasOwnProperty("params") && this.requestOptions.params.hasOwnProperty("zero_state")) {
+            return this.requestOptions.params.zero_state;
+        }
+        return 'bestsellers';
     };
     PersonalizedRecommendations.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
