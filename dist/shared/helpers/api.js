@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.objectToFormData = void 0;
+var qs_1 = require("qs");
 var flattenObject = function (ob) {
     var toReturn = {};
     for (var i in ob) {
@@ -21,18 +22,7 @@ var flattenObject = function (ob) {
     return toReturn;
 };
 var objectToFormData = function (ob) {
-    var flattenedObject = flattenObject(ob);
-    var formData = Object.keys(flattenedObject).map(function (k) {
-        var formatted = "";
-        if (k.indexOf('.') == -1) {
-            formatted = k;
-        }
-        else {
-            formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
-        }
-        return encodeURIComponent(formatted) + '=' + encodeURIComponent(flattenedObject[k]);
-    }).join('&');
-    return formData;
+    return (0, qs_1.stringify)(ob, { arrayFormat: 'brackets' });
 };
 exports.objectToFormData = objectToFormData;
 //# sourceMappingURL=api.js.map
