@@ -1,3 +1,4 @@
+import { stringify } from "qs";
 const flattenObject = function(ob) {
   let toReturn = {};
   for (let i in ob) {
@@ -17,17 +18,7 @@ const flattenObject = function(ob) {
 }
 
 const objectToFormData = function (ob) {
-  let flattenedObject = flattenObject(ob);
-  let formData = Object.keys(flattenedObject).map(function (k) {
-    let formatted = ""
-    if(k.indexOf('.') == -1) {
-      formatted = k;
-    } else {
-      formatted = k.replace(/.\d+/g, '.').split('.').join('][').replace(']', '') + ']';
-    }
-    return encodeURIComponent(formatted) + '=' + encodeURIComponent(flattenedObject[k])
-  }).join('&');
-  return formData;
+ return stringify(ob, { arrayFormat: 'brackets' })
 }
 
 export { objectToFormData }
