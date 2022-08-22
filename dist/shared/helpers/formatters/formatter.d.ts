@@ -17,6 +17,7 @@ declare class Formatter {
     };
     personalizedRecommendations(response: any): {
         products: any;
+        personalized: any;
     };
     viewedAlsoViewed(response: any): {
         products: any;

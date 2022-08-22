@@ -75,9 +75,14 @@ var Formatter = /** @class */ (function () {
         };
     };
     Formatter.prototype.personalizedRecommendations = function (response) {
-        return {
-            products: this.formatDetails(response.details)
+        var formattedResponse = {
+            products: this.formatDetails(response.details),
+            personalized: response.personalized
         };
+        if (response.hasOwnProperty('widget_name')) {
+            formattedResponse["widget_name"] = response.widget_name;
+        }
+        return formattedResponse;
     };
     Formatter.prototype.viewedAlsoViewed = function (response) {
         return {
