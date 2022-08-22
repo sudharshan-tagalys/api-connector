@@ -74,9 +74,14 @@ class Formatter {
   }
 
   personalizedRecommendations(response) {
-    return {
-      products: this.formatDetails(response.details)
+    let formattedResponse = {
+      products: this.formatDetails(response.details),
+      personalized: response.personalized
     }
+    if (response.hasOwnProperty('widget_name')) {
+      formattedResponse["widget_name"] = response.widget_name
+    }
+    return formattedResponse
   }
 
   viewedAlsoViewed(response) {
