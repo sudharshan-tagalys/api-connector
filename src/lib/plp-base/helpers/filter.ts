@@ -117,6 +117,14 @@ const isFilterApplied = function(filterId){
   return false
 }
 
+const hasAnyFiltersApplied = function(){
+  const requestState = this.requestState
+  if(Object.keys(requestState.filters).length){
+    return true
+  }
+  return false
+}
+
 const clearFilter = function(filterId, filterItemIds = []){
   this.setRequestState((reqState)=>{
     if(Array.isArray(filterItemIds)){
@@ -210,7 +218,8 @@ const getResponseHelpers = function(){
     getAppliedFilters,
     getFilterById,
     getFilterItemById,
-    isFilterApplied
+    isFilterApplied,
+    hasAnyFiltersApplied
   }
 }
 
@@ -252,5 +261,6 @@ export default {
   getAppliedFilters,
   isFilterApplied,
   setFilter,
-  getParentFilterItemIds
+  getParentFilterItemIds,
+  hasAnyFiltersApplied
 };
