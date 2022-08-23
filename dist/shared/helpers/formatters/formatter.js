@@ -79,8 +79,8 @@ var Formatter = /** @class */ (function () {
             products: this.formatDetails(response.details),
             personalized: response.personalized
         };
-        if (response.hasOwnProperty('widget_name')) {
-            formattedResponse["widget_name"] = response.widget_name;
+        if (response.hasOwnProperty('name')) {
+            formattedResponse["name"] = response.name;
         }
         return formattedResponse;
     };
