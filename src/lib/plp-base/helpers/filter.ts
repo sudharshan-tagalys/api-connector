@@ -118,6 +118,7 @@ const isFilterApplied = function(filterId){
 }
 
 const hasAnyFiltersApplied = function(){
+  console.log(this.requestState)
   if(this.requestState && Object.keys(this.requestState['filters']).length){
     return true
   }
