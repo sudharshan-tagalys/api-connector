@@ -229,8 +229,7 @@ var getResponseHelpers = function () {
         getAppliedFilters: getAppliedFilters,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
-        isFilterApplied: isFilterApplied,
-        hasAnyFiltersApplied: hasAnyFiltersApplied
+        isFilterApplied: isFilterApplied
     };
 };
 var getRequestHelpers = function () {
@@ -239,7 +238,8 @@ var getRequestHelpers = function () {
         applyFilter: applyFilter,
         setFilter: setFilter,
         clearFilter: clearFilter,
-        clearAllFilters: clearAllFilters
+        clearAllFilters: clearAllFilters,
+        hasAnyFiltersApplied: hasAnyFiltersApplied
     };
 };
 var getParentFilterItemIds = function (filterId, filterItemId) {

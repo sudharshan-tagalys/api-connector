@@ -217,8 +217,7 @@ const getResponseHelpers = function(){
     getAppliedFilters,
     getFilterById,
     getFilterItemById,
-    isFilterApplied,
-    hasAnyFiltersApplied
+    isFilterApplied
   }
 }
 
@@ -228,7 +227,8 @@ const getRequestHelpers = function(){
     applyFilter,
     setFilter,
     clearFilter,
-    clearAllFilters
+    clearAllFilters,
+    hasAnyFiltersApplied
   }
 }
 
