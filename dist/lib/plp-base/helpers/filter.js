@@ -137,8 +137,7 @@ var isFilterApplied = function (filterId) {
     return false;
 };
 var hasAnyFiltersApplied = function () {
-    console.log(this.requestState);
-    if (this.requestState && Object.keys(this.requestState['filters']).length) {
+    if (Object.keys(this.requestState['filters']).length) {
         return true;
     }
     return false;
@@ -234,7 +233,7 @@ var getResponseHelpers = function () {
     };
 };
 var getRequestHelpers = function () {
-    var _a = this.filterHelpers, applyFilter = _a.applyFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters;
+    var _a = this.filterHelpers, applyFilter = _a.applyFilter, clearFilter = _a.clearFilter, clearAllFilters = _a.clearAllFilters, hasAnyFiltersApplied = _a.hasAnyFiltersApplied;
     return {
         applyFilter: applyFilter,
         setFilter: setFilter,

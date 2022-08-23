@@ -11,7 +11,7 @@ declare const _default: {
         setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
         clearFilter: any;
         clearAllFilters: any;
-        hasAnyFiltersApplied: () => boolean;
+        hasAnyFiltersApplied: any;
     };
     getResponseHelpers: () => {
         getFilters: any;
