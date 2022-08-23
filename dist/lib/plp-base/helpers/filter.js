@@ -137,8 +137,7 @@ var isFilterApplied = function (filterId) {
     return false;
 };
 var hasAnyFiltersApplied = function () {
-    var requestState = this.requestState;
-    if (Object.keys(requestState.filters).length) {
+    if (this.requestState && Object.keys(this.requestState.filters['filters']).length) {
         return true;
     }
     return false;
