@@ -136,6 +136,13 @@ var isFilterApplied = function (filterId) {
         return true;
     return false;
 };
+var hasAnyFiltersApplied = function () {
+    var requestState = this.requestState;
+    if (Object.keys(requestState.filters).length) {
+        return true;
+    }
+    return false;
+};
 var clearFilter = function (filterId, filterItemIds) {
     var _this = this;
     if (filterItemIds === void 0) { filterItemIds = []; }
@@ -223,7 +230,8 @@ var getResponseHelpers = function () {
         getAppliedFilters: getAppliedFilters,
         getFilterById: getFilterById,
         getFilterItemById: getFilterItemById,
-        isFilterApplied: isFilterApplied
+        isFilterApplied: isFilterApplied,
+        hasAnyFiltersApplied: hasAnyFiltersApplied
     };
 };
 var getRequestHelpers = function () {
@@ -259,6 +267,7 @@ exports.default = {
     getAppliedFilters: getAppliedFilters,
     isFilterApplied: isFilterApplied,
     setFilter: setFilter,
-    getParentFilterItemIds: getParentFilterItemIds
+    getParentFilterItemIds: getParentFilterItemIds,
+    hasAnyFiltersApplied: hasAnyFiltersApplied
 };
 //# sourceMappingURL=filter.js.map

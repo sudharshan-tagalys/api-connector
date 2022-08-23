@@ -18,6 +18,7 @@ declare const _default: {
         getFilterById: any;
         getFilterItemById: any;
         isFilterApplied: any;
+        hasAnyFiltersApplied: () => boolean;
     };
     flattenFilterItems: (items: any) => any;
     getChildFilterItemIds: (filterItems: any, filterItemId: any) => any[];
@@ -25,5 +26,6 @@ declare const _default: {
     isFilterApplied: (filterId: any) => boolean;
     setFilter: (filterId: any, appliedFilter: any, callAPI?: boolean) => void;
     getParentFilterItemIds: (filterId: any, filterItemId: any) => any;
+    hasAnyFiltersApplied: () => boolean;
 };
 export default _default;
