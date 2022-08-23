@@ -118,8 +118,7 @@ const isFilterApplied = function(filterId){
 }
 
 const hasAnyFiltersApplied = function(){
-  console.log(this.requestState)
-  if(this.requestState && Object.keys(this.requestState['filters']).length){
+  if(Object.keys(this.requestState['filters']).length){
     return true
   }
   return false
@@ -223,7 +222,7 @@ const getResponseHelpers = function(){
 }
 
 const getRequestHelpers = function(){
-  const { applyFilter, clearFilter, clearAllFilters } = this.filterHelpers
+  const { applyFilter, clearFilter, clearAllFilters, hasAnyFiltersApplied } = this.filterHelpers
   return {
     applyFilter,
     setFilter,
