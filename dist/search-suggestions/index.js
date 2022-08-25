@@ -127,7 +127,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
             popularSearches
                 .fetchPopularSearches(_this.requestOptions.configuration, callbackOptions)
                 .then(function (popularSearches) {
-                var searchesToDisplay = _this.getSearchesToDisplay(recentSearches.queries, popularSearches.queries, maxRecentSearches, maxTotalSearches);
+                var searchesToDisplay = _this.getSearchesToDisplay(recentSearches.queries.slice(0, maxRecentSearches), popularSearches.queries, maxRecentSearches, maxTotalSearches);
                 resolve({
                     recentSearches: searchesToDisplay.filter(function (searchItem) { return searchItem.type === "recent"; }).map(common_1.formatSearchItem),
                     popularSearches: searchesToDisplay.filter(function (searchItem) { return searchItem.type === "popular"; }).map(common_1.formatSearchItem),

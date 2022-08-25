@@ -146,7 +146,7 @@ class SearchSuggestions extends APIConnector {
         .fetchPopularSearches(this.requestOptions.configuration, callbackOptions)
         .then((popularSearches: any) => {
           const searchesToDisplay = this.getSearchesToDisplay(
-            recentSearches.queries,
+            recentSearches.queries.slice(0, maxRecentSearches),
             popularSearches.queries,
             maxRecentSearches,
             maxTotalSearches
