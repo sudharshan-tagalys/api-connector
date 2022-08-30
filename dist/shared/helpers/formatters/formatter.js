@@ -34,7 +34,7 @@ var Formatter = /** @class */ (function () {
         };
     }
     Formatter.prototype.formatDetails = function (details) {
-        return details.map(this.formatDetail);
+        return details.filter(function (detail) { return detail !== false; }).map(this.formatDetail);
     };
     Formatter.prototype.platformFieldTranslations = function () {
         return {};

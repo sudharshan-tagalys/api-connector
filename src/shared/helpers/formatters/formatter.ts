@@ -2,7 +2,7 @@ import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatt
 
 class Formatter {
   formatDetails(details) {
-    return details.map(this.formatDetail);
+    return details.filter((detail) => detail !== false).map(this.formatDetail);
   }
 
   platformFieldTranslations(){
