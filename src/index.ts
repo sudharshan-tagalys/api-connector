@@ -11,6 +11,7 @@ import ProductListingPage from "./product-lisiting-page"
 import queryStringManager from "./lib/queryStringManager";
 import ShopifyAnalyticsTracker from './lib/shopifyAnalyticsTracker'
 import PersonalizedRecommendations from "./personalized-recommendations"
+import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
 import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
 
@@ -22,6 +23,7 @@ export const APIConnector = {
   ...ViewedAlsoViewed.export(),
   ...AddedToCartAlsoAddedToCart.export(),
   ...PersonalizedRecommendations.export(),
+  ...Recommendations.export(),
   ...SearchSuggestions.export(),
   ...ProductListingPage.export(),
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),

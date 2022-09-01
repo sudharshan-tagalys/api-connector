@@ -178,6 +178,14 @@ class Formatter {
       queries: suggestionsFormatter.format({ queries: response.popular_searches}),
     }
   }
+
+  recommendations(response) {
+    return {
+      name: response.name,
+      widget_name: response.widget_name,
+      products: this.formatDetails(response.details),
+    }
+  }
 }
 
 export default Formatter;
