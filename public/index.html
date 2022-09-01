@@ -13,17 +13,17 @@
       function setConfiguration() {
         Tagalys.setConfiguration({
           api: {
-            serverUrl: "https://api-r3.tagalys.com",
+            serverUrl: "https://api-r1.tagalys.com",
             credentials: {
-              clientCode: "DE90531E2EF8E3A4",
-              apiKey: "3f50d223db19945fe89e26e3303e3efd",
+              clientCode: "4F6C17914C39D1E8",
+              apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
             },
-            storeId: "1",
+            storeId: "2611380259",
           },
           currency: {
-            code: 'AFN'
+            code: 'USD'
           },
-          platform: 'magento',
+          platform: 'shopify',
           track: true,
           analyticsStorageConsentProvided: function () {
             return true;
@@ -103,15 +103,22 @@
         //   }
         // })
 
-        var plp = Tagalys.APIConnector.ProductListingPage.new({
+        Tagalys.APIConnector.Recommendations.call({
           params: {
-            product_listing_page_id: "5"
+            recommendationId: "794731222c9a807f5891",
+            productId: "1670110248995",
           },
-          onSuccess: function (response, helpers) {
-            console.log(response)
+          onSuccess: function(response){
+            // Called after a successful API call
+          },
+          onFailure: function(response){
+            // Called after a failed API call
+          },
+          track: true,
+          analyticsStorageConsentProvided: () => {
+            return true
           }
         })
-        plp.helpers.call()
       });
 
     </script>
