@@ -61,6 +61,7 @@ var APIConnector = /** @class */ (function () {
                 }
             },
             onFailure: function (response) {
+                console.log("falied");
                 if (_this.oldRequest(currentRequest)) {
                     return;
                 }

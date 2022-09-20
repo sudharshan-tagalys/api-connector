@@ -15,7 +15,7 @@
           api: {
             serverUrl: "https://api-r1.tagalys.com",
             credentials: {
-              clientCode: "4F6C17914C39D1E8",
+              clientCode: "4F6C17914C39D1E",
               apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
             },
             storeId: "2611380259",
@@ -32,6 +32,7 @@
       }
 
       function initializeSearchSuggestions() {
+        console.log("hey")
         return Tagalys.APIConnector.SearchSuggestions.new({
           params: {
             request: {
@@ -39,12 +40,16 @@
               queries: 0, // number of suggested search queries to request
             },
           },
+          beforeAPICall: ()=>{
+            return undefined
+          },
           onSuccess: function (response, helpers) {
             console.log("response for search suggestions", response);
             // Called after a successful API call
             // Use response to render the results - described below
           },
           onFailure: function (response, helpers) {
+            console.log("FFFFFAAAAAAAAAAILED")
             // Called after a failed API call
           },
         });
@@ -102,7 +107,8 @@
         //     console.log(response)
         //   }
         // })
-
+        ss = initializeSearchSuggestions()
+        ss.helpers.call()
         Tagalys.APIConnector.Recommendations.call({
           params: {
             recommendationId: "794731222c9a807f5891",
@@ -110,6 +116,7 @@
           },
           onSuccess: function(response){
             // Called after a successful API call
+            console.log(response)
           },
           onFailure: function(response){
             // Called after a failed API call

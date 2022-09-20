@@ -59,6 +59,7 @@ class APIConnector{
         }
       },
       onFailure: (response) => {
+        console.log("falied")
         if(this.oldRequest(currentRequest)){
           return
         }

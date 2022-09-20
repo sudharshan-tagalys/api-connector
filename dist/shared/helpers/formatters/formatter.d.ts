@@ -49,5 +49,10 @@ declare class Formatter {
     popularSearches(response: any, configuration: any): {
         queries: any;
     };
+    recommendations(response: any): {
+        name: any;
+        widget_name: any;
+        products: any;
+    };
 }
 export default Formatter;
