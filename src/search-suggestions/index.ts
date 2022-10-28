@@ -138,9 +138,10 @@ class SearchSuggestions extends APIConnector {
 
   getRecentAndPopularSearches(maxRecentSearches, maxTotalSearches, callbackOptions: any = {}) {
     return new Promise((resolve, reject) => {
-      const recentSearches = localStorage.getItem("tagalysRecentSearches") || {
+      let recentSearches = localStorage.getItem("tagalysRecentSearches") || {
         queries: [],
       };
+      recentSearches.queries = sortRecentSeaches(recentSearches.queries)
       const popularSearches = new PopularSearches();
       popularSearches
         .fetchPopularSearches(this.requestOptions.configuration, callbackOptions)
