@@ -123,6 +123,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
             var recentSearches = localStorage_1.default.getItem("tagalysRecentSearches") || {
                 queries: [],
             };
+            recentSearches.queries = (0, common_1.sortRecentSeaches)(recentSearches.queries);
             var popularSearches = new popular_searches_1.default();
             popularSearches
                 .fetchPopularSearches(_this.requestOptions.configuration, callbackOptions)
