@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setConfiguration = exports.APIConnector = void 0;
+exports.getConfiguration = exports.setConfiguration = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -47,6 +47,8 @@ var setConfiguration = function (config) {
     }
 };
 exports.setConfiguration = setConfiguration;
+var getConfiguration = function () { return configuration_1.default.getConfiguration(); };
+exports.getConfiguration = getConfiguration;
 window.addEventListener("load", function () {
     var event = new Event("tagalys:ready");
     document.dispatchEvent(event);
