@@ -53,8 +53,11 @@ const setConfiguration = (config) => {
   }
 }
 
+const getConfiguration = () => configuration.getConfiguration()
+
 export {
   setConfiguration,
+  getConfiguration
 }
 
 window.addEventListener("load", () => {
