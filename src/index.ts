@@ -14,6 +14,7 @@ import PersonalizedRecommendations from "./personalized-recommendations"
 import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
 import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
+import packageDetails from "./packageDetails";
 
 export const APIConnector = {
   ...Search.export(),
@@ -53,11 +54,9 @@ const setConfiguration = (config) => {
   }
 }
 
-const getConfiguration = () => configuration.getConfiguration()
-
 export {
   setConfiguration,
-  getConfiguration
+  packageDetails
 }
 
 window.addEventListener("load", () => {
