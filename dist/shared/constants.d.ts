@@ -6,7 +6,6 @@ declare const DEFAULT_CONFIGURATION: {
         vendor: string;
         language: string;
         version: string;
-        release: string;
     };
     track: boolean;
     analyticsStorageConsentProvided: () => boolean;

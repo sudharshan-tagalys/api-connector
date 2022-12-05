@@ -21,6 +21,7 @@ declare class Configuration {
     analyticsStorageConsentProvided(): any;
     canTrackAnalytics(): any;
     getPlatformVariable(key: any): any;
+    getStoreId(): any;
     getPlatformVariables(): any;
 }
 declare const _default: Configuration;

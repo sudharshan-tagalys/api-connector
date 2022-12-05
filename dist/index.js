@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getConfiguration = exports.setConfiguration = exports.APIConnector = void 0;
+exports.packageDetails = exports.setConfiguration = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -28,6 +28,8 @@ var personalized_recommendations_1 = require("./personalized-recommendations");
 var recommendations_1 = require("./recommendations");
 var cookie_1 = require("./lib/cookie");
 var analyticsTracker_1 = require("./lib/analyticsTracker");
+var packageDetails_1 = require("./packageDetails");
+exports.packageDetails = packageDetails_1.default;
 exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), personalized_recommendations_1.default.export()), recommendations_1.default.export()), search_suggestions_1.default.export()), product_lisiting_page_1.default.export()), { trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); }, getPlatformVariable: function (variableKey) { return configuration_1.default.getPlatformVariable(variableKey); }, cookie: {
         get: function (cname) { return cookie_1.default.get(cname); },
         set: function (cname, cvalue, expiryTime) { return cookie_1.default.set(cname, cvalue, expiryTime); },
@@ -47,8 +49,6 @@ var setConfiguration = function (config) {
     }
 };
 exports.setConfiguration = setConfiguration;
-var getConfiguration = function () { return configuration_1.default.getConfiguration(); };
-exports.getConfiguration = getConfiguration;
 window.addEventListener("load", function () {
     var event = new Event("tagalys:ready");
     document.dispatchEvent(event);

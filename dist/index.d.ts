@@ -1,3 +1,4 @@
+import packageDetails from "./packageDetails";
 export declare const APIConnector: {
     trackEvent: (eventType: any, details: any) => void;
     getPlatformVariable: (variableKey: any) => any;
@@ -10,5 +11,4 @@ export declare const APIConnector: {
     setQueryStringConfiguration: (config: any) => void;
 };
 declare const setConfiguration: (config: any) => void;
-declare const getConfiguration: () => any;
-export { setConfiguration, getConfiguration };
+export { setConfiguration, packageDetails };

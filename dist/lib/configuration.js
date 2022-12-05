@@ -84,6 +84,9 @@ var Configuration = /** @class */ (function () {
             return false;
         return this.configuration.platformVariables[key];
     };
+    Configuration.prototype.getStoreId = function () {
+        return this.configuration.api.storeId;
+    };
     Configuration.prototype.getPlatformVariables = function () {
         return this.configuration.platformVariables;
     };

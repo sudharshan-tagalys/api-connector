@@ -1,17 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.REQUEST_FORMAT = exports.DEFAULT_REQUEST_CALLBACKS = exports.DEFAULT_CONFIGURATION = exports.SHOPIFY_PLATFORM = void 0;
+var packageDetails_1 = require("../packageDetails");
 var SHOPIFY_PLATFORM = "shopify";
 exports.SHOPIFY_PLATFORM = SHOPIFY_PLATFORM;
 var DEFAULT_CONFIGURATION = {
     platform: "custom",
     platformVariables: {},
-    apiClient: {
-        vendor: "tagalys-api-connector",
-        language: "js",
-        version: "1",
-        release: "1",
-    },
+    apiClient: packageDetails_1.default,
     track: true,
     analyticsStorageConsentProvided: function () {
         return false;
