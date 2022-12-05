@@ -92,6 +92,10 @@ class Configuration{
     return this.configuration.platformVariables[key]
   }
 
+  getStoreId() {
+    return this.configuration.api.storeId
+  }
+
   getPlatformVariables() {
     return this.configuration.platformVariables
   }
