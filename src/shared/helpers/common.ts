@@ -28,7 +28,7 @@ const getEncodedQueryString = ({
   const hasQueryFilters = (Object.keys(queryFilters).length !== 0)
   const hasFilters = (Object.keys(filters).length !== 0)
   if (hasQueryFilters) {
-    params[queryFilterReplacement] = getFilterQueryString(queryFilters)
+    params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters)
   }
   if(hasFilters){
     params[filterReplacement] = getFilterQueryString(filters)
@@ -74,6 +74,14 @@ const getRequestParamsFromQueryString = (queryString) => {
     params['sort'] = parsedObjectFromQueryString[sortParameter]
   }
   return params
+}
+
+const getQueryFilterQueryString = (filters) => {
+  let filtersQueryStrings = []
+  Object.keys(filters).forEach(function(key){
+    filtersQueryStrings.push(`${key}-${filters[key]}`)
+  })
+  return filtersQueryStrings.join('~');
 }
 
 const getFilterQueryString = (filters) => {
