@@ -17,7 +17,7 @@ var getEncodedQueryString = function (_a) {
     var hasQueryFilters = (Object.keys(queryFilters).length !== 0);
     var hasFilters = (Object.keys(filters).length !== 0);
     if (hasQueryFilters) {
-        params[queryFilterReplacement] = getFilterQueryString(queryFilters);
+        params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters);
     }
     if (hasFilters) {
         params[filterReplacement] = getFilterQueryString(filters);
@@ -64,6 +64,13 @@ var getRequestParamsFromQueryString = function (queryString) {
     return params;
 };
 exports.getRequestParamsFromQueryString = getRequestParamsFromQueryString;
+var getQueryFilterQueryString = function (filters) {
+    var filtersQueryStrings = [];
+    Object.keys(filters).forEach(function (key) {
+        filtersQueryStrings.push("".concat(key, "-").concat(filters[key]));
+    });
+    return filtersQueryStrings.join('~');
+};
 var getFilterQueryString = function (filters) {
     var filtersQueryStrings = [];
     Object.keys(filters).forEach(function (key) {

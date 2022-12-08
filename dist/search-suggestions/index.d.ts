@@ -61,8 +61,9 @@ declare class SearchSuggestions extends APIConnector {
     static defaultRequestOptions(): {
         params: {
             request: {
-                products: number;
-                queries: number;
+                products: {
+                    limit: number;
+                };
             };
         };
         configuration: {
