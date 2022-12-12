@@ -49,7 +49,7 @@ var Recommendations = /** @class */ (function (_super) {
         }
         var plDetails = {
             id: this.requestOptions.params.recommendationId,
-            productId: this.requestOptions.params.productId,
+            product_id: this.requestOptions.params.productId,
             name: response.name,
             widget_name: response.widget_name
         };
