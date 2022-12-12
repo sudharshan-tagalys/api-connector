@@ -50,7 +50,8 @@ var Recommendations = /** @class */ (function (_super) {
         var plDetails = {
             id: this.requestOptions.params.recommendationId,
             productId: this.requestOptions.params.productId,
-            name: response.name
+            name: response.name,
+            widget_name: response.widget_name
         };
         if (response.hasOwnProperty("sku")) {
             plDetails["product"] = response.sku;
@@ -59,7 +60,7 @@ var Recommendations = /** @class */ (function (_super) {
         return {
             event_type: "product_list",
             event_details: {
-                pl_type: "widget-recommendations",
+                pl_type: "product-based-widget",
                 pl_details: plDetails,
                 pl_products: productSkus,
                 pl_total: productSkus.length
