@@ -1,3 +1,4 @@
+import { applyCurrencyConversion } from '../common';
 import Formatter from './formatter';
 
 const unique = (value, index, self) => {
@@ -100,6 +101,27 @@ class ShopifyResponseFormatter extends Formatter {
 
   fieldsToIgnore(){
     return ['sku', 'options', 'compare_at_price', 'price']
+  }
+
+  applyCurrencyConversions(productDetail){
+    if(productDetail.price){
+      productDetail.price = applyCurrencyConversion(productDetail.price)
+    }
+    if(productDetail.compare_at_price){
+      productDetail.compare_at_price = applyCurrencyConversion(productDetail.compare_at_price)
+    }
+    if(productDetail.variants && productDetail.variants.length){
+      productDetail.variants = productDetail.variants.map((variant)=>{
+        if(variant.price){
+          variant.price = applyCurrencyConversion(variant.price)
+        }
+        if(variant.compare_at_price){
+          variant.compare_at_price = applyCurrencyConversion(variant.compare_at_price)
+        }
+        return variant
+      })
+    }
+    return productDetail
   }
 }
 

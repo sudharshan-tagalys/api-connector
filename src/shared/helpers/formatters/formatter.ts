@@ -1,4 +1,5 @@
 import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatter";
+import { applyCurrencyConversion } from "../common";
 
 class Formatter {
   formatDetails(details) {
@@ -39,6 +40,10 @@ class Formatter {
     }
   }
 
+  applyCurrencyConversions(productDetail){
+    return productDetail
+  }
+
   formatDetail = (detail) => {
     let __tagalys_fields = {}
     let platform_fields = {}
@@ -54,11 +59,13 @@ class Formatter {
       }
     }
 
-    return {
+    let fields = {
       ...platform_fields,
       ...this.additionalPlatformFields(detail),
       __tagalys_fields
     }
+    fields = this.applyCurrencyConversions(fields)
+    return fields
   }
 
   similarProducts(response){

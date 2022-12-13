@@ -1,3 +1,4 @@
+import { applyCurrencyConversion } from '../common';
 import Formatter from './formatter';
 
 class MagentoResponseFormmater extends Formatter {
@@ -19,6 +20,16 @@ class MagentoResponseFormmater extends Formatter {
 
   fieldsToIgnore(){
     return ['']
+  }
+
+  applyCurrencyConversions(productDetail: any) {
+    if(productDetail.price){
+      productDetail.price = applyCurrencyConversion(productDetail.price)
+    }
+    if(productDetail.special_price){
+      productDetail.special_price = applyCurrencyConversion(productDetail.special_price)
+    }
+    return productDetail
   }
 }
 

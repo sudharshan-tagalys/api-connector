@@ -1,3 +1,4 @@
+import configuration from '../../lib/configuration';
 import localStorage from '../../lib/localStorage';
 import queryStringManager from '../../lib/queryStringManager';
 
@@ -177,6 +178,14 @@ const formatSearchItem = (searchItem) => {
   return item
 }
 
+const applyCurrencyConversion = (number) => {
+  const exchangeRate = configuration.getExchangeRate();
+  const fractionalDigits = configuration.getFractionalDigits();
+  let convertedNumber = number * exchangeRate;
+  convertedNumber = Math.round(convertedNumber * Math.pow(10, fractionalDigits)) / Math.pow(10, fractionalDigits);
+  return convertedNumber;
+}
+
 export {
   getURLEncodedQueryString,
   getEncodedQueryString,
@@ -187,5 +196,6 @@ export {
   caseInsensitiveString,
   formatSearchItem,
   getRecentSearches,
-  sortRecentSeaches
+  sortRecentSeaches,
+  applyCurrencyConversion
 }

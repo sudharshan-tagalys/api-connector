@@ -16,7 +16,9 @@ class Configuration{
       platform: configuration.platform,
       platformVariables: configuration.platformVariables,
       currency: {
-        code: configuration.currency.code
+        code: configuration.currency.code,
+        exchangeRate: configuration.currency.exchangeRate,
+        fractionalDigits: configuration.currency.fractionalDigits
       },
       apiClient: configuration.apiClient,
       track: configuration.track,
@@ -98,6 +100,20 @@ class Configuration{
 
   getPlatformVariables() {
     return this.configuration.platformVariables
+  }
+
+  getExchangeRate(){
+    const exchangeRate = (this.configuration.currency.exchangeRate || 1)
+    return parseFloat(exchangeRate.toString());
+  }
+
+  getFractionalDigits(){
+    const fractionalDigits = (this.configuration.currency.fractionalDigits || 2)
+    return parseFloat(fractionalDigits.toString());
+  }
+
+  getCurrency() {
+    return this.configuration.currency;
   }
 }
 export default new Configuration();
