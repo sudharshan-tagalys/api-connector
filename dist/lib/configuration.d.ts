@@ -23,6 +23,9 @@ declare class Configuration {
     getPlatformVariable(key: any): any;
     getStoreId(): any;
     getPlatformVariables(): any;
+    getExchangeRate(): number;
+    getFractionalDigits(): number;
+    getCurrency(): any;
 }
 declare const _default: Configuration;
 export default _default;

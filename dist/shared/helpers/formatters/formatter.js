@@ -30,7 +30,9 @@ var Formatter = /** @class */ (function () {
                     }
                 }
             }
-            return __assign(__assign(__assign({}, platform_fields), _this.additionalPlatformFields(detail)), { __tagalys_fields: __tagalys_fields });
+            var fields = __assign(__assign(__assign({}, platform_fields), _this.additionalPlatformFields(detail)), { __tagalys_fields: __tagalys_fields });
+            fields = _this.applyCurrencyConversions(fields);
+            return fields;
         };
     }
     Formatter.prototype.formatDetails = function (details) {
@@ -63,6 +65,9 @@ var Formatter = /** @class */ (function () {
             key: platformFieldTranslations[fieldName],
             value: detail[fieldName]
         };
+    };
+    Formatter.prototype.applyCurrencyConversions = function (productDetail) {
+        return productDetail;
     };
     Formatter.prototype.similarProducts = function (response) {
         return {

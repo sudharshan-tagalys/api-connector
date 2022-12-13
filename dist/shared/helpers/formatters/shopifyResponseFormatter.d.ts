@@ -28,5 +28,6 @@ declare class ShopifyResponseFormatter extends Formatter {
     };
     hasOnlyDefaultVariant(options: any, variants: any): boolean;
     fieldsToIgnore(): string[];
+    applyCurrencyConversions(productDetail: any): any;
 }
 export default ShopifyResponseFormatter;

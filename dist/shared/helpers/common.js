@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+var configuration_1 = require("../../lib/configuration");
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
 var getURLEncodedQueryString = function (baseUrl, params) {
@@ -167,4 +168,12 @@ var formatSearchItem = function (searchItem) {
     return item;
 };
 exports.formatSearchItem = formatSearchItem;
+var applyCurrencyConversion = function (number) {
+    var exchangeRate = configuration_1.default.getExchangeRate();
+    var fractionalDigits = configuration_1.default.getFractionalDigits();
+    var convertedNumber = number * exchangeRate;
+    convertedNumber = Math.round(convertedNumber * Math.pow(10, fractionalDigits)) / Math.pow(10, fractionalDigits);
+    return convertedNumber;
+};
+exports.applyCurrencyConversion = applyCurrencyConversion;
 //# sourceMappingURL=common.js.map

@@ -14,5 +14,6 @@ declare class MagentoResponseFormmater extends Formatter {
         __categories__ids: string;
     };
     fieldsToIgnore(): string[];
+    applyCurrencyConversions(productDetail: any): any;
 }
 export default MagentoResponseFormmater;

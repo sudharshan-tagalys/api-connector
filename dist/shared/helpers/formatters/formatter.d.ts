@@ -6,6 +6,7 @@ declare class Formatter {
     isPlatformField(fieldName: any): boolean;
     isIgnoredField(fieldName: any): boolean;
     translatePlatformField(fieldName: any, detail: any): any;
+    applyCurrencyConversions(productDetail: any): any;
     formatDetail: (detail: any) => {
         __tagalys_fields: {};
     };

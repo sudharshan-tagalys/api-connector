@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("../common");
 var formatter_1 = require("./formatter");
 var MagentoResponseFormmater = /** @class */ (function (_super) {
     __extends(MagentoResponseFormmater, _super);
@@ -38,6 +39,15 @@ var MagentoResponseFormmater = /** @class */ (function (_super) {
     };
     MagentoResponseFormmater.prototype.fieldsToIgnore = function () {
         return [''];
+    };
+    MagentoResponseFormmater.prototype.applyCurrencyConversions = function (productDetail) {
+        if (productDetail.price) {
+            productDetail.price = (0, common_1.applyCurrencyConversion)(productDetail.price);
+        }
+        if (productDetail.special_price) {
+            productDetail.special_price = (0, common_1.applyCurrencyConversion)(productDetail.special_price);
+        }
+        return productDetail;
     };
     return MagentoResponseFormmater;
 }(formatter_1.default));

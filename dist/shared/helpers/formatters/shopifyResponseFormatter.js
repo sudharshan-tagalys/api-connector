@@ -15,6 +15,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+var common_1 = require("../common");
 var formatter_1 = require("./formatter");
 var unique = function (value, index, self) {
     return self.indexOf(value) === index;
@@ -116,6 +117,26 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
     };
     ShopifyResponseFormatter.prototype.fieldsToIgnore = function () {
         return ['sku', 'options', 'compare_at_price', 'price'];
+    };
+    ShopifyResponseFormatter.prototype.applyCurrencyConversions = function (productDetail) {
+        if (productDetail.price) {
+            productDetail.price = (0, common_1.applyCurrencyConversion)(productDetail.price);
+        }
+        if (productDetail.compare_at_price) {
+            productDetail.compare_at_price = (0, common_1.applyCurrencyConversion)(productDetail.compare_at_price);
+        }
+        if (productDetail.variants && productDetail.variants.length) {
+            productDetail.variants = productDetail.variants.map(function (variant) {
+                if (variant.price) {
+                    variant.price = (0, common_1.applyCurrencyConversion)(variant.price);
+                }
+                if (variant.compare_at_price) {
+                    variant.compare_at_price = (0, common_1.applyCurrencyConversion)(variant.compare_at_price);
+                }
+                return variant;
+            });
+        }
+        return productDetail;
     };
     return ShopifyResponseFormatter;
 }(formatter_1.default));

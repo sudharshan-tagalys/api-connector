@@ -17,7 +17,9 @@ var Configuration = /** @class */ (function () {
             platform: configuration.platform,
             platformVariables: configuration.platformVariables,
             currency: {
-                code: configuration.currency.code
+                code: configuration.currency.code,
+                exchangeRate: configuration.currency.exchangeRate,
+                fractionalDigits: configuration.currency.fractionalDigits
             },
             apiClient: configuration.apiClient,
             track: configuration.track,
@@ -89,6 +91,17 @@ var Configuration = /** @class */ (function () {
     };
     Configuration.prototype.getPlatformVariables = function () {
         return this.configuration.platformVariables;
+    };
+    Configuration.prototype.getExchangeRate = function () {
+        var exchangeRate = (this.configuration.currency.exchangeRate || 1);
+        return parseFloat(exchangeRate.toString());
+    };
+    Configuration.prototype.getFractionalDigits = function () {
+        var fractionalDigits = (this.configuration.currency.fractionalDigits || 2);
+        return parseFloat(fractionalDigits.toString());
+    };
+    Configuration.prototype.getCurrency = function () {
+        return this.configuration.currency;
     };
     return Configuration;
 }());
