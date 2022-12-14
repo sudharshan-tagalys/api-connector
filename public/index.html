@@ -10,24 +10,29 @@
   </head>
   <body>
     <script>
+      document.getElementById("search-input").addEventListener("input", function(evt){
+        ss = initializeSearchSuggestions()
+        ss.helpers.updateQuery(evt.target.value)
+      })
       function setConfiguration() {
         Tagalys.setConfiguration({
-          api: {
-            serverUrl: "https://api-r1.tagalys.com",
-            credentials: {
-              clientCode: "4F6C17914C39D1E",
-              apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
+          "api": {
+            "serverUrl": "https://stage2-api.tagalys.com",
+            "credentials": {
+              "clientCode": "247E2538FF898C91",
+              "apiKey": "84cd2f17128d36b6cd8216730c6b3f70"
             },
-            storeId: "2611380259",
+            "storeId": "64491782384"
           },
-          currency: {
-            code: 'USD'
-          },
-          platform: 'shopify',
-          track: true,
-          analyticsStorageConsentProvided: function () {
-            return true;
-          },
+          "platform": "Shopify",
+          "locale": "en-US",
+          "currency": {
+            "displayFormatter": "{{currencyLabel}}{{value}}",
+            "code": "USD",
+            "label": "$",
+            "fractionalDigits": 2,
+            "forceFractionalDigits": true
+          }
         });
       }
 
@@ -39,9 +44,6 @@
               products: 10, // number of suggested products to request
               queries: 0, // number of suggested search queries to request
             },
-          },
-          beforeAPICall: ()=>{
-            return undefined
           },
           onSuccess: function (response, helpers) {
             console.log("response for search suggestions", response);
@@ -109,23 +111,6 @@
         // })
         ss = initializeSearchSuggestions()
         ss.helpers.call()
-        Tagalys.APIConnector.Recommendations.call({
-          params: {
-            recommendationId: "794731222c9a807f5891",
-            productId: "1670110248995",
-          },
-          onSuccess: function(response){
-            // Called after a successful API call
-            console.log(response)
-          },
-          onFailure: function(response){
-            // Called after a failed API call
-          },
-          track: true,
-          analyticsStorageConsentProvided: () => {
-            return true
-          }
-        })
       });
 
     </script>

@@ -47,10 +47,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
         return {
-            // TODO:SS change path
-            path: "ss",
-            format: constants_1.REQUEST_FORMAT.JSON,
-            params: __assign(__assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request), { products: this.requestOptions.params.request.products, queries: this.requestOptions.params.request.queries }),
+            path: "search_suggestions",
+            params: __assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request),
         };
     };
     SearchSuggestions.exporterName = function () {

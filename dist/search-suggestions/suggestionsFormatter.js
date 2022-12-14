@@ -31,7 +31,7 @@ var SuggestionsFormatter = /** @class */ (function () {
                         rawQuery: item
                     };
                 }
-                var displayString = item.query.join(" ".concat(_this.configuration.hierarchySeparator, " "));
+                var displayString = Array.isArray(item.query) ? item.query.join(" ".concat(_this.configuration.hierarchySeparator, " ")) : item.query;
                 return {
                     displayString: displayString,
                     queryString: (0, common_1.getEncodedQueryString)({
