@@ -164,7 +164,7 @@ var Formatter = /** @class */ (function () {
     Formatter.prototype.popularSearches = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
         return {
-            queries: suggestionsFormatter.format({ queries: response.popular_searches }),
+            queries: suggestionsFormatter.formatPopularSearches({ queries: response.popular_searches }),
         };
     };
     Formatter.prototype.recommendations = function (response) {

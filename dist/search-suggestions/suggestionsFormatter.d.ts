@@ -6,5 +6,6 @@ declare class SuggestionsFormatter {
     private configuration;
     constructor(configuration: Configuration);
     format(response: any): any;
+    formatPopularSearches(response: any): any;
 }
 export default SuggestionsFormatter;
