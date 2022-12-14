@@ -102,13 +102,19 @@ class Configuration{
     return this.configuration.platformVariables
   }
 
-  getExchangeRate(){
-    const exchangeRate = (this.configuration.currency.exchangeRate || 1)
+  getExchangeRate() {
+    let exchangeRate = 1
+    if (this.configuration.currency.hasOwnProperty("exchangeRate")) {
+      exchangeRate = this.configuration.currency.exchangeRate
+    }
     return parseFloat(exchangeRate.toString());
   }
 
-  getFractionalDigits(){
-    const fractionalDigits = (this.configuration.currency.fractionalDigits || 2)
+  getFractionalDigits() {
+    let fractionalDigits = 2
+    if (this.configuration.currency.hasOwnProperty("fractionalDigits")) {
+      fractionalDigits = this.configuration.currency.fractionalDigits
+    }
     return parseFloat(fractionalDigits.toString());
   }
 
