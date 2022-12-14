@@ -24,7 +24,7 @@ class SuggestionsFormatter {
             rawQuery: item
           }
         }
-        const displayString = item.query.join(` ${this.configuration.hierarchySeparator} `)
+        const displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
         return {
           displayString: displayString,
           queryString: getEncodedQueryString({
