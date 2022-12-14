@@ -175,7 +175,7 @@ class Formatter {
   popularSearches(response, configuration) {
     const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
-      queries: suggestionsFormatter.format({ queries: response.popular_searches}),
+      queries: suggestionsFormatter.formatPopularSearches({ queries: response.popular_searches}),
     }
   }
 
