@@ -93,11 +93,17 @@ var Configuration = /** @class */ (function () {
         return this.configuration.platformVariables;
     };
     Configuration.prototype.getExchangeRate = function () {
-        var exchangeRate = (this.configuration.currency.exchangeRate || 1);
+        var exchangeRate = 1;
+        if (this.configuration.currency.hasOwnProperty("exchangeRate")) {
+            exchangeRate = this.configuration.currency.exchangeRate;
+        }
         return parseFloat(exchangeRate.toString());
     };
     Configuration.prototype.getFractionalDigits = function () {
-        var fractionalDigits = (this.configuration.currency.fractionalDigits || 2);
+        var fractionalDigits = 2;
+        if (this.configuration.currency.hasOwnProperty("fractionalDigits")) {
+            fractionalDigits = this.configuration.currency.fractionalDigits;
+        }
         return parseFloat(fractionalDigits.toString());
     };
     Configuration.prototype.getCurrency = function () {
