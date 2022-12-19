@@ -25,6 +25,9 @@ var SuggestionsFormatter = /** @class */ (function () {
             var thisItems = thisSection.items;
             var formattedItems = thisItems.map(function (item) {
                 var displayString = Array.isArray(item.query) ? item.query.join(" ".concat(_this.configuration.hierarchySeparator, " ")) : item.query;
+                if (item.hasOwnProperty("title")) {
+                    displayString = item.title;
+                }
                 if (item.hasOwnProperty("link")) {
                     return {
                         displayString: displayString,
