@@ -24,14 +24,14 @@ var SuggestionsFormatter = /** @class */ (function () {
             var thisSection = __assign({}, section);
             var thisItems = thisSection.items;
             var formattedItems = thisItems.map(function (item) {
+                var displayString = Array.isArray(item.query) ? item.query.join(" ".concat(_this.configuration.hierarchySeparator, " ")) : item.query;
                 if (item.hasOwnProperty("link")) {
                     return {
-                        displayString: item.title,
+                        displayString: displayString,
                         link: item.link,
                         rawQuery: item
                     };
                 }
-                var displayString = Array.isArray(item.query) ? item.query.join(" ".concat(_this.configuration.hierarchySeparator, " ")) : item.query;
                 return {
                     displayString: displayString,
                     queryString: (0, common_1.getEncodedQueryString)({
