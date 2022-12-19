@@ -17,14 +17,14 @@ class SuggestionsFormatter {
       const thisSection = { ...section }
       const thisItems = thisSection.items
       const formattedItems = thisItems.map((item) => {
+        const displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
         if (item.hasOwnProperty("link")) {
           return {
-            displayString: item.title,
+            displayString: displayString,
             link: item.link,
             rawQuery: item
           }
         }
-        const displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
         return {
           displayString: displayString,
           queryString: getEncodedQueryString({
