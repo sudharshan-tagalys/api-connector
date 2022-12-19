@@ -17,7 +17,10 @@ class SuggestionsFormatter {
       const thisSection = { ...section }
       const thisItems = thisSection.items
       const formattedItems = thisItems.map((item) => {
-        const displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
+        let displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
+        if (item.hasOwnProperty("title")) {
+          displayString = item.title
+        }
         if (item.hasOwnProperty("link")) {
           return {
             displayString: displayString,
