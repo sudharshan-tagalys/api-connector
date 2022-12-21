@@ -11,25 +11,27 @@
   <body>
     <script>
       function setConfiguration() {
-        Tagalys.setConfiguration({
-          api: {
-            serverUrl: "https://api-r1.tagalys.com",
-            credentials: {
-              clientCode: "4F6C17914C39D1E",
-              apiKey: "4ce5d5a00c3689d403c1ba4ebf7afc77",
+        Tagalys.setConfiguration(
+          {
+            api: {
+              serverUrl: "https://api-r4.tagalys.com",
+              credentials: {
+                clientCode: "3B756E3EA0434F7B",
+                apiKey: "b73d45703e6f3f0af6e26673d4f64d9b",
+              },
+              storeId: "vjvbs7z5js",
             },
-            storeId: "2611380259",
-          },
-          currency: {
-            code: 'USD'
-          },
-          platform: 'shopify',
-          track: true,
-          analyticsStorageConsentProvided: function () {
-            return true;
-          },
-        });
-      }
+            platform: "BigCommerce",
+            locale: "en-IN",
+            currency: {
+              displayFormatter: "{{currencyLabel}}{{value}}",
+              code: "USD",
+              label: "$",
+              fractionalDigits: 2,
+              forceFractionalDigits: true,
+            },
+          }
+        )}
 
       function initializeSearchSuggestions() {
         console.log("hey")
