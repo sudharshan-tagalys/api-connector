@@ -104,7 +104,7 @@ class Configuration{
 
   getExchangeRate() {
     let exchangeRate = 1
-    if (this.configuration.currency.hasOwnProperty("exchangeRate")) {
+    if (this.configuration.currency.exchangeRate) {
       exchangeRate = this.configuration.currency.exchangeRate
     }
     return parseFloat(exchangeRate.toString());
