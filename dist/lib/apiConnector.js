@@ -18,6 +18,7 @@ var analyticsTracker_1 = require("./analyticsTracker");
 var api_2 = require("./api");
 var configuration_1 = require("./configuration");
 var cookie_1 = require("./cookie");
+var common_1 = require("../shared/helpers/common");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
@@ -80,7 +81,9 @@ var APIConnector = /** @class */ (function () {
         return params;
     };
     APIConnector.prototype.getHelpersToExpose = function (response, formattedResponse) {
-        return {};
+        return {
+            getProductPrices: common_1.getProductPrices
+        };
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
     };

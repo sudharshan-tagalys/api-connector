@@ -26,6 +26,8 @@ declare class Configuration {
     getExchangeRate(): number;
     getFractionalDigits(): number;
     getCurrency(): any;
+    getStoreFrontAccessToken(): any;
+    getMyShopifyDomain(): any;
 }
 declare const _default: Configuration;
 export default _default;

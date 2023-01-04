@@ -19,4 +19,5 @@ declare const formatSearchItem: (searchItem: any) => {
     queryString: any;
 };
 declare const applyCurrencyConversion: (number: any) => number;
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion };
+declare const getProductPrices: (productIds: any, countryCode: any) => Promise<{}>;
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion, getProductPrices };

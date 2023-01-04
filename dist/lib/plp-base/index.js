@@ -102,7 +102,7 @@ var Base = /** @class */ (function (_super) {
     };
     Base.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
-        return __assign(__assign(__assign({}, this.getHelpers('request')), this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } });
+        return __assign(__assign(__assign(__assign({}, _super.prototype.getHelpersToExpose.call(this, response, formattedResponse)), this.getHelpers('request')), this.getHelpers('response')), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); } });
     };
     Base.prototype.setRequestParamsFromRequestState = function () {
         this.requestOptions.params = this.getParamsFromRequestState();

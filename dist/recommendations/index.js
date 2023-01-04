@@ -14,6 +14,17 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var apiConnector_1 = require("../lib/apiConnector");
 var Recommendations = /** @class */ (function (_super) {
@@ -38,10 +49,7 @@ var Recommendations = /** @class */ (function (_super) {
     };
     Recommendations.prototype.getHelpersToExpose = function (response, formattedResponse) {
         var _this = this;
-        return {
-            getAnalyticsData: function () { return _this.extractAnalyticsData(response); },
-            getProducts: function () { return formattedResponse ? formattedResponse.products : []; }
-        };
+        return __assign(__assign({}, _super.prototype.getHelpersToExpose.call(this, response, formattedResponse)), { getAnalyticsData: function () { return _this.extractAnalyticsData(response); }, getProducts: function () { return formattedResponse ? formattedResponse.products : []; } });
     };
     Recommendations.prototype.extractAnalyticsData = function (response) {
         if (response === false) {

@@ -109,6 +109,12 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getCurrency = function () {
         return this.configuration.currency;
     };
+    Configuration.prototype.getStoreFrontAccessToken = function () {
+        return this.configuration.platformVariables.storeFrontAccessToken;
+    };
+    Configuration.prototype.getMyShopifyDomain = function () {
+        return this.configuration.platformVariables.myShopifyDomain;
+    };
     return Configuration;
 }());
 exports.default = new Configuration();
