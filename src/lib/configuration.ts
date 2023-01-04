@@ -121,5 +121,13 @@ class Configuration{
   getCurrency() {
     return this.configuration.currency;
   }
+
+  getStoreFrontAccessToken() {
+    return this.configuration.platformVariables.storeFrontAccessToken
+  }
+
+  getMyShopifyDomain() {
+    return this.configuration.platformVariables.myShopifyDomain
+  }
 }
 export default new Configuration();

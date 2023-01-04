@@ -104,6 +104,7 @@ class Base extends APIConnector {
 
   getHelpersToExpose(response, formattedResponse){
     return {
+      ...super.getHelpersToExpose(response, formattedResponse),
       ...this.getHelpers('request'),
       ...this.getHelpers('response'),
       getAnalyticsData: () => this.extractAnalyticsData(response)

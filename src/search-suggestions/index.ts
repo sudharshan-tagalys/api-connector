@@ -77,6 +77,7 @@ class SearchSuggestions extends APIConnector {
       getTextSuggestions: () => this.responseState.queries
     }
     return {
+      ...super.getHelpersToExpose(response, formattedResponse),
       updateQuery: debounce((query) => this.updateQuery(query)),
       recordRecentSearch: (queryString) => recordRecentSearch(queryString),
       removeRecentSearch: (queryString) => removeRecentSearch(queryString),

@@ -43,6 +43,7 @@ class PersonalizedRecommendations extends APIConnector {
 
   getHelpersToExpose(response, formattedResponse): {} {
     return {
+      ...super.getHelpersToExpose(response, formattedResponse),
       getAnalyticsData: () => this.extractAnalyticsData(response),
       getProducts: () => formattedResponse ? formattedResponse.products : []
     }

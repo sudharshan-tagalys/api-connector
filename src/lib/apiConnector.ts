@@ -6,6 +6,7 @@ import debounce from "./debounce";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
+import { getProductPrices } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -79,8 +80,10 @@ class APIConnector{
     return params
   }
 
-  getHelpersToExpose(response, formattedResponse){
-    return {}
+  getHelpersToExpose(response, formattedResponse): any{
+    return {
+      getProductPrices
+    }
   }
 
   internalSuccessCallback(response, formattedResponse){

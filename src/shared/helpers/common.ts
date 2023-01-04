@@ -186,6 +186,68 @@ const applyCurrencyConversion = (number) => {
   return convertedNumber;
 }
 
+const fetchProductsResponse = async (productIds, countryCode) => {
+  const domain = configuration.getMyShopifyDomain()
+  const productNodeIds = productIds.map(productId => `gid://shopify/Product/${productId}`)
+  const response = await fetch(`https://${domain}/api/2022-07/graphql.json`, {
+    body: `
+      query allProducts @inContext(country: ${countryCode}) {
+        nodes(ids: ${JSON.stringify(productNodeIds)})
+        {
+          ... on Product{
+            id
+            variants(first: 250){
+              edges{
+                node{
+                  priceV2 {
+                    amount
+                  }
+                  compareAtPriceV2{
+                    amount
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      `,
+    headers: {
+      "Content-Type": "application/graphql",
+      "X-Shopify-Storefront-Access-Token": configuration.getStoreFrontAccessToken()
+    },
+    method: "POST"
+  })
+  const responseJson = await response.json()
+  return responseJson
+}
+
+const getProductPrices = async (productIds, countryCode) => {
+  const response = await fetchProductsResponse(productIds, countryCode)
+  const products = response.data.nodes
+  let productToPriceMap = {}
+
+  products.forEach((product) => {
+    const productId = product.id.split("/").pop()
+    const productVariants = product.variants.edges
+    const variantCompareAtPrices = productVariants.map((productVariant) => {
+      return parseFloat(productVariant.node.compareAtPriceV2.amount)
+    })
+    const prices = productVariants.map((productVariant) => {
+      return parseFloat(productVariant.node.priceV2.amount)
+    })
+
+    const compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
+    const price = prices.length > 0 ? Math.min(...prices) : null
+    productToPriceMap[productId] = {
+      compareAtPrice: compareAtPrice ? applyCurrencyConversion(compareAtPrice) : null,
+      price: price ? applyCurrencyConversion(price) : null
+    }
+  })
+
+  return productToPriceMap
+}
+
 export {
   getURLEncodedQueryString,
   getEncodedQueryString,
@@ -197,5 +259,6 @@ export {
   formatSearchItem,
   getRecentSearches,
   sortRecentSeaches,
-  applyCurrencyConversion
+  applyCurrencyConversion,
+  getProductPrices
 }
