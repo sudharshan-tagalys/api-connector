@@ -248,7 +248,9 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
                 products.forEach(function (product) {
                     var productId = product.id.split("/").pop();
                     var productVariants = product.variants.edges;
-                    var variantCompareAtPrices = productVariants.map(function (productVariant) {
+                    var variantCompareAtPrices = productVariants
+                        .filter(function (productVariant) { return productVariant.node.compareAtPriceV2; })
+                        .map(function (productVariant) {
                         return parseFloat(productVariant.node.compareAtPriceV2.amount);
                     });
                     var prices = productVariants.map(function (productVariant) {
