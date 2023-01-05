@@ -230,7 +230,9 @@ const getProductPrices = async (productIds, countryCode) => {
   products.forEach((product) => {
     const productId = product.id.split("/").pop()
     const productVariants = product.variants.edges
-    const variantCompareAtPrices = productVariants.map((productVariant) => {
+    const variantCompareAtPrices = productVariants
+      .filter((productVariant) => productVariant.node.compareAtPriceV2)
+      .map((productVariant) => {
       return parseFloat(productVariant.node.compareAtPriceV2.amount)
     })
     const prices = productVariants.map((productVariant) => {
