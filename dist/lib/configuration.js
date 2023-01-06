@@ -16,7 +16,7 @@ var Configuration = /** @class */ (function () {
             },
             platform: configuration.platform,
             countryCode: configuration.countryCode,
-            defaultCountryCode: configuration.defaultCountryCode,
+            baseCountryCode: configuration.baseCountryCode,
             platformVariables: configuration.platformVariables,
             currency: {
                 code: configuration.currency.code,
@@ -130,7 +130,7 @@ var Configuration = /** @class */ (function () {
         return (this.isShopify() &&
             this.configuration.platformVariables &&
             this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
-            this.configuration.countryCode !== this.configuration.defaultCountryCode);
+            this.configuration.countryCode !== this.configuration.baseCountryCode);
     };
     return Configuration;
 }());
