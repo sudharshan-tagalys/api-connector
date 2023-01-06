@@ -242,8 +242,8 @@ const getProductPrices = async (productIds, countryCode) => {
     const compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
     const price = prices.length > 0 ? Math.min(...prices) : null
     productToPriceMap[productId] = {
-      compareAtPrice: compareAtPrice ? applyCurrencyConversion(compareAtPrice) : null,
-      price: price ? applyCurrencyConversion(price) : null
+      compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
+      price: price !== null ? applyCurrencyConversion(price) : null
     }
   })
 
