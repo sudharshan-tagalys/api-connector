@@ -23,7 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var configuration_1 = require("../../configuration");
 var getFilters = function () {
     if (configuration_1.default.isUsingMultiCountryCurrency()) {
-        return this.responseState.filters.filter(function (filter) { return ["price", "sale_price"].includes(filter.id); });
+        return this.responseState.filters.filter(function (filter) { return !["price", "sale_price"].includes(filter.id); });
     }
     return this.responseState.filters;
 };
