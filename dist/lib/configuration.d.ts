@@ -28,6 +28,10 @@ declare class Configuration {
     getCurrency(): any;
     getStoreFrontAccessToken(): any;
     getMyShopifyDomain(): any;
+    isShopify(): boolean;
+    isMagento(): boolean;
+    isBigCommerce(): boolean;
+    isUsingMultiCountryCurrency(): boolean;
 }
 declare const _default: Configuration;
 export default _default;

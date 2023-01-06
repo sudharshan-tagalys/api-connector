@@ -15,6 +15,8 @@ var Configuration = /** @class */ (function () {
                 storeId: configuration.api.storeId,
             },
             platform: configuration.platform,
+            countryCode: configuration.countryCode,
+            defaultCountryCode: configuration.defaultCountryCode,
             platformVariables: configuration.platformVariables,
             currency: {
                 code: configuration.currency.code,
@@ -114,6 +116,21 @@ var Configuration = /** @class */ (function () {
     };
     Configuration.prototype.getMyShopifyDomain = function () {
         return this.configuration.platformVariables.myShopifyDomain;
+    };
+    Configuration.prototype.isShopify = function () {
+        return this.getPlatform() === "shopify";
+    };
+    Configuration.prototype.isMagento = function () {
+        return this.getPlatform() === "magento";
+    };
+    Configuration.prototype.isBigCommerce = function () {
+        return this.getPlatform() === "bigcommerce";
+    };
+    Configuration.prototype.isUsingMultiCountryCurrency = function () {
+        return (this.isShopify() &&
+            this.configuration.platformVariables &&
+            this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
+            this.configuration.countryCode !== this.configuration.defaultCountryCode);
     };
     return Configuration;
 }());

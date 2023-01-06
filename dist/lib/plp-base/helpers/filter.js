@@ -20,7 +20,11 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var configuration_1 = require("../../configuration");
 var getFilters = function () {
+    if (configuration_1.default.isUsingMultiCountryCurrency()) {
+        return this.responseState.filters.filter(function (filter) { return ["price", "sale_price"].includes(filter.id); });
+    }
     return this.responseState.filters;
 };
 var getFlattenedAppliedFilters = function () {
