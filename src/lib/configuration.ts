@@ -14,6 +14,8 @@ class Configuration{
         storeId: configuration.api.storeId,
       },
       platform: configuration.platform,
+      countryCode: configuration.countryCode,
+      defaultCountryCode: configuration.defaultCountryCode,
       platformVariables: configuration.platformVariables,
       currency: {
         code: configuration.currency.code,
@@ -128,6 +130,27 @@ class Configuration{
 
   getMyShopifyDomain() {
     return this.configuration.platformVariables.myShopifyDomain
+  }
+
+  isShopify() {
+    return this.getPlatform() === "shopify"
+  }
+
+  isMagento() {
+    return this.getPlatform() === "magento"
+  }
+
+  isBigCommerce() {
+    return this.getPlatform() === "bigcommerce"
+  }
+
+  isUsingMultiCountryCurrency() {
+    return (
+      this.isShopify() &&
+      this.configuration.platformVariables &&
+      this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
+      this.configuration.countryCode !== this.configuration.defaultCountryCode
+    )
   }
 }
 export default new Configuration();
