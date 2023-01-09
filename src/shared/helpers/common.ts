@@ -231,16 +231,25 @@ const getProductPrices = async (productIds, countryCode) => {
     const productId = product.id.split("/").pop()
     const productVariants = product.variants.edges
     const variantCompareAtPrices = productVariants
-      .filter((productVariant) => productVariant.node.compareAtPriceV2)
       .map((productVariant) => {
-      return parseFloat(productVariant.node.compareAtPriceV2.amount)
-    })
-    const prices = productVariants.map((productVariant) => {
-      return parseFloat(productVariant.node.priceV2.amount)
-    })
+        const price = parseFloat(productVariant.node.priceV2.amount)
+        if (productVariant.node.compareAtPriceV2) {
+          const compareAtPrice = parseFloat(productVariant.node.compareAtPriceV2.amount)
+          if (compareAtPrice > price) {
+            return compareAtPrice
+          }
+        }
+        return price
+      })
+    const prices = productVariants.map((productVariant) => parseFloat(productVariant.node.priceV2.amount))
 
-    const compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
     const price = prices.length > 0 ? Math.min(...prices) : null
+    let compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
+
+    if (compareAtPrice !== null && price !== null) {
+      compareAtPrice = Math.max(...[price, compareAtPrice]);
+    }
+
     productToPriceMap[productId] = {
       compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
       price: price !== null ? applyCurrencyConversion(price) : null

@@ -144,12 +144,16 @@ class Configuration{
     return this.getPlatform() === "bigcommerce"
   }
 
+  isUsingBaseCountryCode() {
+    return this.configuration.countryCode === this.configuration.baseCountryCode
+  }
+
   isUsingMultiCountryCurrency() {
     return (
       this.isShopify() &&
       this.configuration.platformVariables &&
       this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
-      this.configuration.countryCode !== this.configuration.baseCountryCode
+      this.configuration.platformVariables.useStoreFrontAPIForProductPricing === true
     )
   }
 }
