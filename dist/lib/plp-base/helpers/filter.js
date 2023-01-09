@@ -22,8 +22,8 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var configuration_1 = require("../../configuration");
 var getFilters = function () {
-    if (configuration_1.default.isUsingMultiCountryCurrency() && !configuration_1.default.isUsingBaseCountryCode()) {
-        return this.responseState.filters.filter(function (filter) { return !["price", "sale_price"].includes(filter.id); });
+    if (configuration_1.default.isUsingMultiCountryCurrency() && configuration_1.default.isUsingBaseCountryCode()) {
+        return this.responseState.filters.filter(function (filter) { return !filter.currency; });
     }
     return this.responseState.filters;
 };

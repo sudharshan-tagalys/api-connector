@@ -223,7 +223,7 @@ var fetchProductsResponse = function (productIds, countryCode) { return __awaite
                         body: "\n      query allProducts @inContext(country: ".concat(countryCode, ") {\n        nodes(ids: ").concat(JSON.stringify(productNodeIds), ")\n        {\n          ... on Product{\n            id\n            variants(first: 250){\n              edges{\n                node{\n                  priceV2 {\n                    amount\n                  }\n                  compareAtPriceV2{\n                    amount\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n      "),
                         headers: {
                             "Content-Type": "application/graphql",
-                            "X-Shopify-Storefront-Access-Token": configuration_1.default.getStoreFrontAccessToken()
+                            "X-Shopify-Storefront-Access-Token": configuration_1.default.getStoreFrontAPIAccessToken()
                         },
                         method: "POST"
                     })];
@@ -246,29 +246,31 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
                 products = response.data.nodes;
                 productToPriceMap = {};
                 products.forEach(function (product) {
-                    var productId = product.id.split("/").pop();
-                    var productVariants = product.variants.edges;
-                    var variantCompareAtPrices = productVariants
-                        .map(function (productVariant) {
-                        var price = parseFloat(productVariant.node.priceV2.amount);
-                        if (productVariant.node.compareAtPriceV2) {
-                            var compareAtPrice_1 = parseFloat(productVariant.node.compareAtPriceV2.amount);
-                            if (compareAtPrice_1 > price) {
-                                return compareAtPrice_1;
+                    if (product) {
+                        var productId = product.id.split("/").pop();
+                        var productVariants = product.variants.edges;
+                        var variantCompareAtPrices = productVariants
+                            .map(function (productVariant) {
+                            var price = parseFloat(productVariant.node.priceV2.amount);
+                            if (productVariant.node.compareAtPriceV2) {
+                                var compareAtPrice_1 = parseFloat(productVariant.node.compareAtPriceV2.amount);
+                                if (compareAtPrice_1 > price) {
+                                    return compareAtPrice_1;
+                                }
                             }
+                            return price;
+                        });
+                        var prices = productVariants.map(function (productVariant) { return parseFloat(productVariant.node.priceV2.amount); });
+                        var price = prices.length > 0 ? Math.min.apply(Math, prices) : null;
+                        var compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
+                        if (compareAtPrice !== null && price !== null) {
+                            compareAtPrice = Math.max.apply(Math, [price, compareAtPrice]);
                         }
-                        return price;
-                    });
-                    var prices = productVariants.map(function (productVariant) { return parseFloat(productVariant.node.priceV2.amount); });
-                    var price = prices.length > 0 ? Math.min.apply(Math, prices) : null;
-                    var compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
-                    if (compareAtPrice !== null && price !== null) {
-                        compareAtPrice = Math.max.apply(Math, [price, compareAtPrice]);
+                        productToPriceMap[productId] = {
+                            compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
+                            price: price !== null ? applyCurrencyConversion(price) : null
+                        };
                     }
-                    productToPriceMap[productId] = {
-                        compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
-                        price: price !== null ? applyCurrencyConversion(price) : null
-                    };
                 });
                 return [2 /*return*/, productToPriceMap];
         }

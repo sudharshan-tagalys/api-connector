@@ -26,7 +26,7 @@ declare class Configuration {
     getExchangeRate(): number;
     getFractionalDigits(): number;
     getCurrency(): any;
-    getStoreFrontAccessToken(): any;
+    getStoreFrontAPIAccessToken(): any;
     getMyShopifyDomain(): any;
     isShopify(): boolean;
     isMagento(): boolean;

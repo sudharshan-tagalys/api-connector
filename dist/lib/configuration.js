@@ -111,8 +111,8 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getCurrency = function () {
         return this.configuration.currency;
     };
-    Configuration.prototype.getStoreFrontAccessToken = function () {
-        return this.configuration.platformVariables.storeFrontAccessToken;
+    Configuration.prototype.getStoreFrontAPIAccessToken = function () {
+        return this.configuration.platformVariables.storeFrontAPIAccessToken;
     };
     Configuration.prototype.getMyShopifyDomain = function () {
         return this.configuration.platformVariables.myShopifyDomain;
@@ -132,8 +132,8 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.isUsingMultiCountryCurrency = function () {
         return (this.isShopify() &&
             this.configuration.platformVariables &&
-            this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
-            this.configuration.platformVariables.useStoreFrontAPIForProductPricing === true);
+            this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
+            this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true);
     };
     return Configuration;
 }());
