@@ -31,6 +31,7 @@ declare class Configuration {
     isShopify(): boolean;
     isMagento(): boolean;
     isBigCommerce(): boolean;
+    isUsingBaseCountryCode(): boolean;
     isUsingMultiCountryCurrency(): boolean;
 }
 declare const _default: Configuration;

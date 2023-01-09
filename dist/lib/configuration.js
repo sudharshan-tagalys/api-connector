@@ -126,11 +126,14 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.isBigCommerce = function () {
         return this.getPlatform() === "bigcommerce";
     };
+    Configuration.prototype.isUsingBaseCountryCode = function () {
+        return this.configuration.countryCode === this.configuration.baseCountryCode;
+    };
     Configuration.prototype.isUsingMultiCountryCurrency = function () {
         return (this.isShopify() &&
             this.configuration.platformVariables &&
             this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
-            this.configuration.countryCode !== this.configuration.baseCountryCode);
+            this.configuration.platformVariables.useStoreFrontAPIForProductPricing === true);
     };
     return Configuration;
 }());

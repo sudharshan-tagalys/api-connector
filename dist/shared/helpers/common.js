@@ -249,15 +249,22 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
                     var productId = product.id.split("/").pop();
                     var productVariants = product.variants.edges;
                     var variantCompareAtPrices = productVariants
-                        .filter(function (productVariant) { return productVariant.node.compareAtPriceV2; })
                         .map(function (productVariant) {
-                        return parseFloat(productVariant.node.compareAtPriceV2.amount);
+                        var price = parseFloat(productVariant.node.priceV2.amount);
+                        if (productVariant.node.compareAtPriceV2) {
+                            var compareAtPrice_1 = parseFloat(productVariant.node.compareAtPriceV2.amount);
+                            if (compareAtPrice_1 > price) {
+                                return compareAtPrice_1;
+                            }
+                        }
+                        return price;
                     });
-                    var prices = productVariants.map(function (productVariant) {
-                        return parseFloat(productVariant.node.priceV2.amount);
-                    });
-                    var compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
+                    var prices = productVariants.map(function (productVariant) { return parseFloat(productVariant.node.priceV2.amount); });
                     var price = prices.length > 0 ? Math.min.apply(Math, prices) : null;
+                    var compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
+                    if (compareAtPrice !== null && price !== null) {
+                        compareAtPrice = Math.max.apply(Math, [price, compareAtPrice]);
+                    }
                     productToPriceMap[productId] = {
                         compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
                         price: price !== null ? applyCurrencyConversion(price) : null
