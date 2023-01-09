@@ -186,7 +186,7 @@ const applyCurrencyConversion = (number) => {
   return convertedNumber;
 }
 
-const fetchProductsResponse = async (productIds, countryCode) => {
+const getProductPrices = async (productIds, countryCode) => {
   const domain = configuration.getMyShopifyDomain()
   const productNodeIds = productIds.map(productId => `gid://shopify/Product/${productId}`)
   const response = await fetch(`https://${domain}/api/2022-07/graphql.json`, {
@@ -219,12 +219,7 @@ const fetchProductsResponse = async (productIds, countryCode) => {
     method: "POST"
   })
   const responseJson = await response.json()
-  return responseJson
-}
-
-const getProductPrices = async (productIds, countryCode) => {
-  const response = await fetchProductsResponse(productIds, countryCode)
-  const products = response.data.nodes
+  const products = responseJson.data.nodes
   let productToPriceMap = {}
 
   products.forEach((product) => {
@@ -243,19 +238,18 @@ const getProductPrices = async (productIds, countryCode) => {
           return price
         })
       const prices = productVariants.map((productVariant) => parseFloat(productVariant.node.priceV2.amount))
-
+  
       const price = prices.length > 0 ? Math.min(...prices) : null
       let compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
-
+  
       if (compareAtPrice !== null && price !== null) {
         compareAtPrice = Math.max(...[price, compareAtPrice]);
       }
-
+  
       productToPriceMap[productId] = {
         compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
         price: price !== null ? applyCurrencyConversion(price) : null
       }
-
     }
   })
 

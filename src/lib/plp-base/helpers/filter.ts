@@ -1,7 +1,7 @@
 import configuration from "../../configuration"
 
 const getFilters = function () {
-  if (configuration.isUsingMultiCountryCurrency() && configuration.isUsingBaseCountryCode()) {
+  if (configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()) {
     return this.responseState.filters.filter((filter) => !filter.currency)
   }
   return this.responseState.filters
