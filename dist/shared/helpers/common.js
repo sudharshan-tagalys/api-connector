@@ -212,8 +212,8 @@ var applyCurrencyConversion = function (number) {
     return convertedNumber;
 };
 exports.applyCurrencyConversion = applyCurrencyConversion;
-var fetchProductsResponse = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
-    var domain, productNodeIds, response, responseJson;
+var getProductPrices = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
+    var domain, productNodeIds, response, responseJson, products, productToPriceMap;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -232,18 +232,7 @@ var fetchProductsResponse = function (productIds, countryCode) { return __awaite
                 return [4 /*yield*/, response.json()];
             case 2:
                 responseJson = _a.sent();
-                return [2 /*return*/, responseJson];
-        }
-    });
-}); };
-var getProductPrices = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
-    var response, products, productToPriceMap;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, fetchProductsResponse(productIds, countryCode)];
-            case 1:
-                response = _a.sent();
-                products = response.data.nodes;
+                products = responseJson.data.nodes;
                 productToPriceMap = {};
                 products.forEach(function (product) {
                     if (product) {
