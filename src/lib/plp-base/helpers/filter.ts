@@ -1,8 +1,8 @@
 import configuration from "../../configuration"
 
 const getFilters = function () {
-  if (configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()) {
-    return this.responseState.filters.filter((filter) =>  !["price", "sale_price"].includes(filter.id))
+  if (configuration.isUsingMultiCountryCurrency() && configuration.isUsingBaseCountryCode()) {
+    return this.responseState.filters.filter((filter) => !filter.currency)
   }
   return this.responseState.filters
 }

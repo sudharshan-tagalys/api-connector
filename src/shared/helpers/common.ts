@@ -214,7 +214,7 @@ const fetchProductsResponse = async (productIds, countryCode) => {
       `,
     headers: {
       "Content-Type": "application/graphql",
-      "X-Shopify-Storefront-Access-Token": configuration.getStoreFrontAccessToken()
+      "X-Shopify-Storefront-Access-Token": configuration.getStoreFrontAPIAccessToken()
     },
     method: "POST"
   })
@@ -228,31 +228,34 @@ const getProductPrices = async (productIds, countryCode) => {
   let productToPriceMap = {}
 
   products.forEach((product) => {
-    const productId = product.id.split("/").pop()
-    const productVariants = product.variants.edges
-    const variantCompareAtPrices = productVariants
-      .map((productVariant) => {
-        const price = parseFloat(productVariant.node.priceV2.amount)
-        if (productVariant.node.compareAtPriceV2) {
-          const compareAtPrice = parseFloat(productVariant.node.compareAtPriceV2.amount)
-          if (compareAtPrice > price) {
-            return compareAtPrice
+    if(product){
+      const productId = product.id.split("/").pop()
+      const productVariants = product.variants.edges
+      const variantCompareAtPrices = productVariants
+        .map((productVariant) => {
+          const price = parseFloat(productVariant.node.priceV2.amount)
+          if (productVariant.node.compareAtPriceV2) {
+            const compareAtPrice = parseFloat(productVariant.node.compareAtPriceV2.amount)
+            if (compareAtPrice > price) {
+              return compareAtPrice
+            }
           }
-        }
-        return price
-      })
-    const prices = productVariants.map((productVariant) => parseFloat(productVariant.node.priceV2.amount))
+          return price
+        })
+      const prices = productVariants.map((productVariant) => parseFloat(productVariant.node.priceV2.amount))
 
-    const price = prices.length > 0 ? Math.min(...prices) : null
-    let compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
+      const price = prices.length > 0 ? Math.min(...prices) : null
+      let compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
 
-    if (compareAtPrice !== null && price !== null) {
-      compareAtPrice = Math.max(...[price, compareAtPrice]);
-    }
+      if (compareAtPrice !== null && price !== null) {
+        compareAtPrice = Math.max(...[price, compareAtPrice]);
+      }
 
-    productToPriceMap[productId] = {
-      compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
-      price: price !== null ? applyCurrencyConversion(price) : null
+      productToPriceMap[productId] = {
+        compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
+        price: price !== null ? applyCurrencyConversion(price) : null
+      }
+
     }
   })
 

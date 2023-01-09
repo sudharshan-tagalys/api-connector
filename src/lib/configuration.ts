@@ -124,8 +124,8 @@ class Configuration{
     return this.configuration.currency;
   }
 
-  getStoreFrontAccessToken() {
-    return this.configuration.platformVariables.storeFrontAccessToken
+  getStoreFrontAPIAccessToken() {
+    return this.configuration.platformVariables.storeFrontAPIAccessToken
   }
 
   getMyShopifyDomain() {
@@ -152,8 +152,8 @@ class Configuration{
     return (
       this.isShopify() &&
       this.configuration.platformVariables &&
-      this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPricing") &&
-      this.configuration.platformVariables.useStoreFrontAPIForProductPricing === true
+      this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
+      this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true
     )
   }
 }
