@@ -187,73 +187,19 @@ const applyCurrencyConversion = (number) => {
 }
 
 const getProductPrices = async (productIds, countryCode) => {
-  const domain = configuration.getMyShopifyDomain()
-  const productNodeIds = productIds.map(productId => `gid://shopify/Product/${productId}`)
-  const response = await fetch(`https://${domain}/api/2022-07/graphql.json`, {
-    body: `
-      query allProducts @inContext(country: ${countryCode}) {
-        nodes(ids: ${JSON.stringify(productNodeIds)})
-        {
-          ... on Product{
-            id
-            variants(first: 250){
-              edges{
-                node{
-                  priceV2 {
-                    amount
-                  }
-                  compareAtPriceV2{
-                    amount
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-      `,
-    headers: {
-      "Content-Type": "application/graphql",
-      "X-Shopify-Storefront-Access-Token": configuration.getStoreFrontAPIAccessToken()
-    },
-    method: "POST"
-  })
-  const responseJson = await response.json()
-  const products = responseJson.data.nodes
-  let productToPriceMap = {}
-
-  products.forEach((product) => {
-    if(product){
-      const productId = product.id.split("/").pop()
-      const productVariants = product.variants.edges
-      const variantCompareAtPrices = productVariants
-        .map((productVariant) => {
-          const price = parseFloat(productVariant.node.priceV2.amount)
-          if (productVariant.node.compareAtPriceV2) {
-            const compareAtPrice = parseFloat(productVariant.node.compareAtPriceV2.amount)
-            if (compareAtPrice > price) {
-              return compareAtPrice
-            }
-          }
-          return price
-        })
-      const prices = productVariants.map((productVariant) => parseFloat(productVariant.node.priceV2.amount))
-  
-      const price = prices.length > 0 ? Math.min(...prices) : null
-      let compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
-  
-      if (compareAtPrice !== null && price !== null) {
-        compareAtPrice = Math.max(...[price, compareAtPrice]);
-      }
-  
-      productToPriceMap[productId] = {
-        compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
-        price: price !== null ? applyCurrencyConversion(price) : null
-      }
-    }
-  })
-
-  return productToPriceMap
+  const windowInstance: any = window
+  const myShopifyDomain = configuration.getMyShopifyDomain()
+  const storeFrontAPIAccessToken = configuration.getStoreFrontAPIAccessToken()
+  if (windowInstance.TagalysPlatformHelpers) {
+    const response = await windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
+      myShopifyDomain,
+      storeFrontAPIAccessToken,
+      applyCurrencyConversion
+    })
+    return response
+  }
+  console.error("tagalys-platform-helpers script is not loaded yet...")
+  return {}
 }
 
 export {
