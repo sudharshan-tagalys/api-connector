@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Search and search suggestions</title>
+    <script src="https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers.js"></script>
+
     <script src="./bundle.js" async></script>
     <input id="search-input" placeholder="Search" name="search" />
   </head>
@@ -14,15 +16,17 @@
         Tagalys.setConfiguration(
           {
             api: {
-              serverUrl: "https://api-r4.tagalys.com",
+              serverUrl: "https://stage2-api.tagalys.com",
               credentials: {
-                clientCode: "3B756E3EA0434F7B",
-                apiKey: "b73d45703e6f3f0af6e26673d4f64d9b",
+                clientCode: "E7303D10C6F8DD0C",
+                apiKey: "86d3ef13e6fa14950b1bca5ff2629fc5",
               },
-              storeId: "vjvbs7z5js",
+              storeId: "64949387478",
             },
-            platform: "BigCommerce",
-            locale: "en-IN",
+            platform: "Shopify",
+            locale: "en-US",
+            countryCode: "CV",
+            baseCountryCode: "CD",
             currency: {
               displayFormatter: "{{currencyLabel}}{{value}}",
               code: "USD",
@@ -31,8 +35,8 @@
               forceFractionalDigits: true,
             },
             platformVariables: {
-              storeFrontAccessToken: "23e6e026ade9542b485efd644afaac7e",
-              myShopifyDomain: "kk-local-store-3.myshopify.com"
+              storeFrontAPIAccessToken: "23e6e026ade9542b485efd644afaac7e",
+              myShopifyDomain: "kk-local-store-3.myshopify.com",
             }
           }
         )}

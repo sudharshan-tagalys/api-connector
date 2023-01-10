@@ -213,55 +213,25 @@ var applyCurrencyConversion = function (number) {
 };
 exports.applyCurrencyConversion = applyCurrencyConversion;
 var getProductPrices = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
-    var domain, productNodeIds, response, responseJson, products, productToPriceMap;
+    var windowInstance, myShopifyDomain, storeFrontAPIAccessToken, response;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                domain = configuration_1.default.getMyShopifyDomain();
-                productNodeIds = productIds.map(function (productId) { return "gid://shopify/Product/".concat(productId); });
-                return [4 /*yield*/, fetch("https://".concat(domain, "/api/2022-07/graphql.json"), {
-                        body: "\n      query allProducts @inContext(country: ".concat(countryCode, ") {\n        nodes(ids: ").concat(JSON.stringify(productNodeIds), ")\n        {\n          ... on Product{\n            id\n            variants(first: 250){\n              edges{\n                node{\n                  priceV2 {\n                    amount\n                  }\n                  compareAtPriceV2{\n                    amount\n                  }\n                }\n              }\n            }\n          }\n        }\n      }\n      "),
-                        headers: {
-                            "Content-Type": "application/graphql",
-                            "X-Shopify-Storefront-Access-Token": configuration_1.default.getStoreFrontAPIAccessToken()
-                        },
-                        method: "POST"
+                windowInstance = window;
+                myShopifyDomain = configuration_1.default.getMyShopifyDomain();
+                storeFrontAPIAccessToken = configuration_1.default.getStoreFrontAPIAccessToken();
+                if (!windowInstance.TagalysPlatformHelpers) return [3 /*break*/, 2];
+                return [4 /*yield*/, windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
+                        myShopifyDomain: myShopifyDomain,
+                        storeFrontAPIAccessToken: storeFrontAPIAccessToken,
+                        applyCurrencyConversion: applyCurrencyConversion
                     })];
             case 1:
                 response = _a.sent();
-                return [4 /*yield*/, response.json()];
+                return [2 /*return*/, response];
             case 2:
-                responseJson = _a.sent();
-                products = responseJson.data.nodes;
-                productToPriceMap = {};
-                products.forEach(function (product) {
-                    if (product) {
-                        var productId = product.id.split("/").pop();
-                        var productVariants = product.variants.edges;
-                        var variantCompareAtPrices = productVariants
-                            .map(function (productVariant) {
-                            var price = parseFloat(productVariant.node.priceV2.amount);
-                            if (productVariant.node.compareAtPriceV2) {
-                                var compareAtPrice_1 = parseFloat(productVariant.node.compareAtPriceV2.amount);
-                                if (compareAtPrice_1 > price) {
-                                    return compareAtPrice_1;
-                                }
-                            }
-                            return price;
-                        });
-                        var prices = productVariants.map(function (productVariant) { return parseFloat(productVariant.node.priceV2.amount); });
-                        var price = prices.length > 0 ? Math.min.apply(Math, prices) : null;
-                        var compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min.apply(Math, variantCompareAtPrices) : null;
-                        if (compareAtPrice !== null && price !== null) {
-                            compareAtPrice = Math.max.apply(Math, [price, compareAtPrice]);
-                        }
-                        productToPriceMap[productId] = {
-                            compareAtPrice: compareAtPrice !== null ? applyCurrencyConversion(compareAtPrice) : null,
-                            price: price !== null ? applyCurrencyConversion(price) : null
-                        };
-                    }
-                });
-                return [2 /*return*/, productToPriceMap];
+                console.error("tagalys-platform-helpers script is not loaded yet...");
+                return [2 /*return*/, {}];
         }
     });
 }); };
