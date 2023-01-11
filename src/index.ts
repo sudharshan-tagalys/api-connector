@@ -15,7 +15,7 @@ import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
 import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
 import packageDetails from "./packageDetails";
-import analyticsFactory from "./lib/analyticsFactory"
+import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 
 export const APIConnector = {
   ...Search.export(),
@@ -46,7 +46,7 @@ const setConfiguration = (config) => {
   })
   const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
   if (canTrackAnalytics) {
-    analyticsFactory.platformAnalyticsTracker().track()
+    platformAnalyticsFactory.tracker().track()
   }else{
     cookie.batchDelete(Object.values(COOKIES))
   }

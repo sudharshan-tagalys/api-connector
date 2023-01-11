@@ -15,5 +15,5 @@ const platformAnalyticsTracker = () => {
 }
 
 export default {
-  platformAnalyticsTracker: platformAnalyticsTracker
+  tracker: platformAnalyticsTracker
 }
