@@ -30,7 +30,7 @@ var MagentoAnalyticsTracker = /** @class */ (function (_super) {
             analyticsTracker_1.default.track("analytics/users/track", {
                 user_id: loggedInUserId
             });
-            cookie_1.default.delete("__ta_login_id");
+            cookie_1.default.delete("__ta_logged_in");
         }
     };
     MagentoAnalyticsTracker.prototype.track = function () {
