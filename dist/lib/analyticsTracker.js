@@ -51,8 +51,10 @@ var AnalyticsTracker = /** @class */ (function () {
                     device_id: cookie_1.default.get(exports.COOKIES.TA_DEVICE),
                     visit_id: cookie_1.default.get(exports.COOKIES.TA_VISIT)
                 };
-                if (cookie_1.default.get(exports.COOKIES.TA_USER_ID)) {
+                var userId = cookie_1.default.get(exports.COOKIES.TA_USER_ID);
+                if (userId) {
                     // add user_id to user object for analytics tracking
+                    user.user_id = userId;
                 }
                 this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence();
                 this.lastEventTimestamp = Date.now();
