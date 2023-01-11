@@ -15,6 +15,7 @@ import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
 import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
 import packageDetails from "./packageDetails";
+import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 
 export const APIConnector = {
   ...Search.export(),
@@ -43,14 +44,11 @@ const setConfiguration = (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  if(config.platform.toLowerCase() === 'shopify'){
-    const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
-    if(canTrackAnalytics){
-      const shopifyAnalyticsTracker = new ShopifyAnalyticsTracker()
-      shopifyAnalyticsTracker.track()
-    }else{
-      cookie.batchDelete(Object.values(COOKIES))
-    }
+  const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
+  if (canTrackAnalytics) {
+    platformAnalyticsFactory.tracker().track()
+  }else{
+    cookie.batchDelete(Object.values(COOKIES))
   }
 }
 
