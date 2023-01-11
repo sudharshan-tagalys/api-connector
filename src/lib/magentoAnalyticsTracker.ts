@@ -10,7 +10,7 @@ class MagentoAnalyticsTracker extends PlatformAnalyticsTracker{
       analyticsTracker.track("analytics/users/track", {
         user_id: loggedInUserId
       })
-      cookie.delete("__ta_login_id")
+      cookie.delete("__ta_logged_in")
     }
   }
 
