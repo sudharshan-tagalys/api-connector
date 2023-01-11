@@ -12,6 +12,12 @@ export const COOKIES = {
   TA_LAST_ORDER_ID: '__ta_last_order_id'
 }
 
+interface UserIdentification {
+  device_id: string,
+  visit_id: string,
+  user_id?: string
+}
+
 const TRACKER_VERSION = 3
 
 class AnalyticsTracker{
@@ -40,13 +46,15 @@ class AnalyticsTracker{
           expiryTime: 1800000
         }])
 
-        let user = {
+        let user: UserIdentification = {
           device_id: cookie.get(COOKIES.TA_DEVICE),
           visit_id: cookie.get(COOKIES.TA_VISIT)
         }
 
-        if (cookie.get(COOKIES.TA_USER_ID)) {
+        const userId = cookie.get(COOKIES.TA_USER_ID)
+        if (userId) {
           // add user_id to user object for analytics tracking
+          user.user_id = userId
         }
 
         this.analyticsRapidEventSequence = this.getAnalyticsRapidEventSequence()
