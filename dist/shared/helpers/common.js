@@ -8,8 +8,8 @@ var getURLEncodedQueryString = function (baseUrl, params) {
 };
 exports.getURLEncodedQueryString = getURLEncodedQueryString;
 var getEncodedQueryString = function (_a) {
-    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilters, queryFilters = _c === void 0 ? {} : _c, _d = _a.filters, filters = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g;
-    var _h = queryStringManager_1.default.getConfiguration(), queryReplacement = _h.queryParameter, queryFilterReplacement = _h.queryFilterParameter, filterReplacement = _h.filterParameter, pageReplacement = _h.pageParameter, sortReplacement = _h.sortParameter;
+    var _b = _a.query, query = _b === void 0 ? '' : _b, _c = _a.queryFilters, queryFilters = _c === void 0 ? {} : _c, _d = _a.filters, filters = _d === void 0 ? {} : _d, _e = _a.page, page = _e === void 0 ? null : _e, _f = _a.sort, sort = _f === void 0 ? null : _f, _g = _a.except, except = _g === void 0 ? [] : _g, _h = _a.legacySearchSuggestions, legacySearchSuggestions = _h === void 0 ? false : _h;
+    var _j = queryStringManager_1.default.getConfiguration(), queryReplacement = _j.queryParameter, queryFilterReplacement = _j.queryFilterParameter, filterReplacement = _j.filterParameter, pageReplacement = _j.pageParameter, sortReplacement = _j.sortParameter;
     var params = {};
     if (query.length) {
         params[queryReplacement] = query;
@@ -17,7 +17,12 @@ var getEncodedQueryString = function (_a) {
     var hasQueryFilters = (Object.keys(queryFilters).length !== 0);
     var hasFilters = (Object.keys(filters).length !== 0);
     if (hasQueryFilters) {
-        params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters);
+        if (legacySearchSuggestions) {
+            params[queryFilterReplacement] = getFilterQueryString(queryFilters);
+        }
+        else {
+            params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters);
+        }
     }
     if (hasFilters) {
         params[filterReplacement] = getFilterQueryString(filters);

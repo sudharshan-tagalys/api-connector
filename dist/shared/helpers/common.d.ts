@@ -1,11 +1,12 @@
 declare const getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except }: {
+declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, legacySearchSuggestions }: {
     query?: string;
     queryFilters?: {};
     filters?: {};
     page?: any;
     sort?: any;
     except?: any[];
+    legacySearchSuggestions?: boolean;
 }) => string;
 declare const getRequestParamsFromWindowLocation: () => {};
 declare const getRequestParamsFromQueryString: (queryString: any) => {};

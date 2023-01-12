@@ -12,6 +12,7 @@ var __assign = (this && this.__assign) || function () {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var suggestionsFormatter_1 = require("../../../search-suggestions/suggestionsFormatter");
+var searchSuggestionsFormatter_1 = require("../../../search-suggestions/legacy/searchSuggestionsFormatter");
 var Formatter = /** @class */ (function () {
     function Formatter() {
         var _this = this;
@@ -103,6 +104,13 @@ var Formatter = /** @class */ (function () {
     };
     Formatter.prototype.productListingPage = function (response) {
         return __assign({ name: response.name }, this.getBasePlpResponse(response));
+    };
+    Formatter.prototype.legacySearchSuggestions = function (response, configuration) {
+        var suggestionsFormatter = new searchSuggestionsFormatter_1.default(configuration);
+        return {
+            queries: suggestionsFormatter.format(response),
+            products: this.formatDetails(response.products)
+        };
     };
     Formatter.prototype.searchSuggestions = function (response, configuration) {
         var suggestionsFormatter = new suggestionsFormatter_1.default(configuration);
