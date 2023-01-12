@@ -5,7 +5,7 @@ interface Configuration{
   hierarchySeparator: string
 }
 class SuggestionsFormatter {
-  private configuration: Configuration
+  protected configuration: Configuration
 
   constructor(configuration: Configuration){
     this.configuration = configuration;

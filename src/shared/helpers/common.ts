@@ -11,7 +11,8 @@ const getEncodedQueryString = ({
   filters = {},
   page = null,
   sort = null,
-  except = []
+  except = [],
+  legacySearchSuggestions = false
  }) => {
   const {
     queryParameter: queryReplacement,
@@ -28,7 +29,11 @@ const getEncodedQueryString = ({
   const hasQueryFilters = (Object.keys(queryFilters).length !== 0)
   const hasFilters = (Object.keys(filters).length !== 0)
   if (hasQueryFilters) {
-    params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters)
+    if (legacySearchSuggestions) {
+      params[queryFilterReplacement] = getFilterQueryString(queryFilters)
+    }else{
+      params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters)
+    }
   }
   if(hasFilters){
     params[filterReplacement] = getFilterQueryString(filters)

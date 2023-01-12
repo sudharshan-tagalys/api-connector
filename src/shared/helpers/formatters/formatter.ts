@@ -1,4 +1,5 @@
 import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatter";
+import LegacySearchSuggestionsFormatter from "../../../search-suggestions/legacy/searchSuggestionsFormatter";
 
 class Formatter {
   formatDetails(details) {
@@ -109,6 +110,14 @@ class Formatter {
     return {
       name: response.name,
       ...this.getBasePlpResponse(response)
+    }
+  }
+
+  legacySearchSuggestions(response, configuration) {
+    const suggestionsFormatter = new LegacySearchSuggestionsFormatter(configuration)
+    return {
+      queries: suggestionsFormatter.format(response),
+      products: this.formatDetails(response.products)
     }
   }
 
