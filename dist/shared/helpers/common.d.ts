@@ -1,5 +1,13 @@
 declare const getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except }: {
+declare const getLegacyEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, }: {
+    query?: string;
+    queryFilters?: {};
+    filters?: {};
+    page?: any;
+    sort?: any;
+    except?: any[];
+}) => string;
+declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, }: {
     query?: string;
     queryFilters?: {};
     filters?: {};
@@ -18,5 +26,9 @@ declare const formatSearchItem: (searchItem: any) => {
     displayString: any;
     queryString: any;
 };
+<<<<<<< HEAD
 declare const applyCurrencyConversion: (number: any) => number;
 export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion };
+=======
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, getLegacyEncodedQueryString };
+>>>>>>> ss-v2

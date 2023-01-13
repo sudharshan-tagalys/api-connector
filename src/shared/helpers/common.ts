@@ -6,13 +6,13 @@ const getURLEncodedQueryString = (baseUrl, params) => {
   return `${baseUrl}?${getEncodedQueryString(params)}`
 }
 
-const getEncodedQueryString = ({
+const getLegacyEncodedQueryString = ({
   query = '',
   queryFilters = {},
   filters = {},
   page = null,
   sort = null,
-  except = []
+  except = [],
  }) => {
   const {
     queryParameter: queryReplacement,
@@ -30,6 +30,46 @@ const getEncodedQueryString = ({
   const hasFilters = (Object.keys(filters).length !== 0)
   if (hasQueryFilters) {
     params[queryFilterReplacement] = getFilterQueryString(queryFilters)
+  }
+  if(hasFilters){
+    params[filterReplacement] = getFilterQueryString(filters)
+  }
+  if(page){
+    params[pageReplacement] = page
+  }
+  if(sort && sort.length){
+    params[sortReplacement] = sort
+  }
+  except.forEach((paramToDelete) => {
+    delete params[getReplacementParam(paramToDelete)]
+  })
+  return  `${queryStringManager.stringify(params)}`;
+}
+
+const getEncodedQueryString = ({
+  query = '',
+  queryFilters = {},
+  filters = {},
+  page = null,
+  sort = null,
+  except = [],
+ }) => {
+  const {
+    queryParameter: queryReplacement,
+    queryFilterParameter: queryFilterReplacement,
+    filterParameter: filterReplacement,
+    pageParameter: pageReplacement,
+    sortParameter: sortReplacement
+   } = queryStringManager.getConfiguration()
+
+  let params: any = {}
+  if(query.length){
+    params[queryReplacement] = query
+  }
+  const hasQueryFilters = (Object.keys(queryFilters).length !== 0)
+  const hasFilters = (Object.keys(filters).length !== 0)
+  if (hasQueryFilters) {
+    params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters)
   }
   if(hasFilters){
     params[filterReplacement] = getFilterQueryString(filters)
@@ -75,6 +115,14 @@ const getRequestParamsFromQueryString = (queryString) => {
     params['sort'] = parsedObjectFromQueryString[sortParameter]
   }
   return params
+}
+
+const getQueryFilterQueryString = (filters) => {
+  let filtersQueryStrings = []
+  Object.keys(filters).forEach(function(key){
+    filtersQueryStrings.push(`${key}-${filters[key]}`)
+  })
+  return filtersQueryStrings.join('~');
 }
 
 const getFilterQueryString = (filters) => {
@@ -197,5 +245,6 @@ export {
   formatSearchItem,
   getRecentSearches,
   sortRecentSeaches,
-  applyCurrencyConversion
+  applyCurrencyConversion,
+  getLegacyEncodedQueryString
 }

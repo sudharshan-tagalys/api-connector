@@ -3,8 +3,9 @@ interface Configuration {
     hierarchySeparator: string;
 }
 declare class SuggestionsFormatter {
-    private configuration;
+    protected configuration: Configuration;
     constructor(configuration: Configuration);
     format(response: any): any;
+    formatPopularSearches(response: any): any;
 }
 export default SuggestionsFormatter;

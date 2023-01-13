@@ -5,7 +5,7 @@ interface Configuration{
   hierarchySeparator: string
 }
 class SuggestionsFormatter {
-  private configuration: Configuration
+  protected configuration: Configuration
 
   constructor(configuration: Configuration){
     this.configuration = configuration;
@@ -13,13 +13,47 @@ class SuggestionsFormatter {
 
   format(response) {
     if (!response.queries) return []
+    return response.queries.map((section) => {
+      const thisSection = { ...section }
+      const thisItems = thisSection.items
+      const formattedItems = thisItems.map((item) => {
+        let displayString = Array.isArray(item.query) ? item.query.join(` ${this.configuration.hierarchySeparator} `) : item.query
+        if (item.hasOwnProperty("title")) {
+          displayString = item.title
+        }
+        if (item.hasOwnProperty("link")) {
+          return {
+            displayString: displayString,
+            link: item.link,
+            rawQuery: item
+          }
+        }
+        return {
+          displayString: displayString,
+          queryString: getEncodedQueryString({
+            query: displayString,
+            queryFilters: item.query_filters
+          }),
+          rawQuery: item
+        }
+      })
+      return {
+        section_title: thisSection.section_title,
+        section_id: thisSection.section_id,
+        items: formattedItems
+      }
+    })
+  }
+
+  formatPopularSearches(response) {
+    if (!response.queries) return []
     return response.queries.map((queryObj) => {
       let formattedQuery = {
         displayString: "",
         queryString: "",
         rawQuery: queryObj
       }
-
+  
       if (typeof queryObj.query === 'string') {
         formattedQuery.displayString = queryObj.query
         formattedQuery.queryString = getEncodedQueryString({
@@ -27,7 +61,7 @@ class SuggestionsFormatter {
         })
         return formattedQuery
       }
-
+  
       if (Array.isArray(queryObj.query)) {
         if (queryObj.hasOwnProperty('in')) {
           const prefix = queryObj.query[0]

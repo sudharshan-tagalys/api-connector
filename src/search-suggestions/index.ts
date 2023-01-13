@@ -16,8 +16,6 @@ import {
 } from "../shared/helpers/common";
 import debounce from "../lib/debounce";
 
-
-
 class SearchSuggestions extends APIConnector {
   getDefaultResponseState = () => {
     return {
@@ -30,13 +28,10 @@ class SearchSuggestions extends APIConnector {
 
   getRequestOptions() {
     return {
-      path: `ss`,
-      format: REQUEST_FORMAT.JSON,
+      path: `search_suggestions`,
       params: {
         q: this.requestOptions.params.query,
         ...SearchSuggestions.defaultRequestOptions().params.request,
-        products: this.requestOptions.params.request.products,
-        queries: this.requestOptions.params.request.queries,
       },
     };
   }
@@ -194,8 +189,7 @@ class SearchSuggestions extends APIConnector {
       ...DEFAULT_REQUEST_CALLBACKS,
       params: {
         request: {
-          products: 10,
-          queries: 10,
+          products: { limit: 10 },
         },
       },
       configuration: {

@@ -6,6 +6,7 @@ import BoughtAlsoBought from "./bought-also-bought"
 import ViewedAlsoViewed from "./viewed-also-viewed"
 import AddedToCartAlsoAddedToCart from "./added-to-cart-also-added-to-cart"
 import SearchSuggestions from "./search-suggestions"
+import LegacySearchSuggestions from "./search-suggestions/legacy"
 import Search from './search'
 import ProductListingPage from "./product-lisiting-page"
 import queryStringManager from "./lib/queryStringManager";
@@ -27,6 +28,7 @@ export const APIConnector = {
   ...PersonalizedRecommendations.export(),
   ...Recommendations.export(),
   ...SearchSuggestions.export(),
+  ...LegacySearchSuggestions.export(),
   ...ProductListingPage.export(),
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),

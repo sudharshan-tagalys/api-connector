@@ -1,5 +1,6 @@
 import SuggestionsFormatter from "../../../search-suggestions/suggestionsFormatter";
 import { applyCurrencyConversion } from "../common";
+import LegacySearchSuggestionsFormatter from "../../../search-suggestions/legacy/searchSuggestionsFormatter";
 
 class Formatter {
   formatDetails(details) {
@@ -119,6 +120,14 @@ class Formatter {
     }
   }
 
+  legacySearchSuggestions(response, configuration) {
+    const suggestionsFormatter = new LegacySearchSuggestionsFormatter(configuration)
+    return {
+      queries: suggestionsFormatter.format(response),
+      products: this.formatDetails(response.products)
+    }
+  }
+
   searchSuggestions(response, configuration) {
     const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
@@ -182,7 +191,7 @@ class Formatter {
   popularSearches(response, configuration) {
     const suggestionsFormatter = new SuggestionsFormatter(configuration)
     return {
-      queries: suggestionsFormatter.format({ queries: response.popular_searches}),
+      queries: suggestionsFormatter.formatPopularSearches({ queries: response.popular_searches}),
     }
   }
 

@@ -37,6 +37,10 @@ declare class Formatter {
         total: any;
         name: any;
     };
+    legacySearchSuggestions(response: any, configuration: any): {
+        queries: any;
+        products: any;
+    };
     searchSuggestions(response: any, configuration: any): {
         queries: any;
         products: any;

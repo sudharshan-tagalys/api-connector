@@ -10,28 +10,31 @@
   </head>
   <body>
     <script>
+      document.getElementById("search-input").addEventListener("input", function(evt){
+        ss = initializeSearchSuggestions()
+        ss.helpers.updateQuery(evt.target.value)
+      })
       function setConfiguration() {
-        Tagalys.setConfiguration(
-          {
-            api: {
-              serverUrl: "https://api-r4.tagalys.com",
-              credentials: {
-                clientCode: "3B756E3EA0434F7B",
-                apiKey: "b73d45703e6f3f0af6e26673d4f64d9b",
-              },
-              storeId: "vjvbs7z5js",
+        Tagalys.setConfiguration({
+          "api": {
+            "serverUrl": "https://stage2-api.tagalys.com",
+            "credentials": {
+              "clientCode": "81618D5F21F1595B",
+              "apiKey": "08cf0a59c243ab57e842290c69fe507e"
             },
-            platform: "BigCommerce",
-            locale: "en-IN",
-            currency: {
-              displayFormatter: "{{currencyLabel}}{{value}}",
-              code: "USD",
-              label: "$",
-              fractionalDigits: 2,
-              forceFractionalDigits: true,
-            },
+            "storeId": "64491782384"
+          },
+          "platform": "Shopify",
+          "locale": "en-US",
+          "currency": {
+            "displayFormatter": "{{currencyLabel}}{{value}}",
+            "code": "USD",
+            "label": "$",
+            "fractionalDigits": 2,
+            "forceFractionalDigits": true
           }
-        )}
+        });
+      }
 
       function initializeSearchSuggestions() {
         console.log("hey")
@@ -41,9 +44,6 @@
               products: 10, // number of suggested products to request
               queries: 0, // number of suggested search queries to request
             },
-          },
-          beforeAPICall: ()=>{
-            return undefined
           },
           onSuccess: function (response, helpers) {
             console.log("response for search suggestions", response);
@@ -111,23 +111,6 @@
         // })
         ss = initializeSearchSuggestions()
         ss.helpers.call()
-        Tagalys.APIConnector.Recommendations.call({
-          params: {
-            recommendationId: "794731222c9a807f5891",
-            productId: "1670110248995",
-          },
-          onSuccess: function(response){
-            // Called after a successful API call
-            console.log(response)
-          },
-          onFailure: function(response){
-            // Called after a failed API call
-          },
-          track: true,
-          analyticsStorageConsentProvided: () => {
-            return true
-          }
-        })
       });
 
     </script>

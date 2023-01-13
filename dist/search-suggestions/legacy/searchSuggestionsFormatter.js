@@ -1,4 +1,19 @@
 "use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = function (d, b) {
+        extendStatics = Object.setPrototypeOf ||
+            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+        return extendStatics(d, b);
+    };
+    return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -11,47 +26,14 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var common_1 = require("../shared/helpers/common");
-var SuggestionsFormatter = /** @class */ (function () {
-    function SuggestionsFormatter(configuration) {
-        this.configuration = configuration;
+var common_1 = require("../../shared/helpers/common");
+var suggestionsFormatter_1 = require("../suggestionsFormatter");
+var LegacySearchSuggestionsFormatter = /** @class */ (function (_super) {
+    __extends(LegacySearchSuggestionsFormatter, _super);
+    function LegacySearchSuggestionsFormatter() {
+        return _super !== null && _super.apply(this, arguments) || this;
     }
-    SuggestionsFormatter.prototype.format = function (response) {
-        var _this = this;
-        if (!response.queries)
-            return [];
-        return response.queries.map(function (section) {
-            var thisSection = __assign({}, section);
-            var thisItems = thisSection.items;
-            var formattedItems = thisItems.map(function (item) {
-                var displayString = Array.isArray(item.query) ? item.query.join(" ".concat(_this.configuration.hierarchySeparator, " ")) : item.query;
-                if (item.hasOwnProperty("title")) {
-                    displayString = item.title;
-                }
-                if (item.hasOwnProperty("link")) {
-                    return {
-                        displayString: displayString,
-                        link: item.link,
-                        rawQuery: item
-                    };
-                }
-                return {
-                    displayString: displayString,
-                    queryString: (0, common_1.getEncodedQueryString)({
-                        query: displayString,
-                        queryFilters: item.query_filters
-                    }),
-                    rawQuery: item
-                };
-            });
-            return {
-                section_title: thisSection.section_title,
-                section_id: thisSection.section_id,
-                items: formattedItems
-            };
-        });
-    };
-    SuggestionsFormatter.prototype.formatPopularSearches = function (response) {
+    LegacySearchSuggestionsFormatter.prototype.format = function (response) {
         var _this = this;
         if (!response.queries)
             return [];
@@ -64,7 +46,7 @@ var SuggestionsFormatter = /** @class */ (function () {
             };
             if (typeof queryObj.query === 'string') {
                 formattedQuery.displayString = queryObj.query;
-                formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                formattedQuery.queryString = _this.getEncodedQueryString({
                     query: queryObj.query
                 });
                 return formattedQuery;
@@ -75,14 +57,14 @@ var SuggestionsFormatter = /** @class */ (function () {
                     var suffix = queryObj.in.hierarchy.map(function (item) { return item.name; }).join(" ".concat(_this.configuration.hierarchySeparator, " "));
                     var qf = __assign(__assign({}, queryObj.filter), (_a = {}, _a["".concat(queryObj.in.tag_set.id)] = queryObj.in.hierarchy.map(function (item) { return item.id; }), _a));
                     formattedQuery.displayString = "".concat(prefix, " ").concat(_this.configuration.hierarchySeparator, " ").concat(suffix);
-                    formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                    formattedQuery.queryString = _this.getEncodedQueryString({
                         query: formattedQuery.displayString,
                         queryFilters: qf
                     });
                 }
                 else {
                     formattedQuery.displayString = queryObj.query.join(" ".concat(_this.configuration.categorySeparator, " "));
-                    formattedQuery.queryString = (0, common_1.getEncodedQueryString)({
+                    formattedQuery.queryString = _this.getEncodedQueryString({
                         query: formattedQuery.displayString,
                         queryFilters: queryObj.filter
                     });
@@ -91,7 +73,10 @@ var SuggestionsFormatter = /** @class */ (function () {
             return formattedQuery;
         });
     };
-    return SuggestionsFormatter;
-}());
-exports.default = SuggestionsFormatter;
-//# sourceMappingURL=suggestionsFormatter.js.map
+    LegacySearchSuggestionsFormatter.prototype.getEncodedQueryString = function (options) {
+        return (0, common_1.getLegacyEncodedQueryString)(options);
+    };
+    return LegacySearchSuggestionsFormatter;
+}(suggestionsFormatter_1.default));
+exports.default = LegacySearchSuggestionsFormatter;
+//# sourceMappingURL=searchSuggestionsFormatter.js.map

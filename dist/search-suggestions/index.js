@@ -47,9 +47,8 @@ var SearchSuggestions = /** @class */ (function (_super) {
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
         return {
-            path: "ss",
-            format: constants_1.REQUEST_FORMAT.JSON,
-            params: __assign(__assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request), { products: this.requestOptions.params.request.products, queries: this.requestOptions.params.request.queries }),
+            path: "search_suggestions",
+            params: __assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request),
         };
     };
     SearchSuggestions.exporterName = function () {
@@ -161,8 +160,7 @@ var SearchSuggestions = /** @class */ (function (_super) {
     SearchSuggestions.defaultRequestOptions = function () {
         return __assign(__assign({}, constants_1.DEFAULT_REQUEST_CALLBACKS), { params: {
                 request: {
-                    products: 10,
-                    queries: 10,
+                    products: { limit: 10 },
                 },
             }, configuration: {
                 categorySeparator: "▸",
