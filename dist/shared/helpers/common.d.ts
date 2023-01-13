@@ -26,9 +26,5 @@ declare const formatSearchItem: (searchItem: any) => {
     displayString: any;
     queryString: any;
 };
-<<<<<<< HEAD
 declare const applyCurrencyConversion: (number: any) => number;
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion };
-=======
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, getLegacyEncodedQueryString };
->>>>>>> ss-v2
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion, getLegacyEncodedQueryString };
