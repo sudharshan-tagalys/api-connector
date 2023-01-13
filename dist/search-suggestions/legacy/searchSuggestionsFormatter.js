@@ -74,7 +74,7 @@ var LegacySearchSuggestionsFormatter = /** @class */ (function (_super) {
         });
     };
     LegacySearchSuggestionsFormatter.prototype.getEncodedQueryString = function (options) {
-        return (0, common_1.getEncodedQueryString)(__assign(__assign({}, options), { legacySearchSuggestions: true }));
+        return (0, common_1.getLegacyEncodedQueryString)(options);
     };
     return LegacySearchSuggestionsFormatter;
 }(suggestionsFormatter_1.default));

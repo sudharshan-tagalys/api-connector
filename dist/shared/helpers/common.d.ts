@@ -1,12 +1,19 @@
 declare const getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, legacySearchSuggestions }: {
+declare const getLegacyEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, }: {
     query?: string;
     queryFilters?: {};
     filters?: {};
     page?: any;
     sort?: any;
     except?: any[];
-    legacySearchSuggestions?: boolean;
+}) => string;
+declare const getEncodedQueryString: ({ query, queryFilters, filters, page, sort, except, }: {
+    query?: string;
+    queryFilters?: {};
+    filters?: {};
+    page?: any;
+    sort?: any;
+    except?: any[];
 }) => string;
 declare const getRequestParamsFromWindowLocation: () => {};
 declare const getRequestParamsFromQueryString: (queryString: any) => {};
@@ -19,4 +26,4 @@ declare const formatSearchItem: (searchItem: any) => {
     displayString: any;
     queryString: any;
 };
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches };
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, getLegacyEncodedQueryString };
