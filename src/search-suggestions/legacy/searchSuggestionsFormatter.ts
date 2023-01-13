@@ -1,4 +1,4 @@
-import { getEncodedQueryString } from "../../shared/helpers/common";
+import { getLegacyEncodedQueryString } from "../../shared/helpers/common";
 import SuggestionsFormatter from "../suggestionsFormatter"
 
 class LegacySearchSuggestionsFormatter extends SuggestionsFormatter{
@@ -45,10 +45,7 @@ class LegacySearchSuggestionsFormatter extends SuggestionsFormatter{
   }
 
   getEncodedQueryString(options) {
-    return getEncodedQueryString({
-      ...options,
-      legacySearchSuggestions: true
-    })
+    return getLegacyEncodedQueryString(options)
   }
 }
 export default LegacySearchSuggestionsFormatter
