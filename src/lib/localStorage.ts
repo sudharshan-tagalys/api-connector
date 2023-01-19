@@ -32,7 +32,7 @@ class LocalStorage{
   }
 
   getNamespacedKey(key) {
-    return `${key}:${configuration.getStoreId()}`
+    return `${key}:${configuration.getClientCode()}:${configuration.getStoreId()}`
   }
 }
 export default new LocalStorage()

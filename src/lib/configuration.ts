@@ -121,5 +121,9 @@ class Configuration{
   getCurrency() {
     return this.configuration.currency;
   }
+
+  getClientCode() {
+    return this.configuration.api.credentials.clientCode
+  }
 }
 export default new Configuration();
