@@ -29,12 +29,12 @@ class SearchSuggestions extends APIConnector {
   getRequestOptions() {
     let params = {
       q: this.requestOptions.params.query,
-      ...SearchSuggestions.defaultRequestOptions().params.request
+      ...SearchSuggestions.defaultRequestOptions().params
     }
-    if (this.requestOptions.params.request) {
+    if (this.requestOptions.params.hasOwnProperty('request')) {
       params = {
         ...params,
-        ...this.requestOptions.params.request
+        request: this.requestOptions.params.request
       }
     }
     return {
