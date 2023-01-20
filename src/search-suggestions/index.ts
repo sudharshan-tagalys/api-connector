@@ -27,12 +27,19 @@ class SearchSuggestions extends APIConnector {
   public responseState = this.getDefaultResponseState()
 
   getRequestOptions() {
+    let params = {
+      q: this.requestOptions.params.query,
+      ...SearchSuggestions.defaultRequestOptions().params.request
+    }
+    if (this.requestOptions.params.request) {
+      params = {
+        ...params,
+        ...this.requestOptions.params.request
+      }
+    }
     return {
       path: `search_suggestions`,
-      params: {
-        q: this.requestOptions.params.query,
-        ...SearchSuggestions.defaultRequestOptions().params.request,
-      },
+      params: params,
     };
   }
 
