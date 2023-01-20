@@ -33,7 +33,7 @@ var LocalStorage = /** @class */ (function () {
         return new Date().getTime();
     };
     LocalStorage.prototype.getNamespacedKey = function (key) {
-        return "".concat(key, ":").concat(configuration_1.default.getStoreId());
+        return "".concat(key, ":").concat(configuration_1.default.getClientCode(), ":").concat(configuration_1.default.getStoreId());
     };
     return LocalStorage;
 }());

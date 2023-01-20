@@ -26,6 +26,7 @@ declare class Configuration {
     getExchangeRate(): number;
     getFractionalDigits(): number;
     getCurrency(): any;
+    getClientCode(): any;
 }
 declare const _default: Configuration;
 export default _default;

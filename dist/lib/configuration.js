@@ -109,6 +109,9 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getCurrency = function () {
         return this.configuration.currency;
     };
+    Configuration.prototype.getClientCode = function () {
+        return this.configuration.api.credentials.clientCode;
+    };
     return Configuration;
 }());
 exports.default = new Configuration();
