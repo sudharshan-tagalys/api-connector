@@ -46,9 +46,13 @@ var SearchSuggestions = /** @class */ (function (_super) {
         return _this;
     }
     SearchSuggestions.prototype.getRequestOptions = function () {
+        var params = __assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request);
+        if (this.requestOptions.params.request) {
+            params = __assign(__assign({}, params), this.requestOptions.params.request);
+        }
         return {
             path: "search_suggestions",
-            params: __assign({ q: this.requestOptions.params.query }, SearchSuggestions.defaultRequestOptions().params.request),
+            params: params,
         };
     };
     SearchSuggestions.exporterName = function () {
