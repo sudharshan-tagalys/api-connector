@@ -11,8 +11,10 @@ declare class SearchSuggestions extends APIConnector {
     getRequestOptions(): {
         path: string;
         params: {
-            products: {
-                limit: number;
+            request: {
+                products: {
+                    limit: number;
+                };
             };
             q: any;
         };
