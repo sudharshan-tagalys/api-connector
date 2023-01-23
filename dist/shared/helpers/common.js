@@ -213,27 +213,45 @@ var applyCurrencyConversion = function (number) {
 };
 exports.applyCurrencyConversion = applyCurrencyConversion;
 var getProductPrices = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
-    var windowInstance, myShopifyDomain, storeFrontAPIAccessToken, response;
+    var windowInstance, myShopifyDomain, storeFrontAPIAccessToken, response, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 3, , 4]);
+                return [4 /*yield*/, loadTagalysHelperScript()];
+            case 1:
+                _a.sent();
                 windowInstance = window;
                 myShopifyDomain = configuration_1.default.getMyShopifyDomain();
                 storeFrontAPIAccessToken = configuration_1.default.getStoreFrontAPIAccessToken();
-                if (!windowInstance.TagalysPlatformHelpers) return [3 /*break*/, 2];
                 return [4 /*yield*/, windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
                         myShopifyDomain: myShopifyDomain,
                         storeFrontAPIAccessToken: storeFrontAPIAccessToken,
                         applyCurrencyConversion: applyCurrencyConversion
                     })];
-            case 1:
+            case 2:
                 response = _a.sent();
                 return [2 /*return*/, response];
-            case 2:
-                console.error("tagalys-platform-helpers script is not loaded yet...");
+            case 3:
+                error_1 = _a.sent();
+                console.error(error_1);
+                console.log("Issue in loading tagalys-platform-helpers");
                 return [2 /*return*/, {}];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
 exports.getProductPrices = getProductPrices;
+function loadTagalysHelperScript() {
+    var _window = window;
+    if (_window.TagalysPlatformHelpers)
+        return;
+    return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.src = "https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers.js";
+        script.onload = resolve;
+        script.onerror = reject;
+        document.body.appendChild(script);
+    });
+}
 //# sourceMappingURL=common.js.map
