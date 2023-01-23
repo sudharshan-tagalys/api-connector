@@ -15,7 +15,6 @@
         ss.helpers.updateQuery(evt.target.value)
       })
       function setConfiguration() {
-<<<<<<< HEAD
         Tagalys.setConfiguration({
           "api": {
             "serverUrl": "https://stage2-api.tagalys.com",
@@ -33,33 +32,6 @@
             "label": "$",
             "fractionalDigits": 2,
             "forceFractionalDigits": true
-=======
-        Tagalys.setConfiguration(
-          {
-            api: {
-              serverUrl: "https://stage2-api.tagalys.com",
-              credentials: {
-                clientCode: "E7303D10C6F8DD0C",
-                apiKey: "86d3ef13e6fa14950b1bca5ff2629fc5",
-              },
-              storeId: "64949387478",
-            },
-            platform: "Shopify",
-            locale: "en-US",
-            countryCode: "CV",
-            baseCountryCode: "CD",
-            currency: {
-              displayFormatter: "{{currencyLabel}}{{value}}",
-              code: "USD",
-              label: "$",
-              fractionalDigits: 2,
-              forceFractionalDigits: true,
-            },
-            platformVariables: {
-              storeFrontAPIAccessToken: "23e6e026ade9542b485efd644afaac7e",
-              myShopifyDomain: "kk-local-store-3.myshopify.com",
-            }
->>>>>>> multi-country-currency
           }
         });
       }

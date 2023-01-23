@@ -111,10 +111,9 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getCurrency = function () {
         return this.configuration.currency;
     };
-<<<<<<< HEAD
     Configuration.prototype.getClientCode = function () {
         return this.configuration.api.credentials.clientCode;
-=======
+    };
     Configuration.prototype.getStoreFrontAPIAccessToken = function () {
         return this.configuration.platformVariables.storeFrontAPIAccessToken;
     };
@@ -138,7 +137,6 @@ var Configuration = /** @class */ (function () {
             this.configuration.platformVariables &&
             this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
             this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true);
->>>>>>> multi-country-currency
     };
     return Configuration;
 }());

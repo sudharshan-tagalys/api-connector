@@ -36,11 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
-exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
-=======
-exports.getProductPrices = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
->>>>>>> multi-country-currency
+exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
 var configuration_1 = require("../../lib/configuration");
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
