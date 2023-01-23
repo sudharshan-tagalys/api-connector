@@ -26,7 +26,17 @@ declare class Configuration {
     getExchangeRate(): number;
     getFractionalDigits(): number;
     getCurrency(): any;
+<<<<<<< HEAD
     getClientCode(): any;
+=======
+    getStoreFrontAPIAccessToken(): any;
+    getMyShopifyDomain(): any;
+    isShopify(): boolean;
+    isMagento(): boolean;
+    isBigCommerce(): boolean;
+    isUsingBaseCountryCode(): boolean;
+    isUsingMultiCountryCurrency(): boolean;
+>>>>>>> multi-country-currency
 }
 declare const _default: Configuration;
 export default _default;

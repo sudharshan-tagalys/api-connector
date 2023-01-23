@@ -24,36 +24,8 @@ declare class SearchSuggestions extends APIConnector {
     formatResponse(response: any): any;
     updateQuery(query: any): void;
     setQuery(query: any): void;
-    getHelpersToExpose(response: any, formattedResponse: any): {
-        getRequestParamsFromQueryString: (queryString: any) => {};
-        getRequestParamsFromWindowLocation: () => {};
-        getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-        getProducts: () => any[];
-        getTextSuggestions: () => any[];
-        updateQuery: (...args: any[]) => void;
-        recordRecentSearch: (queryString: any) => void;
-        removeRecentSearch: (queryString: any) => void;
-        getRecentSearches: (limit: any) => any;
-        getPopularSearches: (limit: any) => Promise<unknown>;
-        getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
-        getEncodedQueryString: (queryParams: any) => string;
-        setQuery: (query: any) => void;
-    };
-    new(requestOptions: any): {
-        getRequestParamsFromQueryString: (queryString: any) => {};
-        getRequestParamsFromWindowLocation: () => {};
-        getURLEncodedQueryString: (baseUrl: any, params: any) => string;
-        getProducts: () => any[];
-        getTextSuggestions: () => any[];
-        updateQuery: (...args: any[]) => void;
-        recordRecentSearch: (queryString: any) => void;
-        removeRecentSearch: (queryString: any) => void;
-        getRecentSearches: (limit: any) => any;
-        getPopularSearches: (limit: any) => Promise<unknown>;
-        getRecentAndPopularSearches: (maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: {}) => Promise<unknown>;
-        getEncodedQueryString: (queryParams: any) => string;
-        setQuery: (query: any) => void;
-    };
+    getHelpersToExpose(response: any, formattedResponse: any): any;
+    new(requestOptions: any): any;
     getSearchesToDisplay(recentSearches: any, popularSearches: any, maxRecentSearches: any, maxTotalSearches: any): any;
     getRecentAndPopularSearches(maxRecentSearches: any, maxTotalSearches: any, callbackOptions?: any): Promise<unknown>;
     getPopularSearches(limit: any): Promise<unknown>;

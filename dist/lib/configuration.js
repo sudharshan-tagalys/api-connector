@@ -15,6 +15,8 @@ var Configuration = /** @class */ (function () {
                 storeId: configuration.api.storeId,
             },
             platform: configuration.platform,
+            countryCode: configuration.countryCode,
+            baseCountryCode: configuration.baseCountryCode,
             platformVariables: configuration.platformVariables,
             currency: {
                 code: configuration.currency.code,
@@ -109,8 +111,34 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getCurrency = function () {
         return this.configuration.currency;
     };
+<<<<<<< HEAD
     Configuration.prototype.getClientCode = function () {
         return this.configuration.api.credentials.clientCode;
+=======
+    Configuration.prototype.getStoreFrontAPIAccessToken = function () {
+        return this.configuration.platformVariables.storeFrontAPIAccessToken;
+    };
+    Configuration.prototype.getMyShopifyDomain = function () {
+        return this.configuration.platformVariables.myShopifyDomain;
+    };
+    Configuration.prototype.isShopify = function () {
+        return this.getPlatform() === "shopify";
+    };
+    Configuration.prototype.isMagento = function () {
+        return this.getPlatform() === "magento";
+    };
+    Configuration.prototype.isBigCommerce = function () {
+        return this.getPlatform() === "bigcommerce";
+    };
+    Configuration.prototype.isUsingBaseCountryCode = function () {
+        return this.configuration.countryCode === this.configuration.baseCountryCode;
+    };
+    Configuration.prototype.isUsingMultiCountryCurrency = function () {
+        return (this.isShopify() &&
+            this.configuration.platformVariables &&
+            this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
+            this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true);
+>>>>>>> multi-country-currency
     };
     return Configuration;
 }());
