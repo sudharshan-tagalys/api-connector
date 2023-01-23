@@ -187,19 +187,34 @@ const applyCurrencyConversion = (number) => {
 }
 
 const getProductPrices = async (productIds, countryCode) => {
-  const windowInstance: any = window
-  const myShopifyDomain = configuration.getMyShopifyDomain()
-  const storeFrontAPIAccessToken = configuration.getStoreFrontAPIAccessToken()
-  if (windowInstance.TagalysPlatformHelpers) {
+  try {
+    await loadTagalysHelperScript();
+    const windowInstance: any = window
+    const myShopifyDomain = configuration.getMyShopifyDomain()
+    const storeFrontAPIAccessToken = configuration.getStoreFrontAPIAccessToken()
     const response = await windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
       myShopifyDomain,
       storeFrontAPIAccessToken,
       applyCurrencyConversion
     })
     return response
+  }catch(error){
+    console.error(error);
+    console.log("Issue in loading tagalys-platform-helpers")
+    return {}
   }
-  console.error("tagalys-platform-helpers script is not loaded yet...")
-  return {}
+}
+
+function loadTagalysHelperScript() {
+  const _window: any = window
+  if(_window.TagalysPlatformHelpers) return
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = "https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers.js";
+    script.onload = resolve;
+    script.onerror = reject;
+    document.body.appendChild(script);
+  });
 }
 
 export {
