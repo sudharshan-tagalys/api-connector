@@ -9,6 +9,7 @@ export declare const APIConnector: {
     };
     getPlatformVariables: () => any;
     setQueryStringConfiguration: (config: any) => void;
+    isUsingMultiCountryCurrency: () => boolean;
 };
 declare const setConfiguration: (config: any) => void;
-export { setConfiguration, packageDetails };
+export { setConfiguration, packageDetails, };
