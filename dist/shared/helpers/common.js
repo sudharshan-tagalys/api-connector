@@ -251,9 +251,13 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, loadTagalysHelperScript()];
+                if (!productIds.length)
+                    return [2 /*return*/, {}];
+                _a.label = 1;
             case 1:
+                _a.trys.push([1, 4, , 5]);
+                return [4 /*yield*/, loadTagalysHelperScript()];
+            case 2:
                 _a.sent();
                 windowInstance = window;
                 myShopifyDomain = configuration_1.default.getMyShopifyDomain();
@@ -263,15 +267,15 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
                         storeFrontAPIAccessToken: storeFrontAPIAccessToken,
                         applyCurrencyConversion: applyCurrencyConversion
                     })];
-            case 2:
+            case 3:
                 response = _a.sent();
                 return [2 /*return*/, response];
-            case 3:
+            case 4:
                 error_1 = _a.sent();
                 console.error(error_1);
                 console.log("Issue in loading tagalys-platform-helpers");
                 return [2 /*return*/, {}];
-            case 4: return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
