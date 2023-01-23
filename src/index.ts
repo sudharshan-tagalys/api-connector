@@ -39,6 +39,7 @@ export const APIConnector = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency()
 }
 
 const setConfiguration = (config) => {
@@ -56,7 +57,7 @@ const setConfiguration = (config) => {
 
 export {
   setConfiguration,
-  packageDetails
+  packageDetails,
 }
 
 window.addEventListener("load", () => {
