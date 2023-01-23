@@ -235,6 +235,7 @@ const applyCurrencyConversion = (number) => {
 }
 
 const getProductPrices = async (productIds, countryCode) => {
+  if (!productIds.length) return {}
   try {
     await loadTagalysHelperScript();
     const windowInstance: any = window
