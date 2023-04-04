@@ -286,7 +286,7 @@ function loadTagalysHelperScript() {
         return;
     return new Promise(function (resolve, reject) {
         var script = document.createElement('script');
-        script.src = "https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers-v1.0.0.js";
+        script.src = "https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers-v1.1.0.js";
         script.onload = resolve;
         script.onerror = reject;
         document.body.appendChild(script);
