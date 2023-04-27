@@ -1,118 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Search and search suggestions</title>
-    <script src="./bundle.js" async></script>
-    <input id="search-input" placeholder="Search" name="search" />
-  </head>
-  <body>
-    <script>
-      document.getElementById("search-input").addEventListener("input", function(evt){
-        ss = initializeSearchSuggestions()
-        ss.helpers.updateQuery(evt.target.value)
-      })
-      function setConfiguration() {
-        Tagalys.setConfiguration({
-          "api": {
-            "serverUrl": "https://stage2-api.tagalys.com",
-            "credentials": {
-              "clientCode": "81618D5F21F1595B",
-              "apiKey": "08cf0a59c243ab57e842290c69fe507e"
-            },
-            "storeId": "64491782384"
-          },
-          "platform": "Shopify",
-          "locale": "en-US",
-          "currency": {
-            "displayFormatter": "{{currencyLabel}}{{value}}",
-            "code": "USD",
-            "label": "$",
-            "fractionalDigits": 2,
-            "forceFractionalDigits": true
-          }
-        });
-      }
 
-      function initializeSearchSuggestions() {
-        console.log("hey")
-        return Tagalys.APIConnector.SearchSuggestions.new({
-          params: {
-            request: {
-              products: 10, // number of suggested products to request
-              queries: 0, // number of suggested search queries to request
-            },
-          },
-          onSuccess: function (response, helpers) {
-            console.log("response for search suggestions", response);
-            // Called after a successful API call
-            // Use response to render the results - described below
-          },
-          onFailure: function (response, helpers) {
-            console.log("FFFFFAAAAAAAAAAILED")
-            // Called after a failed API call
-          },
-        });
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search and search suggestions</title>
+  <input id="search-input" placeholder="Search" name="search" />
+  <script src="./bundle.js" defer></script>
+</head>
 
-      function intializeSearchResults(params) {
-        return Tagalys.APIConnector.SearchResults.new({
-          params: params,
-          onSuccess: function (response, helpers) {
-            // Called after a successful API call
-            // Use response to render the results - described below
-            console.log("response for search results", response);
-            if (helpers.isValidQuery()) {
-              console.log("valid query");
-              logResponse(helpers);
-            }
-            if (helpers.isSpellingCorrectedQuery()) {
-              console.log(
-                "No products found for " +
-                  helpers.getOriginalQuery() +
-                  ", showing results for " +
-                  helpers.getQuery() +
-                  " instead."
-              );
-              logResponse(helpers);
-            }
-            if (helpers.isPartialResults()) {
-              console.log(
-                "No products exactly match " +
-                  helpers.getQuery() +
-                  ", showing results that partially match instead."
-              );
-              logResponse(helpers);
-            }
-            if (helpers.isRedirected()) {
-              console.log("Redirecting to", helpers.getRedirectURL());
-              // you can use the getRedirectURL and redirect like below example
-              // window.location.href = helpers.getRedirectURL()
-            }
-          },
-          onFailure: function (response, helpers) {
-            // Called after a failed API call
-          },
-        });
-      }
+<body>
+  <script>
 
-      document.addEventListener("tagalys:ready", function () {
-        // Initialise the connector with the configuration options
-        setConfiguration();
-        // Tagalys.APIConnector.PersonalizedRecommendations.call({
-        //   params: {
-        //     limit: 2,
-        //   },
-        //   onSuccess: function (response, helpers) {
-        //     console.log(response)
-        //   }
-        // })
-        ss = initializeSearchSuggestions()
-        ss.helpers.call()
+    // product meta
+    var meta = {
+      "page": {
+        "pageType": "product",
+        "resourceType": "product",
+        "resourceId": 8173384499440
+      }
+    }
+
+    // collection meta
+    var meta = {
+      "page": {
+        "pageType": "collection",
+        "resourceType": "collection",
+        "resourceId": 405701329136
+      }
+    }
+
+    function initializeSearchSuggestions() {
+      return Tagalys.APIConnector.SearchSuggestions.new({
+        params: {
+          query: "dress",
+        },
+        onSuccess: function (response, helpers) {
+          console.log("response for search suggestions", response);
+        },
+        onFailure: function (response, helpers) {
+          console.log("FFFFFAAAAAAAAAAILED")
+        },
       });
+    }
 
-    </script>
-  </body>
+    var setTagalysConfiguration = function () {
+      Tagalys.setConfiguration({
+        track: true,
+        analyticsStorageConsentProvided: () => {
+          return true
+        },
+        api: {
+          serverUrl: "https://stage2-api.tagalys.com",
+          credentials: {
+            clientCode: "1764BCF042C48910",
+            apiKey: "6201e9db3b4a772065bafe7c31ecf3a6",
+          },
+          storeId: "64491782384",
+        },
+        platform: "Shopify",
+        locale: "en-US",
+        currency: {
+          displayFormatter: "{{currencyLabel}}{{value}}",
+          code: "USD",
+          label: "$",
+          fractionalDigits: 2,
+          forceFractionalDigits: true,
+        },
+        countryCode: "US",
+      });
+    }
+
+    var onTagalysReady = function (callback) {
+      window.addEventListener("DOMContentLoaded", function () {
+        setTagalysConfiguration()
+        callback()
+      })
+    }
+
+    onTagalysReady(function () {
+      Tagalys.analytics.trackNonTagalysAPIEvents()
+      ss = initializeSearchSuggestions()
+      ss.helpers.call()
+    })
+
+  </script>
+</body>
+
 </html>
