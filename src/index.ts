@@ -64,8 +64,3 @@ export {
   setConfiguration,
   packageDetails,
 }
-
-window.addEventListener("load", () => {
-  const event = new Event("tagalys:ready")
-  document.dispatchEvent(event)
-})
