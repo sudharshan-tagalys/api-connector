@@ -1,4 +1,43 @@
+const PRODUCT_VIEW = "product_view"
+const ADD_TO_CART = "add_to_cart"
+const BUY = "buy"
+const LISTING_PAGE_VIEW = "listing_page_view"
+const USER_LOGIN = "user_login"
+
+export const DEFAULT_EVENT_TYPES = [
+  PRODUCT_VIEW,
+  ADD_TO_CART,
+  BUY,
+  LISTING_PAGE_VIEW,
+  USER_LOGIN
+]
+
 class PlatformAnalyticsTracker{
+  public eventTypes;
+  constructor(eventTypes){
+    this.eventTypes = eventTypes
+  }
+
+  canTrackProductView(){
+    return this.eventTypes.includes(PRODUCT_VIEW)
+  }
+
+  canTrackAddToCart(){
+    return this.eventTypes.includes(ADD_TO_CART)
+  }
+
+  canTrackBuy(){
+    return this.eventTypes.includes(BUY)
+  }
+
+  canTrackListingPageView(){
+    return this.eventTypes.includes(LISTING_PAGE_VIEW)
+  }
+
+  canTrackUserLogin(){
+    return this.eventTypes.includes(USER_LOGIN)
+  }
+
   track() {
     
   }

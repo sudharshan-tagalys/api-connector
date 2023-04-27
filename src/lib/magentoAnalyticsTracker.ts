@@ -15,7 +15,9 @@ class MagentoAnalyticsTracker extends PlatformAnalyticsTracker{
   }
 
   track() {
-    this.trackUser()
+    if(this.canTrackUserLogin()){
+      this.trackUser()
+    }
   }
 }
 

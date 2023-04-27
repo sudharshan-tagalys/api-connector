@@ -4,14 +4,14 @@ import MagentoAnalyticsTracker from './magentoAnalyticsTracker';
 import PlatformAnalyticsTracker from './platformAnalyticsTracker';
 
 
-const platformAnalyticsTracker = () => {
+const platformAnalyticsTracker = (eventTypes) => {
   if(configuration.getPlatform() === 'shopify'){
-    return new ShopifyAnalyticsTracker()
+    return new ShopifyAnalyticsTracker(eventTypes)
   }
   if (configuration.getPlatform() === 'magento') {
-    return new MagentoAnalyticsTracker()
+    return new MagentoAnalyticsTracker(eventTypes)
   }
-  return new PlatformAnalyticsTracker()
+  return new PlatformAnalyticsTracker(eventTypes)
 }
 
 export default {

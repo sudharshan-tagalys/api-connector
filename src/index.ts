@@ -10,13 +10,13 @@ import LegacySearchSuggestions from "./search-suggestions/legacy"
 import Search from './search'
 import ProductListingPage from "./product-lisiting-page"
 import queryStringManager from "./lib/queryStringManager";
-import ShopifyAnalyticsTracker from './lib/shopifyAnalyticsTracker'
 import PersonalizedRecommendations from "./personalized-recommendations"
 import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
 import analyticsTracker, { COOKIES } from "./lib/analyticsTracker";
 import packageDetails from "./packageDetails";
 import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
+import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 
 export const APIConnector = {
   ...Search.export(),
@@ -47,15 +47,20 @@ const setConfiguration = (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  const canTrackAnalytics = (config.track && config.analyticsStorageConsentProvided())
-  if (canTrackAnalytics) {
-    platformAnalyticsFactory.tracker().track()
-  }else{
-    cookie.batchDelete(Object.values(COOKIES))
+}
+
+const analytics = {
+  trackNonTagalysAPIEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
+    if (configuration.canTrackAnalytics()) {
+      platformAnalyticsFactory.tracker(eventTypesToTrack).track()
+    }else{
+      cookie.batchDelete(Object.values(COOKIES))
+    }
   }
 }
 
 export {
+  analytics,
   setConfiguration,
   packageDetails,
 }

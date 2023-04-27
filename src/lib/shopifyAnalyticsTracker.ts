@@ -1,7 +1,8 @@
 import analyticsTracker, { COOKIES } from './analyticsTracker'
 import cookie from "./cookie"
+import PlatformAnalyticsTracker from './platformAnalyticsTracker'
 
-class ShopifyAnalyticsTracker {
+class ShopifyAnalyticsTracker extends PlatformAnalyticsTracker {
   window(){
     const _window: any = window
     return _window
@@ -112,10 +113,18 @@ class ShopifyAnalyticsTracker {
   }
 
   track(){
-    this.trackProductIfExist()
-    this.trackCollectionIfExist()
-    this.trackCartTokenIfExist()
-    this.trackOrderIfExist()
+    if(this.canTrackProductView()){
+      this.trackProductIfExist()
+    }
+    if(this.canTrackListingPageView()){
+      this.trackCollectionIfExist()
+    }
+    if(this.canTrackAddToCart()){
+      this.trackCartTokenIfExist()
+    }
+    if(this.canTrackBuy()){
+      this.trackOrderIfExist()
+    }
   }
 }
 
