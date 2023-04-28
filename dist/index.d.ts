@@ -13,6 +13,6 @@ export declare const APIConnector: {
 };
 declare const setConfiguration: (config: any) => void;
 declare const Analytics: {
-    trackNonTagalysAPIEvents: (eventTypesToTrack?: string[]) => void;
+    trackPlatformEvents: (eventTypesToTrack?: string[]) => void;
 };
 export { Analytics, setConfiguration, packageDetails, };

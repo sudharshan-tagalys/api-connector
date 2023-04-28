@@ -42,7 +42,7 @@ var setConfiguration = function (config) {
 };
 exports.setConfiguration = setConfiguration;
 var Analytics = {
-    trackNonTagalysAPIEvents: function (eventTypesToTrack) {
+    trackPlatformEvents: function (eventTypesToTrack) {
         if (eventTypesToTrack === void 0) { eventTypesToTrack = platformAnalyticsTracker_1.DEFAULT_EVENT_TYPES; }
         if (configuration_1.default.canTrackAnalytics()) {
             platformAnalyticsFactory_1.default.tracker(eventTypesToTrack).track();
