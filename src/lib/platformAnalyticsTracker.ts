@@ -1,14 +1,14 @@
 const PRODUCT_VIEW = "product_view"
 const ADD_TO_CART = "add_to_cart"
 const BUY = "buy"
-const LISTING_PAGE_VIEW = "listing_page_view"
+const PRODUCT_LISTING_PAGE_VIEW = "product_listing_page_view"
 const USER_LOGIN = "user_login"
 
 export const DEFAULT_EVENT_TYPES = [
   PRODUCT_VIEW,
   ADD_TO_CART,
   BUY,
-  LISTING_PAGE_VIEW,
+  PRODUCT_LISTING_PAGE_VIEW,
   USER_LOGIN
 ]
 
@@ -31,7 +31,7 @@ class PlatformAnalyticsTracker{
   }
 
   canTrackListingPageView(){
-    return this.eventTypes.includes(LISTING_PAGE_VIEW)
+    return this.eventTypes.includes(PRODUCT_LISTING_PAGE_VIEW)
   }
 
   canTrackUserLogin(){
