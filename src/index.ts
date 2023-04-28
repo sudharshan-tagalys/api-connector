@@ -50,7 +50,7 @@ const setConfiguration = (config) => {
 }
 
 const Analytics = {
-  trackNonTagalysAPIEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
+  trackPlatformEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
     if (configuration.canTrackAnalytics()) {
       platformAnalyticsFactory.tracker(eventTypesToTrack).track()
     }else{
