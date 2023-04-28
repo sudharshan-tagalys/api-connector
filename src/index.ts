@@ -49,7 +49,7 @@ const setConfiguration = (config) => {
   })
 }
 
-const analytics = {
+const Analytics = {
   trackNonTagalysAPIEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
     if (configuration.canTrackAnalytics()) {
       platformAnalyticsFactory.tracker(eventTypesToTrack).track()
@@ -60,7 +60,7 @@ const analytics = {
 }
 
 export {
-  analytics,
+  Analytics,
   setConfiguration,
   packageDetails,
 }
