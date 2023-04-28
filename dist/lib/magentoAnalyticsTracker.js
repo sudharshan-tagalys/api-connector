@@ -34,7 +34,9 @@ var MagentoAnalyticsTracker = /** @class */ (function (_super) {
         }
     };
     MagentoAnalyticsTracker.prototype.track = function () {
-        this.trackUser();
+        if (this.canTrackUserLogin()) {
+            this.trackUser();
+        }
     };
     return MagentoAnalyticsTracker;
 }(platformAnalyticsTracker_1.default));

@@ -1,4 +1,5 @@
-declare class ShopifyAnalyticsTracker {
+import PlatformAnalyticsTracker from './platformAnalyticsTracker';
+declare class ShopifyAnalyticsTracker extends PlatformAnalyticsTracker {
     window(): any;
     getShopifyObject(): any;
     getCheckoutObject(): any;

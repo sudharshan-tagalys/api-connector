@@ -12,4 +12,7 @@ export declare const APIConnector: {
     isUsingMultiCountryCurrency: () => boolean;
 };
 declare const setConfiguration: (config: any) => void;
-export { setConfiguration, packageDetails, };
+declare const Analytics: {
+    trackNonTagalysAPIEvents: (eventTypesToTrack?: string[]) => void;
+};
+export { Analytics, setConfiguration, packageDetails, };

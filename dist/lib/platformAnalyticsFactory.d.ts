@@ -1,6 +1,5 @@
-import ShopifyAnalyticsTracker from './shopifyAnalyticsTracker';
 import PlatformAnalyticsTracker from './platformAnalyticsTracker';
 declare const _default: {
-    tracker: () => ShopifyAnalyticsTracker | PlatformAnalyticsTracker;
+    tracker: (eventTypes: any) => PlatformAnalyticsTracker;
 };
 export default _default;
