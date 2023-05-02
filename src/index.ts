@@ -56,6 +56,39 @@ const Analytics = {
     }else{
       cookie.batchDelete(Object.values(COOKIES))
     }
+  },
+  trackProductView: (identifier) => {
+    const eventDetails = {
+      sku: identifier,
+      action: 'view'
+    }
+    analyticsTracker.trackEvent('product_action', eventDetails)
+  },
+  trackAddToCart: (identifier, quantity) => {
+    const eventDetails = {
+      sku: identifier,
+      action: 'add_to_cart',
+      quantity: quantity
+    }
+    analyticsTracker.trackEvent('product_action', eventDetails)
+  },
+  trackOrders: (orderId, lineItems) => {
+    lineItems.forEach((lineItem)=>{
+      const thisOrderEventData = {
+        action: 'buy',
+        sku: lineItem.identifier,
+        quantity: lineItem.quantity,
+        order_id: orderId
+      }
+      analyticsTracker.trackEvent('product_action', thisOrderEventData);
+    })
+  },
+  trackProductListingPageView: (identifier) => {
+    const dataToTrack = {
+      pl_type: 'page-platform',
+      pl_details: { page_id: identifier }
+    }
+    analyticsTracker.trackEvent('product_list', dataToTrack)
   }
 }
 
