@@ -14,5 +14,9 @@ export declare const APIConnector: {
 declare const setConfiguration: (config: any) => void;
 declare const Analytics: {
     trackPlatformEvents: (eventTypesToTrack?: string[]) => void;
+    trackProductView: (identifier: any) => void;
+    trackAddToCart: (identifier: any, quantity: any) => void;
+    trackOrder: (orderId: any, lineItems: any) => void;
+    trackProductListingPageView: (identifier: any) => void;
 };
 export { Analytics, setConfiguration, packageDetails, };

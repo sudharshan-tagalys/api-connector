@@ -50,6 +50,39 @@ var Analytics = {
         else {
             cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
         }
+    },
+    trackProductView: function (identifier) {
+        var eventDetails = {
+            sku: identifier,
+            action: 'view'
+        };
+        analyticsTracker_1.default.trackEvent('product_action', eventDetails);
+    },
+    trackAddToCart: function (identifier, quantity) {
+        var eventDetails = {
+            sku: identifier,
+            action: 'add_to_cart',
+            quantity: quantity
+        };
+        analyticsTracker_1.default.trackEvent('product_action', eventDetails);
+    },
+    trackOrder: function (orderId, lineItems) {
+        lineItems.forEach(function (lineItem) {
+            var thisOrderEventData = {
+                action: 'buy',
+                sku: lineItem.identifier,
+                quantity: lineItem.quantity,
+                order_id: orderId
+            };
+            analyticsTracker_1.default.trackEvent('product_action', thisOrderEventData);
+        });
+    },
+    trackProductListingPageView: function (identifier) {
+        var dataToTrack = {
+            pl_type: 'page-platform',
+            pl_details: { page_id: identifier }
+        };
+        analyticsTracker_1.default.trackEvent('product_list', dataToTrack);
     }
 };
 exports.Analytics = Analytics;
