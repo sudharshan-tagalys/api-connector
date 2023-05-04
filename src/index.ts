@@ -72,7 +72,7 @@ const Analytics = {
     }
     analyticsTracker.trackEvent('product_action', eventDetails)
   },
-  trackOrders: (orderId, lineItems) => {
+  trackOrder: (orderId, lineItems) => {
     lineItems.forEach((lineItem)=>{
       const thisOrderEventData = {
         action: 'buy',
