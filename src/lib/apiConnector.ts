@@ -1,12 +1,13 @@
 import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
+import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
 import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
 import debounce from "./debounce";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { getProductPrices } from "../shared/helpers/common";
+import { getProductPrices, appendProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -82,7 +83,8 @@ class APIConnector{
 
   getHelpersToExpose(response, formattedResponse): any{
     return {
-      getProductPrices
+      getProductPrices,
+      appendProductPricesFromStoreFrontAPI
     }
   }
 
@@ -97,15 +99,30 @@ class APIConnector{
   onSuccessfulResponse(response){
     const analyticsData = this.extractAnalyticsData(response);
     const formattedResponse = this.formatResponse(response)
-    this.internalSuccessCallback(response, formattedResponse)
-    const helpers = this.getHelpersToExpose(response, formattedResponse)
-    this.requestOptions.onSuccess(formattedResponse, helpers);
+    const mutatedResponse = this.mutateResponse(formattedResponse)
+    this.internalSuccessCallback(response, mutatedResponse)
+    const helpers = this.getHelpersToExpose(response, mutatedResponse)
+    this.requestOptions.onSuccess(mutatedResponse, helpers);
     if (analyticsData && configuration.canTrackAnalytics()) {
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }
     if(!configuration.analyticsStorageConsentProvided()){
       cookie.batchDelete(Object.values(COOKIES))
     }
+  }
+
+  mutateResponse(formattedResponse){
+    if(configuration.isShopify()){
+      const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
+      if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
+        if(configuration.waitForStoreFrontAPI()){
+          shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
+        }else{
+          shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
+        }
+      }
+    }
+    return formattedResponse
   }
 
   extractAnalyticsData(response) {

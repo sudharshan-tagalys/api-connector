@@ -1,6 +1,7 @@
 import configuration from '../../lib/configuration';
 import localStorage from '../../lib/localStorage';
 import queryStringManager from '../../lib/queryStringManager';
+import ShopifyMultiCurrencyPriceMutator from './mutators/shopifyMultiCurrencyPriceMutator';
 
 const getURLEncodedQueryString = (baseUrl, params) => {
   return `${baseUrl}?${getEncodedQueryString(params)}`
@@ -254,6 +255,11 @@ const getProductPrices = async (productIds, countryCode) => {
   }
 }
 
+const appendProductPricesFromStoreFrontAPI = async (response) => {
+  const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
+  return await shopifyMultiCurrencyPriceMutator.mutate(response)
+}
+
 function loadTagalysHelperScript() {
   const _window: any = window
   if(_window.TagalysPlatformHelpers) return
@@ -279,5 +285,6 @@ export {
   sortRecentSeaches,
   applyCurrencyConversion,
   getLegacyEncodedQueryString,
-  getProductPrices
+  getProductPrices,
+  appendProductPricesFromStoreFrontAPI
 }
