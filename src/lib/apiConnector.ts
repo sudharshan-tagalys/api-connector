@@ -96,10 +96,10 @@ class APIConnector{
     return this.formatResponse(response)
   }
 
-  onSuccessfulResponse(response){
+  async onSuccessfulResponse(response){
     const analyticsData = this.extractAnalyticsData(response);
     const formattedResponse = this.formatResponse(response)
-    const mutatedResponse = this.mutateResponse(formattedResponse)
+    const mutatedResponse = await this.mutateResponse(formattedResponse)
     this.internalSuccessCallback(response, mutatedResponse)
     const helpers = this.getHelpersToExpose(response, mutatedResponse)
     this.requestOptions.onSuccess(mutatedResponse, helpers);
@@ -111,12 +111,12 @@ class APIConnector{
     }
   }
 
-  mutateResponse(formattedResponse){
+  async mutateResponse(formattedResponse){
     if(configuration.isShopify()){
       const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
       if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
         if(configuration.waitForStoreFrontAPI()){
-          shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
+          await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
         }else{
           shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
         }

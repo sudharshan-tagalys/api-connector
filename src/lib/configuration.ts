@@ -165,12 +165,13 @@ class Configuration{
     )
   }
 
-  waitForStoreFrontAPI(){
-    return (
-      this.isShopify() &&
-      this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI") &&
-      this.configuration.platformVariables.waitForStoreFrontAPI === true
-    )
+  waitForStoreFrontAPI() {
+    if (this.isShopify()) {
+      if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
+        return true
+      }
+      return (this.configuration.platformVariables.waitForStoreFrontAPI === true)
+    }
   }
 }
 export default new Configuration();

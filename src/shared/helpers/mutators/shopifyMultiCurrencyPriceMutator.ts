@@ -27,7 +27,7 @@ class ShopifyMultiCurrencyPriceMutator {
     product.price_varies = variantPrices.filter(unique).length > 1
     product.compare_at_price_varies = variantCompareAtPrices.filter(unique).length > 1
     product.price = priceInfo.price
-    product.compare_at_price = priceInfo.compare_at_price
+    product.compare_at_price = priceInfo.compareAtPrice
     product.price_min = this.getMin(variantPrices)
     product.price_max = this.getMax(variantPrices)
     product.compare_at_price_min = this.getMin(variantCompareAtPrices)
