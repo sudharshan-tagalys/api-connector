@@ -255,9 +255,13 @@ const getProductPrices = async (productIds, countryCode) => {
   }
 }
 
-const appendProductPricesFromStoreFrontAPI = async (response) => {
-  const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-  return await shopifyMultiCurrencyPriceMutator.mutate(response)
+const appendProductPricesFromStoreFrontAPI = async (response, callbacks) => {
+  try {
+    const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
+    callbacks.onSuccess(await shopifyMultiCurrencyPriceMutator.mutate(response))
+  } catch (error) {
+    callbacks.onFailure(error)
+  }
 }
 
 function loadTagalysHelperScript() {
