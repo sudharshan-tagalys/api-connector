@@ -36,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.appendProductPricesFromStoreFrontAPI = exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
 var configuration_1 = require("../../lib/configuration");
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
+var shopifyMultiCurrencyPriceMutator_1 = require("./mutators/shopifyMultiCurrencyPriceMutator");
 var getURLEncodedQueryString = function (baseUrl, params) {
     return "".concat(baseUrl, "?").concat(getEncodedQueryString(params));
 };
@@ -280,6 +281,27 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
     });
 }); };
 exports.getProductPrices = getProductPrices;
+var appendProductPricesFromStoreFrontAPI = function (response, callbacks) { return __awaiter(void 0, void 0, void 0, function () {
+    var shopifyMultiCurrencyPriceMutator, _a, _b, error_2;
+    return __generator(this, function (_c) {
+        switch (_c.label) {
+            case 0:
+                _c.trys.push([0, 2, , 3]);
+                shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
+                _b = (_a = callbacks).onSuccess;
+                return [4 /*yield*/, shopifyMultiCurrencyPriceMutator.mutate(response)];
+            case 1:
+                _b.apply(_a, [_c.sent()]);
+                return [3 /*break*/, 3];
+            case 2:
+                error_2 = _c.sent();
+                callbacks.onFailure(error_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
+exports.appendProductPricesFromStoreFrontAPI = appendProductPricesFromStoreFrontAPI;
 function loadTagalysHelperScript() {
     var _window = window;
     if (_window.TagalysPlatformHelpers)

@@ -9,7 +9,8 @@ declare class APIConnector {
     getHelpersToExpose(response: any, formattedResponse: any): any;
     internalSuccessCallback(response: any, formattedResponse: any): void;
     getFormattedResponse(response: any): any;
-    onSuccessfulResponse(response: any): void;
+    onSuccessfulResponse(response: any): Promise<void>;
+    mutateResponse(formattedResponse: any): Promise<any>;
     extractAnalyticsData(response: any): any;
     formatResponse(response: any): any;
     getRequestOptions(): {};

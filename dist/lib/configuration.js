@@ -129,6 +129,9 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.isBigCommerce = function () {
         return this.getPlatform() === "bigcommerce";
     };
+    Configuration.prototype.getCountryCode = function () {
+        return this.configuration.countryCode;
+    };
     Configuration.prototype.isUsingBaseCountryCode = function () {
         return this.configuration.countryCode === this.configuration.baseCountryCode;
     };
@@ -137,6 +140,14 @@ var Configuration = /** @class */ (function () {
             this.configuration.platformVariables &&
             this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
             this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true);
+    };
+    Configuration.prototype.waitForStoreFrontAPI = function () {
+        if (this.isShopify()) {
+            if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")) {
+                return true;
+            }
+            return (this.configuration.platformVariables.waitForStoreFrontAPI === true);
+        }
     };
     return Configuration;
 }());

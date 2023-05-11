@@ -28,4 +28,5 @@ declare const formatSearchItem: (searchItem: any) => {
 };
 declare const applyCurrencyConversion: (number: any) => number;
 declare const getProductPrices: (productIds: any, countryCode: any) => Promise<any>;
-export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion, getLegacyEncodedQueryString, getProductPrices };
+declare const appendProductPricesFromStoreFrontAPI: (response: any, callbacks: any) => Promise<void>;
+export { getURLEncodedQueryString, getEncodedQueryString, getRequestParamsFromQueryString, getRequestParamsFromWindowLocation, recordRecentSearch, removeRecentSearch, caseInsensitiveString, formatSearchItem, getRecentSearches, sortRecentSeaches, applyCurrencyConversion, getLegacyEncodedQueryString, getProductPrices, appendProductPricesFromStoreFrontAPI };
