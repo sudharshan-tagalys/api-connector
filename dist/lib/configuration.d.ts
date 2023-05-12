@@ -35,7 +35,7 @@ declare class Configuration {
     getCountryCode(): any;
     isUsingBaseCountryCode(): boolean;
     isUsingMultiCountryCurrency(): boolean;
-    waitForStoreFrontAPI(): boolean;
+    waitForStoreFrontAPI(): any;
 }
 declare const _default: Configuration;
 export default _default;

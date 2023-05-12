@@ -36,7 +36,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.appendProductPricesFromStoreFrontAPI = exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.updateProductPricesFromStoreFrontAPI = exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
 var configuration_1 = require("../../lib/configuration");
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
@@ -281,7 +281,7 @@ var getProductPrices = function (productIds, countryCode) { return __awaiter(voi
     });
 }); };
 exports.getProductPrices = getProductPrices;
-var appendProductPricesFromStoreFrontAPI = function (response, callbacks) { return __awaiter(void 0, void 0, void 0, function () {
+var updateProductPricesFromStoreFrontAPI = function (response, callbacks) { return __awaiter(void 0, void 0, void 0, function () {
     var shopifyMultiCurrencyPriceMutator, _a, _b, error_2;
     return __generator(this, function (_c) {
         switch (_c.label) {
@@ -301,7 +301,7 @@ var appendProductPricesFromStoreFrontAPI = function (response, callbacks) { retu
         }
     });
 }); };
-exports.appendProductPricesFromStoreFrontAPI = appendProductPricesFromStoreFrontAPI;
+exports.updateProductPricesFromStoreFrontAPI = updateProductPricesFromStoreFrontAPI;
 function loadTagalysHelperScript() {
     var _window = window;
     if (_window.TagalysPlatformHelpers)

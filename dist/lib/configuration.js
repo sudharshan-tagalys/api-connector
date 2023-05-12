@@ -146,8 +146,9 @@ var Configuration = /** @class */ (function () {
             if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")) {
                 return true;
             }
-            return (this.configuration.platformVariables.waitForStoreFrontAPI === true);
+            return this.configuration.platformVariables.waitForStoreFrontAPI;
         }
+        return false;
     };
     return Configuration;
 }());

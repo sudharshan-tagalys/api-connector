@@ -120,7 +120,7 @@ var APIConnector = /** @class */ (function () {
     APIConnector.prototype.getHelpersToExpose = function (response, formattedResponse) {
         return {
             getProductPrices: common_1.getProductPrices,
-            appendProductPricesFromStoreFrontAPI: common_1.appendProductPricesFromStoreFrontAPI
+            updateProductPricesFromStoreFrontAPI: common_1.updateProductPricesFromStoreFrontAPI
         };
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
@@ -159,9 +159,8 @@ var APIConnector = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!configuration_1.default.isShopify()) return [3 /*break*/, 3];
-                        shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
                         if (!(configuration_1.default.isUsingMultiCountryCurrency() && !configuration_1.default.isUsingBaseCountryCode())) return [3 /*break*/, 3];
+                        shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
                         if (!configuration_1.default.waitForStoreFrontAPI()) return [3 /*break*/, 2];
                         return [4 /*yield*/, shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)];
                     case 1:
