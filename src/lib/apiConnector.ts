@@ -7,7 +7,7 @@ import debounce from "./debounce";
 import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { getProductPrices, appendProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
+import { getProductPrices, updateProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -84,7 +84,7 @@ class APIConnector{
   getHelpersToExpose(response, formattedResponse): any{
     return {
       getProductPrices,
-      appendProductPricesFromStoreFrontAPI
+      updateProductPricesFromStoreFrontAPI
     }
   }
 
@@ -112,14 +112,12 @@ class APIConnector{
   }
 
   async mutateResponse(formattedResponse){
-    if(configuration.isShopify()){
+    if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
       const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-      if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
-        if(configuration.waitForStoreFrontAPI()){
-          await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
-        }else{
-          shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
-        }
+      if(configuration.waitForStoreFrontAPI()){
+        await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
+      }else{
+        shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
       }
     }
     return formattedResponse

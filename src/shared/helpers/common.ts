@@ -255,7 +255,7 @@ const getProductPrices = async (productIds, countryCode) => {
   }
 }
 
-const appendProductPricesFromStoreFrontAPI = async (response, callbacks) => {
+const updateProductPricesFromStoreFrontAPI = async (response, callbacks) => {
   try {
     const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
     callbacks.onSuccess(await shopifyMultiCurrencyPriceMutator.mutate(response))
@@ -290,5 +290,5 @@ export {
   applyCurrencyConversion,
   getLegacyEncodedQueryString,
   getProductPrices,
-  appendProductPricesFromStoreFrontAPI
+  updateProductPricesFromStoreFrontAPI
 }
