@@ -146,7 +146,7 @@ var APIConnector = /** @class */ (function () {
                             analyticsTracker_1.default.trackEvent(analyticsData.event_type, analyticsData.event_details);
                         }
                         if (!configuration_1.default.analyticsStorageConsentProvided()) {
-                            cookie_1.default.batchDelete(Object.values(analyticsTracker_1.COOKIES));
+                            cookie_1.default.batchDelete(analyticsTracker_1.COOKIES_TO_DELETE);
                         }
                         return [2 /*return*/];
                 }

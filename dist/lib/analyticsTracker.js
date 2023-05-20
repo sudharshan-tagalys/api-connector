@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.COOKIES = void 0;
+exports.COOKIES_TO_DELETE = exports.COOKIES = void 0;
 var api_1 = require("./api");
 var configuration_1 = require("./configuration");
 var cookie_1 = require("./cookie");
@@ -24,6 +24,14 @@ exports.COOKIES = {
     CART: 'cart',
     TA_LAST_ORDER_ID: '__ta_last_order_id'
 };
+exports.COOKIES_TO_DELETE = [
+    exports.COOKIES.TA_DEVICE,
+    exports.COOKIES.TA_VISIT,
+    exports.COOKIES.TA_USER_ID,
+    exports.COOKIES.TA_LAST_PA_TIME,
+    exports.COOKIES.TA_CART,
+    exports.COOKIES.TA_LAST_ORDER_ID
+];
 var TRACKER_VERSION = 3;
 var AnalyticsTracker = /** @class */ (function () {
     function AnalyticsTracker() {
@@ -71,7 +79,7 @@ var AnalyticsTracker = /** @class */ (function () {
             }
         }
         else {
-            cookie_1.default.batchDelete(Object.values(exports.COOKIES));
+            cookie_1.default.batchDelete(exports.COOKIES_TO_DELETE);
         }
     };
     AnalyticsTracker.prototype.getAnalyticsRapidEventSequence = function () {
