@@ -13,7 +13,7 @@ import queryStringManager from "./lib/queryStringManager";
 import PersonalizedRecommendations from "./personalized-recommendations"
 import Recommendations from "./recommendations"
 import cookie from "./lib/cookie";
-import analyticsTracker, { COOKIES, COOKIES_TO_DELETE } from "./lib/analyticsTracker";
+import analyticsTracker, { COOKIES, TAGALYS_ANALYTICS_COOKIES } from "./lib/analyticsTracker";
 import packageDetails from "./packageDetails";
 import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
@@ -54,7 +54,7 @@ const Analytics = {
     if (configuration.canTrackAnalytics()) {
       platformAnalyticsFactory.tracker(eventTypesToTrack).track()
     }else{
-      cookie.batchDelete(COOKIES_TO_DELETE)
+      cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
     }
   },
   trackProductView: (identifier) => {

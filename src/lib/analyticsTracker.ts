@@ -12,7 +12,7 @@ export const COOKIES = {
   TA_LAST_ORDER_ID: '__ta_last_order_id'
 }
 
-export const COOKIES_TO_DELETE = [
+export const TAGALYS_ANALYTICS_COOKIES = [
   COOKIES.TA_DEVICE,
   COOKIES.TA_VISIT,
   COOKIES.TA_USER_ID,
@@ -90,7 +90,7 @@ class AnalyticsTracker{
         })
       }
     } else {
-      cookie.batchDelete(COOKIES_TO_DELETE)
+      cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
     }
   }
 
