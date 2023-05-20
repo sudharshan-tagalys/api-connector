@@ -2,7 +2,7 @@ import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
 import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
-import AnalyticsTracker, { COOKIES } from "./analyticsTracker";
+import AnalyticsTracker, { COOKIES, COOKIES_TO_DELETE } from "./analyticsTracker";
 import debounce from "./debounce";
 import api from "./api"
 import configuration from "./configuration";
@@ -107,7 +107,7 @@ class APIConnector{
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }
     if(!configuration.analyticsStorageConsentProvided()){
-      cookie.batchDelete(Object.values(COOKIES))
+      cookie.batchDelete(COOKIES_TO_DELETE)
     }
   }
 

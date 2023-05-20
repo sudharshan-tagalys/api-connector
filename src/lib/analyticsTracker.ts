@@ -12,6 +12,15 @@ export const COOKIES = {
   TA_LAST_ORDER_ID: '__ta_last_order_id'
 }
 
+export const COOKIES_TO_DELETE = [
+  COOKIES.TA_DEVICE,
+  COOKIES.TA_VISIT,
+  COOKIES.TA_USER_ID,
+  COOKIES.TA_LAST_PA_TIME,
+  COOKIES.TA_CART,
+  COOKIES.TA_LAST_ORDER_ID
+]
+
 interface UserIdentification {
   device_id: string,
   visit_id: string,
@@ -81,7 +90,7 @@ class AnalyticsTracker{
         })
       }
     } else {
-      cookie.batchDelete(Object.values(COOKIES))
+      cookie.batchDelete(COOKIES_TO_DELETE)
     }
   }
 

@@ -69,6 +69,10 @@
           forceFractionalDigits: true,
         },
         countryCode: "US",
+        track: true,
+        analyticsStorageConsentProvided: function(){
+          return false
+        }
       });
     }
 
@@ -80,7 +84,6 @@
     }
 
     onTagalysReady(function () {
-      Tagalys.analytics.trackNonTagalysAPIEvents()
       ss = initializeSearchSuggestions()
       ss.helpers.call()
     })
