@@ -48,7 +48,7 @@ var Analytics = {
             platformAnalyticsFactory_1.default.tracker(eventTypesToTrack).track();
         }
         else {
-            cookie_1.default.batchDelete(analyticsTracker_1.COOKIES_TO_DELETE);
+            cookie_1.default.batchDelete(analyticsTracker_1.TAGALYS_ANALYTICS_COOKIES);
         }
     },
     trackProductView: function (identifier) {

@@ -7,7 +7,7 @@ export declare const COOKIES: {
     CART: string;
     TA_LAST_ORDER_ID: string;
 };
-export declare const COOKIES_TO_DELETE: string[];
+export declare const TAGALYS_ANALYTICS_COOKIES: string[];
 declare class AnalyticsTracker {
     private lastEventTimestamp;
     private analyticsRapidEventSequence;
