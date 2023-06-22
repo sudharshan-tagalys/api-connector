@@ -32,7 +32,7 @@ const goToNextPage = function () {
 }
 
 const loadPreviousPage = function () {
-  goToPreviousPage("load_previous_page")
+  this.paginationHelpers.goToPreviousPage("load_previous_page")
 }
 
 const goToPreviousPage = function(action = "go_to_previous_page"){
