@@ -29,13 +29,18 @@ var goToNextPage = function () {
         return reqState;
     });
 };
-var goToPreviousPage = function () {
+var loadPreviousPage = function () {
+    goToPreviousPage("load_previous_page");
+};
+var goToPreviousPage = function (action) {
+    if (action === void 0) { action = "go_to_previous_page"; }
     if (!this.paginationHelpers.hasPreviousPage()) {
         console.error("Min pages reached");
         return false;
     }
     this.setRequestState(function (reqState) {
         reqState.page -= 1;
+        reqState.action = action;
         return reqState;
     });
 };
@@ -47,11 +52,12 @@ var goToPage = function (page) {
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
-    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage;
+    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage, loadPreviousPage = _a.loadPreviousPage;
     return {
         goToNextPage: goToNextPage,
         goToPreviousPage: goToPreviousPage,
-        goToPage: goToPage
+        goToPage: goToPage,
+        loadPreviousPage: loadPreviousPage
     };
 };
 var getResponseHelpers = function () {
@@ -68,6 +74,7 @@ exports.default = {
     goToPreviousPage: goToPreviousPage,
     getCurrentPage: getCurrentPage,
     getTotalPages: getTotalPages,
+    loadPreviousPage: loadPreviousPage,
     hasNextPage: hasNextPage,
     hasPreviousPage: hasPreviousPage,
     goToPage: goToPage,

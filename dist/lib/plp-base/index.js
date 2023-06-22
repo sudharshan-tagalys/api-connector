@@ -71,6 +71,7 @@ var Base = /** @class */ (function (_super) {
         }
         this.setRequestParamsFromRequestState();
         callAPI && this.call(this.requestOptions);
+        this.requestState.action = "";
     };
     Base.prototype.getParamsFromRequestState = function () {
         return this.getRequestParams(this.requestState);
