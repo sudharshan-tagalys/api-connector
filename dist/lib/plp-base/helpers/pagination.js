@@ -30,7 +30,7 @@ var goToNextPage = function () {
     });
 };
 var loadPreviousPage = function () {
-    goToPreviousPage("load_previous_page");
+    this.paginationHelpers.goToPreviousPage("load_previous_page");
 };
 var goToPreviousPage = function (action) {
     if (action === void 0) { action = "go_to_previous_page"; }
