@@ -31,13 +31,18 @@ const goToNextPage = function () {
   })
 }
 
-const goToPreviousPage = function(){
+const loadPreviousPage = function () {
+  goToPreviousPage("load_previous_page")
+}
+
+const goToPreviousPage = function(action = "go_to_previous_page"){
   if (!this.paginationHelpers.hasPreviousPage()) {
     console.error("Min pages reached")
     return false
   }
   this.setRequestState((reqState) => {
     reqState.page -= 1
+    reqState.action = action
     return reqState
   })
 }
@@ -52,11 +57,12 @@ const goToPage = function (page) {
 // ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
-  const { goToNextPage, goToPreviousPage, goToPage } = this.paginationHelpers
+  const { goToNextPage, goToPreviousPage, goToPage, loadPreviousPage } = this.paginationHelpers
   return {
     goToNextPage,
     goToPreviousPage,
-    goToPage
+    goToPage,
+    loadPreviousPage
   }
 }
 
@@ -75,6 +81,7 @@ export default {
   goToPreviousPage,
   getCurrentPage,
   getTotalPages,
+  loadPreviousPage,
   hasNextPage,
   hasPreviousPage,
   goToPage,

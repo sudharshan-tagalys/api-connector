@@ -60,6 +60,7 @@ class Base extends APIConnector {
     }
     this.setRequestParamsFromRequestState()
     callAPI && this.call(this.requestOptions)
+    this.requestState.action = ""
   }
 
   getParamsFromRequestState(){
