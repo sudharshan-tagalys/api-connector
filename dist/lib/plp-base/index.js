@@ -63,9 +63,7 @@ var Base = /** @class */ (function (_super) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
     Base.prototype.postSuccessCallback = function (response, formattedResponse) {
-        this.setResponseState({
-            action: ""
-        });
+        this.requestState.action = "";
     };
     Base.prototype.setRequestState = function (mutationCallback, callAPI) {
         if (callAPI === void 0) { callAPI = true; }
