@@ -62,6 +62,11 @@ var Base = /** @class */ (function (_super) {
     Base.prototype.setResponseState = function (responseState) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
+    Base.prototype.postSuccessCallback = function (response, formattedResponse) {
+        this.setResponseState({
+            action: ""
+        });
+    };
     Base.prototype.setRequestState = function (mutationCallback, callAPI) {
         if (callAPI === void 0) { callAPI = true; }
         var newRequestState = mutationCallback(this.requestState);
@@ -71,7 +76,6 @@ var Base = /** @class */ (function (_super) {
         }
         this.setRequestParamsFromRequestState();
         callAPI && this.call(this.requestOptions);
-        this.requestState.action = "";
     };
     Base.prototype.getParamsFromRequestState = function () {
         return this.getRequestParams(this.requestState);

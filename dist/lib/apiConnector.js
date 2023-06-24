@@ -125,6 +125,8 @@ var APIConnector = /** @class */ (function () {
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
     };
+    APIConnector.prototype.postSuccessCallback = function (response, formattedResponse) {
+    };
     APIConnector.prototype.getFormattedResponse = function (response) {
         return this.formatResponse(response);
     };
@@ -148,6 +150,7 @@ var APIConnector = /** @class */ (function () {
                         if (!configuration_1.default.analyticsStorageConsentProvided()) {
                             cookie_1.default.batchDelete(analyticsTracker_1.TAGALYS_ANALYTICS_COOKIES);
                         }
+                        this.postSuccessCallback(response, mutatedResponse);
                         return [2 /*return*/];
                 }
             });

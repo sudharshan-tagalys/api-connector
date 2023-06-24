@@ -8,6 +8,7 @@ declare class APIConnector {
     formatRequestParams(params: any, format: any): any;
     getHelpersToExpose(response: any, formattedResponse: any): any;
     internalSuccessCallback(response: any, formattedResponse: any): void;
+    postSuccessCallback(response: any, formattedResponse: any): void;
     getFormattedResponse(response: any): any;
     onSuccessfulResponse(response: any): Promise<void>;
     mutateResponse(formattedResponse: any): Promise<any>;

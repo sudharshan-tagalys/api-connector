@@ -11,6 +11,7 @@ declare class Base extends APIConnector {
     constructor();
     bindThisToHelpers(helpers: object): {};
     setResponseState(responseState: any): void;
+    postSuccessCallback(response: any, formattedResponse: any): void;
     setRequestState(mutationCallback: any, callAPI?: boolean): void;
     getParamsFromRequestState(): any;
     getSortString(): any;
