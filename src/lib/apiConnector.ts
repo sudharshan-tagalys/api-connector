@@ -92,6 +92,9 @@ class APIConnector{
 
   }
 
+  postSuccessCallback(response, formattedResponse) {
+  }
+
   getFormattedResponse(response){
     return this.formatResponse(response)
   }
@@ -109,6 +112,7 @@ class APIConnector{
     if(!configuration.analyticsStorageConsentProvided()){
       cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
     }
+    this.postSuccessCallback(response, mutatedResponse)
   }
 
   async mutateResponse(formattedResponse){

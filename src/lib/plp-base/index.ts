@@ -52,6 +52,12 @@ class Base extends APIConnector {
     }
   }
 
+  postSuccessCallback(response, formattedResponse) {
+    this.setResponseState({
+      action: ""
+    })
+  }
+
   setRequestState(mutationCallback, callAPI = true){
     const newRequestState = mutationCallback(this.requestState);
     this.requestState = newRequestState;
@@ -60,7 +66,6 @@ class Base extends APIConnector {
     }
     this.setRequestParamsFromRequestState()
     callAPI && this.call(this.requestOptions)
-    this.requestState.action = ""
   }
 
   getParamsFromRequestState(){
