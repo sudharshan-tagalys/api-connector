@@ -53,9 +53,7 @@ class Base extends APIConnector {
   }
 
   postSuccessCallback(response, formattedResponse) {
-    this.setResponseState({
-      action: ""
-    })
+    this.requestState.action = ""
   }
 
   setRequestState(mutationCallback, callAPI = true){
