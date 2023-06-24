@@ -29,35 +29,31 @@ var goToNextPage = function () {
         return reqState;
     });
 };
-var loadPreviousPage = function () {
-    this.paginationHelpers.goToPreviousPage("load_previous_page");
-};
-var goToPreviousPage = function (action) {
-    if (action === void 0) { action = "go_to_previous_page"; }
+var goToPreviousPage = function () {
     if (!this.paginationHelpers.hasPreviousPage()) {
         console.error("Min pages reached");
         return false;
     }
     this.setRequestState(function (reqState) {
         reqState.page -= 1;
-        reqState.action = action;
         return reqState;
     });
 };
-var goToPage = function (page) {
+var goToPage = function (page, actionSrc) {
+    if (actionSrc === void 0) { actionSrc = "go_to_page"; }
     this.setRequestState(function (reqState) {
         reqState.page = page;
+        reqState.action = actionSrc;
         return reqState;
     });
 };
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
-    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage, loadPreviousPage = _a.loadPreviousPage;
+    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage;
     return {
         goToNextPage: goToNextPage,
         goToPreviousPage: goToPreviousPage,
         goToPage: goToPage,
-        loadPreviousPage: loadPreviousPage
     };
 };
 var getResponseHelpers = function () {
@@ -74,7 +70,6 @@ exports.default = {
     goToPreviousPage: goToPreviousPage,
     getCurrentPage: getCurrentPage,
     getTotalPages: getTotalPages,
-    loadPreviousPage: loadPreviousPage,
     hasNextPage: hasNextPage,
     hasPreviousPage: hasPreviousPage,
     goToPage: goToPage,

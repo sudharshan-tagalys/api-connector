@@ -1,17 +1,15 @@
 declare const _default: {
     goToNextPage: () => boolean;
-    goToPreviousPage: (action?: string) => boolean;
+    goToPreviousPage: () => boolean;
     getCurrentPage: () => any;
     getTotalPages: () => any;
-    loadPreviousPage: () => void;
     hasNextPage: () => boolean;
     hasPreviousPage: () => boolean;
-    goToPage: (page: any) => void;
+    goToPage: (page: any, actionSrc?: string) => void;
     getRequestHelpers: () => {
         goToNextPage: any;
         goToPreviousPage: any;
         goToPage: any;
-        loadPreviousPage: any;
     };
     getResponseHelpers: () => {
         getCurrentPage: any;
