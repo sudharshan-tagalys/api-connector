@@ -50,7 +50,8 @@ class ShopifyResponseFormatter extends Formatter {
       },
       variants: 'variants',
       available: 'available',
-      metafields: 'metafields'
+      metafields: 'metafields',
+      media: 'media'
     }
   }
 

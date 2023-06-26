@@ -17,6 +17,7 @@ import analyticsTracker, { COOKIES, TAGALYS_ANALYTICS_COOKIES } from "./lib/anal
 import packageDetails from "./packageDetails";
 import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
+import formatFactory from "./shared/helpers/formatters/formatFactory";
 
 export const APIConnector = {
   ...Search.export(),
@@ -92,8 +93,15 @@ const Analytics = {
   }
 }
 
+const responseFormatter = {
+  getFormatter: function () {
+    return formatFactory.responseFormatter()
+  }
+}
+
 export {
   Analytics,
   setConfiguration,
   packageDetails,
+  responseFormatter
 }
