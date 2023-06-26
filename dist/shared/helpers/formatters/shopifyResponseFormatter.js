@@ -69,7 +69,8 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             },
             variants: 'variants',
             available: 'available',
-            metafields: 'metafields'
+            metafields: 'metafields',
+            media: 'media'
         };
     };
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
