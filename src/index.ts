@@ -93,15 +93,13 @@ const Analytics = {
   }
 }
 
-const responseFormatter = {
-  getFormatter: function () {
-    return formatFactory.responseFormatter()
-  }
+const getResponseFormatter = () => {
+  return formatFactory.responseFormatter()
 }
 
 export {
   Analytics,
   setConfiguration,
   packageDetails,
-  responseFormatter
+  getResponseFormatter
 }
