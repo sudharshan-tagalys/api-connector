@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.responseFormatter = exports.packageDetails = exports.setConfiguration = exports.Analytics = exports.APIConnector = void 0;
+exports.getResponseFormatter = exports.packageDetails = exports.setConfiguration = exports.Analytics = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -87,10 +87,8 @@ var Analytics = {
     }
 };
 exports.Analytics = Analytics;
-var responseFormatter = {
-    getFormatter: function () {
-        return formatFactory_1.default.responseFormatter();
-    }
+var getResponseFormatter = function () {
+    return formatFactory_1.default.responseFormatter();
 };
-exports.responseFormatter = responseFormatter;
+exports.getResponseFormatter = getResponseFormatter;
 //# sourceMappingURL=index.js.map

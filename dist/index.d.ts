@@ -19,7 +19,5 @@ declare const Analytics: {
     trackOrder: (orderId: any, lineItems: any) => void;
     trackProductListingPageView: (identifier: any) => void;
 };
-declare const responseFormatter: {
-    getFormatter: () => import("./shared/helpers/formatters/formatter").default;
-};
-export { Analytics, setConfiguration, packageDetails, responseFormatter };
+declare const getResponseFormatter: () => import("./shared/helpers/formatters/formatter").default;
+export { Analytics, setConfiguration, packageDetails, getResponseFormatter };
