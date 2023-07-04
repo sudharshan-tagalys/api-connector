@@ -54,6 +54,10 @@ class Widget extends APIConnector {
       }
     }
   }
+
+  new(requestOptions){
+    return this.getHelpersToExpose(false, false)
+  }
 }
 
 export default Widget
