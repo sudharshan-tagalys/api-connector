@@ -19,5 +19,6 @@ declare class Widget extends APIConnector {
             pl_total: any;
         };
     };
+    new(requestOptions: any): {};
 }
 export default Widget;

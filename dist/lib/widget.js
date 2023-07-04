@@ -73,6 +73,9 @@ var Widget = /** @class */ (function (_super) {
             }
         };
     };
+    Widget.prototype.new = function (requestOptions) {
+        return this.getHelpersToExpose(false, false);
+    };
     return Widget;
 }(apiConnector_1.default));
 exports.default = Widget;
