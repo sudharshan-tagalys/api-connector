@@ -46,20 +46,22 @@ var ShopifyMultiCurrencyPriceMutator = /** @class */ (function () {
     }
     ShopifyMultiCurrencyPriceMutator.prototype.mutate = function (response) {
         return __awaiter(this, void 0, void 0, function () {
-            var productIds, prices;
+            var productIds, prices_1;
             var _this = this;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        if (!response.products) return [3 /*break*/, 2];
                         productIds = response.products.map(function (product) { return product.id; });
                         return [4 /*yield*/, (0, common_1.getProductPrices)(productIds, configuration_1.default.getCountryCode())];
                     case 1:
-                        prices = _a.sent();
+                        prices_1 = _a.sent();
                         response.products.forEach(function (product) {
-                            var hasPriceInfo = prices.hasOwnProperty(product.id);
-                            hasPriceInfo ? _this.mutateProductPrice(product, prices[product.id]) : _this.resetProductPrice(product);
+                            var hasPriceInfo = prices_1.hasOwnProperty(product.id);
+                            hasPriceInfo ? _this.mutateProductPrice(product, prices_1[product.id]) : _this.resetProductPrice(product);
                         });
-                        return [2 /*return*/, response];
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, response];
                 }
             });
         });
@@ -82,7 +84,10 @@ var ShopifyMultiCurrencyPriceMutator = /** @class */ (function () {
     };
     ShopifyMultiCurrencyPriceMutator.prototype.resetProductPrices = function (response) {
         var _this = this;
-        return response.products.forEach(function (product) { return _this.resetProductPrice(product); });
+        if (response.products) {
+            return response.products.forEach(function (product) { return _this.resetProductPrice(product); });
+        }
+        return response;
     };
     ShopifyMultiCurrencyPriceMutator.prototype.getVariantPrices = function (variants) {
         return variants.filter(function (variant) { return variant.price !== null; }).map(function (variant) { return variant.price; });
