@@ -8,12 +8,14 @@ const unique = (value, index, self) => {
 
 class ShopifyMultiCurrencyPriceMutator {
   async mutate(response) {
-    const productIds = response.products.map((product) => product.id)
-    const prices = await getProductPrices(productIds, configuration.getCountryCode())
-    response.products.forEach((product) => {
-      const hasPriceInfo = prices.hasOwnProperty(product.id)
-      hasPriceInfo ? this.mutateProductPrice(product, prices[product.id]) : this.resetProductPrice(product)
-    })
+    if(response.products){
+      const productIds = response.products.map((product) => product.id)
+      const prices = await getProductPrices(productIds, configuration.getCountryCode())
+      response.products.forEach((product) => {
+        const hasPriceInfo = prices.hasOwnProperty(product.id)
+        hasPriceInfo ? this.mutateProductPrice(product, prices[product.id]) : this.resetProductPrice(product)
+      })
+    }
     return response
   }
 
@@ -35,7 +37,10 @@ class ShopifyMultiCurrencyPriceMutator {
   }
 
   resetProductPrices(response) {
-    return response.products.forEach((product) => this.resetProductPrice(product))
+    if(response.products){
+      return response.products.forEach((product) => this.resetProductPrice(product))
+    }
+    return response
   }
 
   getVariantPrices(variants) {
