@@ -18,6 +18,17 @@ import packageDetails from "./packageDetails";
 import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
+import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
+import ShopifyAPI from './lib/api/shopifyApi'
+
+export const FALLBACK = true
+
+const ExportPLP = () => {
+  if(FALLBACK){
+    return ShopifyProductListingPage.export()
+  }
+  return ProductListingPage.export()
+}
 
 export const APIConnector = {
   ...Search.export(),
@@ -30,7 +41,8 @@ export const APIConnector = {
   ...Recommendations.export(),
   ...SearchSuggestions.export(),
   ...LegacySearchSuggestions.export(),
-  ...ProductListingPage.export(),
+  ...ExportPLP(),
+  // ...ProductListingPage.export(),
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
   cookie: {
@@ -97,9 +109,12 @@ const getResponseFormatter = () => {
   return formatFactory.responseFormatter()
 }
 
+const StoreFrontAPI = new ShopifyAPI().storefront
+
 export {
   Analytics,
   setConfiguration,
   packageDetails,
-  getResponseFormatter
+  getResponseFormatter,
+  StoreFrontAPI
 }

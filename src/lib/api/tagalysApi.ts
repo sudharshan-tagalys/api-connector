@@ -1,0 +1,33 @@
+import configuration from "../configuration";
+import API from '../api'
+
+class TagalysAPI{
+  call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
+    var xhr = new XMLHttpRequest();
+    xhr.open(method, this.url(path));
+    xhr.setRequestHeader('Content-Type', headers.contentType);
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        requestOptions.onSuccess(JSON.parse(xhr.responseText))
+      } else {
+        // Handling API failure callback
+        if(typeof(requestOptions.onFailure) != 'undefined') {
+          requestOptions.onFailure(JSON.parse(xhr.response));
+        }
+      }
+    };
+    xhr.onerror = function () {
+      if(typeof(requestOptions.onFailure) != 'undefined') {
+        requestOptions.onFailure(JSON.parse(xhr.response));
+      }
+    }
+    xhr.send(requestOptions.params);
+    return xhr
+  }
+
+  url(path): string{
+    return `${configuration.getServerUrl()}/v1/${path}`
+  }
+}
+
+export default TagalysAPI;

@@ -8,6 +8,11 @@ import api from "./api"
 import configuration from "./configuration";
 import cookie from "./cookie";
 import { getProductPrices, updateProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
+import ShopifyProductListingPage from '../product-lisiting-page/platform/shopify'
+import ShopifyAPI from "./api/shopifyApi";
+import TagalysAPI from "./api/tagalysApi";
+import { FALLBACK } from "..";
+
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -20,16 +25,23 @@ const DEFAULT_REQUEST_OPTIONS = {
 }
 
 
-class APIConnector{
+class APIConnector {
   public requestOptions: any;
   public currentRequestNumber: any = 0;
   public completedRequestNumber: any = 0;
   public responseFormatter: any;
 
-  setResponseFormatter(){
-    if(!this.responseFormatter){
+  setResponseFormatter() {
+    if (!this.responseFormatter) {
       this.responseFormatter = formatFactory.responseFormatter()
     }
+  }
+
+  apiClient() {
+    if (FALLBACK) {
+      return new ShopifyAPI()
+    }
+    return new TagalysAPI()
   }
 
   call(requestOptions = this.requestOptions) {
@@ -44,25 +56,25 @@ class APIConnector{
     };
     params = this.beforeAPICall(params)
 
-    api.call(method, path, {
+    this.apiClient().call(method, path, {
       params: this.formatRequestParams({
         ...params,
         identification: configuration.getApiIdentification()
       }, format),
       onSuccess: (response) => {
-        if(this.oldRequest(currentRequest)){
+        if (this.oldRequest(currentRequest)) {
           return
         }
         this.markRequestComplete(currentRequest)
         if (this.isFailureResponse(response)) {
           this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
         } else {
-          this.onSuccessfulResponse(response)
+          this.onSuccessfulResponse(response, params)
         }
       },
       onFailure: (response) => {
         console.log("falied")
-        if(this.oldRequest(currentRequest)){
+        if (this.oldRequest(currentRequest)) {
           return
         }
         this.markRequestComplete(currentRequest)
@@ -72,6 +84,9 @@ class APIConnector{
   }
 
   formatRequestParams(params, format) {
+    if (format === REQUEST_FORMAT.GRAPQHL) {
+      return params
+    }
     if (format === REQUEST_FORMAT.FORM_DATA) {
       return objectToFormData(params)
     }
@@ -81,27 +96,27 @@ class APIConnector{
     return params
   }
 
-  getHelpersToExpose(response, formattedResponse): any{
+  getHelpersToExpose(response, formattedResponse): any {
     return {
       getProductPrices,
       updateProductPricesFromStoreFrontAPI
     }
   }
 
-  internalSuccessCallback(response, formattedResponse){
+  internalSuccessCallback(response, formattedResponse) {
 
   }
 
   postSuccessCallback(response, formattedResponse) {
   }
 
-  getFormattedResponse(response){
+  getFormattedResponse(response) {
     return this.formatResponse(response)
   }
 
-  async onSuccessfulResponse(response){
+  async onSuccessfulResponse(response, params = {}) {
     const analyticsData = this.extractAnalyticsData(response);
-    const formattedResponse = this.formatResponse(response)
+    const formattedResponse = this.formatResponse(response, params)
     const mutatedResponse = await this.mutateResponse(formattedResponse)
     this.internalSuccessCallback(response, mutatedResponse)
     const helpers = this.getHelpersToExpose(response, mutatedResponse)
@@ -109,18 +124,18 @@ class APIConnector{
     if (analyticsData && configuration.canTrackAnalytics()) {
       AnalyticsTracker.trackEvent(analyticsData.event_type, analyticsData.event_details);
     }
-    if(!configuration.analyticsStorageConsentProvided()){
+    if (!configuration.analyticsStorageConsentProvided()) {
       cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
     }
     this.postSuccessCallback(response, mutatedResponse)
   }
 
-  async mutateResponse(formattedResponse){
-    if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
+  async mutateResponse(formattedResponse) {
+    if (configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()) {
       const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-      if(configuration.waitForStoreFrontAPI()){
+      if (configuration.waitForStoreFrontAPI()) {
         await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
-      }else{
+      } else {
         shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
       }
     }
@@ -131,7 +146,7 @@ class APIConnector{
     return response
   }
 
-  formatResponse(response){
+  formatResponse(response, params = {}) {
     return response
   }
 
@@ -139,47 +154,47 @@ class APIConnector{
     return {}
   }
 
-  isFailureResponse(response): boolean{
+  isFailureResponse(response): boolean {
     return false
   }
 
-  beforeAPICall(params){
+  beforeAPICall(params) {
     return this.requestOptions.beforeAPICall(params)
   }
 
-  static defaultRequestOptions(){
+  static defaultRequestOptions() {
     return {
       ...DEFAULT_REQUEST_CALLBACKS
     }
   }
 
-  new(requestOptions){
+  new(requestOptions) {
     return undefined
   }
 
-  static exporterName(){
+  static exporterName() {
     throw new Error("Should specify exporter name")
   }
 
-  updateRequestNumber(requestNumber){
+  updateRequestNumber(requestNumber) {
     this.currentRequestNumber = requestNumber
     return requestNumber
   }
 
-  markRequestComplete(requestNumber){
+  markRequestComplete(requestNumber) {
     this.completedRequestNumber = requestNumber
     return requestNumber
   }
 
-  oldRequest(requestNumber){
+  oldRequest(requestNumber) {
     return (requestNumber < this.completedRequestNumber)
   }
 
-  static export(){
-    let exporterKey:any = this.exporterName()
+  static export() {
+    let exporterKey: any = this.exporterName()
     return {
       [exporterKey]: {
-        call:  (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
+        call: (requestOptions, defaultRequestOptions = this.defaultRequestOptions()) => {
           const instance = new this()
           return instance.call({
             ...defaultRequestOptions,

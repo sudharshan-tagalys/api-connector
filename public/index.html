@@ -6,45 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Search and search suggestions</title>
-  <input id="search-input" placeholder="Search" name="search" />
   <script src="./bundle.js" defer></script>
 </head>
 
 <body>
   <script>
-
-    // product meta
-    var meta = {
-      "page": {
-        "pageType": "product",
-        "resourceType": "product",
-        "resourceId": 8173384499440
-      }
-    }
-
-    // collection meta
-    var meta = {
-      "page": {
-        "pageType": "collection",
-        "resourceType": "collection",
-        "resourceId": 405701329136
-      }
-    }
-
-    function initializeSearchSuggestions() {
-      return Tagalys.APIConnector.SearchSuggestions.new({
-        params: {
-          query: "dress",
-        },
-        onSuccess: function (response, helpers) {
-          console.log("response for search suggestions", response);
-        },
-        onFailure: function (response, helpers) {
-          console.log("FFFFFAAAAAAAAAAILED")
-        },
-      });
-    }
-
     var setTagalysConfiguration = function () {
       Tagalys.setConfiguration({
         track: true,
@@ -52,12 +18,12 @@
           return true
         },
         api: {
-          serverUrl: "https://stage2-api.tagalys.com",
+          serverUrl: "https://api-r1.tagalys.com",
           credentials: {
-            clientCode: "1764BCF042C48910",
-            apiKey: "6201e9db3b4a772065bafe7c31ecf3a6",
+            clientCode: "9E025C0C7B874897",
+            apiKey: "b0c1085ac35cd57b7e8323da9ef3a4b0",
           },
-          storeId: "64491782384",
+          storeId: "79335653678",
         },
         platform: "Shopify",
         locale: "en-US",
@@ -70,9 +36,10 @@
         },
         countryCode: "US",
         track: true,
-        analyticsStorageConsentProvided: function(){
+        analyticsStorageConsentProvided: function () {
           return false
-        }
+        },
+        fallback: true
       });
     }
 
@@ -84,8 +51,16 @@
     }
 
     onTagalysReady(function () {
-      ss = initializeSearchSuggestions()
-      ss.helpers.call()
+      window.productListingPageInstance = Tagalys.APIConnector.ProductListingPage.new({
+        params: {
+          product_listing_page_id: "452577591598", // listing page id for which the products to be returned
+        },
+        onSuccess: function (response, helpers) {
+          // Called after a successful API call
+          // Use response to render the results - described below
+        }
+      })
+      window.productListingPageInstance.helpers.call()
     })
 
   </script>

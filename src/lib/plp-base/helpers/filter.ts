@@ -92,6 +92,10 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
       reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     }
     reqState.page = 1
+    if(reqState.hasOwnProperty("startCursor")){
+      reqState.startCursor = null
+      reqState.endCursor = null
+    }
     return reqState
   }, callAPI)
 }
@@ -152,6 +156,10 @@ const clearFilter = function(filterId, filterItemIds = []){
       this.filterHelpers.clearFilter(filterId, [filterItemIds])
     }
     reqState.page = 1
+    if(reqState.hasOwnProperty("startCursor")){
+      reqState.startCursor = null
+      reqState.endCursor = null
+    }
     return reqState
   })
 }
@@ -160,6 +168,10 @@ const clearAllFilters = function(){
   this.setRequestState((reqState)=>{
     reqState.filters = {}
     reqState.page = 1
+    if(reqState.hasOwnProperty("startCursor")){
+      reqState.startCursor = null
+      reqState.endCursor = null
+    }
     return reqState
   })
 }

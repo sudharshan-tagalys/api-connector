@@ -1,4 +1,5 @@
 import Base from "../lib/plp-base"
+import ShopifyProductListingPage from "./platform/shopify";
 
 class ProductListingPage extends Base {
   // == HELPERS ==
@@ -77,6 +78,7 @@ class ProductListingPage extends Base {
   }
 
   formatResponse(response: any) {
+    console.log("RESPONSE >> TAGALYS API", response)
     return this.responseFormatter.productListingPage(response)
   }
 
@@ -87,6 +89,7 @@ class ProductListingPage extends Base {
     if(state.product_listing_page_id){
       params['product_listing_page_id'] = state.product_listing_page_id
     }
+    console.log("PARAMS", params)
     return params
   }
 
@@ -108,7 +111,6 @@ class ProductListingPage extends Base {
       }
     }
   }
-
 }
 
 export default ProductListingPage
