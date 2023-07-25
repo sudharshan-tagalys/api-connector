@@ -104,7 +104,8 @@ class ShopifyProductListingPage extends ProductListingPage {
       banners: [],
       variants: [],
       pageInfo: {},
-      filterInputs: {}
+      filterInputs: {},
+      filterRanges: {}
     }
   };
 
@@ -137,15 +138,19 @@ class ShopifyProductListingPage extends ProductListingPage {
 
   getFormattedFiltersAndInputs(filters) {
     let filterInputs = {}
+    let filterRanges = {}
     const formattedFilters = filters.map((filter) => {
+      const selectedFilter = this.requestState.filters[filter.id]
       if (filter.type === "LIST") {
-        const selectedFilter = this.requestState.filters[filter.id]
         return {
           id: filter.id,
           name: filter.label,
           type: "checkbox",
           items: filter.values.filter((filterItem)=>filterItem.count > 0).map((filterItem) => {
-            filterInputs[filterItem.id] = filterItem.input
+            filterInputs[filterItem.id] = {
+              type: "checkbox",
+              input: filterItem.input
+            }
             const isSelected = (selectedFilter && selectedFilter.includes(filterItem.id))
             return ({
               id: filterItem.id,
@@ -157,19 +162,33 @@ class ShopifyProductListingPage extends ProductListingPage {
         }
       } else {
         const parsedInput = JSON.parse(filter.values[0].input)
-        filterInputs[filter.id] = filter.values[0].input
-        return {
-          id: filter.values[0].input,
+        filterInputs[filter.id] = {
+          type: "range",
+          input: filter.values[0].input
+        }
+        let min = parsedInput.price.min
+        let max = parsedInput.price.max
+
+
+        let filterItem = {
+          id: filter.id,
           name: filter.label,
           type: "range",
-          min: parsedInput.price.min,
-          max: parsedInput.price.max,
+          display_format: "{{currency_label}}{{value}}",
+          min: min,
+          max: max
         }
+        if(selectedFilter && selectedFilter.hasOwnProperty('selected_min')){
+          filterItem['selected_min'] = selectedFilter.selected_min
+          filterItem['selected_max'] = selectedFilter.selected_max
+        }
+        return filterItem
       }
     })
     return {
       formattedFilters: formattedFilters,
-      filterInputs: filterInputs
+      filterInputs: filterInputs,
+      filterRanges: filterRanges
     }
   }
 
@@ -212,12 +231,23 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
 
     if (Object.keys(state.filters).length) {
+      console.log(state)
       let filtersToApply = []
       for (const [_, filterValues] of Object.entries(state.filters)) {
         const values: any = filterValues
-        values.forEach((filterValue) => {
-          filtersToApply.push(JSON.parse(this.responseState.filterInputs[filterValue]))
-        })
+        if(filterValues.hasOwnProperty("selected_min")){
+          filtersToApply.push({
+            price: {
+              min: filterValues['selected_min'],
+              max: filterValues['selected_max']
+            }
+          })
+        }else{
+          values.forEach((filterValue) => {
+            const selectedFilterValue = this.responseState.filterInputs[filterValue]
+            filtersToApply.push(JSON.parse(selectedFilterValue.input))
+          })
+        }
       }
       variables['filters'] = filtersToApply
     }
@@ -395,7 +425,8 @@ class ShopifyProductListingPage extends ProductListingPage {
       filters: filtersInfo.formattedFilters,
       sort_options: this.getSortOptions(),
       page_info: response.collection.products.pageInfo,
-      filterInputs: filtersInfo.filterInputs
+      filterInputs: filtersInfo.filterInputs,
+      filterRanges: filtersInfo.filterRanges,
     }
   }
 }
