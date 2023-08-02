@@ -1,6 +1,4 @@
 import Base from "../lib/plp-base"
-import ShopifyProductListingPage from "./platform/shopify";
-
 class ProductListingPage extends Base {
   // == HELPERS ==
   getDefaultRequestState = () => {

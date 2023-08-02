@@ -2,16 +2,11 @@ import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
 import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
-import AnalyticsTracker, { COOKIES, TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
-import debounce from "./debounce";
-import api from "./api"
+import AnalyticsTracker, { TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
 import configuration from "./configuration";
 import cookie from "./cookie";
 import { getProductPrices, updateProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
-import ShopifyProductListingPage from '../product-lisiting-page/platform/shopify'
-import ShopifyAPI from "./api/shopifyApi";
 import TagalysAPI from "./api/tagalysApi";
-import { FALLBACK } from "..";
 
 
 const DEFAULT_REQUEST_OPTIONS = {
@@ -37,10 +32,7 @@ class APIConnector {
     }
   }
 
-  apiClient() {
-    if (FALLBACK) {
-      return new ShopifyAPI()
-    }
+  apiClient() : any {
     return new TagalysAPI()
   }
 
