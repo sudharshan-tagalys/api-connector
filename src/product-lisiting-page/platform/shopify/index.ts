@@ -29,7 +29,7 @@ class ShopifyProductListingPage extends ProductListingPage {
       ],
       page: 1,
       perPage: 16,
-      sort: "trending",
+      sort: "manual",
       startCursor: null,
       endCursor: null
     }
