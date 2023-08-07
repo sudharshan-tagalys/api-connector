@@ -1,13 +1,15 @@
 import configuration from '../../../../lib/configuration';
 
+const MAX_LEVEL_SUPPORTED = 1
+
 class GraphqlQueryConstructor {
 
   private requestState
-  private responseState
+  private filterInputs
   
-  constructor(requestState, responseState) {
+  constructor(requestState, filterInputs) {
     this.requestState = requestState;
-    this.responseState = responseState
+    this.filterInputs = filterInputs
   }
 
   getSortVariables(){
@@ -63,8 +65,10 @@ class GraphqlQueryConstructor {
           })
         }else{
           values.forEach((filterValue) => {
-            const selectedFilterValue = this.responseState.filterInputs[filterValue]
-            filtersToApply.push(JSON.parse(selectedFilterValue.input))
+            if(this.filterInputs && this.filterInputs[filterValue]){
+              const selectedFilterValue = this.filterInputs[filterValue]
+              filtersToApply.push(JSON.parse(selectedFilterValue.input))
+            }
           })
         }
       }
@@ -73,12 +77,29 @@ class GraphqlQueryConstructor {
     return filterVariables
   }
 
+  getMetafieldVariables(){
+    if(!configuration.hasMetafields()){
+      return {
+        product_metafields: [],
+        variant_metafields: [],
+        collection_metafields: []
+      }
+    }
+    const metafieldsToQuery = configuration.getMetafields()
+    return {
+      product_metafields: (metafieldsToQuery.products || []),
+      variant_metafields: (metafieldsToQuery.product_variants || []),
+      collection_metafields: (metafieldsToQuery.collection_metafields || [])
+    }
+  }
+
   getQueryVariables(){
     return {
       id: `gid://shopify/Collection/${this.requestState.product_listing_page_id}`,
       ...this.getSortVariables(),
       ...this.getPaginationVariables(),
-      ...this.getFilterVariables()
+      ...this.getFilterVariables(),
+      ...this.getMetafieldVariables()
     }
   }
 
@@ -92,11 +113,15 @@ class GraphqlQueryConstructor {
         $after: String,
         $sortKey: ProductCollectionSortKeys,
         $reverse: Boolean,
-        $filters: [ProductFilter!]
+        $filters: [ProductFilter!],
+        $product_metafields: [HasMetafieldsIdentifier!]!,
+        $variant_metafields: [HasMetafieldsIdentifier!]!,
+        $collection_metafields: [HasMetafieldsIdentifier!]!
       ) @inContext(country: ${configuration.getCountryCode()}) {
         collection(id: $id){
           title
           handle
+          ${this.getCollectionMetafields()}
           products(first: $first, last: $last, after: $after, before: $before, sortKey: $sortKey, reverse: $reverse, filters: $filters) {
             filters {
               id
@@ -115,6 +140,7 @@ class GraphqlQueryConstructor {
                 ${this.getVariants()}
                 ${this.getImages()}
                 ${this.getMedia()}
+                ${this.getProductMetafields()}
               }
             }
             pageInfo{
@@ -239,7 +265,7 @@ class GraphqlQueryConstructor {
     `
   }
 
-  getVariants() {
+  getVariants(level = 0) {
     return `
       variants(first: 250){
         edges{
@@ -261,15 +287,120 @@ class GraphqlQueryConstructor {
             }
             compareAtPrice{
               amount
-            }      
+            }
+            ${this.getVariantMetafields(level)}
           }
         }
       }
     `
   }
 
-  getMetafields() {
+  getReferenceMetafields(level){
+    if(level >= MAX_LEVEL_SUPPORTED){
+      return ""
+    }
+    level += 1
     return `
+      reference{
+        ... on Product{
+          id
+          title
+        }
+        ... on Collection{
+          id
+          products(first: 10){
+            edges{
+              node{
+                ${this.getBasicDetails()}
+                ${this.getVariants(level)}
+                ${this.getImages()}
+                ${this.getMedia()}     
+                ${this.getProductMetafields(level)}           
+              }
+            }
+          }
+        }
+      }
+      references(first: 250){
+        edges{
+          node{
+            ... on Product{
+              ${this.getBasicDetails()}
+              ${this.getVariants(level)}
+              ${this.getImages()}
+              ${this.getMedia()}
+              ${this.getProductMetafields(level)}
+            }
+          }
+        }
+      }
+    `
+  }
+
+  getProductMetafields(level = 0) {
+    return `
+      metafields(identifiers: $product_metafields){
+        id
+        key
+        namespace
+        type
+        value
+        description
+        ${this.getReferenceMetafields(level)}
+      }
+    `
+  }
+
+  getVariantMetafields(level = 0){
+    return `
+      metafields(identifiers: $variant_metafields){
+        id
+        key
+        namespace
+        type
+        value
+        description
+        ${this.getReferenceMetafields(level)}
+      }
+    `
+  }
+
+  getCollectionMetafields(level = 0){
+    return `
+      metafields(identifiers: $collection_metafields){
+        id
+        key
+        namespace
+        type
+        value
+        description
+        ${this.getReferenceMetafields(level)}
+      }
+    `
+  }
+
+
+  static getFilterInputsQuery(){
+    return `
+    query Collection(
+      $id: ID,
+    ) {
+      collection(id: $id){
+        products(first: 1) {
+          filters {
+            id
+            label
+            type
+            values {
+              id
+              label
+              count
+              input
+            }
+          }
+        }
+      }
+    }
     `
   }
 }

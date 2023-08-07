@@ -174,5 +174,13 @@ class Configuration{
     }
     return false
   }
+
+  hasMetafields(){
+    return (this.configuration.hasOwnProperty('platformVariables') && this.configuration.platformVariables.hasOwnProperty('metafields'))
+  }
+
+  getMetafields(){
+    return this.configuration.platformVariables.metafields
+  }
 }
 export default new Configuration();

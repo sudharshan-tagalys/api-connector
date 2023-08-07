@@ -36,7 +36,7 @@ class APIConnector {
     return new TagalysAPI()
   }
 
-  call(requestOptions = this.requestOptions) {
+  async call(requestOptions = this.requestOptions) {
     const currentRequest = this.currentRequestNumber += 1;
     this.updateRequestNumber(currentRequest)
 

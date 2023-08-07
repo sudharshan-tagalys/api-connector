@@ -53,7 +53,8 @@ class Base extends APIConnector {
   }
 
   postSuccessCallback(response, formattedResponse) {
-    this.requestState.action = ""
+    // TODO: CHECK WITH SUDHARSHAN WHY WE ARE CLEARING
+    // this.requestState.action = ""
   }
 
   setRequestState(mutationCallback, callAPI = true){
@@ -68,6 +69,10 @@ class Base extends APIConnector {
 
   getParamsFromRequestState(){
     return this.getRequestParams(this.requestState)
+  }
+
+  resetPagination(requestState){
+    requestState.page = 1
   }
 
   getSortString(){
@@ -202,12 +207,20 @@ class Base extends APIConnector {
     return params
   }
 
+  getRequestParamsFromWindowLocation(){
+    getRequestParamsFromWindowLocation()
+  }
+
+  getRequestParamsFromQueryString(queryString){
+    getRequestParamsFromQueryString(queryString) 
+  }
+
   commonHelpers(){
     return {
       getEncodedQueryString: (requestParameters) => getEncodedQueryString(requestParameters),
       getEncodedQueryStringFromRequestState: (except = []) => this.getEncodedQueryString.call(this, except),
-      getRequestParamsFromQueryString: (queryString) => getRequestParamsFromQueryString(queryString),
-      getRequestParamsFromWindowLocation: () => getRequestParamsFromWindowLocation(),
+      getRequestParamsFromQueryString: (queryString) => this.getRequestParamsFromQueryString(queryString),
+      getRequestParamsFromWindowLocation: () => this.getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
       getRequestParams: () => this.requestState,
       getResponseState: () => this.responseState,

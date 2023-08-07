@@ -87,7 +87,7 @@ const getEncodedQueryString = ({
   return  `${queryStringManager.stringify(params)}`;
 }
 
-const getReplacementParam = (param) => {
+export const getReplacementParam = (param) => {
   const replacementParams = queryStringManager.getConfiguration()
   return replacementParams[param]
 }
@@ -126,7 +126,7 @@ const getQueryFilterQueryString = (filters) => {
   return filtersQueryStrings.join('~');
 }
 
-const getFilterQueryString = (filters) => {
+export const getFilterQueryString = (filters) => {
   let filtersQueryStrings = []
   Object.keys(filters).forEach(function(key){
     if(Array.isArray(filters[key]) && filters[key].length){
@@ -138,7 +138,7 @@ const getFilterQueryString = (filters) => {
   return filtersQueryStrings.join('~');
 }
 
-const getFiltersFromQueryString = (filterQueryString) => {
+export const getFiltersFromQueryString = (filterQueryString) => {
   const filtersFromQueryString = filterQueryString.split("~");
   let filters = {}
   filtersFromQueryString.forEach(filterFromQueryString => {

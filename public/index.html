@@ -39,7 +39,38 @@
         analyticsStorageConsentProvided: function () {
           return false
         },
-        fallback: true
+        platformVariables: {
+          metafields: {
+            products: [{
+              namespace: "custom",
+              key: "prod_ref"
+            },
+            {
+              namespace: "custom",
+              key: "prod_ref_list"
+            },
+            {
+              namespace: "custom",
+              key: "rating_list"
+            },{
+              namespace: "custom",
+              key: "rating"
+            },{
+              namespace: "custom",
+              key: "color_picker"
+            },{
+              namespace: "custom",
+              key: "multi"
+            },{
+              namespace: "custom",
+              key: "int"
+            },
+            {
+              namespace: "custom",
+              key: "col_ref"
+            }]
+          }
+        }
       });
     }
 
@@ -50,16 +81,30 @@
       })
     }
 
+    var params = {
+      product_listing_page_id: "453200904494", // listing page id for which the products to be returned
+    }
     onTagalysReady(function () {
       window.productListingPageInstance = Tagalys.APIConnector.ProductListingPage.new({
-        params: {
-          product_listing_page_id: "452577591598", // listing page id for which the products to be returned
+        params: params,
+        failover: function () {
+          return Tagalys.ShopifyAPIConnector.ProductListingPage.new({
+            params: params,
+            onSuccess: function (response, helpers) {
+              console.log("ON SUCESS OF SHOPIFY API >>> ", response)
+            },
+            onFailure: function () {
+
+            }
+          })
         },
         onSuccess: function (response, helpers) {
           // Called after a successful API call
           // Use response to render the results - described below
+          console.log("ON SUCESS OF TAGALYS API >>> ", response)
         }
       })
+      console.log(window.productListingPageInstance)
       window.productListingPageInstance.helpers.call()
     })
 

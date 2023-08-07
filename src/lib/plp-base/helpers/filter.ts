@@ -1,3 +1,9 @@
+export const FILTER_ACTIONS = {
+  APPLY_FILTER: "APPLY_FILTER",
+  CLEAR_FILTER: "CLEAR_FILTER",
+  CLEAR_ALL_FILTERS: "CLEAR_ALL_FILTERS"
+}
+
 import configuration from "../../configuration"
 
 const getFilters = function () {
@@ -70,6 +76,7 @@ const getAppliedFilters = function (flatten = false) {
 const setFilter = function (filterId, appliedFilter, callAPI = false) {
   const filter = this.filterHelpers.getFilterById(filterId)
   this.setRequestState((reqState) => {
+    reqState.action = FILTER_ACTIONS.APPLY_FILTER
     let filterItems = []
     if(filter.type === "range"){
       reqState.filters[filterId] = appliedFilter
@@ -91,11 +98,7 @@ const setFilter = function (filterId, appliedFilter, callAPI = false) {
       })
       reqState.filters[filterId] = filterItems.filter((appliedFilterItemId)=>!parentIdsToRemove.includes(appliedFilterItemId))
     }
-    reqState.page = 1
-    if(reqState.hasOwnProperty("startCursor")){
-      reqState.startCursor = null
-      reqState.endCursor = null
-    }
+    this.resetPagination(reqState)
     return reqState
   }, callAPI)
 }
@@ -155,23 +158,17 @@ const clearFilter = function(filterId, filterItemIds = []){
     }else{
       this.filterHelpers.clearFilter(filterId, [filterItemIds])
     }
-    reqState.page = 1
-    if(reqState.hasOwnProperty("startCursor")){
-      reqState.startCursor = null
-      reqState.endCursor = null
-    }
+    this.resetPagination(reqState)
+    reqState.action = FILTER_ACTIONS.CLEAR_FILTER
     return reqState
   })
 }
 
 const clearAllFilters = function(){
   this.setRequestState((reqState)=>{
+    reqState.action = FILTER_ACTIONS.CLEAR_ALL_FILTERS
     reqState.filters = {}
-    reqState.page = 1
-    if(reqState.hasOwnProperty("startCursor")){
-      reqState.startCursor = null
-      reqState.endCursor = null
-    }
+    this.resetPagination(reqState)
     return reqState
   })
 }

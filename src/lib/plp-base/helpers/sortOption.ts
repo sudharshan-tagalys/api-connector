@@ -1,7 +1,12 @@
+export const SORT_OPTION_ACTIONS = {
+  APPLY_SORT_OPTION: "APPLY_SORT_OPTION"
+}
+
 const applySortOption = function (sort) {
   this.setRequestState((reqState)=>{
+    reqState.action = SORT_OPTION_ACTIONS.APPLY_SORT_OPTION
     reqState.sort = sort
-    reqState.page = 1
+    this.resetPagination(reqState)
     return reqState
   })
 }

@@ -1,3 +1,12 @@
+import { Console } from "console"
+import { FILTER_ACTIONS } from "../../../../lib/plp-base/helpers/filter"
+import { SORT_OPTION_ACTIONS } from "../../../../lib/plp-base/helpers/sortOption"
+
+const ACTIONS = {
+  GO_TO_NEXT_PAGE: 'GO_TO_NEXT_PAGE',
+  GO_TO_PREVIOUS_PAGE: 'GO_TO_PREVIOUS_PAGE',
+}
+
 const hasNextPage = function () {
   return this.responseState.page_info.hasNextPage
 }
@@ -11,38 +20,49 @@ const hasPreviousPage = function () {
   return this.responseState.page_info.hasPreviousPage
 }
 
-const goToNextPage = function () {
+const goToNextPage = function (cursor) {
   if (!this.paginationHelpers.hasNextPage()) {
     console.error('Max pages reached')
     return false
   }
   this.setRequestState((reqState) => {
-    reqState.page += 1
+    reqState.action = ACTIONS.GO_TO_NEXT_PAGE
     reqState.startCursor = null
-    reqState.endCursor = this.responseState.page_info.endCursor
+    reqState.endCursor = cursor ? cursor : this.responseState.page_info.endCursor
     return reqState
   })
 }
 
-const goToPreviousPage = function(){
+const goToPreviousPage = function(cursor = null){
   if (!this.paginationHelpers.hasPreviousPage()) {
     console.error("Min pages reached")
     return false
   }
   this.setRequestState((reqState) => {
-    reqState.page -= 1
-    reqState.startCursor = this.responseState.page_info.startCursor
+    reqState.action = ACTIONS.GO_TO_PREVIOUS_PAGE
+    reqState.startCursor = (cursor ? cursor : this.responseState.page_info.startCursor)
     reqState.endCursor = null
     return reqState
   })
 }
 
+const canResetPagination = function(){
+  const actionsToResetPagination = [
+    FILTER_ACTIONS.APPLY_FILTER,
+    FILTER_ACTIONS.CLEAR_FILTER,
+    FILTER_ACTIONS.CLEAR_ALL_FILTERS,
+    SORT_OPTION_ACTIONS.APPLY_SORT_OPTION
+  ]
+  return actionsToResetPagination.includes(this.requestState.action)
+}
+
 // ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
-  const { goToNextPage, goToPreviousPage } = this.paginationHelpers
+  const { goToNextPage, goToPreviousPage, canResetPagination } = this.paginationHelpers
   return {
     goToNextPage,
+    canResetPagination,
     goToPreviousPage,
   }
 }
@@ -62,6 +82,7 @@ export default {
   hasNextPage,
   hasPreviousPage,
   getRequestHelpers,
+  canResetPagination,
   getResponseHelpers,
   getCurrentPage
 }

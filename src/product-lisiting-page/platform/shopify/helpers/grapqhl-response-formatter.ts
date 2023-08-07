@@ -27,11 +27,11 @@ class GraphqlResponseFormatter{
         "label": "Newest",
       },
       {
-        "id": "sale_price-asc",
+        "id": "price-asc",
         "label": "Price Ascending",
       },
       {
-        "id": "sale_price-desc",
+        "id": "price-desc",
         "label": "Price Descending",
       }
     ]
@@ -50,7 +50,7 @@ class GraphqlResponseFormatter{
       filters: this.formatFilters(this.shopifyResponse.collection.products.filters),
       sort_options: this.getSortOptions(),
       page_info: this.shopifyResponse.collection.products.pageInfo,
-      filterInputs: this.getFilterInputs(this.shopifyResponse.collection.products.filters),
+      filter_inputs: GraphqlResponseFormatter.getFilterInputs(this.shopifyResponse.collection.products.filters),
       // filterRanges: filtersInfo.filterRanges,
     }
   }
@@ -77,7 +77,6 @@ class GraphqlResponseFormatter{
   formatProduct(product) {
     //TODO:// consider currency and display formatting for price related fields
     const imagesToVariantIdsMap = this.getImagesToVariantIdsMap(product.variants)
-    console.log(imagesToVariantIdsMap)
     const variants = this.formatVariants(product.variants)
     const priceVaries = (product.priceRange.minVariantPrice.amount != product.priceRange.maxVariantPrice.amount)
     const compareAtPriceVaries = (product.compareAtPriceRange.minVariantPrice.amount != product.compareAtPriceRange.maxVariantPrice.amount)
@@ -143,7 +142,7 @@ class GraphqlResponseFormatter{
         title: variantEdge.node.title,
         sku: variantEdge.node.sku,
         price: applyCurrencyConversion(variantEdge.node.price.amount),
-        compare_at_price: applyCurrencyConversion(variantEdge.node.compareAtPrice.amount),
+        compare_at_price: variantEdge.node.compareAtPrice ? applyCurrencyConversion(variantEdge.node.compareAtPrice.amount) : null,
         available: variantEdge.node.availableForSale,
         position: index + 1,
         ...this.formatSelectedVariantOptions(variantEdge.node),
@@ -179,7 +178,7 @@ class GraphqlResponseFormatter{
           name: filter.label,
           type: "checkbox",
           items: filter.values.map((filterItem) => {
-            const selected = (selectedFilter && selectedFilter.includes(filterItem.id))
+            const selected = (selectedFilter && selectedFilter.includes(filterItem.id)) ? true : false
             return ({
               id: filterItem.id,
               name: filterItem.label,
@@ -209,7 +208,7 @@ class GraphqlResponseFormatter{
     })
   }
 
-  getFilterInputs(filters){
+  static getFilterInputs(filters){
     let filterInputs = {}
     filters.forEach((filter) => {
       const isCheckboxFilter = (filter.type === FILTER_TYPES.LIST || filter.type === FILTER_TYPES.BOOLEAN)

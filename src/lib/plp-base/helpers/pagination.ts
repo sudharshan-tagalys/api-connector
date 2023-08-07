@@ -1,3 +1,12 @@
+import { FILTER_ACTIONS } from "./filter"
+import { SORT_OPTION_ACTIONS } from "./sortOption"
+
+export const PAGINATION_ACTIONS = {
+  GO_TO_NEXT_PAGE: 'GO_TO_NEXT_PAGE',
+  GO_TO_PREVIOUS_PAGE: 'GO_TO_PREVIOUS_PAGE',
+  GO_TO_PAGE: 'GO_TO_PAGE'
+}
+
 const getCurrentPage = function(){
   return this.responseState.page
 }
@@ -27,6 +36,7 @@ const goToNextPage = function () {
   }
   this.setRequestState((reqState) => {
     reqState.page += 1
+    reqState.action = PAGINATION_ACTIONS.GO_TO_NEXT_PAGE
     return reqState
   })
 }
@@ -38,11 +48,12 @@ const goToPreviousPage = function(){
   }
   this.setRequestState((reqState) => {
     reqState.page -= 1
+    reqState.action = PAGINATION_ACTIONS.GO_TO_PREVIOUS_PAGE
     return reqState
   })
 }
 
-const goToPage = function (page, actionSrc = "go_to_page") {
+const goToPage = function (page, actionSrc = PAGINATION_ACTIONS.GO_TO_PAGE) {
   this.setRequestState((reqState) => {
     reqState.page = page
     reqState.action = actionSrc
@@ -50,11 +61,22 @@ const goToPage = function (page, actionSrc = "go_to_page") {
   })
 }
 
+const canResetPagination = function(){
+  const actionsToResetPagination = [
+    FILTER_ACTIONS.APPLY_FILTER,
+    FILTER_ACTIONS.CLEAR_FILTER,
+    FILTER_ACTIONS.CLEAR_ALL_FILTERS,
+    SORT_OPTION_ACTIONS.APPLY_SORT_OPTION
+  ]
+  return actionsToResetPagination.includes(this.requestState.action)
+}
+
 // ==== PUBLICLY EXPOSED HELPERS ====
 
 const getRequestHelpers = function(){
-  const { goToNextPage, goToPreviousPage, goToPage } = this.paginationHelpers
+  const { goToNextPage, goToPreviousPage, goToPage, canResetPagination } = this.paginationHelpers
   return {
+    canResetPagination,
     goToNextPage,
     goToPreviousPage,
     goToPage,
@@ -80,5 +102,6 @@ export default {
   hasPreviousPage,
   goToPage,
   getRequestHelpers,
-  getResponseHelpers
+  getResponseHelpers,
+  canResetPagination
 }

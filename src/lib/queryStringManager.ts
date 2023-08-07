@@ -5,6 +5,8 @@ const DEFAULT_QUERY_STRING_CONFIGURATION = {
   queryFilterParameter: 'qf',
   filterParameter: 'f',
   pageParameter: 'page',
+  startCursorParameter: 'startCursor',
+  endCursorParameter: 'endCursor',
   sortParameter: 'sort'
 }
 

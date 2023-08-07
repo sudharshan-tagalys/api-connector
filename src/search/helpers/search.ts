@@ -1,5 +1,10 @@
+const ACTIONS = {
+  SET_QUERY: "SET_QUERY"
+}
+
 const setQuery = function(query){
   this.setRequestState((reqState)=>{
+    reqState.action = ACTIONS.SET_QUERY
     reqState.query = query
     return reqState
   })

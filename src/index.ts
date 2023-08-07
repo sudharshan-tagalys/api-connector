@@ -21,7 +21,17 @@ import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
 
 export const ShopifyAPIConnector = {
-  ...ShopifyProductListingPage.export()
+  ...ShopifyProductListingPage.export(),
+  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
+  getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
+  cookie: {
+    get: (cname) => cookie.get(cname),
+    set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
+    delete: (cname) => cookie.delete(cname)
+  },
+  getPlatformVariables: () => configuration.getPlatformVariables(),
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency()
 }
 
 export const APIConnector = {
