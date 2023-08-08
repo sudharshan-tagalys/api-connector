@@ -19,6 +19,7 @@ import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
+import failover from "./shared/helpers/failover";
 
 export const ShopifyAPIConnector = {
   ...ShopifyProductListingPage.export(),
@@ -31,7 +32,8 @@ export const ShopifyAPIConnector = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency()
+  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
+  inFailoverMode: () => failover.inFailoverMode()
 }
 
 export const APIConnector = {
@@ -55,7 +57,8 @@ export const APIConnector = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency()
+  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
+  inFailoverMode: () => failover.inFailoverMode()
 }
 
 const setConfiguration = (config) => {

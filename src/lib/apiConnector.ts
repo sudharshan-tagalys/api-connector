@@ -7,6 +7,7 @@ import configuration from "./configuration";
 import cookie from "./cookie";
 import { getProductPrices, updateProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
 import TagalysAPI from "./api/tagalysApi";
+import failover from '../shared/helpers/failover'
 
 
 const DEFAULT_REQUEST_OPTIONS = {
@@ -193,7 +194,10 @@ class APIConnector {
             ...requestOptions
           })
         },
-        new: (requestOptions = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
+        new: (requestOptions : any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
+          if(failover.inFailoverMode() && requestOptions.hasOwnProperty('failover')){
+            return requestOptions.failover()
+          }
           const instance = new this()
           const helpers = instance.new({
             ...defaultRequestOptions,

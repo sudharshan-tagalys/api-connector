@@ -1,6 +1,7 @@
 import configuration from "../configuration";
-import API from '../api'
+import localStorage from "../localStorage";
 
+const TAGALYS_API_STATUS = "TAGALYS_API_STATUS"
 class TagalysAPI{
   call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
     var xhr = new XMLHttpRequest();
@@ -11,11 +12,12 @@ class TagalysAPI{
         requestOptions.onSuccess(JSON.parse(xhr.responseText))
       } else {
         // Handling API failure callback
+        this.setAsOffline()
         if(typeof(requestOptions.onFailure) != 'undefined') {
           requestOptions.onFailure(JSON.parse(xhr.response));
         }
       }
-    };
+    }.bind(this);
     xhr.onerror = function () {
       if(typeof(requestOptions.onFailure) != 'undefined') {
         requestOptions.onFailure(JSON.parse(xhr.response));
@@ -27,6 +29,18 @@ class TagalysAPI{
 
   url(path): string{
     return `${configuration.getServerUrl()}/v1/${path}`
+  }
+
+  isOnline(){
+    return (localStorage.getItem(TAGALYS_API_STATUS) !== "offline")
+  }
+
+  setAsOffline(){
+    localStorage.setValue(TAGALYS_API_STATUS, "offline", 3600000)
+  }
+
+  setAsOnline(){
+    localStorage.removeItem(TAGALYS_API_STATUS)
   }
 }
 
