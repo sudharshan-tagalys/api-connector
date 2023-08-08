@@ -49,13 +49,23 @@ const setConfiguration = (config) => {
   })
 }
 
+const trackPlatformEvents = function(eventTypesToTrack){
+  if (configuration.canTrackAnalytics()) {
+    platformAnalyticsFactory.tracker(eventTypesToTrack).track()
+  }else{
+    cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
+  }
+}
+
 const Analytics = {
   trackPlatformEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
-    if (configuration.canTrackAnalytics()) {
-      platformAnalyticsFactory.tracker(eventTypesToTrack).track()
-    }else{
-      cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
-    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', function(){
+        trackPlatformEvents(eventTypesToTrack)
+      });
+    } else {
+      trackPlatformEvents(eventTypesToTrack)
+    }    
   },
   trackProductView: (identifier) => {
     const eventDetails = {
