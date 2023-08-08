@@ -41,14 +41,24 @@ var setConfiguration = function (config) {
     configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
 };
 exports.setConfiguration = setConfiguration;
+var trackPlatformEvents = function (eventTypesToTrack) {
+    if (configuration_1.default.canTrackAnalytics()) {
+        platformAnalyticsFactory_1.default.tracker(eventTypesToTrack).track();
+    }
+    else {
+        cookie_1.default.batchDelete(analyticsTracker_1.TAGALYS_ANALYTICS_COOKIES);
+    }
+};
 var Analytics = {
     trackPlatformEvents: function (eventTypesToTrack) {
         if (eventTypesToTrack === void 0) { eventTypesToTrack = platformAnalyticsTracker_1.DEFAULT_EVENT_TYPES; }
-        if (configuration_1.default.canTrackAnalytics()) {
-            platformAnalyticsFactory_1.default.tracker(eventTypesToTrack).track();
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function () {
+                trackPlatformEvents(eventTypesToTrack);
+            });
         }
         else {
-            cookie_1.default.batchDelete(analyticsTracker_1.TAGALYS_ANALYTICS_COOKIES);
+            trackPlatformEvents(eventTypesToTrack);
         }
     },
     trackProductView: function (identifier) {
