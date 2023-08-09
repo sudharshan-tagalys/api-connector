@@ -321,6 +321,7 @@ class GraphqlQueryConstructor {
         }
         ... on Collection{
           id
+          title
           products(first: 10){
             edges{
               node{

@@ -5,7 +5,6 @@ import ShopifyMultiCurrencyPriceMutator from './mutators/shopifyMultiCurrencyPri
 
 //TODO:// MOVE THIS TO PLATFORM HELPERS
 async function getProductPricesFromAPI(productIds, countryCode, { myShopifyDomain, storeFrontAPIAccessToken, applyCurrencyConversion }, metafields = { products: [] }) {
-  myShopifyDomain = "replication-one.myshopify.com"
   if (!productIds.length) return {}
   var productNodeIds = productIds.map(
     (productId) => `gid://shopify/Product/${productId}`
@@ -19,7 +18,8 @@ async function getProductPricesFromAPI(productIds, countryCode, { myShopifyDomai
       amount
     }
   ` 
-  var variantsPriceQuery = `
+  var productPriceInfoQuery = `
+    id
     variants(first: 250){
       edges{
         node{
@@ -44,39 +44,36 @@ async function getProductPricesFromAPI(productIds, countryCode, { myShopifyDomai
             type
             description
             reference{
-              ... on Product{
-                ${variantsPriceQuery}
-              }
               ... on Collection{
                 id
-                products(first: 10){
+                title
+                products(first: 50){
                   edges{
                     node{
-                      ${variantsPriceQuery}
+                      ${productPriceInfoQuery}
                     }
                   }
                 }
               }
             }
-            references(first: 10){
+            references(first: 50){
               edges{
                 node{
                   ... on Product{
-                    ${variantsPriceQuery}
-
+                    ${productPriceInfoQuery}
                   }
                 }
               }
             }
           }
-          ${variantsPriceQuery}
+          ${productPriceInfoQuery}
         }
       }
     }
     `,
     headers: {
       "Content-Type": "application/graphql",
-      "X-Shopify-Storefront-Access-Token": "942cf991dbd2f945a7f671ea36f4761d",
+      "X-Shopify-Storefront-Access-Token": storeFrontAPIAccessToken,
     },
     method: "POST",
   });
@@ -161,16 +158,13 @@ function getProductPriceInfo(product){
 
 function getMetafieldPriceInfo(metafield) {
   const type = metafield.type
-  if (type === "product_reference") {
-    if (metafield.reference) {
-      return getProductPriceInfo(metafield.reference)
-    }
-  }
   if (type === "collection_reference") {
     if (metafield.reference) {
-      return metafield.reference.products.edges.map((edge) => {
-        return getProductPriceInfo(edge.node)
-      })
+      return {
+        products: metafield.reference.products.edges.map((edge) => {
+          return getProductPriceInfo(edge.node)
+        })
+      }
     }
   }
   if (type === "list.product_reference") {

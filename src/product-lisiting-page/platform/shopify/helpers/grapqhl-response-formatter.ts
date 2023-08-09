@@ -13,10 +13,6 @@ const MEDIA_CONTENT_TYPES = {
   MODEL_3D: "MODEL_3D"
 };
 
-const MEDIA_STATUSES = {
-  READY: "READY"
-};
-
 
 class GraphqlResponseFormatter {
 
@@ -248,21 +244,22 @@ class GraphqlResponseFormatter {
   formatMetafield(metafield) {
     const type = metafield.type
     let value = metafield.value
-    if (type === "product_reference") {
-      if (metafield.reference) {
-        value = this.formatProduct(metafield.reference)
-      }
-    }
     if (type === "collection_reference") {
+      // DELETE IF NOT FOUND?
       if (metafield.reference) {
-        value = metafield.reference.products.edges.map((edge) => {
-          return this.formatProduct(edge.node)
-        })
+        value = {
+          id: this.getIdFromGraphqlId(metafield.reference.id),
+          title: metafield.reference.title,
+          products: metafield.reference.products.edges.map((edge) => {
+            return this.formatProduct(edge.node)
+          })
+        }
       }
     }
     if (type === "list.product_reference") {
       if (metafield.references) {
         value = metafield.references.edges.map((reference) => {
+          // DELETE IF NOT FOUND? -> reference.node
           return this.formatProduct(reference.node)
         })
       }

@@ -111,10 +111,16 @@ class ShopifyResponseFormatter extends Formatter {
                 })
               }
               if (detail.metafields[namespace][key]['type'] === "collection_reference") {
-                detail.metafields[namespace][key]['value'] = metafieldReference.value.product_details.map((product_detail) => {
-                  return this.formatDetail(product_detail)
-                })
+                detail.metafields[namespace][key]['value'] = {
+                  id: metafieldReference.value.id,
+                  title: metafieldReference.value.name,
+                  products: metafieldReference.value.product_details.map((product_detail) => {
+                    return this.formatDetail(product_detail)
+                  })
+                }
               }
+            }else{
+              // NOT FOUND DELETE?
             }
           }
         }else{
