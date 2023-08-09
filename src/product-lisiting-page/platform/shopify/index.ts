@@ -63,14 +63,14 @@ class ShopifyProductListingPage extends ProductListingPage {
     const initialRequest = (Object.keys(this.responseState).length === 0)
     if (initialRequest) {
       const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
-      // const response = await this.apiClient().storefront.query(filterInputsQuery, {
-      //   variables: requestOptions.params.variables
-      // })
       const response = await this.apiClient().storefront.query(filterInputsQuery, {
-        variables: {
-          id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
-        }
+        variables: requestOptions.params.variables
       })
+      // const response = await this.apiClient().storefront.query(filterInputsQuery, {
+      //   variables: {
+      //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
+      //   }
+      // })
       const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
       this.setResponseState({
         ...this.responseState,

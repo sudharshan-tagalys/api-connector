@@ -208,11 +208,11 @@ class Base extends APIConnector {
   }
 
   getRequestParamsFromWindowLocation(){
-    getRequestParamsFromWindowLocation()
+    return getRequestParamsFromWindowLocation()
   }
 
   getRequestParamsFromQueryString(queryString){
-    getRequestParamsFromQueryString(queryString) 
+    return getRequestParamsFromQueryString(queryString) 
   }
 
   commonHelpers(){
