@@ -8,9 +8,14 @@ const unique = (value, index, self) => {
 
 class ShopifyMultiCurrencyPriceMutator {
   async mutate(response) {
-    if(response.products){
+    if (response.products) {
       const productIds = response.products.map((product) => product.id)
-      const prices = await getProductPrices(productIds, configuration.getCountryCode())
+      let prices;
+      if (configuration.hasMetafields) {
+        prices = await getProductPrices(productIds, configuration.getCountryCode(), configuration.getMetafields())
+      } else {
+        prices = await getProductPrices(productIds, configuration.getCountryCode())
+      }
       response.products.forEach((product) => {
         const hasPriceInfo = prices.hasOwnProperty(product.id)
         hasPriceInfo ? this.mutateProductPrice(product, prices[product.id]) : this.resetProductPrice(product)
@@ -34,10 +39,54 @@ class ShopifyMultiCurrencyPriceMutator {
     product.price_max = this.getMax(variantPrices)
     product.compare_at_price_min = this.getMin(variantCompareAtPrices)
     product.compare_at_price_max = this.getMax(variantCompareAtPrices)
+    this.updateMetafieldPrices(product.metafields, priceInfo)
+  }
+
+  updateMetafieldPrices(metafields, priceInfo){
+    for (const namespace in metafields) {
+      for (const key in metafields[namespace]) {
+        if (priceInfo.metafields.hasOwnProperty(namespace)) {
+          if (priceInfo.metafields[namespace].hasOwnProperty(key)) {
+            if (metafields[namespace][key]['type'] == "collection_reference") {
+              this.updateCollectionReferenceMetafield(metafields[namespace][key], priceInfo.metafields[namespace][key])
+            }
+            if (metafields[namespace][key]['type'] == "list.product_reference") {
+              this.updateProductListReferenceMetafield(metafields[namespace][key], priceInfo)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  updateCollectionReferenceMetafield(data, priceInfo) {
+    data.value.products.forEach((product) => {
+      priceInfo.forEach((priceInfoForProduct) => {
+        if (product.id === priceInfoForProduct.productId) {
+          this.mutateProductPrice(product, priceInfoForProduct)
+        }
+      })
+    })
+  }
+
+  updateProductReferenceMetafield(data, priceInfo) {
+    if (data.value.id === priceInfo.productId) {
+      this.mutateProductPrice(data.value, priceInfo)
+    }
+  }
+
+  updateProductListReferenceMetafield(data, priceInfo){
+    data.value.forEach((product) => {
+      priceInfo.forEach((priceInfoForProduct) => {
+        if (product.id === priceInfoForProduct.productId) {
+          this.mutateProductPrice(product, priceInfoForProduct)
+        }
+      })
+    })
   }
 
   resetProductPrices(response) {
-    if(response.products){
+    if (response.products) {
       return response.products.forEach((product) => this.resetProductPrice(product))
     }
     return response

@@ -180,7 +180,18 @@ class Configuration{
   }
 
   getMetafields(){
-    return this.configuration.platformVariables.metafields
+    if(!this.hasMetafields()){
+      return []
+    }
+    return (this.configuration.platformVariables.metafields)
+  }
+  isMetafieldConfigured(namespace, key, scope){
+    const metafields = this.configuration.platformVariables.metafields
+    const configured = metafields[scope].find((metafield)=>metafield.namespace === namespace && metafield.key === key)
+    if(configured){
+      return true
+    }
+    return false
   }
 }
 export default new Configuration();

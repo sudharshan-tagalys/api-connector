@@ -1,3 +1,4 @@
+import configuration from '../../../lib/configuration';
 import { applyCurrencyConversion } from '../common';
 import Formatter from './formatter';
 
@@ -6,32 +7,65 @@ const unique = (value, index, self) => {
 }
 
 class ShopifyResponseFormatter extends Formatter {
+
   formatDetail = (detail: any): any => {
-    let formattedDetail = {
-      id: parseInt(detail.__id),
-      title: detail.name,
-      available: detail.available,
-      tags: this.formatTags(detail.shopify_tags),
-      variants: this.formatVariants(detail.variants),
-      vendor: this.formatVendor(detail._vendor),
-      images: this.formatImages(detail.images),
-      metafields: this.formatMetafields(detail.metafields),
-      handle: detail.link.split("/products/")[1],
-      published_at: detail.introduced_at,
-      featured_image: this.getFeaturedImage(detail.media),
-      media: detail.media,
-      in_stock: detail.in_stock,
-      ...this.getOptionRelatedFields(detail),
-      ...this.getPriceRelatedFields(detail)
-    }
-    if(detail.hasOwnProperty("_product_type")){
-      formattedDetail['product_type'] = detail["_product_type"]
+    let formattedDetail : any= {}
+    for(const key in detail){
+      switch (key) {
+        case "__id":
+          formattedDetail.id = detail.__id
+          break
+        case "name":
+          formattedDetail.title = detail.name
+          break
+        case "available":
+          formattedDetail.available = detail.available
+          break
+        case "shopify_tags":
+          formattedDetail.tags = this.formatTags(detail.shopify_tags)
+          break
+        case "variants":
+          formattedDetail = {
+            ...formattedDetail,
+            variants: this.formatVariants(detail.variants),
+            ...this.getOptionRelatedFields(detail),
+            ...this.getPriceRelatedFields(detail)
+          }
+          break
+        case "_vendor":
+          formattedDetail.vendor = detail._vendor
+          break
+        case "images":
+          formattedDetail.images = this.formatImages(detail.images)
+          break
+        case "metafields":
+          formattedDetail.metafields = this.formatMetafields(detail)
+          break
+        case "handle":
+          formattedDetail.handle = detail.link.split("/products/")[1]
+          break
+        case "introduced_at":
+          formattedDetail.published_at = detail.introduced_at
+          break
+        case "media":
+          formattedDetail.featured_image = this.getFeaturedImage(detail.media)
+          formattedDetail.media = detail.media
+        case "in_stock":
+          formattedDetail.in_stock = detail.in_stock
+          break
+        case "_product_type":
+          formattedDetail.product_type = detail._product_type
+          break
+        default:
+          // TODO:// CONSIDER TAGALYS CUSTOM FIELDS AND TAG SETS HERE
+          break;
+      }
     }
     return formattedDetail
   };
 
-  formatImages(images){
-    return images.map((image)=>{
+  formatImages(images) {
+    return images.map((image) => {
       return {
         position: image.position,
         alt: image.alt,
@@ -42,9 +76,9 @@ class ShopifyResponseFormatter extends Formatter {
     })
   }
 
-  getFeaturedImage(media){
-    const images = media.filter((mediaItem)=>mediaItem.type === "image").sort((mediaItem)=>mediaItem['position'])
-    if(images.length){
+  getFeaturedImage(media) {
+    const images = media.filter((mediaItem) => mediaItem.type === "image").sort((mediaItem) => mediaItem['position'])
+    if (images.length) {
       return images[0]
     }
     return null
@@ -64,8 +98,34 @@ class ShopifyResponseFormatter extends Formatter {
     return _vendor
   }
 
-  formatMetafields(metafields) {
-
+  formatMetafields(detail) {
+    for (const namespace in detail.metafields) {
+      for (const key in detail.metafields[namespace]) {
+        if(configuration.isMetafieldConfigured(namespace, key, "products")){
+          if (detail._references) {
+            if (detail._references.metafields.hasOwnProperty(namespace) && detail._references.metafields[namespace].hasOwnProperty(key)) {
+              const metafieldReference = detail._references.metafields[namespace][key]
+              if (detail.metafields[namespace][key]['type'] === "list.product_reference") {
+                detail.metafields[namespace][key]['value'] = metafieldReference.value.map((product_detail) => {
+                  return this.formatDetail(product_detail)
+                })
+              }
+              if (detail.metafields[namespace][key]['type'] === "collection_reference") {
+                detail.metafields[namespace][key]['value'] = metafieldReference.value.product_details.map((product_detail) => {
+                  return this.formatDetail(product_detail)
+                })
+              }
+            }
+          }
+        }else{
+          delete detail.metafields[namespace][key]
+          if(Object.keys(detail.metafields[namespace]).length === 0){
+            delete detail.metafields[namespace]
+          }
+        }
+      }
+    }
+    return detail.metafields
   }
 
   getPriceRelatedFields(detail) {

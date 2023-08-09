@@ -3,6 +3,187 @@ import localStorage from '../../lib/localStorage';
 import queryStringManager from '../../lib/queryStringManager';
 import ShopifyMultiCurrencyPriceMutator from './mutators/shopifyMultiCurrencyPriceMutator';
 
+//TODO:// MOVE THIS TO PLATFORM HELPERS
+async function getProductPricesFromAPI(productIds, countryCode, { myShopifyDomain, storeFrontAPIAccessToken, applyCurrencyConversion }, metafields = { products: [] }) {
+  myShopifyDomain = "replication-one.myshopify.com"
+  if (!productIds.length) return {}
+  var productNodeIds = productIds.map(
+    (productId) => `gid://shopify/Product/${productId}`
+  );
+  var priceQuery = `
+    id
+    price {
+      amount
+    }
+    compareAtPrice{
+      amount
+    }
+  ` 
+  var variantsPriceQuery = `
+    variants(first: 250){
+      edges{
+        node{
+          ${priceQuery}
+        }
+      }
+    }
+  `
+
+  var identifier = metafields.products.map((product_metafield)=>`{namespace: "${product_metafield.namespace}", key: "${product_metafield.key}"}`)
+  var response = await fetch(`https://${myShopifyDomain}/api/2023-01/graphql.json`, {
+    body: `
+    query allProducts @inContext(country: ${countryCode}) {
+      nodes(ids: ${JSON.stringify(productNodeIds)})
+      {
+        ... on Product{
+          id
+          metafields(identifiers: [${identifier}]){
+            id
+            key
+            namespace
+            type
+            description
+            reference{
+              ... on Product{
+                ${variantsPriceQuery}
+              }
+              ... on Collection{
+                id
+                products(first: 10){
+                  edges{
+                    node{
+                      ${variantsPriceQuery}
+                    }
+                  }
+                }
+              }
+            }
+            references(first: 10){
+              edges{
+                node{
+                  ... on Product{
+                    ${variantsPriceQuery}
+
+                  }
+                }
+              }
+            }
+          }
+          ${variantsPriceQuery}
+        }
+      }
+    }
+    `,
+    headers: {
+      "Content-Type": "application/graphql",
+      "X-Shopify-Storefront-Access-Token": "942cf991dbd2f945a7f671ea36f4761d",
+    },
+    method: "POST",
+  });
+  var responseJson = await response.json();
+  var products = responseJson.data.nodes;
+  var productToPriceMap = {};
+
+  products.forEach((product) => {
+    if (product) {
+      var productId = product.id.split("/").pop();
+      productToPriceMap[productId] = getProductPriceInfo(product)
+    }
+  });
+
+  return productToPriceMap;
+}
+
+function getProductPriceInfo(product){
+  var productVariants = product.variants.edges;
+  var variantPrices = {}
+  var variantCompareAtPrices = productVariants.map((productVariant) => {
+    var price = parseFloat(productVariant.node.price.amount);
+    if (productVariant.node.compareAtPrice) {
+      var compareAtPrice = parseFloat(
+        productVariant.node.compareAtPrice.amount
+      );
+      if (compareAtPrice > price) {
+        return compareAtPrice;
+      }
+    }
+    return price;
+  });
+  var prices = productVariants.map((productVariant) =>
+    parseFloat(productVariant.node.price.amount)
+  );
+
+  var price = prices.length > 0 ? Math.min(...prices) : null;
+  var compareAtPrice =
+    variantCompareAtPrices.length > 0
+      ? Math.min(...variantCompareAtPrices)
+      : null;
+
+  if (compareAtPrice !== null && price !== null) {
+    compareAtPrice = Math.max(...[price, compareAtPrice]);
+  }
+
+  let metafieldPriceInfo = {}
+  if(product.metafields){
+    product.metafields.forEach((metafield)=>{
+      if(metafield){
+        metafieldPriceInfo[metafield.namespace] ||= {}
+        metafieldPriceInfo[metafield.namespace][metafield.key] = {
+          type: metafield.type,
+          priceInfo: getMetafieldPriceInfo(metafield)
+        }
+      }
+    })
+  }
+
+  // constructing variant prices
+  productVariants.forEach((productVariant) => {
+    var variantId = productVariant.node.id.split("/").pop();
+    var variantPrice = parseFloat(productVariant.node.price.amount)
+    var variantCompareAtPrice = productVariant.node.compareAtPrice ? parseFloat(productVariant.node.compareAtPrice.amount) : null
+    variantPrices[variantId] = {
+      price: variantPrice,
+      compareAtPrice: variantCompareAtPrice
+    }
+  })
+  return {
+    productId: product.id.split("/").pop(),
+    compareAtPrice:
+      compareAtPrice !== null
+        ? applyCurrencyConversion(compareAtPrice)
+        : null,
+    price: price !== null ? applyCurrencyConversion(price) : null,
+    variantPrices: variantPrices,
+    metafields: metafieldPriceInfo
+  };
+}
+
+
+function getMetafieldPriceInfo(metafield) {
+  const type = metafield.type
+  if (type === "product_reference") {
+    if (metafield.reference) {
+      return getProductPriceInfo(metafield.reference)
+    }
+  }
+  if (type === "collection_reference") {
+    if (metafield.reference) {
+      return metafield.reference.products.edges.map((edge) => {
+        return getProductPriceInfo(edge.node)
+      })
+    }
+  }
+  if (type === "list.product_reference") {
+    if (metafield.references) {
+      return metafield.references.edges.map((reference) => {
+        return getProductPriceInfo(reference.node)
+      })
+    }
+  }
+  return null
+}
+
+
 const getURLEncodedQueryString = (baseUrl, params) => {
   return `${baseUrl}?${getEncodedQueryString(params)}`
 }
@@ -235,18 +416,19 @@ const applyCurrencyConversion = (number) => {
   return convertedNumber;
 }
 
-const getProductPrices = async (productIds, countryCode) => {
+const getProductPrices = async (productIds, countryCode, metafields = { products: [] }) => {
   if (!productIds.length) return {}
   try {
-    await loadTagalysHelperScript();
-    const windowInstance: any = window
+    // TODO:// UNCOMMENT AND USE PLATFORM HELPERS HERE
+    // await loadTagalysHelperScript();
+    // const windowInstance: any = window
     const myShopifyDomain = configuration.getMyShopifyDomain()
     const storeFrontAPIAccessToken = configuration.getStoreFrontAPIAccessToken()
-    const response = await windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
+    const response = await getProductPricesFromAPI(productIds, countryCode, {
       myShopifyDomain,
       storeFrontAPIAccessToken,
       applyCurrencyConversion
-    })
+    }, metafields)
     return response
   }catch(error){
     console.error(error);
