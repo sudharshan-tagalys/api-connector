@@ -6,16 +6,28 @@ const FILTER_TYPES = {
   BOOLEAN: "BOOLEAN"
 }
 
-class GraphqlResponseFormatter{
+const MEDIA_CONTENT_TYPES = {
+  VIDEO: "VIDEO",
+  EXTERNAL_VIDEO: "EXTERNAL_VIDEO",
+  IMAGE: "IMAGE",
+  MODEL_3D: "MODEL_3D"
+};
+
+const MEDIA_STATUSES = {
+  READY: "READY"
+};
+
+
+class GraphqlResponseFormatter {
 
   private requestState
   private shopifyResponse
 
-  constructor(requestState, shopifyResponse){
+  constructor(requestState, shopifyResponse) {
     this.shopifyResponse = shopifyResponse
     this.requestState = requestState
   }
-  
+
   getSortOptions() {
     let sortOptions = [
       {
@@ -35,15 +47,15 @@ class GraphqlResponseFormatter{
         "label": "Price Descending",
       }
     ]
-    sortOptions.forEach((sortOption : any)=>{
-      if(sortOption.id === this.requestState.sort){
+    sortOptions.forEach((sortOption: any) => {
+      if (sortOption.id === this.requestState.sort) {
         sortOption.selected = true
       }
     })
     return sortOptions
   }
 
-  format(){
+  format() {
     return {
       name: this.shopifyResponse.collection.title,
       products: this.formatProducts(this.shopifyResponse.collection.products.edges),
@@ -80,6 +92,7 @@ class GraphqlResponseFormatter{
     const variants = this.formatVariants(product.variants)
     const priceVaries = (product.priceRange.minVariantPrice.amount != product.priceRange.maxVariantPrice.amount)
     const compareAtPriceVaries = (product.compareAtPriceRange.minVariantPrice.amount != product.compareAtPriceRange.maxVariantPrice.amount)
+    const media = this.formatMedia(product.media)
     return {
       id: this.getIdFromGraphqlId(product.id),
       title: product.title,
@@ -87,10 +100,12 @@ class GraphqlResponseFormatter{
       available: product.availableForSale,
       tags: product.tags,
       variants: variants,
-      images: this.formatImages(product.images, imagesToVariantIdsMap),
-      media: this.formatMedia(product.media),
+      featured_image: this.getFeaturedImage(media),
+      images: this.formatImages(product.images),
+      media: media,
       vendor: product.vendor,
-      // metafields: this.formatMetafields(product),
+      product_type: product.productType,
+      metafields: this.formatMetafields(product.metafields),
       handle: product.handle,
       price_varies: priceVaries,
       compare_at_price_varies: compareAtPriceVaries,
@@ -107,7 +122,7 @@ class GraphqlResponseFormatter{
     }
   }
 
-  formatOptions(options){
+  formatOptions(options) {
     return options.map((option, index) => {
       return {
         name: option.name,
@@ -117,7 +132,7 @@ class GraphqlResponseFormatter{
     })
   }
 
-  formatImages(images, imagesToVariantIdsMap){
+  formatImages(images) {
     return images.edges.map((image_edge, index) => {
       const image = image_edge.node
       return {
@@ -125,18 +140,76 @@ class GraphqlResponseFormatter{
         alt: image.altText,
         width: image.width,
         height: image.height,
-        src: image.url,
-        variant_ids: (imagesToVariantIdsMap[image_edge.node.id] || [])
+        src: image.url
       }
     })
   }
 
-  formatMedia(media){
-    return []
+  formatMedia(media) {
+    let formattedMedia = [];
+    media.edges.forEach((mediaItem, index) => {
+      const position = index + 1;
+      if (mediaItem.node.mediaContentType === MEDIA_CONTENT_TYPES.IMAGE) {
+        formattedMedia.push({
+          position: position,
+          media_type: "image",
+          alt: mediaItem.node.image.altText,
+          width: mediaItem.node.image.width,
+          height: mediaItem.node.image.height,
+          src: mediaItem.node.image.url,
+          preview_image: this.formatImage(mediaItem.node.previewImage)
+        });
+      }
+      if (mediaItem.node.mediaContentType === MEDIA_CONTENT_TYPES.VIDEO) {
+        formattedMedia.push({
+          position: position,
+          media_type: "video",
+          alt: mediaItem.node.alt,
+          duration: mediaItem.node.duration,
+          sources: this.formatVideoSources(mediaItem.node.sources),
+          preview_image: this.formatImage(mediaItem.node.preview.image)
+        })
+      }
+    });
+    return formattedMedia;
   }
 
-  formatVariants(variants){
-    return variants.edges.map((variantEdge, index)=>{
+  formatImage(image) {
+    return {
+      alt: image.altText,
+      width: image.width,
+      height: image.height,
+      src: image.url
+    };
+  }
+
+  formatVideoSources(videoSources) {
+    return videoSources.map(this.formatVideoSource);
+  }
+  
+  formatVideoSource(videoSource) {
+    return {
+      file_size: videoSource.fileSize,
+      format: videoSource.format,
+      mime_type: videoSource.mime_type,
+      height: videoSource.height,
+      width: videoSource.width,
+      url: videoSource.url
+    };
+  }
+  
+
+  getFeaturedImage(media){
+    const images = media.filter((mediaItem)=>mediaItem.media_type === "image").sort((mediaItem)=>mediaItem['position'])
+    if(images.length){
+      return images[0]
+    }
+    return null
+  }
+
+
+  formatVariants(variants) {
+    return variants.edges.map((variantEdge, index) => {
       return {
         id: this.getIdFromGraphqlId(variantEdge.node.id),
         title: variantEdge.node.title,
@@ -146,23 +219,58 @@ class GraphqlResponseFormatter{
         available: variantEdge.node.availableForSale,
         position: index + 1,
         ...this.formatSelectedVariantOptions(variantEdge.node),
-        // metafields
       }
     })
   }
 
-  formatSelectedVariantOptions(variant){
+  formatSelectedVariantOptions(variant) {
     const MAX_NUM_OF_OPTIONS = 3
     let selectedVariantOptions = {}
     for (let index = 0; index < MAX_NUM_OF_OPTIONS; index++) {
-      selectedVariantOptions[`option${index+1}`] = variant.selectedOptions[index] ? variant.selectedOptions[index].value : null
+      selectedVariantOptions[`option${index + 1}`] = variant.selectedOptions[index] ? variant.selectedOptions[index].value : null
     }
     return selectedVariantOptions
   }
 
 
-  formatMetafields(product){
+  formatMetafields(metafields) {
+    let formattedMetafields = {}
+    metafields.forEach((metafield) => {
+      if (metafield) {
+        formattedMetafields[metafield.namespace] ||= {}
+        formattedMetafields[metafield.namespace][metafield.key] = this.formatMetafield(metafield)
+      }
+    })
+    return formattedMetafields
+  }
 
+
+  formatMetafield(metafield) {
+    const type = metafield.type
+    let value = metafield.value
+    if (type === "product_reference") {
+      if (metafield.reference) {
+        value = this.formatProduct(metafield.reference)
+      }
+    }
+    if (type === "collection_reference") {
+      if (metafield.reference) {
+        value = metafield.reference.products.edges.map((edge) => {
+          return this.formatProduct(edge.node)
+        })
+      }
+    }
+    if (type === "list.product_reference") {
+      if (metafield.references) {
+        value = metafield.references.edges.map((reference) => {
+          return this.formatProduct(reference.node)
+        })
+      }
+    }
+    return {
+      type: type,
+      value: value
+    }
   }
 
 
@@ -189,7 +297,7 @@ class GraphqlResponseFormatter{
         }
       }
 
-      if(isPriceRangeFilter){
+      if (isPriceRangeFilter) {
         const parsedInput = JSON.parse(filter.values[0].input)
         let filterItem = {
           id: filter.id,
@@ -208,7 +316,7 @@ class GraphqlResponseFormatter{
     })
   }
 
-  static getFilterInputs(filters){
+  static getFilterInputs(filters) {
     let filterInputs = {}
     filters.forEach((filter) => {
       const isCheckboxFilter = (filter.type === FILTER_TYPES.LIST || filter.type === FILTER_TYPES.BOOLEAN)
@@ -218,7 +326,7 @@ class GraphqlResponseFormatter{
           filterInputs[filterItem.id] = { type: "checkbox", input: filterItem.input }
         })
       }
-      if(isPriceRangeFilter){
+      if (isPriceRangeFilter) {
         filterInputs[filter.id] = {
           type: "range",
           input: filter.values[0].input
@@ -228,17 +336,20 @@ class GraphqlResponseFormatter{
     return filterInputs
   }
 
-  getIdFromGraphqlId(graphqlId){
-    return graphqlId.split("/").slice(-1)[0]
+  getIdFromGraphqlId(graphqlId) {
+    const productId = graphqlId.split("/").slice(-1)[0]
+    return parseInt(productId)
   }
 
-  getImagesToVariantIdsMap(variants){
+  getImagesToVariantIdsMap(variants) {
     let imagesToVariantIdsMap = {}
-    variants.edges.forEach((variantEdge)=>{
-      if(!imagesToVariantIdsMap[variantEdge.node.image.id]){
-        imagesToVariantIdsMap[variantEdge.node.image.id] = []
+    variants.edges.forEach((variantEdge) => {
+      if (variantEdge.node.image) {
+        if (!imagesToVariantIdsMap[variantEdge.node.image.id]) {
+          imagesToVariantIdsMap[variantEdge.node.image.id] = []
+        }
+        imagesToVariantIdsMap[variantEdge.node.image.id].push(variantEdge.node.id)
       }
-      imagesToVariantIdsMap[variantEdge.node.image.id].push(variantEdge.node.id)
     })
     return imagesToVariantIdsMap
   }

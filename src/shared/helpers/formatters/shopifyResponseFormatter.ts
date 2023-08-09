@@ -6,123 +6,142 @@ const unique = (value, index, self) => {
 }
 
 class ShopifyResponseFormatter extends Formatter {
-  platformFieldTranslations(){
-    return {
-      __id: (data) => {
-        return {
-          key: 'id',
-          value: parseInt(data.__id)
-        }
-      },
-      name: 'title',
-      introduced_at: 'published_at',
-      shopify_tags: (data) => {
-        if(Array.isArray(data.shopify_tags)){
-          return {
-            key: 'tags',
-            value: data.shopify_tags
-          }
-        }
-        return {
-          key: 'tags',
-          value: data.shopify_tags.split(", ").sort()
-        }
-      },
-      _vendor: (data) => {
-        if(Array.isArray(data._vendor)){
-          return {
-            key: 'vendor',
-            value: data._vendor[0]
-          }
-        }
-        return {
-          key: 'vendor',
-          value: data._vendor
-        }
-      },
-      images: (data) => {
-        // slice before sorting is a non destructive way (sort is a destructive array utility)
-        const sortedImages = data.images.slice().sort((img1,img2) => img1.position - img2.position)
-        return {
-          key: "images",
-          value: sortedImages
-        }
-      },
-      variants: 'variants',
-      available: 'available',
-      metafields: 'metafields',
-      media: 'media'
+  formatDetail = (detail: any): any => {
+    let formattedDetail = {
+      id: parseInt(detail.__id),
+      title: detail.name,
+      available: detail.available,
+      tags: this.formatTags(detail.shopify_tags),
+      variants: this.formatVariants(detail.variants),
+      vendor: this.formatVendor(detail._vendor),
+      images: this.formatImages(detail.images),
+      metafields: this.formatMetafields(detail.metafields),
+      handle: detail.link.split("/products/")[1],
+      published_at: detail.introduced_at,
+      featured_image: this.getFeaturedImage(detail.media),
+      media: detail.media,
+      in_stock: detail.in_stock,
+      ...this.getOptionRelatedFields(detail),
+      ...this.getPriceRelatedFields(detail)
     }
+    if(detail.hasOwnProperty("_product_type")){
+      formattedDetail['product_type'] = detail["_product_type"]
+    }
+    return formattedDetail
+  };
+
+  formatImages(images){
+    return images.map((image)=>{
+      return {
+        position: image.position,
+        alt: image.alt,
+        width: image.width,
+        height: image.height,
+        src: image.src,
+      }
+    })
   }
 
-  additionalPlatformFields(detail){
-    let additionalPlatformFields = {
-      handle: detail.link.split("/products/")[1]
+  getFeaturedImage(media){
+    const images = media.filter((mediaItem)=>mediaItem.type === "image").sort((mediaItem)=>mediaItem['position'])
+    if(images.length){
+      return images[0]
     }
-    if(detail.hasOwnProperty('variants')){
-      const variantCompareAtPrices =  detail.variants.filter((variant)=>variant.compare_at_price !== null).map(variant => variant.compare_at_price)
-      const variantPrices = detail.variants.filter((variant)=>variant.price !== null).map(variant => variant.price)
-      additionalPlatformFields['price_varies'] = variantPrices.filter(unique).length > 1
-      additionalPlatformFields['compare_at_price_varies'] = variantCompareAtPrices.filter(unique).length > 1
-      additionalPlatformFields['options_with_values'] = detail.options
-      additionalPlatformFields['price'] = detail.sale_price
-      additionalPlatformFields['compare_at_price'] = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
-      additionalPlatformFields['price_min'] = variantPrices.length > 0 ? Math.min(...variantPrices) : 0
-      additionalPlatformFields['price_max'] = variantPrices.length > 0 ? Math.max(...variantPrices) : 0
-      additionalPlatformFields['compare_at_price_min'] = variantCompareAtPrices.length > 0 ?  Math.min(...variantCompareAtPrices) : 0
-      additionalPlatformFields['compare_at_price_max'] = variantCompareAtPrices.length > 0 ? Math.max(...variantCompareAtPrices) : 0
-      if(detail.hasOwnProperty('options')){
-        const options = detail.options.map((option)=>option.name)
-        additionalPlatformFields['options'] = options
-        additionalPlatformFields['options_with_values'] = detail.options.map((option)=>{
+    return null
+  }
+
+  formatTags(tags) {
+    if (Array.isArray(tags)) {
+      return tags
+    }
+    return tags.split(", ").sort()
+  }
+
+  formatVendor(_vendor) {
+    if (Array.isArray(_vendor)) {
+      return _vendor[0]
+    }
+    return _vendor
+  }
+
+  formatMetafields(metafields) {
+
+  }
+
+  getPriceRelatedFields(detail) {
+    if (detail.hasOwnProperty('variants')) {
+
+      const variantCompareAtPrices = detail.variants.filter((variant) => variant.compare_at_price !== null).map(variant => variant.compare_at_price)
+      const variantPrices = detail.variants.filter((variant) => variant.price !== null).map(variant => variant.price)
+      const price = detail.sale_price
+      const compareAtPrice = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : null
+      const priceMin = variantPrices.length > 0 ? Math.min(...variantPrices) : 0
+      const priceMax = variantPrices.length > 0 ? Math.max(...variantPrices) : 0
+      const compareAtPriceMin = variantCompareAtPrices.length > 0 ? Math.min(...variantCompareAtPrices) : 0
+      const compareAtPriceMax = variantCompareAtPrices.length > 0 ? Math.max(...variantCompareAtPrices) : 0
+      const priceVaries = variantPrices.filter(unique).length > 1
+      const compareAtPriceVaries = variantCompareAtPrices.filter(unique).length > 1
+
+      return {
+        price_varies: priceVaries,
+        compare_at_price_varies: compareAtPriceVaries,
+        price: applyCurrencyConversion(price),
+        compare_at_price: applyCurrencyConversion(compareAtPrice),
+        price_min: applyCurrencyConversion(priceMin),
+        price_max: applyCurrencyConversion(priceMax),
+        compare_at_price_min: applyCurrencyConversion(compareAtPriceMin),
+        compare_at_price_max: applyCurrencyConversion(compareAtPriceMax)
+      }
+    }
+    return {}
+  }
+
+  getOptionRelatedFields(detail) {
+    let optionRelatedFields = {}
+    if (detail.hasOwnProperty('variants')) {
+      if (detail.hasOwnProperty('options')) {
+        const options = detail.options.map((option) => option.name)
+        optionRelatedFields['options'] = options
+        optionRelatedFields['options_with_values'] = detail.options.map((option) => {
           return {
             name: option.name,
             position: option.position,
             values: option.values
           }
         })
-        additionalPlatformFields['has_only_default_variant'] = this.hasOnlyDefaultVariant(options, detail.variants)
+        optionRelatedFields['has_only_default_variant'] = this.hasOnlyDefaultVariant(options, detail.variants)
       }
     }
-    return additionalPlatformFields
+    return optionRelatedFields
   }
 
-  hasOnlyDefaultVariant(options, variants){
-    if(options.length > 1){
-      return false
-    }
-    if(variants.length > 1){
-      return false
-    }
-    if(options[0] === 'Title' && variants[0].option1 === 'Default Title'  && variants[0].option2 === null && variants[0].option3 === null){
-      return true
-    }
-    return false
-  }
-
-  fieldsToIgnore(){
-    return ['sku', 'options', 'compare_at_price', 'price']
-  }
-
-  applyCurrencyConversions(productDetail){
-    if(productDetail.price){
-      productDetail.price = applyCurrencyConversion(productDetail.price)
-    }
-    if(productDetail.compare_at_price){
-      productDetail.compare_at_price = applyCurrencyConversion(productDetail.compare_at_price)
-    }
-    if(productDetail.variants && productDetail.variants.length){
-      productDetail.variants = productDetail.variants.map((variant)=>{
-        if(variant.price){
+  formatVariants(variants) {
+    if (variants && variants.length) {
+      return variants.map((variant) => {
+        if (variant.price) {
           variant.price = applyCurrencyConversion(variant.price)
         }
-        if(variant.compare_at_price){
+        if (variant.compare_at_price) {
           variant.compare_at_price = applyCurrencyConversion(variant.compare_at_price)
         }
         return variant
       })
     }
-    return productDetail
+    return []
+  }
+
+
+  hasOnlyDefaultVariant(options, variants) {
+    if (options.length > 1) {
+      return false
+    }
+    if (variants.length > 1) {
+      return false
+    }
+    if (options[0] === 'Title' && variants[0].option1 === 'Default Title' && variants[0].option2 === null && variants[0].option3 === null) {
+      return true
+    }
+    return false
   }
 }
 

@@ -81,14 +81,12 @@ class GraphqlQueryConstructor {
     if(!configuration.hasMetafields()){
       return {
         product_metafields: [],
-        variant_metafields: [],
         collection_metafields: []
       }
     }
     const metafieldsToQuery = configuration.getMetafields()
     return {
       product_metafields: (metafieldsToQuery.products || []),
-      variant_metafields: (metafieldsToQuery.product_variants || []),
       collection_metafields: (metafieldsToQuery.collection_metafields || [])
     }
   }
@@ -115,7 +113,6 @@ class GraphqlQueryConstructor {
         $reverse: Boolean,
         $filters: [ProductFilter!],
         $product_metafields: [HasMetafieldsIdentifier!]!,
-        $variant_metafields: [HasMetafieldsIdentifier!]!,
         $collection_metafields: [HasMetafieldsIdentifier!]!
       ) @inContext(country: ${configuration.getCountryCode()}) {
         collection(id: $id){
@@ -231,6 +228,13 @@ class GraphqlQueryConstructor {
             ... on Video {
               id
               mediaContentType
+              previewImage{
+                id
+                altText
+                width
+                height
+                url
+              }
               alt
               sources {
                 format
@@ -243,6 +247,13 @@ class GraphqlQueryConstructor {
             ... on MediaImage{
               id
               mediaContentType
+              previewImage{
+                id
+                altText
+                width
+                height
+                url
+              }
               image{
                 id
                 altText
@@ -288,7 +299,6 @@ class GraphqlQueryConstructor {
             compareAtPrice{
               amount
             }
-            ${this.getVariantMetafields(level)}
           }
         }
       }
@@ -303,8 +313,11 @@ class GraphqlQueryConstructor {
     return `
       reference{
         ... on Product{
-          id
-          title
+          ${this.getBasicDetails()}
+          ${this.getVariants(level)}
+          ${this.getImages()}
+          ${this.getMedia()}     
+          ${this.getProductMetafields(level)}
         }
         ... on Collection{
           id
@@ -321,7 +334,7 @@ class GraphqlQueryConstructor {
           }
         }
       }
-      references(first: 250){
+      references(first: 10){
         edges{
           node{
             ... on Product{
@@ -340,20 +353,6 @@ class GraphqlQueryConstructor {
   getProductMetafields(level = 0) {
     return `
       metafields(identifiers: $product_metafields){
-        id
-        key
-        namespace
-        type
-        value
-        description
-        ${this.getReferenceMetafields(level)}
-      }
-    `
-  }
-
-  getVariantMetafields(level = 0){
-    return `
-      metafields(identifiers: $variant_metafields){
         id
         key
         namespace
