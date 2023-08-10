@@ -55,18 +55,23 @@ class ShopifyMultiCurrencyPriceMutator {
   }
 
   updateCollectionReferenceMetafield(data, priceInfo) {
-    data.value.products.forEach((product) => {
-      // DELETE THE METAFIELD IF THE PRICE INFO NOT FOUND? 
-      if(priceInfo){
-        priceInfo.products.forEach((priceInfoForProduct) => {
-          if (product.id === priceInfoForProduct.productId) {
-            this.mutateProductPrice(product, priceInfoForProduct)
-          }
-        })
-      }else{
-        // console.log("NOT FOUND", data, priceInfo)
-      }
-    })
+    const hasProducts = (data.value && data.value.products)
+    if(hasProducts){
+      data.value.products.forEach((product) => {
+        // DELETE THE METAFIELD IF THE PRICE INFO NOT FOUND? 
+        if(priceInfo){
+          priceInfo.products.forEach((priceInfoForProduct) => {
+            if (product.id === priceInfoForProduct.productId) {
+              this.mutateProductPrice(product, priceInfoForProduct)
+            }
+          })
+        }else{
+          // console.log("NOT FOUND", data, priceInfo)
+        }
+      })
+    }else{
+      // RECURSIVE CALL, SECOND LEVEL METAFIELDS WON'T HAVE REFERENCES
+    }
   }
 
 

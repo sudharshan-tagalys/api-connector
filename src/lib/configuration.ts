@@ -1,5 +1,3 @@
-import { APIConfiguration } from "../shared/types";
-
 class Configuration{
   private configuration;
   setConfiguration(configuration) {
@@ -181,12 +179,14 @@ class Configuration{
 
   getMetafields(){
     if(!this.hasMetafields()){
-      return []
+      return {
+        products: []
+      }
     }
     return (this.configuration.platformVariables.metafields)
   }
   isMetafieldConfigured(namespace, key, scope){
-    const metafields = this.configuration.platformVariables.metafields
+    const metafields = this.getMetafields()
     const configured = metafields[scope].find((metafield)=>metafield.namespace === namespace && metafield.key === key)
     if(configured){
       return true

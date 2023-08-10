@@ -41,14 +41,15 @@ class ShopifyResponseFormatter extends Formatter {
         case "metafields":
           formattedDetail.metafields = this.formatMetafields(detail)
           break
-        case "handle":
+        case "link":
           formattedDetail.handle = detail.link.split("/products/")[1]
           break
         case "introduced_at":
           formattedDetail.published_at = detail.introduced_at
           break
         case "media":
-          formattedDetail.featured_image = this.getFeaturedImage(detail.media)
+          const formattedImages = this.formatImages(detail.images)
+          formattedDetail.featured_image = this.getFeaturedImage(formattedImages)
           formattedDetail.media = detail.media
         case "in_stock":
           formattedDetail.in_stock = detail.in_stock
@@ -76,12 +77,8 @@ class ShopifyResponseFormatter extends Formatter {
     })
   }
 
-  getFeaturedImage(media) {
-    const images = media.filter((mediaItem) => mediaItem.type === "image").sort((mediaItem) => mediaItem['position'])
-    if (images.length) {
-      return images[0]
-    }
-    return null
+  getFeaturedImage(images) {
+    return images.find((image) => image.position === 1)
   }
 
   formatTags(tags) {
@@ -151,8 +148,8 @@ class ShopifyResponseFormatter extends Formatter {
       return {
         price_varies: priceVaries,
         compare_at_price_varies: compareAtPriceVaries,
-        price: applyCurrencyConversion(price),
-        compare_at_price: applyCurrencyConversion(compareAtPrice),
+        price: price ? applyCurrencyConversion(price) : null,
+        compare_at_price: compareAtPrice ? applyCurrencyConversion(compareAtPrice) : null,
         price_min: applyCurrencyConversion(priceMin),
         price_max: applyCurrencyConversion(priceMax),
         compare_at_price_min: applyCurrencyConversion(compareAtPriceMin),

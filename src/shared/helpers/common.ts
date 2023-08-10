@@ -431,12 +431,22 @@ const getProductPrices = async (productIds, countryCode, metafields = { products
   }
 }
 
-const updateProductPricesFromStoreFrontAPI = async (response, callbacks) => {
+const updateProductPricesForMarket = async (response, callbacks : any = {}) => {
   try {
+    if(!configuration.isUsingMultiCountryCurrency() || configuration.isUsingBaseCountryCode()){
+      return response
+    }
     const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-    callbacks.onSuccess(await shopifyMultiCurrencyPriceMutator.mutate(response))
+    const updatedResponse = await shopifyMultiCurrencyPriceMutator.mutate(response)
+    if(callbacks.hasOwnProperty("onSuccess")){
+      return callbacks.onSuccess(updatedResponse)
+    }
+    return response
   } catch (error) {
-    callbacks.onFailure(error)
+    if(callbacks.hasOwnProperty("onFailure")){
+      return callbacks.onFailure(error)
+    }
+    throw error
   }
 }
 
@@ -466,5 +476,5 @@ export {
   applyCurrencyConversion,
   getLegacyEncodedQueryString,
   getProductPrices,
-  updateProductPricesFromStoreFrontAPI
+  updateProductPricesForMarket
 }

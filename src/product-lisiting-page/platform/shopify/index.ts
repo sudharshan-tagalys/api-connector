@@ -59,29 +59,67 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   };
 
-  async setFilterInputsOnInitialLoadIfRequired(requestOptions) {
-    const initialRequest = (Object.keys(this.responseState).length === 0)
-    if (initialRequest) {
-      const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
-      const response = await this.apiClient().storefront.query(filterInputsQuery, {
-        variables: requestOptions.params.variables
-      })
-      // const response = await this.apiClient().storefront.query(filterInputsQuery, {
-      //   variables: {
-      //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
-      //   }
-      // })
-      const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
-      this.setResponseState({
-        ...this.responseState,
-        filter_inputs: filterInputs
-      })
+  async updateResponseStateWithFilters(requestOptions) {
+    const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
+    const response = await this.apiClient().storefront.query(filterInputsQuery, {
+      variables: requestOptions.params.variables
+    })
+    // const response = await this.apiClient().storefront.query(filterInputsQuery, {
+    //   variables: {
+    //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
+    //   }
+    // })
+    const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
+    const rangeFilter = response.collection.products.filters.find((filter)=>filter.type=== "PRICE_RANGE")
+    let price_ranges = {}
+    if(rangeFilter){
+      price_ranges =JSON.parse(rangeFilter.values[0].input).price
     }
+    this.setResponseState({
+      ...this.responseState,
+      filter_inputs: filterInputs,
+      price_ranges: price_ranges
+    })
+    return response
   }
 
-  async call(requestOptions: any) {
-    // HACK: WE CAN'T DIRECTLY GET THE FILTER INPUTS FROM QUERY PARAMS
-    await this.setFilterInputsOnInitialLoadIfRequired(requestOptions)
+  updateRequestStateWithFilters(initialRequestOptions, filtersFromResponse){
+    let filtersForRequestParams = {}
+    for (const [filterId, appliedFilterValues] of Object.entries(this.requestState.filters)) {
+      // checkbox filter
+      const appliedFilter = filtersFromResponse.collection.products.filters.find((filter) => filter.id === filterId)
+      if (Array.isArray(appliedFilterValues)) {
+        let formattedFilterValues = []
+        appliedFilterValues.forEach((filterLabel) => {
+          if (appliedFilter.type === "LIST" || appliedFilter.type === "BOOLEAN") {
+            appliedFilter.values.forEach((filterValue) => {
+              if (filterLabel === filterValue.label) {
+                formattedFilterValues.push(filterValue.id)
+              }
+            })
+          }
+        })
+        filtersForRequestParams[filterId] = formattedFilterValues
+      }else{
+        filtersForRequestParams[filterId] = appliedFilterValues
+      }
+    }
+    initialRequestOptions.params.variables.filters = filtersForRequestParams
+    this.requestOptions.params.variables.filters = filtersForRequestParams
+    console.log(initialRequestOptions, "FORMATTED")
+    this.setRequestState((reqState)=>{
+      reqState.filters = filtersForRequestParams
+      return reqState
+    }, false, false)
+  }
+
+  async call(initialRequestOptions: any) {
+    const initialRequest = (Object.keys(this.responseState).length === 0)
+    if (initialRequest) {
+      const response = await this.updateResponseStateWithFilters(initialRequestOptions)
+      this.updateRequestStateWithFilters(initialRequestOptions, response)
+      return await super.call(initialRequestOptions)
+    }
     await super.call()
   }
 
@@ -103,16 +141,16 @@ class ShopifyProductListingPage extends ProductListingPage {
 
 
   formatResponse(response: any, params = {}) {
-    const graphqlResponseFormatter = new GraphqlResponseFormatter(this.requestState, response)
+    const graphqlResponseFormatter = new GraphqlResponseFormatter(this.requestState, this.responseState, response)
     return graphqlResponseFormatter.format()
   }
 
-  getRequestStateFromParams(params){
+  getRequestStateFromParams(params) {
     let cursorBasedPaginationParams = {}
-    if(params.startCursor){
+    if (params.startCursor) {
       cursorBasedPaginationParams['startCursor'] = params.startCursor
     }
-    if(params.endCursor){
+    if (params.endCursor) {
       cursorBasedPaginationParams['endCursor'] = params.endCursor
     }
     return {
@@ -121,60 +159,77 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   }
 
-  getEncodedQueryString(except = []){
+  getEncodedQueryString(except = []) {
     const {
       filterParameter: filterReplacement,
       startCursorParameter: startCursorReplacement,
       endCursorParameter: endCursorReplacement,
       sortParameter: sortReplacement
-     } = queryStringManager.getConfiguration()
+    } = queryStringManager.getConfiguration()
 
     const filters = this.requestState.filters
+    let filtersForQueryParams = {}
+    for (const [filterId, filterValues] of Object.entries(filters)) {
+      // checkbox filter
+      if (Array.isArray(filterValues)) {
+        let formattedFilterValues = []
+        filterValues.forEach((filterValue) => {
+          formattedFilterValues.push(this.responseState.filter_inputs[filterValue].label)
+        })
+        filtersForQueryParams[filterId] = formattedFilterValues
+      }else{
+        filtersForQueryParams[filterId] = filterValues
+      }
+    }
     const sort = this.requestState.sort
     let params: any = {}
     const hasFilters = (Object.keys(filters).length !== 0)
-    if(hasFilters){
-      params[filterReplacement] = getFilterQueryString(filters)
+    if (hasFilters) {
+      params[filterReplacement] = getFilterQueryString(filtersForQueryParams)
     }
-    if(this.requestState.startCursor){
+    if (this.requestState.startCursor) {
       params[startCursorReplacement] = this.requestState.startCursor
     }
-    if(this.requestState.endCursor){
+    if (this.requestState.endCursor) {
       params[endCursorReplacement] = this.requestState.endCursor
     }
-    if(sort && sort.length){
+    if (sort && sort.length) {
       params[sortReplacement] = sort
     }
     except.forEach((paramToDelete) => {
       delete params[getReplacementParam(paramToDelete)]
     })
-    return  `${queryStringManager.stringify(params)}`;
+    return `${queryStringManager.stringify(params)}`;
   }
 
-  getRequestParamsFromWindowLocation(){
+  getRequestParamsFromWindowLocation() {
     const queryString = window.location.search.replace("?", '')
     const parsedObjectFromQueryString = queryStringManager.parse(queryString.replace("?", ''))
-    const { queryParameter, queryFilterParameter, filterParameter, startCursorParameter, endCursorParameter, sortParameter } =  queryStringManager.getConfiguration()
+    const { queryParameter, queryFilterParameter, filterParameter, startCursorParameter, endCursorParameter, sortParameter } = queryStringManager.getConfiguration()
     let params = {}
-    if(parsedObjectFromQueryString[queryParameter]){
+    if (parsedObjectFromQueryString[queryParameter]) {
       params['query'] = parsedObjectFromQueryString[queryParameter]
     }
-    if(parsedObjectFromQueryString[queryFilterParameter]){
+    if (parsedObjectFromQueryString[queryFilterParameter]) {
       params['queryFilters'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter])
     }
-    if(parsedObjectFromQueryString[filterParameter]){
+    if (parsedObjectFromQueryString[filterParameter]) {
       params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter])
     }
-    if(parsedObjectFromQueryString[startCursorParameter]){
+    if (parsedObjectFromQueryString[startCursorParameter]) {
       params['startCursor'] = parsedObjectFromQueryString[startCursorParameter]
     }
-    if(parsedObjectFromQueryString[endCursorParameter]){
+    if (parsedObjectFromQueryString[endCursorParameter]) {
       params['endCursor'] = parsedObjectFromQueryString[endCursorParameter]
     }
-    if(parsedObjectFromQueryString[sortParameter]){
+    if (parsedObjectFromQueryString[sortParameter]) {
       params['sort'] = parsedObjectFromQueryString[sortParameter]
     }
     return params
+  }
+
+  async mutateResponse(formattedResponse: any) {
+    return formattedResponse
   }
 
 }

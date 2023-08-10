@@ -18,10 +18,12 @@ class GraphqlResponseFormatter {
 
   private requestState
   private shopifyResponse
+  private responseState;
 
-  constructor(requestState, shopifyResponse) {
+  constructor(requestState, responseState, shopifyResponse) {
     this.shopifyResponse = shopifyResponse
     this.requestState = requestState
+    this.responseState = responseState
   }
 
   getSortOptions() {
@@ -59,7 +61,6 @@ class GraphqlResponseFormatter {
       sort_options: this.getSortOptions(),
       page_info: this.shopifyResponse.collection.products.pageInfo,
       filter_inputs: GraphqlResponseFormatter.getFilterInputs(this.shopifyResponse.collection.products.filters),
-      // filterRanges: filtersInfo.filterRanges,
     }
   }
 
@@ -84,11 +85,12 @@ class GraphqlResponseFormatter {
 
   formatProduct(product) {
     //TODO:// consider currency and display formatting for price related fields
-    const imagesToVariantIdsMap = this.getImagesToVariantIdsMap(product.variants)
+    // CHECK NULL VAULES IN APPLY CURRENCY CONVERSION
     const variants = this.formatVariants(product.variants)
     const priceVaries = (product.priceRange.minVariantPrice.amount != product.priceRange.maxVariantPrice.amount)
     const compareAtPriceVaries = (product.compareAtPriceRange.minVariantPrice.amount != product.compareAtPriceRange.maxVariantPrice.amount)
     const media = this.formatMedia(product.media)
+    const images = this.formatImages(product.images)
     return {
       id: this.getIdFromGraphqlId(product.id),
       title: product.title,
@@ -96,8 +98,8 @@ class GraphqlResponseFormatter {
       available: product.availableForSale,
       tags: product.tags,
       variants: variants,
-      featured_image: this.getFeaturedImage(media),
-      images: this.formatImages(product.images),
+      featured_image: this.getFeaturedImage(images),
+      images: images,
       media: media,
       vendor: product.vendor,
       product_type: product.productType,
@@ -182,7 +184,7 @@ class GraphqlResponseFormatter {
   formatVideoSources(videoSources) {
     return videoSources.map(this.formatVideoSource);
   }
-  
+
   formatVideoSource(videoSource) {
     return {
       file_size: videoSource.fileSize,
@@ -193,12 +195,11 @@ class GraphqlResponseFormatter {
       url: videoSource.url
     };
   }
-  
 
-  getFeaturedImage(media){
-    const images = media.filter((mediaItem)=>mediaItem.media_type === "image").sort((mediaItem)=>mediaItem['position'])
-    if(images.length){
-      return images[0]
+
+  getFeaturedImage(images) {
+    if(images.length > 0){
+      return images.find((image) => image.position === 1)
     }
     return null
   }
@@ -210,7 +211,7 @@ class GraphqlResponseFormatter {
         id: this.getIdFromGraphqlId(variantEdge.node.id),
         title: variantEdge.node.title,
         sku: variantEdge.node.sku,
-        price: applyCurrencyConversion(variantEdge.node.price.amount),
+        price: variantEdge.node.price ? applyCurrencyConversion(variantEdge.node.price.amount) : null,
         compare_at_price: variantEdge.node.compareAtPrice ? applyCurrencyConversion(variantEdge.node.compareAtPrice.amount) : null,
         available: variantEdge.node.availableForSale,
         position: index + 1,
@@ -296,13 +297,14 @@ class GraphqlResponseFormatter {
 
       if (isPriceRangeFilter) {
         const parsedInput = JSON.parse(filter.values[0].input)
+        const hasPriceRanges = this.responseState.price_ranges
         let filterItem = {
           id: filter.id,
           name: filter.label,
           type: "range",
           display_format: "{{currency_label}}{{value}}",
-          min: parsedInput.price.min,
-          max: parsedInput.price.max
+          min: hasPriceRanges ? this.responseState.price_ranges.min : parsedInput.price.min,
+          max: hasPriceRanges ? this.responseState.price_ranges.max : parsedInput.price.max,
         }
         if (selectedFilter && selectedFilter.hasOwnProperty('selected_min')) {
           filterItem['selected_min'] = selectedFilter.selected_min
@@ -320,13 +322,14 @@ class GraphqlResponseFormatter {
       const isPriceRangeFilter = (filter.type === FILTER_TYPES.PRICE_RANGE)
       if (isCheckboxFilter) {
         filter.values.forEach((filterItem) => {
-          filterInputs[filterItem.id] = { type: "checkbox", input: filterItem.input }
+          filterInputs[filterItem.id] = { type: "checkbox", input: filterItem.input, label: filterItem.label }
         })
       }
       if (isPriceRangeFilter) {
         filterInputs[filter.id] = {
           type: "range",
-          input: filter.values[0].input
+          input: filter.values[0].input,
+          label: filter.label
         }
       }
     })

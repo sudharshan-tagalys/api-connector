@@ -5,7 +5,7 @@ import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopify
 import AnalyticsTracker, { TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { getProductPrices, updateProductPricesFromStoreFrontAPI } from "../shared/helpers/common";
+import { getProductPrices, updateProductPricesForMarket } from "../shared/helpers/common";
 import TagalysAPI from "./api/tagalysApi";
 import failover from '../shared/helpers/failover'
 
@@ -92,7 +92,7 @@ class APIConnector {
   getHelpersToExpose(response, formattedResponse): any {
     return {
       getProductPrices,
-      updateProductPricesFromStoreFrontAPI
+      updateProductPricesForMarket
     }
   }
 

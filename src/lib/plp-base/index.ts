@@ -8,6 +8,8 @@ import {
   getRequestParamsFromQueryString,
   getRequestParamsFromWindowLocation
 } from "../../shared/helpers/common";
+import configuration from "../configuration";
+import ShopifyMultiCurrencyPriceMutator from "../../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
 
 class Base extends APIConnector {
   // == HELPERS ==
@@ -57,10 +59,10 @@ class Base extends APIConnector {
     // this.requestState.action = ""
   }
 
-  setRequestState(mutationCallback, callAPI = true){
+  setRequestState(mutationCallback, callAPI = true, notifyStateChange = true){
     const newRequestState = mutationCallback(this.requestState);
     this.requestState = newRequestState;
-    if(this.requestOptions.onStateChange){
+    if(this.requestOptions.onStateChange && notifyStateChange){
       this.requestOptions.onStateChange(this.requestState)
     }
     this.setRequestParamsFromRequestState()
@@ -222,6 +224,7 @@ class Base extends APIConnector {
       getRequestParamsFromQueryString: (queryString) => this.getRequestParamsFromQueryString(queryString),
       getRequestParamsFromWindowLocation: () => this.getRequestParamsFromWindowLocation(),
       getRequestState: () => this.requestState,
+      setRequestState: (mutationCallback, callAPI, notifyStateChange = true) => this.setRequestState(mutationCallback, callAPI, notifyStateChange),
       getRequestParams: () => this.requestState,
       getResponseState: () => this.responseState,
     }

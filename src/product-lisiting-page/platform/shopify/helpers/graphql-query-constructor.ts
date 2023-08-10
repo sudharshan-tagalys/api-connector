@@ -59,8 +59,8 @@ class GraphqlQueryConstructor {
         if(filterValues.hasOwnProperty("selected_min")){
           filtersToApply.push({
             price: {
-              min: filterValues['selected_min'],
-              max: filterValues['selected_max']
+              min: parseFloat(filterValues['selected_min']),
+              max: parseFloat(filterValues['selected_max'])
             }
           })
         }else{
