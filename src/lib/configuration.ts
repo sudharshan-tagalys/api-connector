@@ -154,15 +154,6 @@ class Configuration{
     return this.configuration.countryCode === this.configuration.baseCountryCode
   }
 
-  isUsingMultiCountryCurrency() {
-    return (
-      this.isShopify() &&
-      this.configuration.platformVariables &&
-      this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
-      this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true
-    )
-  }
-
   waitForStoreFrontAPI() {
     if (this.isShopify()) {
       if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")){

@@ -7,7 +7,7 @@ export const FILTER_ACTIONS = {
 import configuration from "../../configuration"
 
 const getFilters = function () {
-  if (configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()) {
+  if (!configuration.isUsingBaseCountryCode()) {
     return this.responseState.filters.filter((filter) => !filter.currency)
   }
   return this.responseState.filters

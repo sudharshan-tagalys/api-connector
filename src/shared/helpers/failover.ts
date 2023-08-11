@@ -5,17 +5,15 @@ import TagalysAPI from '../../lib/api/tagalysApi'
 class Failover {
   private apiClient
   private intervalId;
+
   constructor() {
     this.apiClient = new TagalysAPI()
-    if(this.inFailoverMode()){
-      this.intervalId = setInterval(this.pollUntilAPIisHealthy.bind(this), 180000)
-    }
   }
 
   activate() {
     this.apiClient.setAsOffline()
     window.location.href = this.getUrlWithoutQueryParams(); 
-    this.intervalId = setInterval(this.pollUntilAPIisHealthy.bind(this), 180000)
+    this.pollUntilAPIisHealthy()
   }
 
   deactivate() {
@@ -24,7 +22,7 @@ class Failover {
     clearInterval(this.intervalId)
   }
 
-  inFailoverMode() {
+  hasFailedover() {
     return !this.apiClient.isOnline()
   }
 
@@ -34,7 +32,11 @@ class Failover {
   }
 
   pollUntilAPIisHealthy(){
-    this.apiClient.call("GET", "/health", { onSuccess: this.deactivate })
+    if(!this.intervalId){
+      this.intervalId = setInterval(function(){
+        this.apiClient.call("GET", "/health", { onSuccess: this.deactivate })
+      }.bind(this), 180000)
+    }
   }
 }
 

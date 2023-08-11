@@ -32,9 +32,11 @@ const commonConnectorHelpers = {
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
-  inFailoverMode: () => failover.inFailoverMode(),
-  activateFailover: () => failover.activate(),
-  deactivateFailover: () => failover.deactivate()
+  test: {
+    hasFailedover: ()=> failover.hasFailedover(),
+    activateFailover: () => failover.activate(),
+    deactivateFailover: () => failover.deactivate()
+  }
 }
 
 export const APIConnector = {
@@ -108,6 +110,10 @@ const Analytics = {
 
 const getResponseFormatter = () => {
   return formatFactory.responseFormatter()
+}
+
+if(failover.hasFailedover()){
+  failover.pollUntilAPIisHealthy()
 }
 
 export {

@@ -433,7 +433,7 @@ const getProductPrices = async (productIds, countryCode, metafields = { products
 
 const updateProductPricesForMarket = async (response, callbacks : any = {}) => {
   try {
-    if(!configuration.isUsingMultiCountryCurrency() || configuration.isUsingBaseCountryCode()){
+    if(configuration.isUsingBaseCountryCode()){
       return response
     }
     const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()

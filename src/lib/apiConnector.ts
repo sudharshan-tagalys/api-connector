@@ -77,8 +77,8 @@ class APIConnector {
   }
 
   formatRequestParams(params, format) {
-    if (format === REQUEST_FORMAT.GRAPQHL) {
-      return params
+    if (format === REQUEST_FORMAT.GRAPHQL) {
+      return JSON.stringify(params)
     }
     if (format === REQUEST_FORMAT.FORM_DATA) {
       return objectToFormData(params)
@@ -124,7 +124,7 @@ class APIConnector {
   }
 
   async mutateResponse(formattedResponse) {
-    if (configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()) {
+    if (!configuration.isUsingBaseCountryCode()) {
       const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
       if (configuration.waitForStoreFrontAPI()) {
         await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
@@ -195,7 +195,7 @@ class APIConnector {
           })
         },
         new: (requestOptions : any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
-          if(failover.inFailoverMode() && requestOptions.hasOwnProperty('failover')){
+          if(failover.hasFailedover() && requestOptions.hasOwnProperty('failover')){
             return requestOptions.failover()
           }
           const instance = new this()
