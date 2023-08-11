@@ -106,7 +106,6 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
     initialRequestOptions.params.variables.filters = filtersForRequestParams
     this.requestOptions.params.variables.filters = filtersForRequestParams
-    console.log(initialRequestOptions, "FORMATTED")
     this.setRequestState((reqState)=>{
       reqState.filters = filtersForRequestParams
       return reqState
@@ -134,7 +133,7 @@ class ShopifyProductListingPage extends ProductListingPage {
   getRequestOptions() {
     return {
       params: this.requestOptions.params,
-      path: "/",
+      path: "/graphql.json",
       format: "GRAPHQL",
     }
   }

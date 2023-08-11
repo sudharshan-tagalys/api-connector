@@ -27,7 +27,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@shopify/hydrogen": "^2023.4.6",
     "qs": "^6.10.5"
   }
 }
