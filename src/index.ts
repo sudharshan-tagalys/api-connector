@@ -31,7 +31,6 @@ const commonConnectorHelpers = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
   test: {
     hasFailedover: ()=> failover.hasFailedover(),
     activateFailover: () => failover.activate(),
@@ -63,6 +62,9 @@ const setConfiguration = (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
+  if(failover.hasFailedover()){
+    failover.pollUntilAPIisHealthy()
+  }
 }
 
 const Analytics = {
@@ -110,10 +112,6 @@ const Analytics = {
 
 const getResponseFormatter = () => {
   return formatFactory.responseFormatter()
-}
-
-if(failover.hasFailedover()){
-  failover.pollUntilAPIisHealthy()
 }
 
 export {
