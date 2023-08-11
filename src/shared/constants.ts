@@ -25,7 +25,7 @@ const DEFAULT_REQUEST_CALLBACKS = {
 const REQUEST_FORMAT = {
   FORM_DATA: "FormData",
   JSON: "JSON",
-  GRAPQHL: "GRAPHQL"
+  GRAPHQL: "GRAPHQL"
 }
 
 export {
