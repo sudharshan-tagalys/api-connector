@@ -179,9 +179,7 @@ class Configuration{
 
   getMetafields(){
     if(!this.hasMetafields()){
-      return {
-        products: []
-      }
+      return {}
     }
     return (this.configuration.platformVariables.metafields)
   }
