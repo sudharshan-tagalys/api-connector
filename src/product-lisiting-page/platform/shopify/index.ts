@@ -5,6 +5,7 @@ import GraphqlQueryConstructor from './helpers/graphql-query-constructor'
 import GraphqlResponseFormatter from './helpers/grapqhl-response-formatter'
 import { getFilterQueryString, getFiltersFromQueryString, getReplacementParam } from '../../../shared/helpers/common';
 import queryStringManager from '../../../lib/queryStringManager';
+import { REQUEST_FORMAT } from '../../../shared/constants';
 class ShopifyProductListingPage extends ProductListingPage {
   constructor() {
     super()
@@ -134,7 +135,7 @@ class ShopifyProductListingPage extends ProductListingPage {
     return {
       params: this.requestOptions.params,
       path: "/graphql.json",
-      format: "GRAPHQL",
+      format: REQUEST_FORMAT.GRAPHQL,
     }
   }
 
