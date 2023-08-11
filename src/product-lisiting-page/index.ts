@@ -1,4 +1,5 @@
 import Base from "../lib/plp-base"
+
 class ProductListingPage extends Base {
   // == HELPERS ==
   getDefaultRequestState = () => {
@@ -76,7 +77,6 @@ class ProductListingPage extends Base {
   }
 
   formatResponse(response: any) {
-    console.log("RESPONSE >> TAGALYS API", response)
     return this.responseFormatter.productListingPage(response)
   }
 
@@ -87,7 +87,6 @@ class ProductListingPage extends Base {
     if(state.product_listing_page_id){
       params['product_listing_page_id'] = state.product_listing_page_id
     }
-    console.log("PARAMS", params)
     return params
   }
 
@@ -109,6 +108,7 @@ class ProductListingPage extends Base {
       }
     }
   }
+
 }
 
 export default ProductListingPage
