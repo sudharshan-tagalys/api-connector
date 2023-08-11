@@ -21,8 +21,7 @@ import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
 import failover from "./shared/helpers/failover";
 
-export const ShopifyAPIConnector = {
-  ...ShopifyProductListingPage.export(),
+const commonConnectorHelpers = {
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
   cookie: {
@@ -33,7 +32,9 @@ export const ShopifyAPIConnector = {
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
-  inFailoverMode: () => failover.inFailoverMode()
+  inFailoverMode: () => failover.inFailoverMode(),
+  activateFailover: () => failover.activate(),
+  deactivateFailover: () => failover.deactivate()
 }
 
 export const APIConnector = {
@@ -48,19 +49,11 @@ export const APIConnector = {
   ...SearchSuggestions.export(),
   ...LegacySearchSuggestions.export(),
   ...ProductListingPage.export(),
-  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
-  getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
-  cookie: {
-    get: (cname) => cookie.get(cname),
-    set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
-    delete: (cname) => cookie.delete(cname)
-  },
-  getPlatformVariables: () => configuration.getPlatformVariables(),
-  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
-  inFailoverMode: () => failover.inFailoverMode(),
-  activateFailover: () => failover.activate(),
-  deactivateFailover: () => failover.deactivate(),
+  ...commonConnectorHelpers
+}
+
+export const ShopifyAPIConnector = {
+  ...ShopifyProductListingPage.export(),
 }
 
 const setConfiguration = (config) => {
