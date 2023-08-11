@@ -1,12 +1,13 @@
 import {createStorefrontClient} from '@shopify/hydrogen';
+import configuration from '../configuration';
 
 class ShopifyAPI{
   public storefront;
   constructor(){
     const {storefront} = createStorefrontClient({
-      publicStorefrontToken: "942cf991dbd2f945a7f671ea36f4761d",
-      storefrontApiVersion: "2023-04",
-      storeDomain: `https://replication-one.myshopify.com`,
+      publicStorefrontToken: configuration.getStoreFrontAPIAccessToken(),
+      storefrontApiVersion: "2023-01",
+      storeDomain: configuration.getMyShopifyDomain(),
     });
     this.storefront = storefront
   }

@@ -2,6 +2,7 @@ import configuration from "../configuration";
 import localStorage from "../localStorage";
 
 const TAGALYS_API_STATUS = "TAGALYS_API_STATUS"
+
 class TagalysAPI{
   call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
     var xhr = new XMLHttpRequest();
@@ -32,11 +33,12 @@ class TagalysAPI{
   }
 
   isOnline(){
-    return (localStorage.getItem(TAGALYS_API_STATUS) !== "offline")
+    return !localStorage.getItem(TAGALYS_API_STATUS)
   }
 
   setAsOffline(){
-    localStorage.setValue(TAGALYS_API_STATUS, "offline", 3600000)
+    const AN_HOUR = 3600000
+    localStorage.setValue(TAGALYS_API_STATUS, "offline", AN_HOUR)
   }
 
   setAsOnline(){

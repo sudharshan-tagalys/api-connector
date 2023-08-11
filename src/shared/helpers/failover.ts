@@ -4,36 +4,37 @@ import TagalysAPI from '../../lib/api/tagalysApi'
 
 class Failover {
   private apiClient
+  private intervalId;
   constructor() {
     this.apiClient = new TagalysAPI()
-    setInterval(this.pollUntilAPIisHealthy.bind(this), 180000)
+    if(this.inFailoverMode()){
+      this.intervalId = setInterval(this.pollUntilAPIisHealthy.bind(this), 180000)
+    }
   }
 
   activate() {
     this.apiClient.setAsOffline()
+    window.location.href = this.getUrlWithoutQueryParams(); 
+    this.intervalId = setInterval(this.pollUntilAPIisHealthy.bind(this), 180000)
   }
 
   deactivate() {
-    console.log("deactivating failover since api health returned to normal")
+    console.log("Deactivating failover since api health returned to normal")
     this.apiClient.setAsOnline()
+    clearInterval(this.intervalId)
   }
 
   inFailoverMode() {
     return !this.apiClient.isOnline()
   }
 
-  pollUntilAPIisHealthy(){
-    console.log("checking api health")
-    this.deactivate()
-    return
-    this.apiClient.call("GET", "/health", {
-      onSuccess: function(){
-        console.log("success")
-      },
-      onFailure: function(){
+  getUrlWithoutQueryParams(){
+    const url = window.location.href;
+    return url.split('?')[0];
+  }
 
-      }
-    })
+  pollUntilAPIisHealthy(){
+    this.apiClient.call("GET", "/health", { onSuccess: this.deactivate })
   }
 }
 

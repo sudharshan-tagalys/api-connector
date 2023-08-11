@@ -58,7 +58,9 @@ export const APIConnector = {
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
-  inFailoverMode: () => failover.inFailoverMode()
+  inFailoverMode: () => failover.inFailoverMode(),
+  activateFailover: () => failover.activate(),
+  deactivateFailover: () => failover.deactivate(),
 }
 
 const setConfiguration = (config) => {

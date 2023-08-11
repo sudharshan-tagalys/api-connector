@@ -307,8 +307,8 @@ class GraphqlResponseFormatter {
           max: hasPriceRanges ? this.responseState.price_ranges.max : parsedInput.price.max,
         }
         if (selectedFilter && selectedFilter.hasOwnProperty('selected_min')) {
-          filterItem['selected_min'] = selectedFilter.selected_min
-          filterItem['selected_max'] = selectedFilter.selected_max
+          filterItem['selected_min'] = selectedFilter.selected_min.toString()
+          filterItem['selected_max'] = selectedFilter.selected_max.toString()
         }
         return filterItem
       }
