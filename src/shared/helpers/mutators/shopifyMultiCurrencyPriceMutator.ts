@@ -6,7 +6,7 @@ const unique = (value, index, self) => {
   return self.indexOf(value) === index
 }
 
-class ShopifyMultiCurrencyPriceMutator {
+class ShopifyMultiMarket {
   async mutate(response) {
     if (response.products) {
       const productIds = response.products.map((product) => product.id)
@@ -124,4 +124,4 @@ class ShopifyMultiCurrencyPriceMutator {
   }
 }
 
-export default ShopifyMultiCurrencyPriceMutator
+export default ShopifyMultiMarket

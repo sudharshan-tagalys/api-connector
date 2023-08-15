@@ -4,28 +4,27 @@ import localStorage from "../localStorage";
 const TAGALYS_API_STATUS = "TAGALYS_API_STATUS"
 
 class TagalysAPI{
-  call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
-    var xhr = new XMLHttpRequest();
-    xhr.open(method, this.url(path));
-    xhr.setRequestHeader('Content-Type', headers.contentType);
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        requestOptions.onSuccess(JSON.parse(xhr.responseText))
-      } else {
-        // Handling API failure callback
-        this.setAsOffline()
-        if(typeof(requestOptions.onFailure) != 'undefined') {
-          requestOptions.onFailure(JSON.parse(xhr.response));
-        }
+  async call(method: string, path: string, requestOptions, headers = { contentType: "application/x-www-form-urlencoded" }){
+    const response = await fetch(this.url(path), {
+      body: requestOptions.params,
+      headers: {
+        "Content-Type": headers.contentType,
+      },
+      method: method,
+    });
+    if(response.status === 200){
+      const parsedResponse = await response.json()
+      if(requestOptions.hasOwnProperty("onSuccess")){
+        return requestOptions.onSuccess(parsedResponse)
       }
-    }.bind(this);
-    xhr.onerror = function () {
+      return parsedResponse
+    }else{
+      this.setAsOffline()
       if(typeof(requestOptions.onFailure) != 'undefined') {
-        requestOptions.onFailure(JSON.parse(xhr.response));
+        return requestOptions.onFailure(response);
       }
+      return response
     }
-    xhr.send(requestOptions.params);
-    return xhr
   }
 
   url(path): string{
@@ -36,6 +35,10 @@ class TagalysAPI{
     return !localStorage.getItem(TAGALYS_API_STATUS)
   }
 
+  static isOffline(){
+    return (localStorage.getItem(TAGALYS_API_STATUS) === "offline")
+  }
+
   setAsOffline(){
     const AN_HOUR = 3600000
     localStorage.setValue(TAGALYS_API_STATUS, "offline", AN_HOUR)
@@ -43,6 +46,20 @@ class TagalysAPI{
 
   setAsOnline(){
     localStorage.removeItem(TAGALYS_API_STATUS)
+  }
+
+  async isAPIHealthy(){
+    const response = await fetch(this.url("api_health"), {
+      body: null,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    });
+    if(response.status === 200){
+      return true
+    }
+    return false
   }
 }
 

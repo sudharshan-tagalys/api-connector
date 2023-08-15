@@ -54,11 +54,6 @@ class Base extends APIConnector {
     }
   }
 
-  postSuccessCallback(response, formattedResponse) {
-    // TODO: CHECK WITH SUDHARSHAN WHY WE ARE CLEARING
-    // this.requestState.action = ""
-  }
-
   setRequestState(mutationCallback, callAPI = true, notifyStateChange = true){
     const newRequestState = mutationCallback(this.requestState);
     this.requestState = newRequestState;

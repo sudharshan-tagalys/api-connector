@@ -19,7 +19,7 @@ import platformAnalyticsFactory from "./lib/platformAnalyticsFactory"
 import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
-import failover from "./shared/helpers/failover";
+import failover from "./lib/failover";
 
 const commonConnectorHelpers = {
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
@@ -65,6 +65,10 @@ const setConfiguration = (config) => {
   if(failover.hasFailedover()){
     failover.pollUntilAPIisHealthy()
   }
+}
+
+const getConfiguration = () => {
+  return configuration.get()
 }
 
 const Analytics = {
@@ -116,6 +120,7 @@ const getResponseFormatter = () => {
 
 export {
   Analytics,
+  getConfiguration,
   setConfiguration,
   packageDetails,
   getResponseFormatter,

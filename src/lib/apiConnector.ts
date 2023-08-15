@@ -5,9 +5,11 @@ import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopify
 import AnalyticsTracker, { TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { getProductPrices, updateProductPricesForMarket } from "../shared/helpers/common";
+import { updateProductPricesForMarket } from "../shared/helpers/common";
 import TagalysAPI from "./api/tagalysApi";
-import failover from '../shared/helpers/failover'
+import failover from './failover'
+import ShopifyMultiMarket from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
+import shopifyConfiguration from "./shopifyConfiguration";
 
 
 const DEFAULT_REQUEST_OPTIONS = {
@@ -62,7 +64,7 @@ class APIConnector {
         if (this.isFailureResponse(response)) {
           this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
         } else {
-          this.onSuccessfulResponse(response, params)
+          this.onSuccessfulResponse(response)
         }
       },
       onFailure: (response) => {
@@ -91,7 +93,6 @@ class APIConnector {
 
   getHelpersToExpose(response, formattedResponse): any {
     return {
-      getProductPrices,
       updateProductPricesForMarket
     }
   }
@@ -100,16 +101,13 @@ class APIConnector {
 
   }
 
-  postSuccessCallback(response, formattedResponse) {
-  }
-
   getFormattedResponse(response) {
     return this.formatResponse(response)
   }
 
-  async onSuccessfulResponse(response, params = {}) {
+  async onSuccessfulResponse(response) {
     const analyticsData = this.extractAnalyticsData(response);
-    const formattedResponse = this.formatResponse(response, params)
+    const formattedResponse = this.formatResponse(response)
     const mutatedResponse = await this.mutateResponse(formattedResponse)
     this.internalSuccessCallback(response, mutatedResponse)
     const helpers = this.getHelpersToExpose(response, mutatedResponse)
@@ -120,16 +118,17 @@ class APIConnector {
     if (!configuration.analyticsStorageConsentProvided()) {
       cookie.batchDelete(TAGALYS_ANALYTICS_COOKIES)
     }
-    this.postSuccessCallback(response, mutatedResponse)
   }
 
   async mutateResponse(formattedResponse) {
-    if (!configuration.isUsingBaseCountryCode()) {
-      const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-      if (configuration.waitForStoreFrontAPI()) {
-        await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
-      } else {
-        shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)
+    if(configuration.isShopify()){
+      if (!configuration.isUsingBaseCountryCode()) {
+        const shopifyMultiMarket = new ShopifyMultiMarket()
+        if (shopifyConfiguration.waitForStoreFrontAPI()) {
+          await shopifyMultiMarket.mutate(formattedResponse)
+        } else {
+          shopifyMultiMarket.resetProductPrices(formattedResponse)
+        }
       }
     }
     return formattedResponse
@@ -139,7 +138,7 @@ class APIConnector {
     return response
   }
 
-  formatResponse(response, params = {}) {
+  formatResponse(response) {
     return response
   }
 
@@ -195,7 +194,7 @@ class APIConnector {
           })
         },
         new: (requestOptions : any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
-          if(failover.hasFailedover() && requestOptions.hasOwnProperty('failover')){
+          if(TagalysAPI.isOffline() && requestOptions.hasOwnProperty('failover')){
             return requestOptions.failover()
           }
           const instance = new this()

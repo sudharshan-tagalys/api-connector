@@ -20,6 +20,7 @@ class Configuration{
         exchangeRate: configuration.currency.exchangeRate,
         fractionalDigits: configuration.currency.fractionalDigits
       },
+      onFailover: configuration.onFailover,
       apiClient: configuration.apiClient,
       track: configuration.track,
       analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided
@@ -126,14 +127,6 @@ class Configuration{
     return this.configuration.api.credentials.clientCode
   }
 
-  getStoreFrontAPIAccessToken() {
-    return this.configuration.platformVariables.storeFrontAPIAccessToken
-  }
-
-  getMyShopifyDomain() {
-    return this.configuration.platformVariables.myShopifyDomain
-  }
-
   isShopify() {
     return this.getPlatform() === "shopify"
   }
@@ -154,33 +147,12 @@ class Configuration{
     return this.configuration.countryCode === this.configuration.baseCountryCode
   }
 
-  waitForStoreFrontAPI() {
-    if (this.isShopify()) {
-      if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
-        return true
-      }
-      return this.configuration.platformVariables.waitForStoreFrontAPI
-    }
-    return false
+  onFailover(){
+    return this.configuration.onFailover
   }
 
-  hasMetafields(){
-    return (this.configuration.hasOwnProperty('platformVariables') && this.configuration.platformVariables.hasOwnProperty('metafields'))
-  }
-
-  getMetafields(){
-    if(!this.hasMetafields()){
-      return {}
-    }
-    return (this.configuration.platformVariables.metafields)
-  }
-  isMetafieldConfigured(namespace, key, scope){
-    const metafields = this.getMetafields()
-    const configured = metafields[scope].find((metafield)=>metafield.namespace === namespace && metafield.key === key)
-    if(configured){
-      return true
-    }
-    return false
+  get(){
+    return this.configuration
   }
 }
 export default new Configuration();

@@ -365,21 +365,6 @@ class GraphqlQueryConstructor {
     `
   }
 
-  getCollectionMetafields(level = 0){
-    return `
-      metafields(identifiers: $collection_metafields){
-        id
-        key
-        namespace
-        type
-        value
-        description
-        ${this.getReferenceMetafields(level)}
-      }
-    `
-  }
-
-
   static getFilterInputsQuery(){
     return `
     query Collection(

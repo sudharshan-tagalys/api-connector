@@ -1,7 +1,7 @@
-import { FILTER_ACTIONS } from "./filter"
-import { SORT_OPTION_ACTIONS } from "./sortOption"
+import { ACTIONS as FILTER_ACTIONS } from "./filter"
+import { ACTIONS as SORT_OPTION_ACTIONS } from "./sortOption"
 
-export const PAGINATION_ACTIONS = {
+export const ACTIONS = {
   GO_TO_NEXT_PAGE: 'GO_TO_NEXT_PAGE',
   GO_TO_PREVIOUS_PAGE: 'GO_TO_PREVIOUS_PAGE',
   GO_TO_PAGE: 'GO_TO_PAGE'
@@ -36,7 +36,7 @@ const goToNextPage = function () {
   }
   this.setRequestState((reqState) => {
     reqState.page += 1
-    reqState.action = PAGINATION_ACTIONS.GO_TO_NEXT_PAGE
+    reqState.action = ACTIONS.GO_TO_NEXT_PAGE
     return reqState
   })
 }
@@ -48,12 +48,12 @@ const goToPreviousPage = function(){
   }
   this.setRequestState((reqState) => {
     reqState.page -= 1
-    reqState.action = PAGINATION_ACTIONS.GO_TO_PREVIOUS_PAGE
+    reqState.action = ACTIONS.GO_TO_PREVIOUS_PAGE
     return reqState
   })
 }
 
-const goToPage = function (page, actionSrc = PAGINATION_ACTIONS.GO_TO_PAGE) {
+const goToPage = function (page, actionSrc = ACTIONS.GO_TO_PAGE) {
   this.setRequestState((reqState) => {
     reqState.page = page
     reqState.action = actionSrc

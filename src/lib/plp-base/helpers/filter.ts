@@ -1,10 +1,11 @@
-export const FILTER_ACTIONS = {
+import configuration from "../../configuration"
+
+export const ACTIONS = {
   APPLY_FILTER: "APPLY_FILTER",
   CLEAR_FILTER: "CLEAR_FILTER",
   CLEAR_ALL_FILTERS: "CLEAR_ALL_FILTERS"
 }
 
-import configuration from "../../configuration"
 
 const getFilters = function () {
   if (!configuration.isUsingBaseCountryCode()) {
@@ -76,7 +77,7 @@ const getAppliedFilters = function (flatten = false) {
 const setFilter = function (filterId, appliedFilter, callAPI = false) {
   const filter = this.filterHelpers.getFilterById(filterId)
   this.setRequestState((reqState) => {
-    reqState.action = FILTER_ACTIONS.APPLY_FILTER
+    reqState.action = ACTIONS.APPLY_FILTER
     let filterItems = []
     if(filter.type === "range"){
       reqState.filters[filterId] = appliedFilter
@@ -159,14 +160,14 @@ const clearFilter = function(filterId, filterItemIds = []){
       this.filterHelpers.clearFilter(filterId, [filterItemIds])
     }
     this.resetPagination(reqState)
-    reqState.action = FILTER_ACTIONS.CLEAR_FILTER
+    reqState.action = ACTIONS.CLEAR_FILTER
     return reqState
   })
 }
 
 const clearAllFilters = function(){
   this.setRequestState((reqState)=>{
-    reqState.action = FILTER_ACTIONS.CLEAR_ALL_FILTERS
+    reqState.action = ACTIONS.CLEAR_ALL_FILTERS
     reqState.filters = {}
     this.resetPagination(reqState)
     return reqState

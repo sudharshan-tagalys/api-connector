@@ -6,6 +6,7 @@ import GraphqlResponseFormatter from './helpers/grapqhl-response-formatter'
 import { getFilterQueryString, getFiltersFromQueryString, getReplacementParam } from '../../../shared/helpers/common';
 import queryStringManager from '../../../lib/queryStringManager';
 import { REQUEST_FORMAT } from '../../../shared/constants';
+
 class ShopifyProductListingPage extends ProductListingPage {
   constructor() {
     super()
@@ -21,20 +22,10 @@ class ShopifyProductListingPage extends ProductListingPage {
     requestState.endCursor = null
   }
 
-  getDefaultRequestState = () => {
+  getDefaultRequestState = () : any => {
     return {
       product_listing_page_id: "",
       filters: {},
-      request: [
-        'total',
-        'results',
-        'details',
-        'filters',
-        'sort_options',
-        'variables',
-        'banners'
-      ],
-      page: 1,
       perPage: 16,
       sort: "manual",
       startCursor: null,
@@ -42,84 +33,75 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   }
 
-  getDefaultResponseState = () => {
+  getDefaultResponseState = () : any => {
     return {
-      name: "",
-      total_pages: null,
-      page: null,
       total: null,
       products: [],
       filters: [],
       sort_options: [],
-      // TODO: do we need to consider banners and variables?
-      banners: [],
-      variants: [],
-      pageInfo: {},
+      page_info: {},
       filterInputs: {},
       filterRanges: {}
     }
   };
 
   async updateResponseStateWithFilters(requestOptions) {
-    const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
-    const response = await this.apiClient().storefront.query(filterInputsQuery, {
-      variables: requestOptions.params.variables
-    })
+    // const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
     // const response = await this.apiClient().storefront.query(filterInputsQuery, {
-    //   variables: {
-    //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
-    //   }
+    //   variables: requestOptions.params.variables
     // })
-    const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
-    const rangeFilter = response.collection.products.filters.find((filter)=>filter.type=== "PRICE_RANGE")
-    let price_ranges = {}
-    if(rangeFilter){
-      price_ranges =JSON.parse(rangeFilter.values[0].input).price
-    }
-    this.setResponseState({
-      ...this.responseState,
-      filter_inputs: filterInputs,
-      price_ranges: price_ranges
-    })
-    return response
+    // // const response = await this.apiClient().storefront.query(filterInputsQuery, {
+    // //   variables: {
+    // //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
+    // //   }
+    // // })
+    // const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
+    // const rangeFilter = response.collection.products.filters.find((filter)=>filter.type=== "PRICE_RANGE")
+    // let price_ranges = {}
+    // if(rangeFilter){
+    //   price_ranges =JSON.parse(rangeFilter.values[0].input).price
+    // }
+    // this.setResponseState({
+    //   ...this.responseState,
+    //   filter_inputs: filterInputs,
+    //   price_ranges: price_ranges
+    // })
+    // return response
   }
 
-  updateRequestStateWithFilters(initialRequestOptions, filtersFromResponse){
-    let filtersForRequestParams = {}
-    for (const [filterId, appliedFilterValues] of Object.entries(this.requestState.filters)) {
-      // checkbox filter
-      const appliedFilter = filtersFromResponse.collection.products.filters.find((filter) => filter.id === filterId)
-      if (Array.isArray(appliedFilterValues)) {
-        let formattedFilterValues = []
-        appliedFilterValues.forEach((filterLabel) => {
-          if (appliedFilter.type === "LIST" || appliedFilter.type === "BOOLEAN") {
-            appliedFilter.values.forEach((filterValue) => {
-              if (filterLabel === filterValue.label) {
-                formattedFilterValues.push(filterValue.id)
-              }
-            })
-          }
-        })
-        filtersForRequestParams[filterId] = formattedFilterValues
-      }else{
-        filtersForRequestParams[filterId] = appliedFilterValues
-      }
-    }
-    initialRequestOptions.params.variables.filters = filtersForRequestParams
-    this.requestOptions.params.variables.filters = filtersForRequestParams
-    this.setRequestState((reqState)=>{
-      reqState.filters = filtersForRequestParams
-      return reqState
-    }, false, false)
-  }
+  // updateRequestStateWithFilters(initialRequestOptions, filtersFromResponse){
+  //   let filtersForRequestParams = {}
+  //   for (const [filterId, appliedFilterValues] of Object.entries(this.requestState.filters)) {
+  //     if (Array.isArray(appliedFilterValues)) {
+  //       let formattedFilterValues = []
+  //       appliedFilterValues.forEach((filterLabel) => {
+  //           appliedFilter.values.forEach((filterValue) => {
+  //             if (filterLabel === filterValue.label) {
+  //               formattedFilterValues.push(filterValue.id)
+  //             }
+  //           })
+  //         }
+  //       })
+  //       filtersForRequestParams[filterId] = formattedFilterValues
+  //     }else{
+  //       filtersForRequestParams[filterId] = appliedFilterValues
+  //     }
+  //   }
+  //   initialRequestOptions.params.variables.filters = filtersForRequestParams
+  //   this.requestOptions.params.variables.filters = filtersForRequestParams
+  //   this.setRequestState((reqState)=>{
+  //     reqState.filters = filtersForRequestParams
+  //     return reqState
+  //   }, false, false)
+  // }
 
   async call(initialRequestOptions: any) {
-    const initialRequest = (Object.keys(this.responseState).length === 0)
-    if (initialRequest) {
-      const response = await this.updateResponseStateWithFilters(initialRequestOptions)
-      this.updateRequestStateWithFilters(initialRequestOptions, response)
-      return await super.call(initialRequestOptions)
-    }
+    // const initialRequest = (Object.keys(this.responseState).length === 0)
+    // if (initialRequest) {
+    //   const response = await this.updateResponseStateWithFilters(initialRequestOptions)
+    //   this.updateRequestStateWithFilters(initialRequestOptions, response)
+    //   return await super.call(initialRequestOptions)
+    // }
     await super.call()
   }
 
@@ -134,13 +116,13 @@ class ShopifyProductListingPage extends ProductListingPage {
   getRequestOptions() {
     return {
       params: this.requestOptions.params,
-      path: "/graphql.json",
+      path: "graphql.json",
       format: REQUEST_FORMAT.GRAPHQL,
     }
   }
 
 
-  formatResponse(response: any, params = {}) {
+  formatResponse(response: any) {
     const graphqlResponseFormatter = new GraphqlResponseFormatter(this.requestState, this.responseState, response)
     return graphqlResponseFormatter.format()
   }
@@ -205,14 +187,8 @@ class ShopifyProductListingPage extends ProductListingPage {
   getRequestParamsFromWindowLocation() {
     const queryString = window.location.search.replace("?", '')
     const parsedObjectFromQueryString = queryStringManager.parse(queryString.replace("?", ''))
-    const { queryParameter, queryFilterParameter, filterParameter, startCursorParameter, endCursorParameter, sortParameter } = queryStringManager.getConfiguration()
+    const { filterParameter, startCursorParameter, endCursorParameter, sortParameter } = queryStringManager.getConfiguration()
     let params = {}
-    if (parsedObjectFromQueryString[queryParameter]) {
-      params['query'] = parsedObjectFromQueryString[queryParameter]
-    }
-    if (parsedObjectFromQueryString[queryFilterParameter]) {
-      params['queryFilters'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter])
-    }
     if (parsedObjectFromQueryString[filterParameter]) {
       params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter])
     }

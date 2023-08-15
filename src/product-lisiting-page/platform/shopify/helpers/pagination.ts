@@ -1,6 +1,5 @@
-import { Console } from "console"
-import { FILTER_ACTIONS } from "../../../../lib/plp-base/helpers/filter"
-import { SORT_OPTION_ACTIONS } from "../../../../lib/plp-base/helpers/sortOption"
+import { ACTIONS as FILTER_ACTIONS } from "../../../../lib/plp-base/helpers/filter"
+import { ACTIONS as SORT_OPTION_ACTIONS } from "../../../../lib/plp-base/helpers/sortOption"
 
 const ACTIONS = {
   GO_TO_NEXT_PAGE: 'GO_TO_NEXT_PAGE',
