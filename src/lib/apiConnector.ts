@@ -124,7 +124,7 @@ class APIConnector {
     if(configuration.isShopify()){
       if (!configuration.isUsingBaseCountryCode()) {
         const shopifyMultiMarket = new ShopifyMultiMarket()
-        if (shopifyConfiguration.waitForStoreFrontAPI()) {
+        if (shopifyConfiguration.canWaitForStoreFrontAPI()) {
           await shopifyMultiMarket.mutate(formattedResponse)
         } else {
           shopifyMultiMarket.resetProductPrices(formattedResponse)

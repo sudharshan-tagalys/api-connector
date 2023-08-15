@@ -1,7 +1,7 @@
 import configuration from './configuration'
 
 class ShopifyConfiguration{
-  waitForStoreFrontAPI() {
+  canWaitForStoreFrontAPI() {
     if (configuration.isShopify()) {
       const platformVariables = configuration.getPlatformVariables()
       if (!platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
