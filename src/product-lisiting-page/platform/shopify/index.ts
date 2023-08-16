@@ -31,7 +31,7 @@ class ShopifyProductListingPage extends ProductListingPage {
       product_listing_page_id: "",
       filters: {},
       perPage: 16,
-      sort: "manual",
+      sort: null,
       startCursor: null,
       endCursor: null
     }
@@ -71,16 +71,16 @@ class ShopifyProductListingPage extends ProductListingPage {
     const initialRequest = (Object.keys(this.responseState).length === 0)
     if (initialRequest) {
       await this.handleInitialRequest(initialRequestOptions)
-      return await super.call(initialRequestOptions)
+      await super.call(initialRequestOptions)
     }
     await super.call()
   }
 
-  getRequestParams(state) {
-    return {
+  formatRequestParams(params, format) {
+    return JSON.stringify({
       query: this.platformHelper().getQuery(),
       variables: this.platformHelper().getQueryVariables()
-    }
+    })
   }
 
   getRequestOptions() {
@@ -91,24 +91,37 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   }
 
-
   formatResponse(response: any) {
-    return this.platformHelper().formatResponse(response)
+    return this.platformHelper().formatResponse(this.requestOptions, response)
   }
 
   getRequestStateFromParams(params) {
-    let cursorBasedPaginationParams = {}
+    let paramsToInclude = {}
     if (params.startCursor) {
-      cursorBasedPaginationParams['startCursor'] = params.startCursor
+      paramsToInclude['startCursor'] = params.startCursor
     }
     if (params.endCursor) {
-      cursorBasedPaginationParams['endCursor'] = params.endCursor
+      paramsToInclude['endCursor'] = params.endCursor
+    }
+    if(params.sort_options){
+      paramsToInclude['sort_options'] = params.sort_options
     }
     return {
       ...super.getRequestStateFromParams(params),
-      ...cursorBasedPaginationParams
+      ...paramsToInclude
     }
   }
+
+  getRequestParams(state){
+    let params = {
+      ...super.getRequestParams(state)
+    }
+    if(state.sort_options){
+      params['sort_options'] = state.sort_options
+    }
+    return params
+  }
+
 
   getEncodedQueryString(except = []) {
     const {

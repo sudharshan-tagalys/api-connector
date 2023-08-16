@@ -87,6 +87,9 @@ class ProductListingPage extends Base {
     if(state.product_listing_page_id){
       params['product_listing_page_id'] = state.product_listing_page_id
     }
+    if(state.sort_options){
+      params['sort_options'] = state.sort_options
+    }
     return params
   }
 
