@@ -6,22 +6,22 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Search and search suggestions</title>
-  <script src="./bundle.js" defer></script>
+  <script src="./bundle.js"></script>
 </head>
 
 <body>
   <script>
-    var setTagalysConfiguration = function () {
+    var setTagalysConfiguration = function (callback) {
       Tagalys.setConfiguration({
         track: true,
         analyticsStorageConsentProvided: () => {
           return true
         },
         api: {
-          serverUrl: "https://api-r1.tagalys.com",
+          serverUrl: "https://stage2-api.tagalys.com",
           credentials: {
-            clientCode: "9E025C0C7B874897",
-            apiKey: "b0c1085ac35cd57b7e8323da9ef3a4b0",
+            clientCode: "676E7DE0213C3D74",
+            apiKey: "47632ed716da1810cfe03bdabd11887a",
           },
           storeId: "79335653678",
         },
@@ -39,11 +39,24 @@
         analyticsStorageConsentProvided: function () {
           return false
         },
+        // baseCountryCode: "US",
+        // countryCode: "IN",
         platformVariables: {
+          useStoreFrontAPIForProductPrices: true,
+          storeFrontAPIAccessToken: "942cf991dbd2f945a7f671ea36f4761d",
+          myShopifyDomain: "replication-one.myshopify.com",
           metafields: {
             products: [{
               namespace: "custom",
               key: "prod_ref"
+            },
+            {
+              namespace: "custom",
+              key: "api"
+            },
+            {
+              namespace: "instructions",
+              key: "wash"
             },
             {
               namespace: "custom",
@@ -71,13 +84,16 @@
             }]
           }
         }
+      }, {
+        afterConfigurationSet: function(){
+          callback()
+        }
       });
     }
 
     var onTagalysReady = function (callback) {
       window.addEventListener("DOMContentLoaded", function () {
-        setTagalysConfiguration()
-        callback()
+        setTagalysConfiguration(callback)
       })
     }
 
@@ -85,7 +101,7 @@
       product_listing_page_id: "453200904494", // listing page id for which the products to be returned
     }
     onTagalysReady(function () {
-      window.productListingPageInstance = Tagalys.APIConnector.ProductListingPage.new({
+      window.productListingPageInstance = Tagalys.ShopifyAPIConnector.ProductListingPage.new({
         params: params,
         failover: function () {
           return Tagalys.ShopifyAPIConnector.ProductListingPage.new({

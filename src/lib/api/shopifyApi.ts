@@ -8,7 +8,7 @@ class ShopifyAPI{
     const response = await fetch(this.url(path), {
       body: requestOptions.params,
       headers: {
-        "Content-Type": headers.contentType,
+        "Content-Type": "application/json",
         "Accept": "application/json",
         "X-Shopify-Storefront-Access-Token": shopifyConfiguration.getStoreFrontAPIAccessToken()
       },
@@ -17,9 +17,9 @@ class ShopifyAPI{
     if(response.status === 200){
       const parsedResponse = await response.json()
       if(requestOptions.hasOwnProperty("onSuccess")){
-        return requestOptions.onSuccess(parsedResponse)
+        return requestOptions.onSuccess(parsedResponse.data)
       }
-      return parsedResponse
+      return parsedResponse.data
     }else{
       if(typeof(requestOptions.onFailure) != 'undefined') {
         return requestOptions.onFailure(response);

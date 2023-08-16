@@ -137,8 +137,9 @@ const hasAnyFiltersApplied = function(){
   return false
 }
 
-const clearFilter = function(filterId, filterItemIds = []){
+const clearFilter = function(filterId, filterItemIds = [], callAPI = true){
   this.setRequestState((reqState)=>{
+    reqState.action = ACTIONS.CLEAR_FILTER
     if(Array.isArray(filterItemIds)){
       if(filterItemIds.length === 0){
         delete reqState.filters[filterId]
@@ -157,12 +158,11 @@ const clearFilter = function(filterId, filterItemIds = []){
         })
       }
     }else{
-      this.filterHelpers.clearFilter(filterId, [filterItemIds])
+      this.filterHelpers.clearFilter(filterId, [filterItemIds], false)
     }
     this.resetPagination(reqState)
-    reqState.action = ACTIONS.CLEAR_FILTER
     return reqState
-  })
+  }, callAPI)
 }
 
 const clearAllFilters = function(){

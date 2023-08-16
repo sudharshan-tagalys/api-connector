@@ -8,8 +8,6 @@ import {
   getRequestParamsFromQueryString,
   getRequestParamsFromWindowLocation
 } from "../../shared/helpers/common";
-import configuration from "../configuration";
-import ShopifyMultiCurrencyPriceMutator from "../../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
 
 class Base extends APIConnector {
   // == HELPERS ==

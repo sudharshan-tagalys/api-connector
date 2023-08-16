@@ -20,6 +20,7 @@ import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
 import failover from "./lib/failover";
+import { loadTagalysHelperScriptIfRequired, setGlobalContextToPlatformHelpers } from "./shared/helpers/platform-helpers";
 
 const commonConnectorHelpers = {
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
@@ -57,13 +58,18 @@ export const ShopifyAPIConnector = {
   ...ShopifyProductListingPage.export(),
 }
 
-const setConfiguration = (config) => {
+const setConfiguration = async (config, callbacks) => {
   configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  if(failover.hasFailedover()){
+  if (failover.hasFailedover()) {
     failover.pollUntilAPIisHealthy()
+  }
+  await loadTagalysHelperScriptIfRequired()
+  setGlobalContextToPlatformHelpers()
+  if(callbacks.afterConfigurationSet){
+    return callbacks.afterConfigurationSet()
   }
 }
 

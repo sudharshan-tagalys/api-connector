@@ -1,16 +1,11 @@
 import { DEFAULT_REQUEST_CALLBACKS, REQUEST_FORMAT } from "../shared/constants";
 import { objectToFormData } from "../shared/helpers/api";
 import formatFactory from "../shared/helpers/formatters/formatFactory";
-import ShopifyMultiCurrencyPriceMutator from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
 import AnalyticsTracker, { TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { updateProductPricesForMarket } from "../shared/helpers/common";
+import { getPlatformHelpers } from "../shared/helpers/platform-helpers";
 import TagalysAPI from "./api/tagalysApi";
-import failover from './failover'
-import ShopifyMultiMarket from "../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator";
-import shopifyConfiguration from "./shopifyConfiguration";
-
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -21,7 +16,6 @@ const DEFAULT_REQUEST_OPTIONS = {
   },
   params: {}
 }
-
 
 class APIConnector {
   public requestOptions: any;
@@ -93,7 +87,11 @@ class APIConnector {
 
   getHelpersToExpose(response, formattedResponse): any {
     return {
-      updateProductPricesForMarket
+      updateProductDetailsForMarket: ()=>{
+        const TagalysPlatformHelpers = getPlatformHelpers()
+        const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
+        MultiMarket.updateProductDetailsForMarket
+      }
     }
   }
 
@@ -123,12 +121,9 @@ class APIConnector {
   async mutateResponse(formattedResponse) {
     if(configuration.isShopify()){
       if (!configuration.isUsingBaseCountryCode()) {
-        const shopifyMultiMarket = new ShopifyMultiMarket()
-        if (shopifyConfiguration.canWaitForStoreFrontAPI()) {
-          await shopifyMultiMarket.mutate(formattedResponse)
-        } else {
-          shopifyMultiMarket.resetProductPrices(formattedResponse)
-        }
+        const TagalysPlatformHelpers = getPlatformHelpers()
+        const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
+        await MultiMarket.updateProductDetailsForMarket(formattedResponse)
       }
     }
     return formattedResponse

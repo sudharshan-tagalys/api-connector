@@ -1,16 +1,20 @@
 import ShopifyAPI from '../../../lib/api/shopifyApi';
 import ProductListingPage from '../../index'
 import PaginationHelpers from './helpers/pagination'
-import GraphqlQueryConstructor from './helpers/graphql-query-constructor'
-import GraphqlResponseFormatter from './helpers/grapqhl-response-formatter'
 import { getFilterQueryString, getFiltersFromQueryString, getReplacementParam } from '../../../shared/helpers/common';
 import queryStringManager from '../../../lib/queryStringManager';
 import { REQUEST_FORMAT } from '../../../shared/constants';
+import { getPlatformHelpers } from '../../../shared/helpers/platform-helpers';
 
 class ShopifyProductListingPage extends ProductListingPage {
   constructor() {
     super()
     this.paginationHelpers = this.bindThisToHelpers(PaginationHelpers);
+  }
+
+  platformHelper() {
+    const TagalysPlatformHelpers = getPlatformHelpers()
+    return TagalysPlatformHelpers.ProductListingPage.new(this.requestState, this.responseState)
   }
 
   apiClient() {
@@ -22,7 +26,7 @@ class ShopifyProductListingPage extends ProductListingPage {
     requestState.endCursor = null
   }
 
-  getDefaultRequestState = () : any => {
+  getDefaultRequestState = (): any => {
     return {
       product_listing_page_id: "",
       filters: {},
@@ -33,7 +37,7 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   }
 
-  getDefaultResponseState = () : any => {
+  getDefaultResponseState = (): any => {
     return {
       total: null,
       products: [],
@@ -45,71 +49,37 @@ class ShopifyProductListingPage extends ProductListingPage {
     }
   };
 
-  async updateResponseStateWithFilters(requestOptions) {
-    // const filterInputsQuery = GraphqlQueryConstructor.getFilterInputsQuery()
-    // const response = await this.apiClient().storefront.query(filterInputsQuery, {
-    //   variables: requestOptions.params.variables
-    // })
-    // // const response = await this.apiClient().storefront.query(filterInputsQuery, {
-    // //   variables: {
-    // //     id: `gid://shopify/Collection/${requestOptions.params.product_listing_page_id}`
-    // //   }
-    // // })
-    // const filterInputs = GraphqlResponseFormatter.getFilterInputs(response.collection.products.filters)
-    // const rangeFilter = response.collection.products.filters.find((filter)=>filter.type=== "PRICE_RANGE")
-    // let price_ranges = {}
-    // if(rangeFilter){
-    //   price_ranges =JSON.parse(rangeFilter.values[0].input).price
-    // }
-    // this.setResponseState({
-    //   ...this.responseState,
-    //   filter_inputs: filterInputs,
-    //   price_ranges: price_ranges
-    // })
-    // return response
+  async handleInitialRequest(requestOptions) {
+    const dataForInitialRequest = await this.platformHelper().getDataForInitialRequest(requestOptions)
+    this.setResponseState({
+      ...this.responseState,
+      filter_inputs: dataForInitialRequest.filter_inputs,
+      price_ranges: dataForInitialRequest.price_ranges
+    })
+
+    
+    // requestOptions.params.variables.filters = dataForInitialRequest.filtersForRequestParams
+    // this.requestOptions.params.variables.filters = dataForInitialRequest.filtersForRequestParams
+    this.setRequestState((reqState) => {
+      reqState.filters = dataForInitialRequest.filtersForRequestParams
+      return reqState
+    }, false, false)
+
   }
 
-  // updateRequestStateWithFilters(initialRequestOptions, filtersFromResponse){
-  //   let filtersForRequestParams = {}
-  //   for (const [filterId, appliedFilterValues] of Object.entries(this.requestState.filters)) {
-  //     if (Array.isArray(appliedFilterValues)) {
-  //       let formattedFilterValues = []
-  //       appliedFilterValues.forEach((filterLabel) => {
-  //           appliedFilter.values.forEach((filterValue) => {
-  //             if (filterLabel === filterValue.label) {
-  //               formattedFilterValues.push(filterValue.id)
-  //             }
-  //           })
-  //         }
-  //       })
-  //       filtersForRequestParams[filterId] = formattedFilterValues
-  //     }else{
-  //       filtersForRequestParams[filterId] = appliedFilterValues
-  //     }
-  //   }
-  //   initialRequestOptions.params.variables.filters = filtersForRequestParams
-  //   this.requestOptions.params.variables.filters = filtersForRequestParams
-  //   this.setRequestState((reqState)=>{
-  //     reqState.filters = filtersForRequestParams
-  //     return reqState
-  //   }, false, false)
-  // }
-
   async call(initialRequestOptions: any) {
-    // const initialRequest = (Object.keys(this.responseState).length === 0)
-    // if (initialRequest) {
-    //   const response = await this.updateResponseStateWithFilters(initialRequestOptions)
-    //   this.updateRequestStateWithFilters(initialRequestOptions, response)
-    //   return await super.call(initialRequestOptions)
-    // }
+    const initialRequest = (Object.keys(this.responseState).length === 0)
+    if (initialRequest) {
+      await this.handleInitialRequest(initialRequestOptions)
+      return await super.call(initialRequestOptions)
+    }
     await super.call()
   }
 
   getRequestParams(state) {
-    const graphqlQueryConstructor = new GraphqlQueryConstructor(state, this.responseState.filter_inputs)
     return {
-      query: graphqlQueryConstructor.getQuery(),
-      variables: graphqlQueryConstructor.getQueryVariables()
+      query: this.platformHelper().getQuery(),
+      variables: this.platformHelper().getQueryVariables()
     }
   }
 
@@ -123,8 +93,7 @@ class ShopifyProductListingPage extends ProductListingPage {
 
 
   formatResponse(response: any) {
-    const graphqlResponseFormatter = new GraphqlResponseFormatter(this.requestState, this.responseState, response)
-    return graphqlResponseFormatter.format()
+    return this.platformHelper().formatResponse(response)
   }
 
   getRequestStateFromParams(params) {
@@ -159,7 +128,7 @@ class ShopifyProductListingPage extends ProductListingPage {
           formattedFilterValues.push(this.responseState.filter_inputs[filterValue].label)
         })
         filtersForQueryParams[filterId] = formattedFilterValues
-      }else{
+      } else {
         filtersForQueryParams[filterId] = filterValues
       }
     }

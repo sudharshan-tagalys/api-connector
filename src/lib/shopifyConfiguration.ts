@@ -2,14 +2,11 @@ import configuration from './configuration'
 
 class ShopifyConfiguration{
   canWaitForStoreFrontAPI() {
-    if (configuration.isShopify()) {
-      const platformVariables = configuration.getPlatformVariables()
-      if (!platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
-        return true
-      }
-      return platformVariables.waitForStoreFrontAPI
+    const platformVariables = configuration.getPlatformVariables()
+    if (!platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
+      return true
     }
-    return false
+    return platformVariables.waitForStoreFrontAPI
   }
 
   hasMetafields(){
