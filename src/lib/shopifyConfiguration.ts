@@ -24,9 +24,9 @@ class ShopifyConfiguration{
 
   isMetafieldConfigured(namespace, key, scope){
     const metafields = this.getMetafields()
-    const configured = metafields[scope].find((metafield)=>metafield.namespace === namespace && metafield.key === key)
-    if(configured){
-      return true
+    if(Object.keys(metafields).length > 0){
+      const configured = metafields[scope].find((metafield)=>((metafield.namespace === namespace) && (metafield.key === key)))
+      return (configured || false)
     }
     return false
   }

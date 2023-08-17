@@ -32,6 +32,7 @@ const commonConnectorHelpers = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  hasFailedover: ()=> failover.hasFailedover(),
   test: {
     hasFailedover: ()=> failover.hasFailedover(),
     activateFailover: () => failover.activate(),
@@ -56,9 +57,10 @@ export const APIConnector = {
 
 export const ShopifyAPIConnector = {
   ...ShopifyProductListingPage.export(),
+  ...commonConnectorHelpers
 }
 
-const setConfiguration = async (config, callbacks) => {
+const setConfiguration = async (config, callback) => {
   configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config
@@ -68,8 +70,8 @@ const setConfiguration = async (config, callbacks) => {
   }
   await loadTagalysHelperScriptIfRequired()
   setGlobalContextToPlatformHelpers()
-  if(callbacks.afterConfigurationSet){
-    return callbacks.afterConfigurationSet()
+  if(callback){
+    return callback()
   }
 }
 

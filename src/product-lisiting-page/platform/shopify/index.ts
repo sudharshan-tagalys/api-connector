@@ -1,4 +1,3 @@
-import ShopifyAPI from '../../../lib/api/shopifyApi';
 import ProductListingPage from '../../index'
 import PaginationHelpers from './helpers/pagination'
 import { getFilterQueryString, getFiltersFromQueryString, getReplacementParam } from '../../../shared/helpers/common';
@@ -18,7 +17,8 @@ class ShopifyProductListingPage extends ProductListingPage {
   }
 
   apiClient() {
-    return new ShopifyAPI()
+    const TagalysPlatformHelpers = getPlatformHelpers()
+    return new TagalysPlatformHelpers.apiClient()
   }
 
   resetPagination(requestState) {
@@ -56,15 +56,10 @@ class ShopifyProductListingPage extends ProductListingPage {
       filter_inputs: dataForInitialRequest.filter_inputs,
       price_ranges: dataForInitialRequest.price_ranges
     })
-
-    
-    // requestOptions.params.variables.filters = dataForInitialRequest.filtersForRequestParams
-    // this.requestOptions.params.variables.filters = dataForInitialRequest.filtersForRequestParams
     this.setRequestState((reqState) => {
       reqState.filters = dataForInitialRequest.filtersForRequestParams
       return reqState
     }, false, false)
-
   }
 
   async call(initialRequestOptions: any) {
@@ -72,6 +67,7 @@ class ShopifyProductListingPage extends ProductListingPage {
     if (initialRequest) {
       await this.handleInitialRequest(initialRequestOptions)
       await super.call(initialRequestOptions)
+      return
     }
     await super.call()
   }

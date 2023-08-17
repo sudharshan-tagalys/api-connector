@@ -6,6 +6,7 @@ import configuration from "./configuration";
 import cookie from "./cookie";
 import { getPlatformHelpers } from "../shared/helpers/platform-helpers";
 import TagalysAPI from "./api/tagalysApi";
+import shopifyConfiguration from "./shopifyConfiguration";
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -87,10 +88,10 @@ class APIConnector {
 
   getHelpersToExpose(response, formattedResponse): any {
     return {
-      updateProductDetailsForMarket: ()=>{
+      updateProductDetailsForMarket: async (response)=>{
         const TagalysPlatformHelpers = getPlatformHelpers()
         const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
-        MultiMarket.updateProductDetailsForMarket
+        await MultiMarket.updateProductDetailsForMarket(response)
       }
     }
   }
@@ -123,7 +124,11 @@ class APIConnector {
       if (!configuration.isUsingBaseCountryCode()) {
         const TagalysPlatformHelpers = getPlatformHelpers()
         const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
-        await MultiMarket.updateProductDetailsForMarket(formattedResponse)
+        if(shopifyConfiguration.canWaitForStoreFrontAPI()){
+          await MultiMarket.updateProductDetailsForMarket(formattedResponse)
+        }else{
+          await MultiMarket.resetProductPrices(formattedResponse)
+        }
       }
     }
     return formattedResponse
