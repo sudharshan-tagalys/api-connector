@@ -206,7 +206,11 @@ class GraphqlResponseFormatter {
           })
         }
       } else {
-        value = getIdFromGraphqlId(metafield.value)
+        // SECOND LEVEL
+        return {
+          type: type,
+          id: getIdFromGraphqlId(metafield.value)
+        }
       }
     }
     if (type === METAFIELD_TYPES.LIST_PRODUCT_REFERENCE) {
@@ -215,7 +219,11 @@ class GraphqlResponseFormatter {
           return this.formatProduct(reference.node, level + 1)
         })
       } else {
-        value = JSON.parse(value).map((productId) => getIdFromGraphqlId(productId))
+        // SECOND LEVEL
+        return {
+          type: type,
+          ids: JSON.parse(value).map((productId) => getIdFromGraphqlId(productId))
+        }
       }
     }
     if (type === METAFIELD_TYPES.LIST_SINGLE_LINE_TEXT_FIELD) {
