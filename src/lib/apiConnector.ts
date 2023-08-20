@@ -4,7 +4,7 @@ import formatFactory from "../shared/helpers/formatters/formatFactory";
 import AnalyticsTracker, { TAGALYS_ANALYTICS_COOKIES } from "./analyticsTracker";
 import configuration from "./configuration";
 import cookie from "./cookie";
-import { getPlatformHelpers } from "../shared/helpers/platform-helpers";
+import PlatformHelpers from '../shared/platform-helpers'
 import TagalysAPI from "./api/tagalysApi";
 import shopifyConfiguration from "./shopifyConfiguration";
 
@@ -89,8 +89,7 @@ class APIConnector {
   getHelpersToExpose(response, formattedResponse): any {
     return {
       updateProductDetailsForMarket: async (response)=>{
-        const TagalysPlatformHelpers = getPlatformHelpers()
-        const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
+        const MultiMarket = PlatformHelpers.MultiMarket.new()
         await MultiMarket.updateProductDetailsForMarket(response)
       }
     }
@@ -121,10 +120,9 @@ class APIConnector {
 
   async mutateResponse(formattedResponse) {
     if(configuration.isShopify()){
-      if (!configuration.isUsingBaseCountryCode()) {
-        const TagalysPlatformHelpers = getPlatformHelpers()
-        const MultiMarket = TagalysPlatformHelpers.MultiMarket.new()
-        if(shopifyConfiguration.canWaitForStoreFrontAPI()){
+      if (!configuration.isUsingBaseCountryCode() && shopifyConfiguration.useStorefrontAPIForSecondaryMarkets()) {
+        const MultiMarket = PlatformHelpers.MultiMarket.new()
+        if(shopifyConfiguration.canWaitForStorefrontAPI()){
           await MultiMarket.updateProductDetailsForMarket(formattedResponse)
         }else{
           await MultiMarket.resetProductPrices(formattedResponse)

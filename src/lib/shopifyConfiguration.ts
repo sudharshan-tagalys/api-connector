@@ -1,25 +1,22 @@
 import configuration from './configuration'
 
 class ShopifyConfiguration{
-  canWaitForStoreFrontAPI() {
-    const platformVariables = configuration.getPlatformVariables()
-    if (!platformVariables.hasOwnProperty("waitForStoreFrontAPI")){
+  canWaitForStorefrontAPI() {
+    const platformConfiguration = configuration.getPlatformConfiguration()
+    if (!platformConfiguration.hasOwnProperty("waitForStorefrontAPI")){
       return true
     }
-    return platformVariables.waitForStoreFrontAPI
+    return platformConfiguration.waitForStorefrontAPI
   }
 
   hasMetafields(){
-    const platformVariables = configuration.getPlatformVariables()
-    return (platformVariables && platformVariables.hasOwnProperty('metafields'))
+    const platformConfiguration = configuration.getPlatformConfiguration()
+    return (platformConfiguration && platformConfiguration.hasOwnProperty('metafields'))
   }
 
   getMetafields(){
-    if(!this.hasMetafields()){
-      return {}
-    }
-    const platformVariables = configuration.getPlatformVariables()
-    return (platformVariables.metafields)
+    const platformConfiguration = configuration.getPlatformConfiguration()
+    return (platformConfiguration.metafields)
   }
 
   isMetafieldConfigured(namespace, key, scope){
@@ -31,12 +28,16 @@ class ShopifyConfiguration{
     return false
   }
 
-  getStoreFrontAPIAccessToken() {
-    return configuration.getPlatformVariables().storeFrontAPIAccessToken
+  getStorefrontAPIAccessToken() {
+    return configuration.getPlatformConfiguration().storefrontAPI.accessToken
   }
 
   getMyShopifyDomain() {
-    return configuration.getPlatformVariables().myShopifyDomain
+    return configuration.getPlatformConfiguration().storefrontAPI.myShopifyDomain
+  }
+
+  useStorefrontAPIForSecondaryMarkets(){
+    return (configuration.isShopify() && configuration.getPlatformConfiguration().useStorefrontAPIForSecondaryMarkets === true)
   }
 }
 

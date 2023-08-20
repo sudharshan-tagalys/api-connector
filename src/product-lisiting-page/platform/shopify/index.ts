@@ -3,7 +3,7 @@ import PaginationHelpers from './helpers/pagination'
 import { getFilterQueryString, getFiltersFromQueryString, getReplacementParam } from '../../../shared/helpers/common';
 import queryStringManager from '../../../lib/queryStringManager';
 import { REQUEST_FORMAT } from '../../../shared/constants';
-import { getPlatformHelpers } from '../../../shared/helpers/platform-helpers';
+import PlatformHelpers from '../../../shared/platform-helpers';
 
 class ShopifyProductListingPage extends ProductListingPage {
   constructor() {
@@ -12,13 +12,11 @@ class ShopifyProductListingPage extends ProductListingPage {
   }
 
   platformHelper() {
-    const TagalysPlatformHelpers = getPlatformHelpers()
-    return TagalysPlatformHelpers.ProductListingPage.new(this.requestState, this.responseState)
+    return PlatformHelpers.ProductListingPage.new(this.requestState, this.responseState)
   }
 
   apiClient() {
-    const TagalysPlatformHelpers = getPlatformHelpers()
-    return new TagalysPlatformHelpers.apiClient()
+    return PlatformHelpers.apiClient()
   }
 
   resetPagination(requestState) {
@@ -186,6 +184,9 @@ class ShopifyProductListingPage extends ProductListingPage {
     return formattedResponse
   }
 
+  static exporterName(){
+    return 'ShopifyProductListingPage'
+  }
 }
 
 export default ShopifyProductListingPage

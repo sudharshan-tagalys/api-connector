@@ -24,7 +24,7 @@ class Failover {
     clearInterval(this.intervalId)
   }
 
-  hasFailedover() {
+  hasFailedOver() {
     return !this.apiClient.isOnline()
   }
 

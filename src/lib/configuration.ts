@@ -1,5 +1,7 @@
 class Configuration{
   private configuration;
+  private platformConfiguration;
+
   setConfiguration(configuration) {
     this.validateConfiguration(configuration);
     this.configuration = {
@@ -11,9 +13,6 @@ class Configuration{
         },
         storeId: configuration.api.storeId,
       },
-      platform: configuration.platform,
-      countryCode: configuration.countryCode,
-      baseCountryCode: configuration.baseCountryCode,
       platformVariables: configuration.platformVariables,
       currency: {
         code: configuration.currency.code,
@@ -24,6 +23,22 @@ class Configuration{
       apiClient: configuration.apiClient,
       track: configuration.track,
       analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided
+    }
+  }
+
+  setPlatformConfiguration(platformConfiguration : any = {}){
+    this.validatePlatformConfiguration(platformConfiguration);
+    this.platformConfiguration = {
+      platform: platformConfiguration.platform,
+      storefrontAPI: {
+        accessToken: platformConfiguration?.storeFrontAPI?.accessToken,
+        myShopifyDomain: platformConfiguration?.storeFrontAPI?.myShopifyDomain,
+      },
+      countryCode: platformConfiguration.countryCode,
+      baseCountryCode: platformConfiguration.baseCountryCode,
+      useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || true),
+      waitForStorefrontAPI: (platformConfiguration.waitForStorefrontAPI || true),
+      metafields: (platformConfiguration.metafields || [])
     }
   }
 
@@ -43,9 +58,18 @@ class Configuration{
       }
     })
 
-    const otherProperties = ['currency', 'platform']
+    const otherProperties = ['currency']
     otherProperties.forEach((configProperty) => {
       if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
+        throw new Error(this.getConstructedErrorLabel(configProperty))
+      }
+    })
+  }
+
+  validatePlatformConfiguration(platformConfiguration){
+    const properties = ['platform']
+    properties.forEach((configProperty) => {
+      if (!platformConfiguration.hasOwnProperty(configProperty) || typeof platformConfiguration[configProperty] === "undefined") {
         throw new Error(this.getConstructedErrorLabel(configProperty))
       }
     })
@@ -79,7 +103,7 @@ class Configuration{
   }
 
   getPlatform() {
-    return this.configuration.platform.toLowerCase();
+    return this.platformConfiguration.platform.toLowerCase();
   }
 
   analyticsStorageConsentProvided() {
@@ -90,17 +114,12 @@ class Configuration{
     return (this.configuration.track && this.configuration.analyticsStorageConsentProvided())
   }
 
-  getPlatformVariable(key) {
-    if (!this.configuration.platformVariables.hasOwnProperty(key)) return false
-    return this.configuration.platformVariables[key]
-  }
-
   getStoreId() {
     return this.configuration.api.storeId
   }
 
-  getPlatformVariables() {
-    return this.configuration.platformVariables
+  getPlatformConfiguration() {
+    return this.platformConfiguration
   }
 
   getExchangeRate() {
@@ -140,11 +159,11 @@ class Configuration{
   }
 
   getCountryCode(){
-    return this.configuration.countryCode
+    return this.platformConfiguration.countryCode
   }
 
   isUsingBaseCountryCode() {
-    return this.configuration.countryCode === this.configuration.baseCountryCode
+    return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode
   }
 
   onFailover(){

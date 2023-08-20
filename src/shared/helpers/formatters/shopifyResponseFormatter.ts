@@ -1,10 +1,9 @@
-import { getPlatformHelpers } from '../platform-helpers';
+import PlatformHelpers from '../../platform-helpers'
 import Formatter from './formatter';
 
 class ShopifyResponseFormatter extends Formatter {
   formatDetail = (detail: any): any => {
-    const TagalysPlatformHelpers = getPlatformHelpers()
-    const tagalysToCommonResponseFormatter = TagalysPlatformHelpers.TagalysToCommonResponseFormatter.new()
+    const tagalysToCommonResponseFormatter = PlatformHelpers.TagalysToCommonResponseFormatter.new()
     return tagalysToCommonResponseFormatter.formatDetail(detail)
   };
 }

@@ -20,25 +20,7 @@ import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
 import failover from "./lib/failover";
-import { loadTagalysHelperScriptIfRequired, setGlobalContextToPlatformHelpers } from "./shared/helpers/platform-helpers";
 
-const commonConnectorHelpers = {
-  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
-  getPlatformVariable: (variableKey) => configuration.getPlatformVariable(variableKey),
-  cookie: {
-    get: (cname) => cookie.get(cname),
-    set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
-    delete: (cname) => cookie.delete(cname)
-  },
-  getPlatformVariables: () => configuration.getPlatformVariables(),
-  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  hasFailedover: ()=> failover.hasFailedover(),
-  test: {
-    hasFailedover: ()=> failover.hasFailedover(),
-    activateFailover: () => failover.activate(),
-    deactivateFailover: () => failover.deactivate()
-  }
-}
 
 export const APIConnector = {
   ...Search.export(),
@@ -52,31 +34,37 @@ export const APIConnector = {
   ...SearchSuggestions.export(),
   ...LegacySearchSuggestions.export(),
   ...ProductListingPage.export(),
-  ...commonConnectorHelpers
-}
-
-export const ShopifyAPIConnector = {
   ...ShopifyProductListingPage.export(),
-  ...commonConnectorHelpers
+  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
+  cookie: {
+    get: (cname) => cookie.get(cname),
+    set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
+    delete: (cname) => cookie.delete(cname)
+  },
+  setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  hasFailedOver: ()=> failover.hasFailedOver(),
+  failoverSimulator: {
+    activate: () => failover.activate(),
+    deactivate: () => failover.deactivate()
+  }
 }
 
-const setConfiguration = async (config, callback) => {
+const setConfiguration = async (config) => {
   configuration.setConfiguration({
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  if (failover.hasFailedover()) {
+  if (failover.hasFailedOver()) {
     failover.pollUntilAPIisHealthy()
-  }
-  await loadTagalysHelperScriptIfRequired()
-  setGlobalContextToPlatformHelpers()
-  if(callback){
-    return callback()
   }
 }
 
 const getConfiguration = () => {
   return configuration.get()
+}
+
+const getPlatformConfiguration = () => {
+  return configuration.getPlatformConfiguration()
 }
 
 const Analytics = {
@@ -129,6 +117,7 @@ const getResponseFormatter = () => {
 export {
   Analytics,
   getConfiguration,
+  getPlatformConfiguration,
   setConfiguration,
   packageDetails,
   getResponseFormatter,
