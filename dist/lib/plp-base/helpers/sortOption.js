@@ -1,9 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACTIONS = void 0;
+exports.ACTIONS = {
+    APPLY_SORT_OPTION: "APPLY_SORT_OPTION"
+};
 var applySortOption = function (sort) {
+    var _this = this;
     this.setRequestState(function (reqState) {
+        reqState.action = exports.ACTIONS.APPLY_SORT_OPTION;
         reqState.sort = sort;
-        reqState.page = 1;
+        _this.resetPagination(reqState);
         return reqState;
     });
 };

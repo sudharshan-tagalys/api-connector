@@ -1,5 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACTIONS = void 0;
+var filter_1 = require("./filter");
+var sortOption_1 = require("./sortOption");
+exports.ACTIONS = {
+    GO_TO_NEXT_PAGE: 'GO_TO_NEXT_PAGE',
+    GO_TO_PREVIOUS_PAGE: 'GO_TO_PREVIOUS_PAGE',
+    GO_TO_PAGE: 'GO_TO_PAGE'
+};
 var getCurrentPage = function () {
     return this.responseState.page;
 };
@@ -26,6 +34,7 @@ var goToNextPage = function () {
     }
     this.setRequestState(function (reqState) {
         reqState.page += 1;
+        reqState.action = exports.ACTIONS.GO_TO_NEXT_PAGE;
         return reqState;
     });
 };
@@ -36,21 +45,32 @@ var goToPreviousPage = function () {
     }
     this.setRequestState(function (reqState) {
         reqState.page -= 1;
+        reqState.action = exports.ACTIONS.GO_TO_PREVIOUS_PAGE;
         return reqState;
     });
 };
 var goToPage = function (page, actionSrc) {
-    if (actionSrc === void 0) { actionSrc = "go_to_page"; }
+    if (actionSrc === void 0) { actionSrc = exports.ACTIONS.GO_TO_PAGE; }
     this.setRequestState(function (reqState) {
         reqState.page = page;
         reqState.action = actionSrc;
         return reqState;
     });
 };
+var canResetPagination = function () {
+    var actionsToResetPagination = [
+        filter_1.ACTIONS.APPLY_FILTER,
+        filter_1.ACTIONS.CLEAR_FILTER,
+        filter_1.ACTIONS.CLEAR_ALL_FILTERS,
+        sortOption_1.ACTIONS.APPLY_SORT_OPTION
+    ];
+    return actionsToResetPagination.includes(this.requestState.action);
+};
 // ==== PUBLICLY EXPOSED HELPERS ====
 var getRequestHelpers = function () {
-    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage;
+    var _a = this.paginationHelpers, goToNextPage = _a.goToNextPage, goToPreviousPage = _a.goToPreviousPage, goToPage = _a.goToPage, canResetPagination = _a.canResetPagination;
     return {
+        canResetPagination: canResetPagination,
         goToNextPage: goToNextPage,
         goToPreviousPage: goToPreviousPage,
         goToPage: goToPage,
@@ -74,6 +94,7 @@ exports.default = {
     hasPreviousPage: hasPreviousPage,
     goToPage: goToPage,
     getRequestHelpers: getRequestHelpers,
-    getResponseHelpers: getResponseHelpers
+    getResponseHelpers: getResponseHelpers,
+    canResetPagination: canResetPagination
 };
 //# sourceMappingURL=pagination.js.map

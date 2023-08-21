@@ -14,18 +14,33 @@ var Configuration = /** @class */ (function () {
                 },
                 storeId: configuration.api.storeId,
             },
-            platform: configuration.platform,
-            countryCode: configuration.countryCode,
-            baseCountryCode: configuration.baseCountryCode,
             platformVariables: configuration.platformVariables,
             currency: {
                 code: configuration.currency.code,
                 exchangeRate: configuration.currency.exchangeRate,
                 fractionalDigits: configuration.currency.fractionalDigits
             },
+            onFailover: configuration.onFailover,
             apiClient: configuration.apiClient,
             track: configuration.track,
             analyticsStorageConsentProvided: configuration.analyticsStorageConsentProvided
+        };
+    };
+    Configuration.prototype.setPlatformConfiguration = function (platformConfiguration) {
+        var _a, _b;
+        if (platformConfiguration === void 0) { platformConfiguration = {}; }
+        this.validatePlatformConfiguration(platformConfiguration);
+        this.platformConfiguration = {
+            platform: platformConfiguration.platform,
+            storefrontAPI: {
+                accessToken: (_a = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storeFrontAPI) === null || _a === void 0 ? void 0 : _a.accessToken,
+                myShopifyDomain: (_b = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storeFrontAPI) === null || _b === void 0 ? void 0 : _b.myShopifyDomain,
+            },
+            countryCode: platformConfiguration.countryCode,
+            baseCountryCode: platformConfiguration.baseCountryCode,
+            useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || true),
+            waitForStorefrontAPI: (platformConfiguration.waitForStorefrontAPI || true),
+            metafields: (platformConfiguration.metafields || [])
         };
     };
     Configuration.prototype.validateConfiguration = function (configuration) {
@@ -44,9 +59,18 @@ var Configuration = /** @class */ (function () {
                 throw new Error(_this.getConstructedErrorLabel(credentialsProperty));
             }
         });
-        var otherProperties = ['currency', 'platform'];
+        var otherProperties = ['currency'];
         otherProperties.forEach(function (configProperty) {
             if (!configuration.hasOwnProperty(configProperty) || typeof configuration[configProperty] === "undefined") {
+                throw new Error(_this.getConstructedErrorLabel(configProperty));
+            }
+        });
+    };
+    Configuration.prototype.validatePlatformConfiguration = function (platformConfiguration) {
+        var _this = this;
+        var properties = ['platform'];
+        properties.forEach(function (configProperty) {
+            if (!platformConfiguration.hasOwnProperty(configProperty) || typeof platformConfiguration[configProperty] === "undefined") {
                 throw new Error(_this.getConstructedErrorLabel(configProperty));
             }
         });
@@ -75,7 +99,7 @@ var Configuration = /** @class */ (function () {
         };
     };
     Configuration.prototype.getPlatform = function () {
-        return this.configuration.platform.toLowerCase();
+        return this.platformConfiguration.platform.toLowerCase();
     };
     Configuration.prototype.analyticsStorageConsentProvided = function () {
         return this.configuration.analyticsStorageConsentProvided();
@@ -83,16 +107,11 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.canTrackAnalytics = function () {
         return (this.configuration.track && this.configuration.analyticsStorageConsentProvided());
     };
-    Configuration.prototype.getPlatformVariable = function (key) {
-        if (!this.configuration.platformVariables.hasOwnProperty(key))
-            return false;
-        return this.configuration.platformVariables[key];
-    };
     Configuration.prototype.getStoreId = function () {
         return this.configuration.api.storeId;
     };
-    Configuration.prototype.getPlatformVariables = function () {
-        return this.configuration.platformVariables;
+    Configuration.prototype.getPlatformConfiguration = function () {
+        return this.platformConfiguration;
     };
     Configuration.prototype.getExchangeRate = function () {
         var exchangeRate = 1;
@@ -114,12 +133,6 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.getClientCode = function () {
         return this.configuration.api.credentials.clientCode;
     };
-    Configuration.prototype.getStoreFrontAPIAccessToken = function () {
-        return this.configuration.platformVariables.storeFrontAPIAccessToken;
-    };
-    Configuration.prototype.getMyShopifyDomain = function () {
-        return this.configuration.platformVariables.myShopifyDomain;
-    };
     Configuration.prototype.isShopify = function () {
         return this.getPlatform() === "shopify";
     };
@@ -130,25 +143,16 @@ var Configuration = /** @class */ (function () {
         return this.getPlatform() === "bigcommerce";
     };
     Configuration.prototype.getCountryCode = function () {
-        return this.configuration.countryCode;
+        return this.platformConfiguration.countryCode;
     };
     Configuration.prototype.isUsingBaseCountryCode = function () {
-        return this.configuration.countryCode === this.configuration.baseCountryCode;
+        return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode;
     };
-    Configuration.prototype.isUsingMultiCountryCurrency = function () {
-        return (this.isShopify() &&
-            this.configuration.platformVariables &&
-            this.configuration.platformVariables.hasOwnProperty("useStoreFrontAPIForProductPrices") &&
-            this.configuration.platformVariables.useStoreFrontAPIForProductPrices === true);
+    Configuration.prototype.onFailover = function () {
+        return this.configuration.onFailover;
     };
-    Configuration.prototype.waitForStoreFrontAPI = function () {
-        if (this.isShopify()) {
-            if (!this.configuration.platformVariables.hasOwnProperty("waitForStoreFrontAPI")) {
-                return true;
-            }
-            return this.configuration.platformVariables.waitForStoreFrontAPI;
-        }
-        return false;
+    Configuration.prototype.get = function () {
+        return this.configuration;
     };
     return Configuration;
 }());

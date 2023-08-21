@@ -20,9 +20,15 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.ACTIONS = void 0;
 var configuration_1 = require("../../configuration");
+exports.ACTIONS = {
+    APPLY_FILTER: "APPLY_FILTER",
+    CLEAR_FILTER: "CLEAR_FILTER",
+    CLEAR_ALL_FILTERS: "CLEAR_ALL_FILTERS"
+};
 var getFilters = function () {
-    if (configuration_1.default.isUsingMultiCountryCurrency() && !configuration_1.default.isUsingBaseCountryCode()) {
+    if (!configuration_1.default.isUsingBaseCountryCode()) {
         return this.responseState.filters.filter(function (filter) { return !filter.currency; });
     }
     return this.responseState.filters;
@@ -88,6 +94,7 @@ var setFilter = function (filterId, appliedFilter, callAPI) {
     if (callAPI === void 0) { callAPI = false; }
     var filter = this.filterHelpers.getFilterById(filterId);
     this.setRequestState(function (reqState) {
+        reqState.action = exports.ACTIONS.APPLY_FILTER;
         var filterItems = [];
         if (filter.type === "range") {
             reqState.filters[filterId] = appliedFilter;
@@ -111,7 +118,7 @@ var setFilter = function (filterId, appliedFilter, callAPI) {
             });
             reqState.filters[filterId] = filterItems.filter(function (appliedFilterItemId) { return !parentIdsToRemove_1.includes(appliedFilterItemId); });
         }
-        reqState.page = 1;
+        _this.resetPagination(reqState);
         return reqState;
     }, callAPI);
 };
@@ -146,10 +153,12 @@ var hasAnyFiltersApplied = function () {
     }
     return false;
 };
-var clearFilter = function (filterId, filterItemIds) {
+var clearFilter = function (filterId, filterItemIds, callAPI) {
     var _this = this;
     if (filterItemIds === void 0) { filterItemIds = []; }
+    if (callAPI === void 0) { callAPI = true; }
     this.setRequestState(function (reqState) {
+        reqState.action = exports.ACTIONS.CLEAR_FILTER;
         if (Array.isArray(filterItemIds)) {
             if (filterItemIds.length === 0) {
                 delete reqState.filters[filterId];
@@ -171,16 +180,18 @@ var clearFilter = function (filterId, filterItemIds) {
             }
         }
         else {
-            _this.filterHelpers.clearFilter(filterId, [filterItemIds]);
+            _this.filterHelpers.clearFilter(filterId, [filterItemIds], false);
         }
-        reqState.page = 1;
+        _this.resetPagination(reqState);
         return reqState;
-    });
+    }, callAPI);
 };
 var clearAllFilters = function () {
+    var _this = this;
     this.setRequestState(function (reqState) {
+        reqState.action = exports.ACTIONS.CLEAR_ALL_FILTERS;
         reqState.filters = {};
-        reqState.page = 1;
+        _this.resetPagination(reqState);
         return reqState;
     });
 };

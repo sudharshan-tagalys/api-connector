@@ -50,12 +50,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var constants_1 = require("../shared/constants");
 var api_1 = require("../shared/helpers/api");
 var formatFactory_1 = require("../shared/helpers/formatters/formatFactory");
-var shopifyMultiCurrencyPriceMutator_1 = require("../shared/helpers/mutators/shopifyMultiCurrencyPriceMutator");
 var analyticsTracker_1 = require("./analyticsTracker");
-var api_2 = require("./api");
 var configuration_1 = require("./configuration");
 var cookie_1 = require("./cookie");
-var common_1 = require("../shared/helpers/common");
+var platform_helpers_1 = require("../shared/platform-helpers");
+var tagalysApi_1 = require("./api/tagalysApi");
+var shopifyConfiguration_1 = require("./shopifyConfiguration");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
@@ -75,40 +75,52 @@ var APIConnector = /** @class */ (function () {
             this.responseFormatter = formatFactory_1.default.responseFormatter();
         }
     };
+    APIConnector.prototype.apiClient = function () {
+        return new tagalysApi_1.default();
+    };
     APIConnector.prototype.call = function (requestOptions) {
-        var _this = this;
         if (requestOptions === void 0) { requestOptions = this.requestOptions; }
-        var currentRequest = this.currentRequestNumber += 1;
-        this.updateRequestNumber(currentRequest);
-        this.requestOptions = requestOptions;
-        this.setResponseFormatter();
-        var _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
-        params = this.beforeAPICall(params);
-        api_2.default.call(method, path, {
-            params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
-            onSuccess: function (response) {
-                if (_this.oldRequest(currentRequest)) {
-                    return;
-                }
-                _this.markRequestComplete(currentRequest);
-                if (_this.isFailureResponse(response)) {
-                    _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
-                }
-                else {
-                    _this.onSuccessfulResponse(response);
-                }
-            },
-            onFailure: function (response) {
-                console.log("falied");
-                if (_this.oldRequest(currentRequest)) {
-                    return;
-                }
-                _this.markRequestComplete(currentRequest);
-                _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
-            }
+        return __awaiter(this, void 0, void 0, function () {
+            var currentRequest, _a, method, path, params, format;
+            var _this = this;
+            return __generator(this, function (_b) {
+                currentRequest = this.currentRequestNumber += 1;
+                this.updateRequestNumber(currentRequest);
+                this.requestOptions = requestOptions;
+                this.setResponseFormatter();
+                _a = __assign(__assign({}, DEFAULT_REQUEST_OPTIONS), this.getRequestOptions()), method = _a.method, path = _a.path, params = _a.params, format = _a.format;
+                params = this.beforeAPICall(params);
+                this.apiClient().call(method, path, {
+                    params: this.formatRequestParams(__assign(__assign({}, params), { identification: configuration_1.default.getApiIdentification() }), format),
+                    onSuccess: function (response) {
+                        if (_this.oldRequest(currentRequest)) {
+                            return;
+                        }
+                        _this.markRequestComplete(currentRequest);
+                        if (_this.isFailureResponse(response)) {
+                            _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
+                        }
+                        else {
+                            _this.onSuccessfulResponse(response);
+                        }
+                    },
+                    onFailure: function (response) {
+                        console.log("falied");
+                        if (_this.oldRequest(currentRequest)) {
+                            return;
+                        }
+                        _this.markRequestComplete(currentRequest);
+                        _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
+                    }
+                });
+                return [2 /*return*/];
+            });
         });
     };
     APIConnector.prototype.formatRequestParams = function (params, format) {
+        if (format === constants_1.REQUEST_FORMAT.GRAPHQL) {
+            return JSON.stringify(params);
+        }
         if (format === constants_1.REQUEST_FORMAT.FORM_DATA) {
             return (0, api_1.objectToFormData)(params);
         }
@@ -118,14 +130,24 @@ var APIConnector = /** @class */ (function () {
         return params;
     };
     APIConnector.prototype.getHelpersToExpose = function (response, formattedResponse) {
+        var _this = this;
         return {
-            getProductPrices: common_1.getProductPrices,
-            updateProductPricesFromStoreFrontAPI: common_1.updateProductPricesFromStoreFrontAPI
+            updateProductDetailsForMarket: function (response) { return __awaiter(_this, void 0, void 0, function () {
+                var MultiMarket;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            MultiMarket = platform_helpers_1.default.MultiMarket.new();
+                            return [4 /*yield*/, MultiMarket.updateProductDetailsForMarket(response)];
+                        case 1:
+                            _a.sent();
+                            return [2 /*return*/];
+                    }
+                });
+            }); }
         };
     };
     APIConnector.prototype.internalSuccessCallback = function (response, formattedResponse) {
-    };
-    APIConnector.prototype.postSuccessCallback = function (response, formattedResponse) {
     };
     APIConnector.prototype.getFormattedResponse = function (response) {
         return this.formatResponse(response);
@@ -150,7 +172,6 @@ var APIConnector = /** @class */ (function () {
                         if (!configuration_1.default.analyticsStorageConsentProvided()) {
                             cookie_1.default.batchDelete(analyticsTracker_1.TAGALYS_ANALYTICS_COOKIES);
                         }
-                        this.postSuccessCallback(response, mutatedResponse);
                         return [2 /*return*/];
                 }
             });
@@ -158,21 +179,23 @@ var APIConnector = /** @class */ (function () {
     };
     APIConnector.prototype.mutateResponse = function (formattedResponse) {
         return __awaiter(this, void 0, void 0, function () {
-            var shopifyMultiCurrencyPriceMutator;
+            var MultiMarket;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!(configuration_1.default.isUsingMultiCountryCurrency() && !configuration_1.default.isUsingBaseCountryCode())) return [3 /*break*/, 3];
-                        shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
-                        if (!configuration_1.default.waitForStoreFrontAPI()) return [3 /*break*/, 2];
-                        return [4 /*yield*/, shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)];
+                        if (!configuration_1.default.isShopify()) return [3 /*break*/, 4];
+                        if (!(!configuration_1.default.isUsingBaseCountryCode() && shopifyConfiguration_1.default.useStorefrontAPIForSecondaryMarkets())) return [3 /*break*/, 4];
+                        MultiMarket = platform_helpers_1.default.MultiMarket.new();
+                        if (!shopifyConfiguration_1.default.canWaitForStorefrontAPI()) return [3 /*break*/, 2];
+                        return [4 /*yield*/, MultiMarket.updateProductDetailsForMarket(formattedResponse)];
                     case 1:
                         _a.sent();
-                        return [3 /*break*/, 3];
-                    case 2:
-                        shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse);
-                        _a.label = 3;
-                    case 3: return [2 /*return*/, formattedResponse];
+                        return [3 /*break*/, 4];
+                    case 2: return [4 /*yield*/, MultiMarket.resetProductPrices(formattedResponse)];
+                    case 3:
+                        _a.sent();
+                        _a.label = 4;
+                    case 4: return [2 /*return*/, formattedResponse];
                 }
             });
         });
@@ -226,6 +249,9 @@ var APIConnector = /** @class */ (function () {
                 new: function (requestOptions, defaultRequestOptions) {
                     if (requestOptions === void 0) { requestOptions = {}; }
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
+                    if (tagalysApi_1.default.isOffline() && requestOptions.hasOwnProperty('failover')) {
+                        return requestOptions.failover();
+                    }
                     var instance = new _this();
                     var helpers = instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
                     return {

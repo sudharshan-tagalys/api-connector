@@ -62,14 +62,12 @@ var Base = /** @class */ (function (_super) {
     Base.prototype.setResponseState = function (responseState) {
         this.responseState = __assign(__assign({}, this.responseState), responseState);
     };
-    Base.prototype.postSuccessCallback = function (response, formattedResponse) {
-        this.requestState.action = "";
-    };
-    Base.prototype.setRequestState = function (mutationCallback, callAPI) {
+    Base.prototype.setRequestState = function (mutationCallback, callAPI, notifyStateChange) {
         if (callAPI === void 0) { callAPI = true; }
+        if (notifyStateChange === void 0) { notifyStateChange = true; }
         var newRequestState = mutationCallback(this.requestState);
         this.requestState = newRequestState;
-        if (this.requestOptions.onStateChange) {
+        if (this.requestOptions.onStateChange && notifyStateChange) {
             this.requestOptions.onStateChange(this.requestState);
         }
         this.setRequestParamsFromRequestState();
@@ -77,6 +75,9 @@ var Base = /** @class */ (function (_super) {
     };
     Base.prototype.getParamsFromRequestState = function () {
         return this.getRequestParams(this.requestState);
+    };
+    Base.prototype.resetPagination = function (requestState) {
+        requestState.page = 1;
     };
     Base.prototype.getSortString = function () {
         var sort = this.requestState.sort;
@@ -184,6 +185,12 @@ var Base = /** @class */ (function (_super) {
         }
         return params;
     };
+    Base.prototype.getRequestParamsFromWindowLocation = function () {
+        return (0, common_1.getRequestParamsFromWindowLocation)();
+    };
+    Base.prototype.getRequestParamsFromQueryString = function (queryString) {
+        return (0, common_1.getRequestParamsFromQueryString)(queryString);
+    };
     Base.prototype.commonHelpers = function () {
         var _this = this;
         return {
@@ -192,9 +199,13 @@ var Base = /** @class */ (function (_super) {
                 if (except === void 0) { except = []; }
                 return _this.getEncodedQueryString.call(_this, except);
             },
-            getRequestParamsFromQueryString: function (queryString) { return (0, common_1.getRequestParamsFromQueryString)(queryString); },
-            getRequestParamsFromWindowLocation: function () { return (0, common_1.getRequestParamsFromWindowLocation)(); },
+            getRequestParamsFromQueryString: function (queryString) { return _this.getRequestParamsFromQueryString(queryString); },
+            getRequestParamsFromWindowLocation: function () { return _this.getRequestParamsFromWindowLocation(); },
             getRequestState: function () { return _this.requestState; },
+            setRequestState: function (mutationCallback, callAPI, notifyStateChange) {
+                if (notifyStateChange === void 0) { notifyStateChange = true; }
+                return _this.setRequestState(mutationCallback, callAPI, notifyStateChange);
+            },
             getRequestParams: function () { return _this.requestState; },
             getResponseState: function () { return _this.responseState; },
         };

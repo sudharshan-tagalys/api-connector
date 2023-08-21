@@ -10,8 +10,44 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getResponseFormatter = exports.packageDetails = exports.setConfiguration = exports.Analytics = exports.APIConnector = void 0;
+exports.getResponseFormatter = exports.packageDetails = exports.setConfiguration = exports.getPlatformConfiguration = exports.getConfiguration = exports.Analytics = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -33,15 +69,34 @@ exports.packageDetails = packageDetails_1.default;
 var platformAnalyticsFactory_1 = require("./lib/platformAnalyticsFactory");
 var platformAnalyticsTracker_1 = require("./lib/platformAnalyticsTracker");
 var formatFactory_1 = require("./shared/helpers/formatters/formatFactory");
-exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), personalized_recommendations_1.default.export()), recommendations_1.default.export()), search_suggestions_1.default.export()), legacy_1.default.export()), product_lisiting_page_1.default.export()), { trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); }, getPlatformVariable: function (variableKey) { return configuration_1.default.getPlatformVariable(variableKey); }, cookie: {
+var shopify_1 = require("./product-lisiting-page/platform/shopify");
+var failover_1 = require("./lib/failover");
+exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), personalized_recommendations_1.default.export()), recommendations_1.default.export()), search_suggestions_1.default.export()), legacy_1.default.export()), product_lisiting_page_1.default.export()), shopify_1.default.export()), { trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); }, cookie: {
         get: function (cname) { return cookie_1.default.get(cname); },
         set: function (cname, cvalue, expiryTime) { return cookie_1.default.set(cname, cvalue, expiryTime); },
         delete: function (cname) { return cookie_1.default.delete(cname); }
-    }, getPlatformVariables: function () { return configuration_1.default.getPlatformVariables(); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, isUsingMultiCountryCurrency: function () { return configuration_1.default.isUsingMultiCountryCurrency(); } });
-var setConfiguration = function (config) {
-    configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
-};
+    }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, hasFailedOver: function () { return failover_1.default.hasFailedOver(); }, failoverSimulator: {
+        activate: function () { return failover_1.default.activate(); },
+        deactivate: function () { return failover_1.default.deactivate(); }
+    } });
+var setConfiguration = function (config) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
+        if (failover_1.default.hasFailedOver()) {
+            failover_1.default.pollUntilAPIisHealthy();
+        }
+        return [2 /*return*/];
+    });
+}); };
 exports.setConfiguration = setConfiguration;
+var getConfiguration = function () {
+    return configuration_1.default.get();
+};
+exports.getConfiguration = getConfiguration;
+var getPlatformConfiguration = function () {
+    return configuration_1.default.getPlatformConfiguration();
+};
+exports.getPlatformConfiguration = getPlatformConfiguration;
 var Analytics = {
     trackPlatformEvents: function (eventTypesToTrack) {
         if (eventTypesToTrack === void 0) { eventTypesToTrack = platformAnalyticsTracker_1.DEFAULT_EVENT_TYPES; }

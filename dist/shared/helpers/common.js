@@ -1,46 +1,9 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
-    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (_) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateProductPricesFromStoreFrontAPI = exports.getProductPrices = exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = void 0;
+exports.getLegacyEncodedQueryString = exports.applyCurrencyConversion = exports.sortRecentSeaches = exports.getRecentSearches = exports.formatSearchItem = exports.caseInsensitiveString = exports.removeRecentSearch = exports.recordRecentSearch = exports.getRequestParamsFromWindowLocation = exports.getRequestParamsFromQueryString = exports.getEncodedQueryString = exports.getURLEncodedQueryString = exports.getFiltersFromQueryString = exports.getFilterQueryString = exports.getReplacementParam = void 0;
 var configuration_1 = require("../../lib/configuration");
 var localStorage_1 = require("../../lib/localStorage");
 var queryStringManager_1 = require("../../lib/queryStringManager");
-var shopifyMultiCurrencyPriceMutator_1 = require("./mutators/shopifyMultiCurrencyPriceMutator");
 var getURLEncodedQueryString = function (baseUrl, params) {
     return "".concat(baseUrl, "?").concat(getEncodedQueryString(params));
 };
@@ -55,10 +18,10 @@ var getLegacyEncodedQueryString = function (_a) {
     var hasQueryFilters = (Object.keys(queryFilters).length !== 0);
     var hasFilters = (Object.keys(filters).length !== 0);
     if (hasQueryFilters) {
-        params[queryFilterReplacement] = getFilterQueryString(queryFilters);
+        params[queryFilterReplacement] = (0, exports.getFilterQueryString)(queryFilters);
     }
     if (hasFilters) {
-        params[filterReplacement] = getFilterQueryString(filters);
+        params[filterReplacement] = (0, exports.getFilterQueryString)(filters);
     }
     if (page) {
         params[pageReplacement] = page;
@@ -67,7 +30,7 @@ var getLegacyEncodedQueryString = function (_a) {
         params[sortReplacement] = sort;
     }
     except.forEach(function (paramToDelete) {
-        delete params[getReplacementParam(paramToDelete)];
+        delete params[(0, exports.getReplacementParam)(paramToDelete)];
     });
     return "".concat(queryStringManager_1.default.stringify(params));
 };
@@ -85,7 +48,7 @@ var getEncodedQueryString = function (_a) {
         params[queryFilterReplacement] = getQueryFilterQueryString(queryFilters);
     }
     if (hasFilters) {
-        params[filterReplacement] = getFilterQueryString(filters);
+        params[filterReplacement] = (0, exports.getFilterQueryString)(filters);
     }
     if (page) {
         params[pageReplacement] = page;
@@ -94,7 +57,7 @@ var getEncodedQueryString = function (_a) {
         params[sortReplacement] = sort;
     }
     except.forEach(function (paramToDelete) {
-        delete params[getReplacementParam(paramToDelete)];
+        delete params[(0, exports.getReplacementParam)(paramToDelete)];
     });
     return "".concat(queryStringManager_1.default.stringify(params));
 };
@@ -103,6 +66,7 @@ var getReplacementParam = function (param) {
     var replacementParams = queryStringManager_1.default.getConfiguration();
     return replacementParams[param];
 };
+exports.getReplacementParam = getReplacementParam;
 var getRequestParamsFromWindowLocation = function () {
     return getRequestParamsFromQueryString(window.location.search.replace("?", ''));
 };
@@ -115,10 +79,10 @@ var getRequestParamsFromQueryString = function (queryString) {
         params['query'] = parsedObjectFromQueryString[queryParameter];
     }
     if (parsedObjectFromQueryString[queryFilterParameter]) {
-        params['queryFilters'] = getFiltersFromQueryString(parsedObjectFromQueryString[queryFilterParameter]);
+        params['queryFilters'] = (0, exports.getFiltersFromQueryString)(parsedObjectFromQueryString[queryFilterParameter]);
     }
     if (parsedObjectFromQueryString[filterParameter]) {
-        params['filters'] = getFiltersFromQueryString(parsedObjectFromQueryString[filterParameter]);
+        params['filters'] = (0, exports.getFiltersFromQueryString)(parsedObjectFromQueryString[filterParameter]);
     }
     if (parsedObjectFromQueryString[pageParameter]) {
         params['page'] = parseInt(parsedObjectFromQueryString[pageParameter].toString());
@@ -148,6 +112,7 @@ var getFilterQueryString = function (filters) {
     });
     return filtersQueryStrings.join('~');
 };
+exports.getFilterQueryString = getFilterQueryString;
 var getFiltersFromQueryString = function (filterQueryString) {
     var filtersFromQueryString = filterQueryString.split("~");
     var filters = {};
@@ -171,6 +136,7 @@ var getFiltersFromQueryString = function (filterQueryString) {
     });
     return filters;
 };
+exports.getFiltersFromQueryString = getFiltersFromQueryString;
 var caseInsensitiveString = function (string) {
     return string.toLowerCase().trim();
 };
@@ -247,71 +213,4 @@ var applyCurrencyConversion = function (number) {
     return convertedNumber;
 };
 exports.applyCurrencyConversion = applyCurrencyConversion;
-var getProductPrices = function (productIds, countryCode) { return __awaiter(void 0, void 0, void 0, function () {
-    var windowInstance, myShopifyDomain, storeFrontAPIAccessToken, response, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                if (!productIds.length)
-                    return [2 /*return*/, {}];
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 4, , 5]);
-                return [4 /*yield*/, loadTagalysHelperScript()];
-            case 2:
-                _a.sent();
-                windowInstance = window;
-                myShopifyDomain = configuration_1.default.getMyShopifyDomain();
-                storeFrontAPIAccessToken = configuration_1.default.getStoreFrontAPIAccessToken();
-                return [4 /*yield*/, windowInstance.TagalysPlatformHelpers.getProductPrices(productIds, countryCode, {
-                        myShopifyDomain: myShopifyDomain,
-                        storeFrontAPIAccessToken: storeFrontAPIAccessToken,
-                        applyCurrencyConversion: applyCurrencyConversion
-                    })];
-            case 3:
-                response = _a.sent();
-                return [2 /*return*/, response];
-            case 4:
-                error_1 = _a.sent();
-                console.error(error_1);
-                console.log("Issue in loading tagalys-platform-helpers");
-                return [2 /*return*/, {}];
-            case 5: return [2 /*return*/];
-        }
-    });
-}); };
-exports.getProductPrices = getProductPrices;
-var updateProductPricesFromStoreFrontAPI = function (response, callbacks) { return __awaiter(void 0, void 0, void 0, function () {
-    var shopifyMultiCurrencyPriceMutator, _a, _b, error_2;
-    return __generator(this, function (_c) {
-        switch (_c.label) {
-            case 0:
-                _c.trys.push([0, 2, , 3]);
-                shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
-                _b = (_a = callbacks).onSuccess;
-                return [4 /*yield*/, shopifyMultiCurrencyPriceMutator.mutate(response)];
-            case 1:
-                _b.apply(_a, [_c.sent()]);
-                return [3 /*break*/, 3];
-            case 2:
-                error_2 = _c.sent();
-                callbacks.onFailure(error_2);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); };
-exports.updateProductPricesFromStoreFrontAPI = updateProductPricesFromStoreFrontAPI;
-function loadTagalysHelperScript() {
-    var _window = window;
-    if (_window.TagalysPlatformHelpers)
-        return;
-    return new Promise(function (resolve, reject) {
-        var script = document.createElement('script');
-        script.src = "https://storage.googleapis.com/tagalys-front-end-components/tagalys-platform-helpers-v1.0.0.js";
-        script.onload = resolve;
-        script.onerror = reject;
-        document.body.appendChild(script);
-    });
-}
 //# sourceMappingURL=common.js.map

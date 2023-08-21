@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var ACTIONS = {
+    SET_QUERY: "SET_QUERY"
+};
 var setQuery = function (query) {
     this.setRequestState(function (reqState) {
+        reqState.action = ACTIONS.SET_QUERY;
         reqState.query = query;
         return reqState;
     });
