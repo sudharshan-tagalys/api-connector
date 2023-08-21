@@ -34,7 +34,7 @@ declare class Configuration {
     isBigCommerce(): boolean;
     getCountryCode(): any;
     isUsingBaseCountryCode(): boolean;
-    onFailover(): any;
+    getFailoverCallback(): any;
     get(): any;
 }
 declare const _default: Configuration;

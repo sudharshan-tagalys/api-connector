@@ -38,8 +38,8 @@ var Configuration = /** @class */ (function () {
             },
             countryCode: platformConfiguration.countryCode,
             baseCountryCode: platformConfiguration.baseCountryCode,
-            useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || false),
-            waitForStorefrontAPI: (platformConfiguration.waitForStorefrontAPI || true),
+            useStorefrontAPIForSecondaryMarkets: (platformConfiguration.hasOwnProperty("useStorefrontAPIForSecondaryMarkets") ? platformConfiguration.useStorefrontAPIForSecondaryMarkets : false),
+            waitForStorefrontAPI: (platformConfiguration.hasOwnProperty("waitForStorefrontAPI") ? platformConfiguration.waitForStorefrontAPI : true),
             metafields: (platformConfiguration.metafields || [])
         };
     };
@@ -148,7 +148,7 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.isUsingBaseCountryCode = function () {
         return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode;
     };
-    Configuration.prototype.onFailover = function () {
+    Configuration.prototype.getFailoverCallback = function () {
         return this.configuration.onFailover;
     };
     Configuration.prototype.get = function () {

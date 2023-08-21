@@ -10,8 +10,9 @@ var Failover = /** @class */ (function () {
     Failover.prototype.activate = function () {
         this.apiClient.setAsOffline();
         // this.pollUntilAPIisHealthy()
-        if (configuration_1.default.onFailover) {
-            return configuration_1.default.onFailover();
+        if (configuration_1.default.getFailoverCallback()) {
+            var callback = configuration_1.default.getFailoverCallback();
+            return callback();
         }
         this.reloadWithoutQueryParams();
     };

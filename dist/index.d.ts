@@ -24,5 +24,5 @@ declare const Analytics: {
     trackOrder: (orderId: any, lineItems: any) => void;
     trackProductListingPageView: (identifier: any) => void;
 };
-declare const getResponseFormatter: () => import("./shared/helpers/formatters/shopifyResponseFormatter").default | import("./shared/helpers/formatters/formatter").default;
+declare const getResponseFormatter: () => import("./shared/helpers/formatters/formatter").default | import("./shared/helpers/formatters/shopifyResponseFormatter").default;
 export { Analytics, getConfiguration, setPlatformConfiguration, getPlatformConfiguration, setConfiguration, packageDetails, getResponseFormatter, };
