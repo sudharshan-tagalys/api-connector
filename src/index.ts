@@ -67,6 +67,10 @@ const getPlatformConfiguration = () => {
   return configuration.getPlatformConfiguration()
 }
 
+const setPlatformConfiguration = () => {
+  return configuration.setPlatformConfiguration()
+}
+
 const Analytics = {
   trackPlatformEvents: (eventTypesToTrack = DEFAULT_EVENT_TYPES) => {
     if (configuration.canTrackAnalytics()) {
@@ -117,6 +121,7 @@ const getResponseFormatter = () => {
 export {
   Analytics,
   getConfiguration,
+  setPlatformConfiguration,
   getPlatformConfiguration,
   setConfiguration,
   packageDetails,

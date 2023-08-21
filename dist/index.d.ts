@@ -16,6 +16,7 @@ export declare const APIConnector: {
 declare const setConfiguration: (config: any) => Promise<void>;
 declare const getConfiguration: () => any;
 declare const getPlatformConfiguration: () => any;
+declare const setPlatformConfiguration: () => void;
 declare const Analytics: {
     trackPlatformEvents: (eventTypesToTrack?: string[]) => void;
     trackProductView: (identifier: any) => void;
@@ -24,4 +25,4 @@ declare const Analytics: {
     trackProductListingPageView: (identifier: any) => void;
 };
 declare const getResponseFormatter: () => import("./shared/helpers/formatters/shopifyResponseFormatter").default | import("./shared/helpers/formatters/formatter").default;
-export { Analytics, getConfiguration, getPlatformConfiguration, setConfiguration, packageDetails, getResponseFormatter, };
+export { Analytics, getConfiguration, setPlatformConfiguration, getPlatformConfiguration, setConfiguration, packageDetails, getResponseFormatter, };

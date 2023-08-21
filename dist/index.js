@@ -47,7 +47,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getResponseFormatter = exports.packageDetails = exports.setConfiguration = exports.getPlatformConfiguration = exports.getConfiguration = exports.Analytics = exports.APIConnector = void 0;
+exports.getResponseFormatter = exports.packageDetails = exports.setConfiguration = exports.getPlatformConfiguration = exports.setPlatformConfiguration = exports.getConfiguration = exports.Analytics = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -97,6 +97,10 @@ var getPlatformConfiguration = function () {
     return configuration_1.default.getPlatformConfiguration();
 };
 exports.getPlatformConfiguration = getPlatformConfiguration;
+var setPlatformConfiguration = function () {
+    return configuration_1.default.setPlatformConfiguration();
+};
+exports.setPlatformConfiguration = setPlatformConfiguration;
 var Analytics = {
     trackPlatformEvents: function (eventTypesToTrack) {
         if (eventTypesToTrack === void 0) { eventTypesToTrack = platformAnalyticsTracker_1.DEFAULT_EVENT_TYPES; }
