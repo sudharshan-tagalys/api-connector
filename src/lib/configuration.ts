@@ -31,8 +31,8 @@ class Configuration{
     this.platformConfiguration = {
       platform: platformConfiguration.platform,
       storefrontAPI: {
-        accessToken: platformConfiguration?.storeFrontAPI?.accessToken,
-        myShopifyDomain: platformConfiguration?.storeFrontAPI?.myShopifyDomain,
+        accessToken: platformConfiguration?.storefrontAPI?.accessToken,
+        myShopifyDomain: platformConfiguration?.storefrontAPI?.myShopifyDomain,
       },
       countryCode: platformConfiguration.countryCode,
       baseCountryCode: platformConfiguration.baseCountryCode,

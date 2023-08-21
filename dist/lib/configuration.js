@@ -33,8 +33,8 @@ var Configuration = /** @class */ (function () {
         this.platformConfiguration = {
             platform: platformConfiguration.platform,
             storefrontAPI: {
-                accessToken: (_a = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storeFrontAPI) === null || _a === void 0 ? void 0 : _a.accessToken,
-                myShopifyDomain: (_b = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storeFrontAPI) === null || _b === void 0 ? void 0 : _b.myShopifyDomain,
+                accessToken: (_a = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storefrontAPI) === null || _a === void 0 ? void 0 : _a.accessToken,
+                myShopifyDomain: (_b = platformConfiguration === null || platformConfiguration === void 0 ? void 0 : platformConfiguration.storefrontAPI) === null || _b === void 0 ? void 0 : _b.myShopifyDomain,
             },
             countryCode: platformConfiguration.countryCode,
             baseCountryCode: platformConfiguration.baseCountryCode,
