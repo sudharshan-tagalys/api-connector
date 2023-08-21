@@ -67,8 +67,8 @@ const getPlatformConfiguration = () => {
   return configuration.getPlatformConfiguration()
 }
 
-const setPlatformConfiguration = () => {
-  return configuration.setPlatformConfiguration()
+const setPlatformConfiguration = (platformConfiguration) => {
+  return configuration.setPlatformConfiguration(platformConfiguration)
 }
 
 const Analytics = {
