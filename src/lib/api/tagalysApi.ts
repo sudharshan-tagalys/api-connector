@@ -19,7 +19,7 @@ class TagalysAPI{
       }
       return parsedResponse
     }else{
-      this.setAsOffline()
+      // this.setAsOffline()
       if(typeof(requestOptions.onFailure) != 'undefined') {
         return requestOptions.onFailure(response);
       }

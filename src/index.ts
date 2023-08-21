@@ -20,6 +20,7 @@ import { DEFAULT_EVENT_TYPES } from "./lib/platformAnalyticsTracker";
 import formatFactory from "./shared/helpers/formatters/formatFactory";
 import ShopifyProductListingPage from "./product-lisiting-page/platform/shopify";
 import failover from "./lib/failover";
+import { setGlobalContextToPlatformHelpers } from "./shared/platform-helpers";
 
 
 export const APIConnector = {
@@ -54,9 +55,10 @@ const setConfiguration = async (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  if (failover.hasFailedOver()) {
-    failover.pollUntilAPIisHealthy()
-  }
+  // if (failover.hasFailedOver()) {
+  //   failover.pollUntilAPIisHealthy()
+  // }
+  setGlobalContextToPlatformHelpers()
 }
 
 const getConfiguration = () => {
@@ -68,7 +70,8 @@ const getPlatformConfiguration = () => {
 }
 
 const setPlatformConfiguration = (platformConfiguration) => {
-  return configuration.setPlatformConfiguration(platformConfiguration)
+  configuration.setPlatformConfiguration(platformConfiguration)
+  setGlobalContextToPlatformHelpers()
 }
 
 const Analytics = {

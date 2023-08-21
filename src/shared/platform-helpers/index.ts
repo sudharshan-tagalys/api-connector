@@ -1,11 +1,12 @@
-import TagalysToCommonResponseFormatter from "./lib/tagalys-to-common-response-formatter";
-import ProductListingPage from "./product-listing-page";
-import MultiMarket from './lib/multi-market'
-import ShopifyAPI from "./lib/shopifyApi";
+import configuration from "../../lib/configuration";
+import shopifyConfiguration from "../../lib/shopifyConfiguration";
+const TagalysPlatformHelpers = require("../node_modules/platform-helpers")
 
-export default {
-  apiClient: () => new ShopifyAPI(),
-  ...TagalysToCommonResponseFormatter.export(),
-  ...ProductListingPage.export(),
-  ...MultiMarket.export()
+export const setGlobalContextToPlatformHelpers = () => {
+  TagalysPlatformHelpers.globalContext.set({
+    configuration: configuration,
+    shopifyConfiguration: shopifyConfiguration
+  })
 }
+
+export default TagalysPlatformHelpers

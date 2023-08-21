@@ -3,7 +3,7 @@ import configuration from './configuration';
 
 class Failover {
   private apiClient
-  private intervalId;
+  // private intervalId;
 
   constructor() {
     this.apiClient = new TagalysAPI()
@@ -11,7 +11,7 @@ class Failover {
 
   activate() {
     this.apiClient.setAsOffline()
-    this.pollUntilAPIisHealthy()
+    // this.pollUntilAPIisHealthy()
     if(configuration.onFailover){
       return configuration.onFailover()
     }
@@ -19,9 +19,8 @@ class Failover {
   }
 
   deactivate() {
-    console.log("Deactivating failover since api health returned to normal")
     this.apiClient.setAsOnline()
-    clearInterval(this.intervalId)
+    // clearInterval(this.intervalId)
   }
 
   hasFailedOver() {
@@ -34,14 +33,14 @@ class Failover {
   }
 
   pollUntilAPIisHealthy(){
-    if(!this.intervalId){
-      this.intervalId = setInterval(async function(){
-        const isAPIHealthy = await this.apiClient.isAPIHealthy()
-        if(isAPIHealthy){
-          this.deactivate()
-        }
-      }.bind(this), 180000)
-    }
+    // if(!this.intervalId){
+    //   this.intervalId = setInterval(async function(){
+    //     const isAPIHealthy = await this.apiClient.isAPIHealthy()
+    //     if(isAPIHealthy){
+    //       this.deactivate()
+    //     }
+    //   }.bind(this), 180000)
+    // }
   }
 }
 

@@ -27,6 +27,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "qs": "^6.10.5"
+    "qs": "^6.10.5",
+    "platform-helpers": "https://github.com/Tagalys/platform-helpers.git"
   }
 }
