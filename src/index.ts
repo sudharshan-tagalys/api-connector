@@ -43,6 +43,7 @@ export const APIConnector = {
     delete: (cname) => cookie.delete(cname)
   },
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
+  getQueryStringConfiguration: () => queryStringManager.getConfiguration(),
   hasFailedOver: ()=> failover.hasFailedOver(),
   failoverSimulator: {
     activate: () => failover.activate(),
