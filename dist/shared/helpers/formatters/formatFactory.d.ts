@@ -1,5 +1,6 @@
 import Formatter from './formatter';
+import ShopifyResponseFormatter from './shopifyResponseFormatter';
 declare const _default: {
-    responseFormatter: () => Formatter;
+    responseFormatter: () => ShopifyResponseFormatter | Formatter;
 };
 export default _default;

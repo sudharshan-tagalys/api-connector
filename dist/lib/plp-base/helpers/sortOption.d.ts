@@ -1,3 +1,6 @@
+export declare const ACTIONS: {
+    APPLY_SORT_OPTION: string;
+};
 declare const _default: {
     applySortOption: (sort: any) => void;
     getAppliedSortOption: () => any;

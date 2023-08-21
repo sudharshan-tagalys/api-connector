@@ -54,6 +54,7 @@ declare class Search extends Base {
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getRequestState: () => any;
+        setRequestState: (mutationCallback: any, callAPI: any, notifyStateChange?: boolean) => void;
         getRequestParams: () => any;
         getResponseState: () => any;
     };

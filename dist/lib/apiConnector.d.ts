@@ -4,11 +4,11 @@ declare class APIConnector {
     completedRequestNumber: any;
     responseFormatter: any;
     setResponseFormatter(): void;
-    call(requestOptions?: any): void;
+    apiClient(): any;
+    call(requestOptions?: any): Promise<void>;
     formatRequestParams(params: any, format: any): any;
     getHelpersToExpose(response: any, formattedResponse: any): any;
     internalSuccessCallback(response: any, formattedResponse: any): void;
-    postSuccessCallback(response: any, formattedResponse: any): void;
     getFormattedResponse(response: any): any;
     onSuccessfulResponse(response: any): Promise<void>;
     mutateResponse(formattedResponse: any): Promise<any>;
@@ -33,14 +33,12 @@ declare class APIConnector {
                 onSuccess: (response: any) => void;
                 beforeAPICall: (params: any) => any;
                 onFailure: (response: any) => void;
-            }) => void;
-            new: (requestOptions?: {}, defaultRequestOptions?: {
+            }) => Promise<void>;
+            new: (requestOptions?: any, defaultRequestOptions?: {
                 onSuccess: (response: any) => void;
                 beforeAPICall: (params: any) => any;
                 onFailure: (response: any) => void;
-            }) => {
-                helpers: any;
-            };
+            }) => any;
         };
     };
 }

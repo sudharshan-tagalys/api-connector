@@ -1,10 +1,15 @@
+export declare const ACTIONS: {
+    APPLY_FILTER: string;
+    CLEAR_FILTER: string;
+    CLEAR_ALL_FILTERS: string;
+};
 declare const _default: {
     getFilters: () => any;
     getFlattenedAppliedFilters: () => any[];
     applyFilter: (filterId: any, appliedFilter: any) => void;
     getFilterById: (filterId: any) => any;
     getFilterItemById: (filterId: any, filterItemId: any) => any;
-    clearFilter: (filterId: any, filterItemIds?: any[]) => void;
+    clearFilter: (filterId: any, filterItemIds?: any[], callAPI?: boolean) => void;
     clearAllFilters: () => void;
     getRequestHelpers: () => {
         applyFilter: any;

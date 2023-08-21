@@ -1,7 +1,10 @@
 declare class Configuration {
     private configuration;
+    private platformConfiguration;
     setConfiguration(configuration: any): void;
+    setPlatformConfiguration(platformConfiguration?: any): void;
     validateConfiguration(configuration: any): void;
+    validatePlatformConfiguration(platformConfiguration: any): void;
     getConstructedErrorLabel(missingConfiguration: any): string;
     getConfiguration(): any;
     getServerUrl(): any;
@@ -20,22 +23,19 @@ declare class Configuration {
     getPlatform(): any;
     analyticsStorageConsentProvided(): any;
     canTrackAnalytics(): any;
-    getPlatformVariable(key: any): any;
     getStoreId(): any;
-    getPlatformVariables(): any;
+    getPlatformConfiguration(): any;
     getExchangeRate(): number;
     getFractionalDigits(): number;
     getCurrency(): any;
     getClientCode(): any;
-    getStoreFrontAPIAccessToken(): any;
-    getMyShopifyDomain(): any;
     isShopify(): boolean;
     isMagento(): boolean;
     isBigCommerce(): boolean;
     getCountryCode(): any;
     isUsingBaseCountryCode(): boolean;
-    isUsingMultiCountryCurrency(): boolean;
-    waitForStoreFrontAPI(): any;
+    onFailover(): any;
+    get(): any;
 }
 declare const _default: Configuration;
 export default _default;

@@ -11,9 +11,9 @@ declare class Base extends APIConnector {
     constructor();
     bindThisToHelpers(helpers: object): {};
     setResponseState(responseState: any): void;
-    postSuccessCallback(response: any, formattedResponse: any): void;
-    setRequestState(mutationCallback: any, callAPI?: boolean): void;
+    setRequestState(mutationCallback: any, callAPI?: boolean, notifyStateChange?: boolean): void;
     getParamsFromRequestState(): any;
+    resetPagination(requestState: any): void;
     getSortString(): any;
     internalSuccessCallback(_: any, formattedResponse: any): void;
     getHelpers(type: any): any;
@@ -24,12 +24,15 @@ declare class Base extends APIConnector {
     getEncodedQueryString(except?: any[]): string;
     getRequestStateFromParams(params: any): any;
     getRequestParams(state: any): any;
+    getRequestParamsFromWindowLocation(): {};
+    getRequestParamsFromQueryString(queryString: any): {};
     commonHelpers(): {
         getEncodedQueryString: (requestParameters: any) => string;
         getEncodedQueryStringFromRequestState: (except?: any[]) => any;
         getRequestParamsFromQueryString: (queryString: any) => {};
         getRequestParamsFromWindowLocation: () => {};
         getRequestState: () => any;
+        setRequestState: (mutationCallback: any, callAPI: any, notifyStateChange?: boolean) => void;
         getRequestParams: () => any;
         getResponseState: () => any;
     };
