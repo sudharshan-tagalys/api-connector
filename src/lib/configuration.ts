@@ -36,8 +36,8 @@ class Configuration{
       },
       countryCode: platformConfiguration.countryCode,
       baseCountryCode: platformConfiguration.baseCountryCode,
-      useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || false),
-      waitForStorefrontAPI: (platformConfiguration.waitForStorefrontAPI || true),
+      useStorefrontAPIForSecondaryMarkets: (platformConfiguration.hasOwnProperty("useStorefrontAPIForSecondaryMarkets") ? platformConfiguration.useStorefrontAPIForSecondaryMarkets : false),
+      waitForStorefrontAPI: (platformConfiguration.hasOwnProperty("waitForStorefrontAPI") ? platformConfiguration.waitForStorefrontAPI : true),
       metafields: (platformConfiguration.metafields || [])
     }
   }
@@ -166,7 +166,7 @@ class Configuration{
     return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode
   }
 
-  onFailover(){
+  getFailoverCallback(){
     return this.configuration.onFailover
   }
 

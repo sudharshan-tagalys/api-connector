@@ -12,8 +12,9 @@ class Failover {
   activate() {
     this.apiClient.setAsOffline()
     // this.pollUntilAPIisHealthy()
-    if(configuration.onFailover){
-      return configuration.onFailover()
+    if(configuration.getFailoverCallback()){
+      const callback = configuration.getFailoverCallback()
+      return callback()
     }
     this.reloadWithoutQueryParams()
   }
