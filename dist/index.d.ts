@@ -7,6 +7,7 @@ export declare const APIConnector: {
         delete: (cname: any) => void;
     };
     setQueryStringConfiguration: (config: any) => void;
+    getQueryStringConfiguration: () => any;
     hasFailedOver: () => boolean;
     failoverSimulator: {
         activate: () => any;
