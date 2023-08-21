@@ -1,6 +1,6 @@
 import configuration from "../../lib/configuration";
 import shopifyConfiguration from "../../lib/shopifyConfiguration";
-const TagalysPlatformHelpers = require("../../../node_modules/platform-helpers").default
+import TagalysPlatformHelpers from 'platform-helpers'
 
 export const setGlobalContextToPlatformHelpers = () => {
   TagalysPlatformHelpers.globalContext.set({
