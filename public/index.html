@@ -39,60 +39,24 @@
         analyticsStorageConsentProvided: function () {
           return false
         },
-        // baseCountryCode: "US",
-        // countryCode: "IN",
-        platformVariables: {
-          useStoreFrontAPIForProductPrices: true,
-          storeFrontAPIAccessToken: "942cf991dbd2f945a7f671ea36f4761d",
-          myShopifyDomain: "replication-one.myshopify.com",
-          metafields: {
-            products: [{
-              namespace: "custom",
-              key: "prod_ref"
-            },
-            {
-              namespace: "custom",
-              key: "api"
-            },
-            {
-              namespace: "instructions",
-              key: "wash"
-            },
-            {
-              namespace: "custom",
-              key: "prod_ref_list"
-            },
-            {
-              namespace: "custom",
-              key: "rating_list"
-            },{
-              namespace: "custom",
-              key: "rating"
-            },{
-              namespace: "custom",
-              key: "color_picker"
-            },{
-              namespace: "custom",
-              key: "multi"
-            },{
-              namespace: "custom",
-              key: "int"
-            },
-            {
-              namespace: "custom",
-              key: "col_ref"
-            }]
-          }
-        }
-      }, callback);
-    }
+      });
 
-    var onTagalysReady = function (callback) {
-      window.addEventListener("DOMContentLoaded", function () {
-        setTagalysConfiguration(callback)
+      Tagalys.setPlatformConfiguration({
+        platform: "Shopify"
       })
     }
 
+    function onTagalysReady(callback) {
+      if (window.Tagalys) {
+        setTagalysConfiguration()
+        callback()
+      } else {
+        window.addEventListener("DOMContentLoaded", function () {
+          setTagalysConfiguration()
+          callback()
+        })
+      }
+    }
     var params = {
       product_listing_page_id: "453200904494", // listing page id for which the products to be returned
     }

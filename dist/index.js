@@ -97,8 +97,8 @@ var getPlatformConfiguration = function () {
     return configuration_1.default.getPlatformConfiguration();
 };
 exports.getPlatformConfiguration = getPlatformConfiguration;
-var setPlatformConfiguration = function () {
-    return configuration_1.default.setPlatformConfiguration();
+var setPlatformConfiguration = function (platformConfiguration) {
+    return configuration_1.default.setPlatformConfiguration(platformConfiguration);
 };
 exports.setPlatformConfiguration = setPlatformConfiguration;
 var Analytics = {

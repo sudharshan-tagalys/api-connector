@@ -16,7 +16,7 @@ export declare const APIConnector: {
 declare const setConfiguration: (config: any) => Promise<void>;
 declare const getConfiguration: () => any;
 declare const getPlatformConfiguration: () => any;
-declare const setPlatformConfiguration: () => void;
+declare const setPlatformConfiguration: (platformConfiguration: any) => void;
 declare const Analytics: {
     trackPlatformEvents: (eventTypesToTrack?: string[]) => void;
     trackProductView: (identifier: any) => void;
