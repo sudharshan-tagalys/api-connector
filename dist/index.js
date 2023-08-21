@@ -71,6 +71,7 @@ var platformAnalyticsTracker_1 = require("./lib/platformAnalyticsTracker");
 var formatFactory_1 = require("./shared/helpers/formatters/formatFactory");
 var shopify_1 = require("./product-lisiting-page/platform/shopify");
 var failover_1 = require("./lib/failover");
+var platform_helpers_1 = require("./shared/platform-helpers");
 exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign(__assign({}, search_1.default.export()), similar_products_widget_1.default.export()), smart_widget_1.default.export()), bought_also_bought_1.default.export()), viewed_also_viewed_1.default.export()), added_to_cart_also_added_to_cart_1.default.export()), personalized_recommendations_1.default.export()), recommendations_1.default.export()), search_suggestions_1.default.export()), legacy_1.default.export()), product_lisiting_page_1.default.export()), shopify_1.default.export()), { trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); }, cookie: {
         get: function (cname) { return cookie_1.default.get(cname); },
         set: function (cname, cvalue, expiryTime) { return cookie_1.default.set(cname, cvalue, expiryTime); },
@@ -82,9 +83,10 @@ exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__a
 var setConfiguration = function (config) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
-        if (failover_1.default.hasFailedOver()) {
-            failover_1.default.pollUntilAPIisHealthy();
-        }
+        // if (failover.hasFailedOver()) {
+        //   failover.pollUntilAPIisHealthy()
+        // }
+        (0, platform_helpers_1.setGlobalContextToPlatformHelpers)();
         return [2 /*return*/];
     });
 }); };
@@ -98,7 +100,8 @@ var getPlatformConfiguration = function () {
 };
 exports.getPlatformConfiguration = getPlatformConfiguration;
 var setPlatformConfiguration = function (platformConfiguration) {
-    return configuration_1.default.setPlatformConfiguration(platformConfiguration);
+    configuration_1.default.setPlatformConfiguration(platformConfiguration);
+    (0, platform_helpers_1.setGlobalContextToPlatformHelpers)();
 };
 exports.setPlatformConfiguration = setPlatformConfiguration;
 var Analytics = {

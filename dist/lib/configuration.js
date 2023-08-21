@@ -38,7 +38,7 @@ var Configuration = /** @class */ (function () {
             },
             countryCode: platformConfiguration.countryCode,
             baseCountryCode: platformConfiguration.baseCountryCode,
-            useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || true),
+            useStorefrontAPIForSecondaryMarkets: (platformConfiguration.useStorefrontAPIForSecondaryMarkets || false),
             waitForStorefrontAPI: (platformConfiguration.waitForStorefrontAPI || true),
             metafields: (platformConfiguration.metafields || [])
         };

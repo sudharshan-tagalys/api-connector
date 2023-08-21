@@ -1,25 +1,8 @@
 import ProductListingPage from '../../index';
 declare class ShopifyProductListingPage extends ProductListingPage {
     constructor();
-    platformHelper(): {
-        getQuery: () => string;
-        getQueryVariables: () => any;
-        formatResponse: (requestOptions: any, shopifyResponse: any) => {
-            name: any;
-            products: any;
-            filters: any;
-            sort_options: any;
-            page_info: any;
-            filter_inputs: {};
-        };
-        getFilterInputs: (filtersFromResponse: any) => {};
-        getDataForInitialRequest: (requestOptions: any) => Promise<{
-            filtersForRequestParams: {};
-            filter_inputs: {};
-            price_ranges: {};
-        }>;
-    };
-    apiClient(): import("../../../shared/platform-helpers/lib/shopifyApi").default;
+    platformHelper(): any;
+    apiClient(): any;
     resetPagination(requestState: any): void;
     getDefaultRequestState: () => any;
     getDefaultResponseState: () => any;
@@ -31,14 +14,7 @@ declare class ShopifyProductListingPage extends ProductListingPage {
         path: string;
         format: string;
     };
-    formatResponse(response: any): {
-        name: any;
-        products: any;
-        filters: any;
-        sort_options: any;
-        page_info: any;
-        filter_inputs: {};
-    };
+    formatResponse(response: any): any;
     getRequestStateFromParams(params: any): any;
     getRequestParams(state: any): any;
     getEncodedQueryString(except?: any[]): string;

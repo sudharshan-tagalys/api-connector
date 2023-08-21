@@ -1,6 +1,5 @@
 declare class Failover {
     private apiClient;
-    private intervalId;
     constructor();
     activate(): any;
     deactivate(): void;

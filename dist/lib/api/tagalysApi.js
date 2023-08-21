@@ -66,7 +66,7 @@ var TagalysAPI = /** @class */ (function () {
                         }
                         return [2 /*return*/, parsedResponse];
                     case 3:
-                        this.setAsOffline();
+                        // this.setAsOffline()
                         if (typeof (requestOptions.onFailure) != 'undefined') {
                             return [2 /*return*/, requestOptions.onFailure(response)];
                         }
