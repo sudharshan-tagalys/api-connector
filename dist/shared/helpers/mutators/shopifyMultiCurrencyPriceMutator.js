@@ -84,7 +84,10 @@ var ShopifyMultiCurrencyPriceMutator = /** @class */ (function () {
     };
     ShopifyMultiCurrencyPriceMutator.prototype.resetProductPrices = function (response) {
         var _this = this;
-        return response.products.forEach(function (product) { return _this.resetProductPrice(product); });
+        if (response.products) {
+            return response.products.forEach(function (product) { return _this.resetProductPrice(product); });
+        }
+        return response;
     };
     ShopifyMultiCurrencyPriceMutator.prototype.getVariantPrices = function (variants) {
         return variants.filter(function (variant) { return variant.price !== null; }).map(function (variant) { return variant.price; });
