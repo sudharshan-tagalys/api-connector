@@ -37,7 +37,10 @@ class ShopifyMultiCurrencyPriceMutator {
   }
 
   resetProductPrices(response) {
-    return response.products.forEach((product) => this.resetProductPrice(product))
+    if (response.products) {
+      return response.products.forEach((product) => this.resetProductPrice(product))
+    }
+    return response
   }
 
   getVariantPrices(variants) {
