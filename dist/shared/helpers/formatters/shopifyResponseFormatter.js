@@ -69,7 +69,8 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             },
             variants: 'variants',
             available: 'available',
-            metafields: 'metafields'
+            metafields: 'metafields',
+            published_collections_on_online_store: 'collections'
         };
     };
     ShopifyResponseFormatter.prototype.additionalPlatformFields = function (detail) {
