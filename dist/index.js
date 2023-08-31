@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.packageDetails = exports.setConfiguration = exports.Analytics = exports.APIConnector = void 0;
+exports.packageDetails = exports.getConfiguration = exports.setConfiguration = exports.Analytics = exports.APIConnector = void 0;
 var configuration_1 = require("./lib/configuration");
 var constants_1 = require("./shared/constants");
 var similar_products_widget_1 = require("./similar-products-widget");
@@ -41,6 +41,10 @@ var setConfiguration = function (config) {
     configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
 };
 exports.setConfiguration = setConfiguration;
+var getConfiguration = function () {
+    return configuration_1.default.getConfiguration();
+};
+exports.getConfiguration = getConfiguration;
 var trackPlatformEvents = function (eventTypesToTrack) {
     if (configuration_1.default.canTrackAnalytics()) {
         platformAnalyticsFactory_1.default.tracker(eventTypesToTrack).track();

@@ -94,6 +94,7 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
                 additionalPlatformFields['options'] = options;
                 additionalPlatformFields['options_with_values'] = detail.options.map(function (option) {
                     return {
+                        id: option.id.split("/").pop(),
                         name: option.name,
                         position: option.position,
                         values: option.values

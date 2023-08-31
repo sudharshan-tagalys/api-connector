@@ -12,6 +12,7 @@ export declare const APIConnector: {
     isUsingMultiCountryCurrency: () => boolean;
 };
 declare const setConfiguration: (config: any) => void;
+declare const getConfiguration: () => any;
 declare const Analytics: {
     trackPlatformEvents: (eventTypesToTrack?: string[]) => void;
     trackProductView: (identifier: any) => void;
@@ -19,4 +20,4 @@ declare const Analytics: {
     trackOrder: (orderId: any, lineItems: any) => void;
     trackProductListingPageView: (identifier: any) => void;
 };
-export { Analytics, setConfiguration, packageDetails, };
+export { Analytics, setConfiguration, getConfiguration, packageDetails, };

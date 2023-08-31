@@ -76,6 +76,7 @@ class ShopifyResponseFormatter extends Formatter {
         additionalPlatformFields['options'] = options
         additionalPlatformFields['options_with_values'] = detail.options.map((option)=>{
           return {
+            id: option.id.split("/").pop(),
             name: option.name,
             position: option.position,
             values: option.values

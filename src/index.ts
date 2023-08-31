@@ -49,6 +49,10 @@ const setConfiguration = (config) => {
   })
 }
 
+const getConfiguration = () => {
+  return configuration.getConfiguration()
+}
+
 const trackPlatformEvents = function(eventTypesToTrack){
   if (configuration.canTrackAnalytics()) {
     platformAnalyticsFactory.tracker(eventTypesToTrack).track()
@@ -105,5 +109,6 @@ const Analytics = {
 export {
   Analytics,
   setConfiguration,
+  getConfiguration,
   packageDetails,
 }
