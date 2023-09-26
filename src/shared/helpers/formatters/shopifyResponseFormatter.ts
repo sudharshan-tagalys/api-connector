@@ -51,6 +51,19 @@ class ShopifyResponseFormatter extends Formatter {
       variants: 'variants',
       available: 'available',
       metafields: 'metafields',
+      _product_type: (data) => {
+        if (Array.isArray(data._product_type)) {
+          return {
+            key: "product_type",
+            value: data._product_type[0]
+          }
+        }
+        return {
+          key: "product_type",
+          value: data._product_type
+        }
+      },
+      media: "media",
       published_collections_on_online_store: 'collections'
     }
   }
