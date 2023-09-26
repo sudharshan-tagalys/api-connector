@@ -70,6 +70,19 @@ var ShopifyResponseFormatter = /** @class */ (function (_super) {
             variants: 'variants',
             available: 'available',
             metafields: 'metafields',
+            _product_type: function (data) {
+                if (Array.isArray(data._product_type)) {
+                    return {
+                        key: "product_type",
+                        value: data._product_type[0]
+                    };
+                }
+                return {
+                    key: "product_type",
+                    value: data._product_type
+                };
+            },
+            media: "media",
             published_collections_on_online_store: 'collections'
         };
     };

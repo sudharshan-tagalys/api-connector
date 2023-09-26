@@ -22,6 +22,11 @@ declare class ShopifyResponseFormatter extends Formatter {
         variants: string;
         available: string;
         metafields: string;
+        _product_type: (data: any) => {
+            key: string;
+            value: any;
+        };
+        media: string;
         published_collections_on_online_store: string;
     };
     additionalPlatformFields(detail: any): {
