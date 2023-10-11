@@ -42,7 +42,16 @@
       });
 
       Tagalys.setPlatformConfiguration({
-        platform: "Shopify"
+        platform: "Shopify",
+        platform: "Shopify",
+      useStorefrontAPIForSecondaryMarkets: true,
+      waitForStorefrontAPI: false,
+      storefrontAPI: {
+        accessToken: "942cf991dbd2f945a7f671ea36f4761d",
+        myShopifyDomain: "replication-one.myshopify.com",
+      },
+      countryCode: "IN",
+      baseCountryCode: "US",
       })
     }
 
@@ -61,10 +70,10 @@
       product_listing_page_id: "453200904494", // listing page id for which the products to be returned
     }
     onTagalysReady(function () {
-      window.productListingPageInstance = Tagalys.ShopifyAPIConnector.ProductListingPage.new({
+      window.productListingPageInstance = Tagalys.APIConnector.ProductListingPage.new({
         params: params,
         failover: function () {
-          return Tagalys.ShopifyAPIConnector.ProductListingPage.new({
+          return Tagalys.APIConnector.ShopifyProductListingPage.new({
             params: params,
             onSuccess: function (response, helpers) {
               console.log("ON SUCESS OF SHOPIFY API >>> ", response)
