@@ -10,6 +10,7 @@ export declare const APIConnector: {
     getPlatformVariables: () => any;
     setQueryStringConfiguration: (config: any) => void;
     isUsingMultiCountryCurrency: () => boolean;
+    waitForStoreFrontAPI: () => any;
 };
 declare const setConfiguration: (config: any) => void;
 declare const getConfiguration: () => any;

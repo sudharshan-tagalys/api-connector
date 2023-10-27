@@ -36,7 +36,7 @@ exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__a
         get: function (cname) { return cookie_1.default.get(cname); },
         set: function (cname, cvalue, expiryTime) { return cookie_1.default.set(cname, cvalue, expiryTime); },
         delete: function (cname) { return cookie_1.default.delete(cname); }
-    }, getPlatformVariables: function () { return configuration_1.default.getPlatformVariables(); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, isUsingMultiCountryCurrency: function () { return configuration_1.default.isUsingMultiCountryCurrency(); } });
+    }, getPlatformVariables: function () { return configuration_1.default.getPlatformVariables(); }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, isUsingMultiCountryCurrency: function () { return configuration_1.default.isUsingMultiCountryCurrency(); }, waitForStoreFrontAPI: function () { return configuration_1.default.waitForStoreFrontAPI(); } });
 var setConfiguration = function (config) {
     configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
 };
