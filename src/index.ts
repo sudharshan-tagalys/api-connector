@@ -39,7 +39,8 @@ export const APIConnector = {
   },
   getPlatformVariables: () => configuration.getPlatformVariables(),
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
-  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency()
+  isUsingMultiCountryCurrency: () => configuration.isUsingMultiCountryCurrency(),
+  waitForStoreFrontAPI: () => configuration.waitForStoreFrontAPI(),
 }
 
 const setConfiguration = (config) => {
