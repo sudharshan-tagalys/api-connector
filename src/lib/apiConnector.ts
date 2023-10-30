@@ -7,6 +7,14 @@ import cookie from "./cookie";
 import PlatformHelpers from '../shared/platform-helpers'
 import TagalysAPI from "./api/tagalysApi";
 import shopifyConfiguration from "./shopifyConfiguration";
+import failover from "./failover";
+
+type HealthDetails = {
+  path: string;
+  body?: string;
+  headers?: { contentType?: string }
+};
+
 
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
@@ -69,8 +77,13 @@ class APIConnector {
         }
         this.markRequestComplete(currentRequest)
         this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
-      }
+      },
+      health: this.getHealthCheckDetails()
     });
+  }
+
+  getHealthCheckDetails(): boolean | HealthDetails {
+    return false
   }
 
   formatRequestParams(params, format) {
@@ -191,11 +204,15 @@ class APIConnector {
             ...requestOptions
           })
         },
-        new: (requestOptions : any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
-          if(TagalysAPI.isOffline() && requestOptions.hasOwnProperty('failover')){
+        new: (requestOptions: any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
+          const instance = new this()
+          const isTagalysOfflineAndHasFailover = (TagalysAPI.isOffline() && requestOptions.hasOwnProperty('failover'))
+          if (isTagalysOfflineAndHasFailover) {
+            failover.pollUntilAPIisHealthy(instance.getHealthCheckDetails())
+          }
+          if (isTagalysOfflineAndHasFailover || requestOptions.forceFailover) {
             return requestOptions.failover()
           }
-          const instance = new this()
           const helpers = instance.new({
             ...defaultRequestOptions,
             ...requestOptions

@@ -3,7 +3,7 @@ import configuration from './configuration';
 
 class Failover {
   private apiClient
-  // private intervalId;
+  private intervalId;
 
   constructor() {
     this.apiClient = new TagalysAPI()
@@ -21,7 +21,7 @@ class Failover {
 
   deactivate() {
     this.apiClient.setAsOnline()
-    // clearInterval(this.intervalId)
+    clearInterval(this.intervalId)
   }
 
   hasFailedOver() {
@@ -33,15 +33,15 @@ class Failover {
     window.location.href = url.split('?')[0];
   }
 
-  pollUntilAPIisHealthy(){
-    // if(!this.intervalId){
-    //   this.intervalId = setInterval(async function(){
-    //     const isAPIHealthy = await this.apiClient.isAPIHealthy()
-    //     if(isAPIHealthy){
-    //       this.deactivate()
-    //     }
-    //   }.bind(this), 180000)
-    // }
+  pollUntilAPIisHealthy(params) {
+    if(!this.intervalId){
+      this.intervalId = setInterval(async function(){
+        const isAPIHealthy = await this.apiClient.isAPIHealthy(params)
+        if(isAPIHealthy){
+          this.deactivate()
+        }
+      }.bind(this), 5000)
+    }
   }
 }
 

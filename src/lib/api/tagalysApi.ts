@@ -1,3 +1,4 @@
+import { objectToFormData } from "../../shared/helpers/api";
 import configuration from "../configuration";
 import localStorage from "../localStorage";
 
@@ -18,8 +19,15 @@ class TagalysAPI{
         return requestOptions.onSuccess(parsedResponse)
       }
       return parsedResponse
-    }else{
-      // this.setAsOffline()
+    } else {
+
+      if (requestOptions.health) {
+        const isAPIHealthy = await this.isAPIHealthy(requestOptions.health)
+        if (!isAPIHealthy) {
+          this.setAsOffline()
+        }
+      }
+
       if(typeof(requestOptions.onFailure) != 'undefined') {
         return requestOptions.onFailure(response);
       }
@@ -48,13 +56,16 @@ class TagalysAPI{
     localStorage.removeItem(TAGALYS_API_STATUS)
   }
 
-  async isAPIHealthy(){
-    const response = await fetch(this.url("api_health"), {
-      body: null,
+  async isAPIHealthy(requestOptions) {
+    const response = await fetch(this.url(requestOptions.path), {
+      body: objectToFormData({
+        identification: configuration.getApiIdentification(),
+        ...requestOptions.body
+      }),
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": (requestOptions.contentType || "application/x-www-form-urlencoded"),
       },
-      method: "GET",
+      method: (requestOptions.method || "POST"),
     });
     if(response.status === 200){
       return true

@@ -47,6 +47,12 @@ class ProductListingPage extends Base {
     }
   }
 
+  getHealthCheckDetails() {
+    return {
+      path: "mpages/_health",
+    }
+  }
+
   extractAnalyticsData(response) {
     if(response === false){
       return {}

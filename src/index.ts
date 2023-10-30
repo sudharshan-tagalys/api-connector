@@ -56,9 +56,7 @@ const setConfiguration = async (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-  // if (failover.hasFailedOver()) {
-  //   failover.pollUntilAPIisHealthy()
-  // }
+
   setGlobalContextToPlatformHelpers()
 }
 
