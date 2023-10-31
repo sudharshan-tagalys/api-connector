@@ -9,6 +9,7 @@ export declare const APIConnector: {
     setQueryStringConfiguration: (config: any) => void;
     getQueryStringConfiguration: () => any;
     hasFailedOver: () => boolean;
+    pollUntilAPIisHealthy: (widgetHealthCheckDetails: any) => void;
     failoverSimulator: {
         activate: () => void;
         deactivate: () => void;

@@ -27,6 +27,9 @@ declare class ProductListingPage extends Base {
     getHealthCheckDetails(): {
         path: string;
     };
+    static getHealthCheckDetails(): {
+        path: string;
+    };
     extractAnalyticsData(response: any): {
         event_type?: undefined;
         event_details?: undefined;

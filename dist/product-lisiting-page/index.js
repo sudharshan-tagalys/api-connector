@@ -76,8 +76,11 @@ var ProductListingPage = /** @class */ (function (_super) {
         };
     };
     ProductListingPage.prototype.getHealthCheckDetails = function () {
+        return ProductListingPage.getHealthCheckDetails();
+    };
+    ProductListingPage.getHealthCheckDetails = function () {
         return {
-            path: "mpages/_health",
+            path: "mpages/_health"
         };
     };
     ProductListingPage.prototype.extractAnalyticsData = function (response) {

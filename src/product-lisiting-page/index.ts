@@ -48,8 +48,12 @@ class ProductListingPage extends Base {
   }
 
   getHealthCheckDetails() {
+    return ProductListingPage.getHealthCheckDetails()
+  }
+
+  static getHealthCheckDetails() {
     return {
-      path: "mpages/_health",
+      path: "mpages/_health"
     }
   }
 
