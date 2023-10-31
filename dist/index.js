@@ -76,13 +76,16 @@ exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__a
         get: function (cname) { return cookie_1.default.get(cname); },
         set: function (cname, cvalue, expiryTime) { return cookie_1.default.set(cname, cvalue, expiryTime); },
         delete: function (cname) { return cookie_1.default.delete(cname); }
-    }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, getQueryStringConfiguration: function () { return queryStringManager_1.default.getConfiguration(); }, hasFailedOver: function () { return failover_1.default.hasFailedOver(); }, pollUntilAPIisHealthy: function (widgetHealthCheckDetails) { return failover_1.default.pollUntilAPIisHealthy(widgetHealthCheckDetails); }, failoverSimulator: {
+    }, setQueryStringConfiguration: function (config) { return queryStringManager_1.default.setConfiguration(config); }, getQueryStringConfiguration: function () { return queryStringManager_1.default.getConfiguration(); }, hasFailedOver: function () { return failover_1.default.hasFailedOver(); }, failoverSimulator: {
         activate: function () { return failover_1.default.activate(); },
         deactivate: function () { return failover_1.default.deactivate(); }
     } });
 var setConfiguration = function (config) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
+        if (failover_1.default.hasFailedOver()) {
+            failover_1.default.pollUntilAPIisHealthy();
+        }
         (0, platform_helpers_1.setGlobalContextToPlatformHelpers)();
         return [2 /*return*/];
     });

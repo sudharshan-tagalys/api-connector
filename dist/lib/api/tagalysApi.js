@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -78,8 +67,8 @@ var TagalysAPI = /** @class */ (function () {
                         }
                         return [2 /*return*/, parsedResponse];
                     case 3:
-                        if (!requestOptions.health) return [3 /*break*/, 5];
-                        return [4 /*yield*/, this.isAPIHealthy(requestOptions.health)];
+                        if (!requestOptions.checkAPIHealth) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.isAPIHealthy()];
                     case 4:
                         isAPIHealthy = _a.sent();
                         if (!isAPIHealthy) {
@@ -116,17 +105,19 @@ var TagalysAPI = /** @class */ (function () {
     TagalysAPI.prototype.setAsOnline = function () {
         localStorage_1.default.removeItem(TAGALYS_API_STATUS);
     };
-    TagalysAPI.prototype.isAPIHealthy = function (requestOptions) {
+    TagalysAPI.prototype.isAPIHealthy = function () {
         return __awaiter(this, void 0, void 0, function () {
             var response;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, fetch(this.url(requestOptions.path), {
-                            body: (0, api_1.objectToFormData)(__assign({ identification: configuration_1.default.getApiIdentification() }, requestOptions.body)),
+                    case 0: return [4 /*yield*/, fetch(this.url('mpages/_health'), {
+                            body: (0, api_1.objectToFormData)({
+                                identification: configuration_1.default.getApiIdentification(),
+                            }),
                             headers: {
-                                "Content-Type": (requestOptions.contentType || "application/x-www-form-urlencoded"),
+                                "Content-Type": "application/x-www-form-urlencoded",
                             },
-                            method: (requestOptions.method || "POST"),
+                            method: "POST",
                         })];
                     case 1:
                         response = _a.sent();

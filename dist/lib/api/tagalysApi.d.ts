@@ -8,6 +8,6 @@ declare class TagalysAPI {
     static isOffline(): boolean;
     setAsOffline(): void;
     setAsOnline(): void;
-    isAPIHealthy(requestOptions: any): Promise<boolean>;
+    isAPIHealthy(): Promise<boolean>;
 }
 export default TagalysAPI;

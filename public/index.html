@@ -1,99 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search and search suggestions</title>
+    <script src="./bundle.js"></script>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search and search suggestions</title>
-  <script src="./bundle.js"></script>
-</head>
-
-<body>
-  <script>
-    var setTagalysConfiguration = function (callback) {
-      Tagalys.setConfiguration({
-        track: true,
-        analyticsStorageConsentProvided: () => {
-          return true
-        },
-        api: {
-          serverUrl: "https://stage2-api.tagalys.com",
-          credentials: {
-            clientCode: "676E7DE0213C3D74",
-            apiKey: "47632ed716da1810cfe03bdabd11887a",
-          },
-          storeId: "79335653678",
-        },
-        platform: "Shopify",
-        locale: "en-US",
-        currency: {
-          displayFormatter: "{{currencyLabel}}{{value}}",
-          code: "USD",
-          label: "$",
-          fractionalDigits: 2,
-          forceFractionalDigits: true,
-        },
-        countryCode: "US",
-        track: true,
-        analyticsStorageConsentProvided: function () {
-          return false
-        },
-      });
-
-      Tagalys.setPlatformConfiguration({
-        platform: "Shopify",
-        platform: "Shopify",
-      useStorefrontAPIForSecondaryMarkets: true,
-      waitForStorefrontAPI: false,
-      storefrontAPI: {
-        accessToken: "942cf991dbd2f945a7f671ea36f4761d",
-        myShopifyDomain: "replication-one.myshopify.com",
-      },
-      countryCode: "IN",
-      baseCountryCode: "US",
-      })
-    }
-
-    function onTagalysReady(callback) {
-      if (window.Tagalys) {
-        setTagalysConfiguration()
-        callback()
-      } else {
-        window.addEventListener("DOMContentLoaded", function () {
-          setTagalysConfiguration()
-          callback()
-        })
-      }
-    }
-    var params = {
-      product_listing_page_id: "453200904494", // listing page id for which the products to be returned
-    }
-    onTagalysReady(function () {
-      window.productListingPageInstance = Tagalys.APIConnector.ProductListingPage.new({
-        params: params,
-        failover: function () {
-          return Tagalys.APIConnector.ShopifyProductListingPage.new({
-            params: params,
-            onSuccess: function (response, helpers) {
-              console.log("ON SUCESS OF SHOPIFY API >>> ", response)
+  <body>
+    <script>
+      var setTagalysConfiguration = function (callback) {
+        Tagalys.setConfiguration({
+          api: {
+            serverUrl: "https://3e38-2409-40f4-2d-87fe-a949-876c-3a78-ff30.ngrok.io",
+            credentials: {
+              clientCode: "695C61FB8DA438F4",
+              apiKey: "ad0798b74920332708703b94adc5c3e4",
             },
-            onFailure: function () {
+            storeId: "80282976537",
+          },
+          platform: "Shopify",
+          locale: "en-US",
+          currency: {
+            displayFormatter: "{{currencyLabel}}{{value}}",
+            code: "AED",
+            label: "$",
+            fractionalDigits: 2,
+            forceFractionalDigits: true,
+          },
+        });
 
-            }
-          })
-        },
-        onSuccess: function (response, helpers) {
-          // Called after a successful API call
-          // Use response to render the results - described below
-          console.log("ON SUCESS OF TAGALYS API >>> ", response)
+        Tagalys.setPlatformConfiguration({
+          platform: "Shopify",
+          useStorefrontAPIForSecondaryMarkets: true,
+          waitForStorefrontAPI: false,
+          storefrontAPI: {
+            accessToken: "942cf991dbd2f945a7f671ea36f4761d",
+            myShopifyDomain: "replication-one.myshopify.com",
+          },
+          countryCode: "IN",
+          baseCountryCode: "US",
+        });
+      };
+
+      function onTagalysReady(callback) {
+        if (window.Tagalys) {
+          setTagalysConfiguration();
+          callback();
+        } else {
+          window.addEventListener("DOMContentLoaded", function () {
+            setTagalysConfiguration();
+            callback();
+          });
         }
-      })
-      console.log(window.productListingPageInstance)
-      window.productListingPageInstance.helpers.call()
-    })
-
-  </script>
-</body>
-
+      }
+      var params = {
+        product_listing_page_id: "457567371545", // listing page id for which the products to be returned
+      };
+      onTagalysReady(function () {
+        window.productListingPageInstance =
+          Tagalys.APIConnector.ProductListingPage.new({
+            params: params,
+            failover: function () {
+              return Tagalys.APIConnector.ShopifyProductListingPage.new({
+                params: params,
+                onSuccess: function (response, helpers) {
+                  console.log("ON SUCESS OF SHOPIFY API >>> ", response);
+                },
+                onFailure: function () {},
+              });
+            },
+            onSuccess: function (response, helpers) {
+              // Called after a successful API call
+              // Use response to render the results - described below
+              console.log("ON SUCESS OF TAGALYS API >>> ", response);
+            },
+            forceFailover: shop.metafields["app--5397159--tagalys"].use_shopify_api,
+          });
+        window.productListingPageInstance.helpers.call();
+      });
+    </script>
+  </body>
 </html>

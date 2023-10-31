@@ -6,7 +6,7 @@ declare class Failover {
     deactivate(): void;
     hasFailedOver(): boolean;
     reloadWithoutQueryParams(): void;
-    pollUntilAPIisHealthy(params: any): void;
+    pollUntilAPIisHealthy(): void;
 }
 declare const _default: Failover;
 export default _default;

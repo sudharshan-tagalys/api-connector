@@ -1,10 +1,3 @@
-declare type HealthDetails = {
-    path: string;
-    body?: string;
-    headers?: {
-        contentType?: string;
-    };
-};
 declare class APIConnector {
     requestOptions: any;
     currentRequestNumber: any;
@@ -13,7 +6,7 @@ declare class APIConnector {
     setResponseFormatter(): void;
     apiClient(): any;
     call(requestOptions?: any): Promise<void>;
-    getHealthCheckDetails(): boolean | HealthDetails;
+    canCheckAPIHealth(): boolean;
     formatRequestParams(params: any, format: any): any;
     getHelpersToExpose(response: any, formattedResponse: any): any;
     internalSuccessCallback(response: any, formattedResponse: any): void;

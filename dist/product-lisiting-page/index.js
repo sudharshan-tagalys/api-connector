@@ -75,13 +75,8 @@ var ProductListingPage = /** @class */ (function (_super) {
             params: this.requestOptions.params,
         };
     };
-    ProductListingPage.prototype.getHealthCheckDetails = function () {
-        return ProductListingPage.getHealthCheckDetails();
-    };
-    ProductListingPage.getHealthCheckDetails = function () {
-        return {
-            path: "mpages/_health"
-        };
+    ProductListingPage.prototype.canCheckAPIHealth = function () {
+        return true;
     };
     ProductListingPage.prototype.extractAnalyticsData = function (response) {
         if (response === false) {

@@ -56,14 +56,14 @@ var Failover = /** @class */ (function () {
         var url = window.location.href;
         window.location.href = url.split('?')[0];
     };
-    Failover.prototype.pollUntilAPIisHealthy = function (params) {
+    Failover.prototype.pollUntilAPIisHealthy = function () {
         if (!this.intervalId) {
             this.intervalId = setInterval(function () {
                 return __awaiter(this, void 0, void 0, function () {
                     var isAPIHealthy;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
-                            case 0: return [4 /*yield*/, this.apiClient.isAPIHealthy(params)];
+                            case 0: return [4 /*yield*/, this.apiClient.isAPIHealthy()];
                             case 1:
                                 isAPIHealthy = _a.sent();
                                 if (isAPIHealthy) {
@@ -73,7 +73,7 @@ var Failover = /** @class */ (function () {
                         }
                     });
                 });
-            }.bind(this), 5000);
+            }.bind(this), 300000);
         }
     };
     return Failover;

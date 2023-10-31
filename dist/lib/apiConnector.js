@@ -113,13 +113,13 @@ var APIConnector = /** @class */ (function () {
                         _this.markRequestComplete(currentRequest);
                         _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
                     },
-                    health: this.getHealthCheckDetails()
+                    checkAPIHealth: this.canCheckAPIHealth(),
                 });
                 return [2 /*return*/];
             });
         });
     };
-    APIConnector.prototype.getHealthCheckDetails = function () {
+    APIConnector.prototype.canCheckAPIHealth = function () {
         return false;
     };
     APIConnector.prototype.formatRequestParams = function (params, format) {
@@ -261,7 +261,7 @@ var APIConnector = /** @class */ (function () {
                     var instance = new _this();
                     var isTagalysOfflineAndHasFailover = (tagalysApi_1.default.isOffline() && failoverProvided);
                     if (isTagalysOfflineAndHasFailover) {
-                        failover_1.default.pollUntilAPIisHealthy(instance.getHealthCheckDetails());
+                        failover_1.default.pollUntilAPIisHealthy();
                         return requestOptions.failover();
                     }
                     var helpers = instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));

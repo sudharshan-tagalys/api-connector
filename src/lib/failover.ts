@@ -34,7 +34,7 @@ class Failover {
         if(isAPIHealthy){
           this.deactivate()
         }
-      }.bind(this), 5000)
+      }.bind(this), 300000)
     }
   }
 }
