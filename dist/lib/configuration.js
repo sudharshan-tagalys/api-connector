@@ -148,9 +148,6 @@ var Configuration = /** @class */ (function () {
     Configuration.prototype.isUsingBaseCountryCode = function () {
         return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode;
     };
-    Configuration.prototype.getFailoverCallback = function () {
-        return this.configuration.onFailover;
-    };
     Configuration.prototype.get = function () {
         return this.configuration;
     };

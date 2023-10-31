@@ -83,9 +83,6 @@ exports.APIConnector = __assign(__assign(__assign(__assign(__assign(__assign(__a
 var setConfiguration = function (config) { return __awaiter(void 0, void 0, void 0, function () {
     return __generator(this, function (_a) {
         configuration_1.default.setConfiguration(__assign(__assign({}, constants_1.DEFAULT_CONFIGURATION), config));
-        // if (failover.hasFailedOver()) {
-        //   failover.pollUntilAPIisHealthy()
-        // }
         (0, platform_helpers_1.setGlobalContextToPlatformHelpers)();
         return [2 /*return*/];
     });

@@ -56,6 +56,7 @@ var cookie_1 = require("./cookie");
 var platform_helpers_1 = require("../shared/platform-helpers");
 var tagalysApi_1 = require("./api/tagalysApi");
 var shopifyConfiguration_1 = require("./shopifyConfiguration");
+var failover_1 = require("./failover");
 var DEFAULT_REQUEST_OPTIONS = {
     method: "POST",
     path: "",
@@ -111,11 +112,15 @@ var APIConnector = /** @class */ (function () {
                         }
                         _this.markRequestComplete(currentRequest);
                         _this.requestOptions.onFailure(response, _this.getHelpersToExpose(false, false));
-                    }
+                    },
+                    health: this.getHealthCheckDetails()
                 });
                 return [2 /*return*/];
             });
         });
+    };
+    APIConnector.prototype.getHealthCheckDetails = function () {
+        return false;
     };
     APIConnector.prototype.formatRequestParams = function (params, format) {
         if (format === constants_1.REQUEST_FORMAT.GRAPHQL) {
@@ -249,10 +254,16 @@ var APIConnector = /** @class */ (function () {
                 new: function (requestOptions, defaultRequestOptions) {
                     if (requestOptions === void 0) { requestOptions = {}; }
                     if (defaultRequestOptions === void 0) { defaultRequestOptions = _this.defaultRequestOptions(); }
-                    if (tagalysApi_1.default.isOffline() && requestOptions.hasOwnProperty('failover')) {
+                    var failoverProvided = requestOptions.hasOwnProperty('failover');
+                    if (failoverProvided && requestOptions.forceFailover) {
                         return requestOptions.failover();
                     }
                     var instance = new _this();
+                    var isTagalysOfflineAndHasFailover = (tagalysApi_1.default.isOffline() && failoverProvided);
+                    if (isTagalysOfflineAndHasFailover) {
+                        failover_1.default.pollUntilAPIisHealthy(instance.getHealthCheckDetails());
+                        return requestOptions.failover();
+                    }
                     var helpers = instance.new(__assign(__assign({}, defaultRequestOptions), requestOptions));
                     return {
                         helpers: __assign(__assign({}, helpers), { call: function () { return instance.call(instance.requestOptions); } })

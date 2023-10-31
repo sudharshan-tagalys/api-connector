@@ -10,7 +10,7 @@ export declare const APIConnector: {
     getQueryStringConfiguration: () => any;
     hasFailedOver: () => boolean;
     failoverSimulator: {
-        activate: () => any;
+        activate: () => void;
         deactivate: () => void;
     };
 };

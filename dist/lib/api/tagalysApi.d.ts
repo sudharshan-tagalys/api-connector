@@ -2,11 +2,12 @@ declare class TagalysAPI {
     call(method: string, path: string, requestOptions: any, headers?: {
         contentType: string;
     }): Promise<any>;
+    reloadWithoutQueryParams(): void;
     url(path: any): string;
     isOnline(): boolean;
     static isOffline(): boolean;
     setAsOffline(): void;
     setAsOnline(): void;
-    isAPIHealthy(): Promise<boolean>;
+    isAPIHealthy(requestOptions: any): Promise<boolean>;
 }
 export default TagalysAPI;
