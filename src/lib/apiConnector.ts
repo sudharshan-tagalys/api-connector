@@ -205,14 +205,18 @@ class APIConnector {
           })
         },
         new: (requestOptions: any = {}, defaultRequestOptions = this.defaultRequestOptions()) => {
-          const instance = new this()
-          const isTagalysOfflineAndHasFailover = (TagalysAPI.isOffline() && requestOptions.hasOwnProperty('failover'))
-          if (isTagalysOfflineAndHasFailover) {
-            failover.pollUntilAPIisHealthy(instance.getHealthCheckDetails())
-          }
-          if (isTagalysOfflineAndHasFailover || requestOptions.forceFailover) {
+          const failoverProvided = requestOptions.hasOwnProperty('failover')
+          if(failoverProvided && requestOptions.forceFailover){
             return requestOptions.failover()
           }
+
+          const instance = new this()
+          const isTagalysOfflineAndHasFailover = (TagalysAPI.isOffline() && failoverProvided)
+          if (isTagalysOfflineAndHasFailover) {
+            failover.pollUntilAPIisHealthy(instance.getHealthCheckDetails())
+            return requestOptions.failover()
+          }
+
           const helpers = instance.new({
             ...defaultRequestOptions,
             ...requestOptions

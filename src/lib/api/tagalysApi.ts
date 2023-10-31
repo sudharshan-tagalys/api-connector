@@ -1,5 +1,6 @@
 import { objectToFormData } from "../../shared/helpers/api";
 import configuration from "../configuration";
+import failover from "../failover";
 import localStorage from "../localStorage";
 
 const TAGALYS_API_STATUS = "TAGALYS_API_STATUS"
@@ -25,6 +26,7 @@ class TagalysAPI{
         const isAPIHealthy = await this.isAPIHealthy(requestOptions.health)
         if (!isAPIHealthy) {
           this.setAsOffline()
+          this.reloadWithoutQueryParams()
         }
       }
 
@@ -33,6 +35,11 @@ class TagalysAPI{
       }
       return response
     }
+  }
+
+  reloadWithoutQueryParams(){
+    const url = window.location.href;
+    window.location.href = url.split('?')[0];
   }
 
   url(path): string{

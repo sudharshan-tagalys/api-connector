@@ -166,10 +166,6 @@ class Configuration{
     return this.platformConfiguration.countryCode === this.platformConfiguration.baseCountryCode
   }
 
-  getFailoverCallback(){
-    return this.configuration.onFailover
-  }
-
   get(){
     return this.configuration
   }
