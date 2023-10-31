@@ -1,6 +1,5 @@
 import { objectToFormData } from "../../shared/helpers/api";
 import configuration from "../configuration";
-import failover from "../failover";
 import localStorage from "../localStorage";
 
 const TAGALYS_API_STATUS = "TAGALYS_API_STATUS"
@@ -21,9 +20,8 @@ class TagalysAPI{
       }
       return parsedResponse
     } else {
-
-      if (requestOptions.health) {
-        const isAPIHealthy = await this.isAPIHealthy(requestOptions.health)
+      if (requestOptions.checkAPIHealth) {
+        const isAPIHealthy = await this.isAPIHealthy()
         if (!isAPIHealthy) {
           this.setAsOffline()
           this.reloadWithoutQueryParams()
@@ -63,16 +61,15 @@ class TagalysAPI{
     localStorage.removeItem(TAGALYS_API_STATUS)
   }
 
-  async isAPIHealthy(requestOptions) {
-    const response = await fetch(this.url(requestOptions.path), {
+  async isAPIHealthy() {
+    const response = await fetch(this.url('mpages/_health'), {
       body: objectToFormData({
         identification: configuration.getApiIdentification(),
-        ...requestOptions.body
       }),
       headers: {
-        "Content-Type": (requestOptions.contentType || "application/x-www-form-urlencoded"),
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      method: (requestOptions.method || "POST"),
+      method: "POST",
     });
     if(response.status === 200){
       return true

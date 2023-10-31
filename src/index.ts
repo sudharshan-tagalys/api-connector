@@ -45,7 +45,6 @@ export const APIConnector = {
   setQueryStringConfiguration: (config) => queryStringManager.setConfiguration(config),
   getQueryStringConfiguration: () => queryStringManager.getConfiguration(),
   hasFailedOver: () => failover.hasFailedOver(),
-  pollUntilAPIisHealthy: (widgetHealthCheckDetails) => failover.pollUntilAPIisHealthy(widgetHealthCheckDetails),
   failoverSimulator: {
     activate: () => failover.activate(),
     deactivate: () => failover.deactivate()
@@ -57,7 +56,9 @@ const setConfiguration = async (config) => {
     ...DEFAULT_CONFIGURATION,
     ...config
   })
-
+  if (failover.hasFailedOver()) {
+    failover.pollUntilAPIisHealthy()
+  }
   setGlobalContextToPlatformHelpers()
 }
 

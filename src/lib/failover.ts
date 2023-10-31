@@ -1,5 +1,4 @@
 import TagalysAPI from './api/tagalysApi'
-import configuration from './configuration';
 
 class Failover {
   private apiClient
@@ -28,10 +27,10 @@ class Failover {
     window.location.href = url.split('?')[0];
   }
 
-  pollUntilAPIisHealthy(params) {
+  pollUntilAPIisHealthy() {
     if(!this.intervalId){
       this.intervalId = setInterval(async function(){
-        const isAPIHealthy = await this.apiClient.isAPIHealthy(params)
+        const isAPIHealthy = await this.apiClient.isAPIHealthy()
         if(isAPIHealthy){
           this.deactivate()
         }

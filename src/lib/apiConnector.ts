@@ -9,13 +9,6 @@ import TagalysAPI from "./api/tagalysApi";
 import shopifyConfiguration from "./shopifyConfiguration";
 import failover from "./failover";
 
-type HealthDetails = {
-  path: string;
-  body?: string;
-  headers?: { contentType?: string }
-};
-
-
 const DEFAULT_REQUEST_OPTIONS = {
   method: "POST",
   path: "",
@@ -78,11 +71,11 @@ class APIConnector {
         this.markRequestComplete(currentRequest)
         this.requestOptions.onFailure(response, this.getHelpersToExpose(false, false))
       },
-      health: this.getHealthCheckDetails()
+      checkAPIHealth: this.canCheckAPIHealth(),
     });
   }
 
-  getHealthCheckDetails(): boolean | HealthDetails {
+  canCheckAPIHealth() {
     return false
   }
 
@@ -213,7 +206,7 @@ class APIConnector {
           const instance = new this()
           const isTagalysOfflineAndHasFailover = (TagalysAPI.isOffline() && failoverProvided)
           if (isTagalysOfflineAndHasFailover) {
-            failover.pollUntilAPIisHealthy(instance.getHealthCheckDetails())
+            failover.pollUntilAPIisHealthy()
             return requestOptions.failover()
           }
 
