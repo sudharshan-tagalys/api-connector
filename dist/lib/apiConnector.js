@@ -153,6 +153,12 @@ var APIConnector = /** @class */ (function () {
             });
         });
     };
+    APIConnector.prototype.waitForStoreFrontAPI = function () {
+        if (this.requestOptions.hasOwnProperty("waitForStoreFrontAPI")) {
+            return this.requestOptions.waitForStoreFrontAPI;
+        }
+        return configuration_1.default.waitForStoreFrontAPI();
+    };
     APIConnector.prototype.mutateResponse = function (formattedResponse) {
         return __awaiter(this, void 0, void 0, function () {
             var shopifyMultiCurrencyPriceMutator;
@@ -161,7 +167,7 @@ var APIConnector = /** @class */ (function () {
                     case 0:
                         if (!(configuration_1.default.isUsingMultiCountryCurrency() && !configuration_1.default.isUsingBaseCountryCode())) return [3 /*break*/, 3];
                         shopifyMultiCurrencyPriceMutator = new shopifyMultiCurrencyPriceMutator_1.default();
-                        if (!configuration_1.default.waitForStoreFrontAPI()) return [3 /*break*/, 2];
+                        if (!this.waitForStoreFrontAPI()) return [3 /*break*/, 2];
                         return [4 /*yield*/, shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)];
                     case 1:
                         _a.sent();
