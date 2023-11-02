@@ -111,10 +111,17 @@ class APIConnector{
     }
   }
 
+  waitForStoreFrontAPI() {
+    if (this.requestOptions.hasOwnProperty("waitForStoreFrontAPI")) {
+      return this.requestOptions.waitForStoreFrontAPI
+    }
+    return configuration.waitForStoreFrontAPI()
+  }
+
   async mutateResponse(formattedResponse){
     if(configuration.isUsingMultiCountryCurrency() && !configuration.isUsingBaseCountryCode()){
       const shopifyMultiCurrencyPriceMutator = new ShopifyMultiCurrencyPriceMutator()
-      if(configuration.waitForStoreFrontAPI()){
+      if(this.waitForStoreFrontAPI()){
         await shopifyMultiCurrencyPriceMutator.mutate(formattedResponse)
       }else{
         shopifyMultiCurrencyPriceMutator.resetProductPrices(formattedResponse)

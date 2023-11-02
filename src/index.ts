@@ -70,7 +70,7 @@ const Analytics = {
       });
     } else {
       trackPlatformEvents(eventTypesToTrack)
-    }    
+    }
   },
   trackProductView: (identifier) => {
     const eventDetails = {
