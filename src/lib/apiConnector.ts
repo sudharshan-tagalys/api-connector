@@ -112,7 +112,7 @@ class APIConnector{
   }
 
   waitForStoreFrontAPI() {
-    if (this.requestOptions.hasOwnProperty("waitForStoreFrontAPI")) {
+    if (this.requestOptions.waitForStoreFrontAPI !== undefined) {
       return this.requestOptions.waitForStoreFrontAPI
     }
     return configuration.waitForStoreFrontAPI()
