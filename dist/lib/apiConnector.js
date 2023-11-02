@@ -154,7 +154,7 @@ var APIConnector = /** @class */ (function () {
         });
     };
     APIConnector.prototype.waitForStoreFrontAPI = function () {
-        if (this.requestOptions.hasOwnProperty("waitForStoreFrontAPI")) {
+        if (this.requestOptions.waitForStoreFrontAPI !== undefined) {
             return this.requestOptions.waitForStoreFrontAPI;
         }
         return configuration_1.default.waitForStoreFrontAPI();
