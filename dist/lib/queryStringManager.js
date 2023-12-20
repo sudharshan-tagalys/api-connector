@@ -27,7 +27,7 @@ var QueryStringManager = /** @class */ (function () {
         return qs.parse(params);
     };
     QueryStringManager.prototype.stringify = function (params) {
-        return qs.stringify(params, { encode: false });
+        return qs.stringify(params, { encode: true });
     };
     QueryStringManager.prototype.setConfiguration = function (configuration) {
         this.configuration = __assign(__assign({}, DEFAULT_QUERY_STRING_CONFIGURATION), configuration);
