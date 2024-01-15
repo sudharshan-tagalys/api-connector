@@ -152,7 +152,7 @@ var Formatter = /** @class */ (function () {
             basePlpResponse["products"] = this.formatDetails(response.details);
         }
         if (response.filters) {
-            basePlpResponse['filters'] = response.filters;
+            basePlpResponse['filters'] = response.filters.filter(function (filter) { return filter !== false; });
         }
         if (response.sort_options) {
             var sortOptions_1 = [];

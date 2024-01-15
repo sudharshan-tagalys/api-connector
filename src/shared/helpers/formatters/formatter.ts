@@ -166,7 +166,7 @@ class Formatter {
       basePlpResponse["products"] = this.formatDetails(response.details)
     }
     if(response.filters){
-      basePlpResponse['filters'] = response.filters.map((filter) => filter !== false)
+      basePlpResponse['filters'] = response.filters.filter((filter) => filter !== false)
     }
     if (response.sort_options) {
       let sortOptions = []
