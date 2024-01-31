@@ -116,6 +116,7 @@ const Analytics = {
     analyticsTracker.trackEvent('product_list', dataToTrack)
   },
   trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
+  track: (endpoint, trackData) => analyticsTracker.track(endpoint, trackData),
 }
 
 const getResponseFormatter = () => {
