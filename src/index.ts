@@ -36,7 +36,6 @@ export const APIConnector = {
   ...LegacySearchSuggestions.export(),
   ...ProductListingPage.export(),
   ...ShopifyProductListingPage.export(),
-  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
   cookie: {
     get: (cname) => cookie.get(cname),
     set: (cname, cvalue, expiryTime) => cookie.set(cname, cvalue, expiryTime),
@@ -115,7 +114,8 @@ const Analytics = {
       pl_details: { page_id: identifier }
     }
     analyticsTracker.trackEvent('product_list', dataToTrack)
-  }
+  },
+  trackEvent: (eventType, details) => analyticsTracker.trackEvent(eventType, details),
 }
 
 const getResponseFormatter = () => {
