@@ -148,6 +148,7 @@ var Analytics = {
         analyticsTracker_1.default.trackEvent('product_list', dataToTrack);
     },
     trackEvent: function (eventType, details) { return analyticsTracker_1.default.trackEvent(eventType, details); },
+    track: function (endpoint, trackData) { return analyticsTracker_1.default.track(endpoint, trackData); },
 };
 exports.Analytics = Analytics;
 var getResponseFormatter = function () {

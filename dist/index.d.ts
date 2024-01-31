@@ -24,6 +24,7 @@ declare const Analytics: {
     trackOrder: (orderId: any, lineItems: any) => void;
     trackProductListingPageView: (identifier: any) => void;
     trackEvent: (eventType: any, details: any) => void;
+    track: (endpoint: any, trackData: any) => void;
 };
 declare const getResponseFormatter: () => import("./shared/helpers/formatters/shopifyResponseFormatter").default | import("./shared/helpers/formatters/formatter").default;
 export { Analytics, getConfiguration, setPlatformConfiguration, getPlatformConfiguration, setConfiguration, packageDetails, getResponseFormatter, };
