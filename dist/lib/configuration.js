@@ -61,11 +61,10 @@ var Configuration = /** @class */ (function () {
         return this.configuration.api.serverUrl;
     };
     Configuration.prototype.getApiIdentification = function () {
-        return {
+        var identification = {
             client_code: this.configuration.api.credentials.clientCode,
             api_key: this.configuration.api.credentials.apiKey,
             store_id: this.configuration.api.storeId,
-            currency: this.configuration.currency.code,
             api_client: {
                 vendor: this.configuration.apiClient.vendor,
                 language: this.configuration.apiClient.language,
@@ -73,6 +72,10 @@ var Configuration = /** @class */ (function () {
                 release: this.configuration.apiClient.release
             }
         };
+        if (!this.isShopify()) {
+            identification.currency = this.configuration.currency.code;
+        }
+        return identification;
     };
     Configuration.prototype.getPlatform = function () {
         return this.configuration.platform.toLowerCase();

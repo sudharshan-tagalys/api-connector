@@ -5,18 +5,7 @@ declare class Configuration {
     getConstructedErrorLabel(missingConfiguration: any): string;
     getConfiguration(): any;
     getServerUrl(): any;
-    getApiIdentification(): {
-        client_code: any;
-        api_key: any;
-        store_id: any;
-        currency: any;
-        api_client: {
-            vendor: any;
-            language: any;
-            version: any;
-            release: any;
-        };
-    };
+    getApiIdentification(): any;
     getPlatform(): any;
     analyticsStorageConsentProvided(): any;
     canTrackAnalytics(): any;

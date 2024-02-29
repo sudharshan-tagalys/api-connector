@@ -65,11 +65,10 @@ class Configuration{
   }
 
   getApiIdentification() {
-    return {
+    let identification: any = {
       client_code: this.configuration.api.credentials.clientCode,
       api_key: this.configuration.api.credentials.apiKey,
       store_id: this.configuration.api.storeId,
-      currency: this.configuration.currency.code,
       api_client: {
         vendor: this.configuration.apiClient.vendor,
         language: this.configuration.apiClient.language,
@@ -77,6 +76,12 @@ class Configuration{
         release: this.configuration.apiClient.release
       }
     }
+
+    if (!this.isShopify()) {
+      identification.currency = this.configuration.currency.code
+    }
+
+    return identification
   }
 
   getPlatform() {
