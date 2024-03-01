@@ -49,6 +49,10 @@ class Search extends Base {
   }
 
   extractAnalyticsData(response) {
+    if (this.requestOptions.hasOwnProperty("track") && this.requestOptions.track === false) {
+      return false
+    }
+
     if(response === false){
       return {}
     }
