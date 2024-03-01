@@ -70,6 +70,9 @@ var Search = /** @class */ (function (_super) {
         };
     };
     Search.prototype.extractAnalyticsData = function (response) {
+        if (this.requestOptions.hasOwnProperty("track") && this.requestOptions.track === false) {
+            return false;
+        }
         if (response === false) {
             return {};
         }
