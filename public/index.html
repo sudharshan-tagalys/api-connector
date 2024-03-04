@@ -7,7 +7,7 @@
     <title>Search and search suggestions</title>
     <input id="search-input" placeholder="Search" name="search" />
     <script
-      src="./bundle.js"
+      src="../dist/client/bundle.js"
       defer
     ></script>
   </head>
@@ -33,7 +33,7 @@
       };
 
       function initializeSearchSuggestions() {
-        return Tagalys.APIConnector.SearchSuggestions.new({
+        return Tagalys.APIConnector.SearchResults.new({
           params: {
             query: "light",
           },
@@ -43,18 +43,19 @@
           onFailure: function (response, helpers) {
             console.log("FFFFFAAAAAAAAAAILED");
           },
+          track: false
         });
       }
 
       var setTagalysConfiguration = function () {
         Tagalys.setConfiguration({
           api: {
-            serverUrl: "https://stage2-api.tagalys.com",
+            serverUrl: "https://api-r4.tagalys.com",
             credentials: {
-              clientCode: "3C2C1E2E43935841",
-              apiKey: "176bbb6572fd4a805cd00c2f57e6f13d",
+              clientCode: "FD1FB1C1A4448D69",
+              apiKey: "a27b1d687dfb419e7a4029396e48a740",
             },
-            storeId: "79528788275",
+            storeId: "63651545319",
           },
           platform: "Shopify",
           locale: "en-US",
@@ -64,6 +65,10 @@
             label: "$",
             fractionalDigits: 2,
             forceFractionalDigits: true,
+          },
+          track: true,
+          analyticsStorageConsentProvided: function(){
+            return true
           },
           countryCode: "US",
           baseCountryCode: "IN",
@@ -93,8 +98,8 @@
       };
 
       onTagalysReady(function () {
-        // ss = initializeSearchSuggestions();
-        // ss.helpers.call();
+        ss = initializeSearchSuggestions();
+        ss.helpers.call();
         initSmartWidget()
       });
     </script>
