@@ -1,3 +1,5 @@
+import configuration from "./configuration";
+
 const randomId = (length: number) => {
   const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let result = '';
@@ -47,10 +49,11 @@ class Cookie{
     d.setTime(d.getTime() + expiryTime);
     const expires = "expires="+d.toUTCString();
     cvalue = cvalue.replace(/;/g, '%3B');
+    const hostname = configuration.getPlatformVariable("rootDomain") ? configuration.getPlatformVariable("rootDomain") : window.location.hostname
     if (window.location.hostname.indexOf('.') === -1) {
-      document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + window.location.hostname;
+      document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + hostname;
     } else {
-      document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=." + window.location.hostname;
+      document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=." + hostname;
     }
   }
 
