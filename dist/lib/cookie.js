@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var configuration_1 = require("./configuration");
 var randomId = function (length) {
     var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     var result = '';
@@ -50,11 +51,12 @@ var Cookie = /** @class */ (function () {
         d.setTime(d.getTime() + expiryTime);
         var expires = "expires=" + d.toUTCString();
         cvalue = cvalue.replace(/;/g, '%3B');
+        var hostname = configuration_1.default.getPlatformVariable("rootDomain") ? configuration_1.default.getPlatformVariable("rootDomain") : window.location.hostname;
         if (window.location.hostname.indexOf('.') === -1) {
-            document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + window.location.hostname;
+            document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + hostname;
         }
         else {
-            document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=." + window.location.hostname;
+            document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=." + hostname;
         }
     };
     Cookie.prototype.delete = function (name) {

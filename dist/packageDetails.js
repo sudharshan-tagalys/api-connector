@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var packageDetails = {
     vendor: "tagalys-api-connector",
     language: "js",
-    version: "1.3.16",
+    version: "1.3.17",
 };
 exports.default = packageDetails;
 //# sourceMappingURL=packageDetails.js.map
