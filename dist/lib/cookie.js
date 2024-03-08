@@ -54,7 +54,7 @@ var Cookie = /** @class */ (function () {
         var hostname = window.location.hostname;
         var cookieDomain = configuration_1.default.getPlatformVariable("cookieDomain");
         if (cookieDomain) {
-            if (window.location.hostname.endsWith(cookieDomain)) {
+            if (window.location.hostname.endsWith(".".concat(cookieDomain))) {
                 hostname = cookieDomain;
             }
             else {

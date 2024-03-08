@@ -52,7 +52,7 @@ class Cookie{
     let hostname = window.location.hostname
     const cookieDomain = configuration.getPlatformVariable("cookieDomain")
     if (cookieDomain) {
-      if (window.location.hostname.endsWith(cookieDomain)) {
+      if (window.location.hostname.endsWith(`.${cookieDomain}`)) {
         hostname = cookieDomain
       } else {
         console.error("Cookie domain is not valid")
