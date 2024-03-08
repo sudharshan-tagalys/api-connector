@@ -51,7 +51,16 @@ var Cookie = /** @class */ (function () {
         d.setTime(d.getTime() + expiryTime);
         var expires = "expires=" + d.toUTCString();
         cvalue = cvalue.replace(/;/g, '%3B');
-        var hostname = configuration_1.default.getPlatformVariable("rootDomain") ? configuration_1.default.getPlatformVariable("rootDomain") : window.location.hostname;
+        var hostname = window.location.hostname;
+        var cookieDomain = configuration_1.default.getPlatformVariable("cookieDomain");
+        if (cookieDomain) {
+            if (window.location.hostname.endsWith(cookieDomain)) {
+                hostname = cookieDomain;
+            }
+            else {
+                console.error("Cookie domain is not valid");
+            }
+        }
         if (window.location.hostname.indexOf('.') === -1) {
             document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + hostname;
         }

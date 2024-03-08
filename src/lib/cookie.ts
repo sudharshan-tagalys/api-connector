@@ -49,7 +49,15 @@ class Cookie{
     d.setTime(d.getTime() + expiryTime);
     const expires = "expires="+d.toUTCString();
     cvalue = cvalue.replace(/;/g, '%3B');
-    const hostname = configuration.getPlatformVariable("rootDomain") ? configuration.getPlatformVariable("rootDomain") : window.location.hostname
+    let hostname = window.location.hostname
+    const cookieDomain = configuration.getPlatformVariable("cookieDomain")
+    if (cookieDomain) {
+      if (window.location.hostname.endsWith(cookieDomain)) {
+        hostname = cookieDomain
+      } else {
+        console.error("Cookie domain is not valid")
+      }
+    }
     if (window.location.hostname.indexOf('.') === -1) {
       document.cookie = cname + "=" + cvalue + "; " + expires + "; " + "path=/; " + "domain=" + hostname;
     } else {
